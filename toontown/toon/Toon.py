@@ -899,7 +899,8 @@ class Toon(Avatar.Avatar, ToonHead):
                 parts.setColor(armColor)
             for pieceName in ('arms', 'neck'):
                 piece = torso.find('**/' + pieceName)
-                piece.setColor(armColor)
+                if piece is not None:
+                    piece.setColor(armColor)
 
             hands = torso.find('**/hands')
             hands.setColor(gloveColor)
@@ -1003,8 +1004,11 @@ class Toon(Avatar.Avatar, ToonHead):
             for lodName in self.getLODNames():
                 thisPart = self.getPart('torso', lodName)
                 top = thisPart.find('**/torso-top')
-                top.setTexture(shirtTex, 1)
-                top.setColor(shirtColor)
+                if top is not None:
+                    top.setTexture(shirtTex, 1)
+                    top.setColor(shirtColor)
+                else:
+                    print("WARNING: torso-top reported to be None??")
                 sleeves = thisPart.find('**/sleeves')
                 sleeves.setTexture(sleeveTex, 1)
                 sleeves.setColor(sleeveColor)

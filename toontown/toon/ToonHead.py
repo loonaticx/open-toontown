@@ -1174,7 +1174,7 @@ class ToonHead(Actor.Actor):
                             if not self.find('**/' + lodName + '/**/__Actor_head/def_head').isEmpty():
                                 muzzles.reparentTo(self.find('**/' + lodName + '/**/__Actor_head/def_head'))
                             else:
-                                muzzles.reparentTo(self.find('**/' + lodName + '/**/joint_toHead'))
+                                muzzles.reparentTo(self.find('**/' + lodName + '/**/def_toHead'))
                         elif self.find('**/' + lodName + '/**/joint_toHead'):
                             muzzles.reparentTo(self.find('**/' + lodName + '/**/joint_toHead'))
                 surpriseMuzzle = self.find('**/' + lodName + '/**/muzzle*surprise')
