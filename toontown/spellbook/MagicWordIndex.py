@@ -15,6 +15,8 @@ from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 
 from panda3d.otp import NametagGroup, WhisperPopup
+from toontown.toonbase import TTLocalizer
+from toontown.fishing import FishGlobals
 
 from otp.otpbase import OTPLocalizer
 from otp.otpbase import OTPGlobals
@@ -270,8 +272,43 @@ class MaxToon(MagicWord):
         toon.b_setMaxMoney(250)
         toon.b_setMoney(toon.maxMoney)
         toon.b_setBankMoney(toon.maxBankMoney)
+        # Add all fish to their collection, set their rod to steel, and max out fishing trophies
+        allFish = TTLocalizer.FishSpeciesNames
+        fishLists = [[], [], []]
+        for genus in list(allFish.keys()):
+            for species in range(len(allFish[genus])):
+                fishLists[0].append(genus)
+                fishLists[1].append(species)
+                fishLists[2].append(FishGlobals.getRandomWeight(genus, species))
+        toon.b_setFishCollection(*fishLists)
+        toon.b_setFishingRod(FishGlobals.MaxRodId)
+        toon.b_setFishingTrophies(list(FishGlobals.TrophyDict.keys()))
 
         return f"Successfully maxed {toon.getName()}!"
+
+class maxFishingGallery(MagicWord):
+    aliases = ["fg"]
+    desc = "Toggles run mode, which gives you a faster running speed."
+    advancedDesc = "This Magic Word will toggle Run Mode. When this mode is active, the target can run around at a " \
+                   "very fast speed."
+    accessLevel = 'ADMIN'
+    execLocation = MagicWordConfig.EXEC_LOC_CLIENT
+
+    def handleWord(self, invoker, avId, toon, *args):
+        from toontown.fishing import FishCollection, FishGlobals, FishBase
+        collection = FishCollection.FishCollection()
+        for genus, speciesList in FishGlobals.__fishDict.items():
+            i = 0
+            for species in speciesList:
+                fish = FishBase.FishBase(genus, i, 119)
+                collection.collectFish(fish)
+                i += 1
+        genusList, speciesList, weightList = collection.getNetLists()
+        invoker.b_setFishCollection(genusList, speciesList, weightList)
+        totalFish = len(invoker.fishCollection)
+        trophies = totalFish // 10
+        invoker.b_setFishingTrophies(list(range(trophies)))
+
 
 # Instantiate all classes defined here to register them.
 # A bit hacky, but better than the old system
