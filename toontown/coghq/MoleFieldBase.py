@@ -1,8 +1,10 @@
 import random
+
 HILL_MOLE = 0
 HILL_BOMB = 1
 HILL_WHACKED = 2
 HILL_COGWHACKED = 3
+
 
 class MoleFieldBase:
     WHACKED = 1
@@ -47,15 +49,15 @@ class MoleFieldBase:
             eligibleMoles.remove(moleIndex)
             usedMoles.append(moleIndex)
             moleType = randOb.choice([HILL_MOLE,
-             HILL_MOLE,
-             HILL_MOLE,
-             HILL_BOMB])
+                                      HILL_MOLE,
+                                      HILL_MOLE,
+                                      HILL_BOMB])
             self.schedule.append((curTime,
-             moleIndex,
-             curMoveUpTime,
-             curStayUpTime,
-             curMoveDownTime,
-             moleType))
+                                  moleIndex,
+                                  curMoveUpTime,
+                                  curStayUpTime,
+                                  curMoveDownTime,
+                                  moleType))
             curTime += curTimeBetweenPopup
             curMoveUpTime = self.calcNextMoveUpTime(curTime, curMoveUpTime)
             curStayUpTime = self.calcNextStayUpTime(curTime, curStayUpTime)

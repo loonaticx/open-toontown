@@ -10,9 +10,11 @@ from toontown.racing import RaceGlobals
 from toontown.shtiker.ShtikerPage import ShtikerPage
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from .FishPage import FishingTrophy
+
 if (__debug__):
     import pdb
 PageMode = PythonUtil.Enum('Customize, Records, Trophy')
+
 
 class KartPage(ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('KartPage')
@@ -52,15 +54,37 @@ class KartPage(ShtikerPage):
         self.racingTrophies = RacingTrophiesUI(self.avatar, self)
         self.racingTrophies.hide()
         self.racingTrophies.load()
-        self.title = DirectLabel(parent=self, relief=None, text='', text_scale=0.1, pos=(0, 0, 0.65))
+        self.title = DirectLabel(parent = self, relief = None, text = '', text_scale = 0.1, pos = (0, 0, 0.65))
         normalColor = (1, 1, 1, 1)
         clickColor = (0.8, 0.8, 0, 1)
         rolloverColor = (0.15, 0.82, 1.0, 1)
         diabledColor = (1.0, 0.98, 0.15, 1)
         gui = loader.loadModel('phase_3.5/models/gui/fishingBook')
-        self.customizeTab = DirectButton(parent=self, relief=None, text=TTLocalizer.KartPageCustomizeTab, text_scale=TTLocalizer.KPkartTab, text_align=TextNode.ALeft, text_pos=(-0.025, 0.0, 0.0), image=gui.find('**/tabs/polySurface1'), image_pos=(0.55, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[PageMode.Customize], pos=(0.92, 0, 0.55))
-        self.recordsTab = DirectButton(parent=self, relief=None, text=TTLocalizer.KartPageRecordsTab, text_scale=TTLocalizer.KPkartTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface2'), image_pos=(0.12, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[PageMode.Records], pos=(0.92, 0, 0.1))
-        self.trophyTab = DirectButton(parent=self, relief=None, text=TTLocalizer.KartPageTrophyTab, text_scale=TTLocalizer.KPkartTab, text_pos=(0.03, 0.0, 0.0), text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface3'), image_pos=(-0.28, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[PageMode.Trophy], pos=(0.92, 0, -0.3))
+        self.customizeTab = DirectButton(parent = self, relief = None, text = TTLocalizer.KartPageCustomizeTab,
+                                         text_scale = TTLocalizer.KPkartTab, text_align = TextNode.ALeft,
+                                         text_pos = (-0.025, 0.0, 0.0), image = gui.find('**/tabs/polySurface1'),
+                                         image_pos = (0.55, 1, -0.91), image_hpr = (0, 0, -90),
+                                         image_scale = (0.033, 0.033, 0.035), image_color = normalColor,
+                                         image1_color = clickColor, image2_color = rolloverColor,
+                                         image3_color = diabledColor, text_fg = Vec4(0.2, 0.1, 0, 1),
+                                         command = self.setMode, extraArgs = [PageMode.Customize],
+                                         pos = (0.92, 0, 0.55))
+        self.recordsTab = DirectButton(parent = self, relief = None, text = TTLocalizer.KartPageRecordsTab,
+                                       text_scale = TTLocalizer.KPkartTab, text_align = TextNode.ALeft,
+                                       image = gui.find('**/tabs/polySurface2'), image_pos = (0.12, 1, -0.91),
+                                       image_hpr = (0, 0, -90), image_scale = (0.033, 0.033, 0.035),
+                                       image_color = normalColor, image1_color = clickColor,
+                                       image2_color = rolloverColor, image3_color = diabledColor,
+                                       text_fg = Vec4(0.2, 0.1, 0, 1), command = self.setMode,
+                                       extraArgs = [PageMode.Records], pos = (0.92, 0, 0.1))
+        self.trophyTab = DirectButton(parent = self, relief = None, text = TTLocalizer.KartPageTrophyTab,
+                                      text_scale = TTLocalizer.KPkartTab, text_pos = (0.03, 0.0, 0.0),
+                                      text_align = TextNode.ALeft, image = gui.find('**/tabs/polySurface3'),
+                                      image_pos = (-0.28, 1, -0.91), image_hpr = (0, 0, -90),
+                                      image_scale = (0.033, 0.033, 0.035), image_color = normalColor,
+                                      image1_color = clickColor, image2_color = rolloverColor,
+                                      image3_color = diabledColor, text_fg = Vec4(0.2, 0.1, 0, 1),
+                                      command = self.setMode, extraArgs = [PageMode.Trophy], pos = (0.92, 0, -0.3))
         self.customizeTab.setPos(-0.55, 0, 0.775)
         self.recordsTab.setPos(-0.13, 0, 0.775)
         self.trophyTab.setPos(0.28, 0, 0.775)
@@ -118,7 +142,7 @@ class KartCustomizeUI(DirectFrame):
 
     def __init__(self, avatar, parent = aspect2d):
         self.avatar = avatar
-        DirectFrame.__init__(self, parent=parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+        DirectFrame.__init__(self, parent = parent, relief = None, pos = (0.0, 0.0, 0.0), scale = (1.0, 1.0, 1.0))
         return
 
     def destroy(self):
@@ -131,20 +155,20 @@ class KartCustomizeUI(DirectFrame):
 
     def load(self):
         uiRootNode = loader.loadModel('phase_6/models/gui/ShtikerBookUI')
-        self.itemSelector = ItemSelector(self.avatar, parent=self)
+        self.itemSelector = ItemSelector(self.avatar, parent = self)
         self.itemSelector.setPos(uiRootNode.find('**/uiAccessoryIcons').getPos())
         self.itemSelector.load(uiRootNode)
-        self.kartViewer = KartViewer(list(self.avatar.getKartDNA()), parent=self)
+        self.kartViewer = KartViewer(list(self.avatar.getKartDNA()), parent = self)
         self.kartViewer.setPos(uiRootNode.find('**/uiKartView').getPos())
         self.kartViewer.load(uiRootNode, 'uiKartViewerFrame1', ['rotate_right_up',
-         'rotate_right_down',
-         'rotate_right_roll',
-         'rotate_right_down',
-         (0.275, -.08)], ['rotate_left_up',
-         'rotate_left_down',
-         'rotate_left_roll',
-         'rotate_left_down',
-         (-.27, -.08)], (0, -.08))
+                                                                'rotate_right_down',
+                                                                'rotate_right_roll',
+                                                                'rotate_right_down',
+                                                                (0.275, -.08)], ['rotate_left_up',
+                                                                                 'rotate_left_down',
+                                                                                 'rotate_left_roll',
+                                                                                 'rotate_left_down',
+                                                                                 (-.27, -.08)], (0, -.08))
         self.kartViewer.uiRotateLeft.setZ(-.25)
         self.kartViewer.uiRotateRight.setZ(-.25)
         self.itemSelector.itemViewers['main'].leftArrowButton.setZ(self.kartViewer.getZ() + 0.25)
@@ -183,7 +207,7 @@ class RacingRecordsUI(DirectFrame):
         self.avatar = avatar
         self.timeDisplayList = []
         self.lastTimes = []
-        DirectFrame.__init__(self, parent=parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+        DirectFrame.__init__(self, parent = parent, relief = None, pos = (0.0, 0.0, 0.0), scale = (1.0, 1.0, 1.0))
         return
 
     def destroy(self):
@@ -197,8 +221,13 @@ class RacingRecordsUI(DirectFrame):
         trackNameArray = TTLocalizer.KartRace_TrackNames
         for trackId in RaceGlobals.TrackIds:
             trackName = trackNameArray[trackId]
-            trackNameDisplay = DirectLabel(parent=self, relief=None, text=trackName, text_align=TextNode.ALeft, text_scale=0.075, text_fg=(0.95, 0.95, 0.0, 1.0), text_shadow=(0, 0, 0, 1), text_pos=(-0.8, 0.5 - offset), text_font=ToontownGlobals.getSignFont())
-            bestTimeDisplay = DirectLabel(parent=self, relief=None, text=TTLocalizer.KartRace_Unraced, text_scale=0.06, text_fg=(0.0, 0.0, 0.0, 1.0), text_pos=(0.65, 0.5 - offset), text_font=ToontownGlobals.getToonFont())
+            trackNameDisplay = DirectLabel(parent = self, relief = None, text = trackName, text_align = TextNode.ALeft,
+                                           text_scale = 0.075, text_fg = (0.95, 0.95, 0.0, 1.0),
+                                           text_shadow = (0, 0, 0, 1), text_pos = (-0.8, 0.5 - offset),
+                                           text_font = ToontownGlobals.getSignFont())
+            bestTimeDisplay = DirectLabel(parent = self, relief = None, text = TTLocalizer.KartRace_Unraced,
+                                          text_scale = 0.06, text_fg = (0.0, 0.0, 0.0, 1.0),
+                                          text_pos = (0.65, 0.5 - offset), text_font = ToontownGlobals.getToonFont())
             offset += 0.1
             self.timeDisplayList.append(bestTimeDisplay)
 
@@ -227,7 +256,7 @@ class RacingTrophiesUI(DirectFrame):
         self.trophyPanels = []
         self.trophies = None
         self.trophyTextDisplay = None
-        DirectFrame.__init__(self, parent=parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+        DirectFrame.__init__(self, parent = parent, relief = None, pos = (0.0, 0.0, 0.0), scale = (1.0, 1.0, 1.0))
         return
 
     def destroy(self):
@@ -251,7 +280,12 @@ class RacingTrophiesUI(DirectFrame):
         yOffset = 0.23
         for j in range(RaceGlobals.NumCups):
             for i in range(RaceGlobals.TrophiesPerCup):
-                trophyPanel = DirectLabel(parent=self, relief=None, pos=(xStart + i * xOffset, 0.0, yStart - j * yOffset), state=DGG.NORMAL, image=DGG.getDefaultDialogGeom(), image_scale=(0.75, 1, 1), image_color=(0.8, 0.8, 0.8, 1), text=TTLocalizer.SuitPageMystery[0], text_scale=0.45, text_fg=(0, 0, 0, 1), text_pos=(0, 0, -0.25), text_font=ToontownGlobals.getInterfaceFont(), text_wordwrap=5.5)
+                trophyPanel = DirectLabel(parent = self, relief = None,
+                                          pos = (xStart + i * xOffset, 0.0, yStart - j * yOffset), state = DGG.NORMAL,
+                                          image = DGG.getDefaultDialogGeom(), image_scale = (0.75, 1, 1),
+                                          image_color = (0.8, 0.8, 0.8, 1), text = TTLocalizer.SuitPageMystery[0],
+                                          text_scale = 0.45, text_fg = (0, 0, 0, 1), text_pos = (0, 0, -0.25),
+                                          text_font = ToontownGlobals.getInterfaceFont(), text_wordwrap = 5.5)
                 trophyPanel.scale = 0.2
                 trophyPanel.setScale(trophyPanel.scale)
                 self.trophyPanels.append(trophyPanel)
@@ -260,19 +294,31 @@ class RacingTrophiesUI(DirectFrame):
         yStart = -0.38
         xOffset = 0.25
         for i in range(RaceGlobals.NumCups):
-            cupPanel = DirectLabel(parent=self, relief=None, pos=(xStart + i * xOffset, 0.0, yStart), state=DGG.NORMAL, image=DGG.getDefaultDialogGeom(), image_scale=(0.75, 1, 1), image_color=(0.8, 0.8, 0.8, 1), text=TTLocalizer.SuitPageMystery[0], text_scale=0.45, text_fg=(0, 0, 0, 1), text_pos=(0, 0, -0.25), text_font=ToontownGlobals.getInterfaceFont(), text_wordwrap=5.5)
+            cupPanel = DirectLabel(parent = self, relief = None, pos = (xStart + i * xOffset, 0.0, yStart),
+                                   state = DGG.NORMAL, image = DGG.getDefaultDialogGeom(), image_scale = (0.75, 1, 1),
+                                   image_color = (0.8, 0.8, 0.8, 1), text = TTLocalizer.SuitPageMystery[0],
+                                   text_scale = 0.45, text_fg = (0, 0, 0, 1), text_pos = (0, 0, -0.25),
+                                   text_font = ToontownGlobals.getInterfaceFont(), text_wordwrap = 5.5)
             cupPanel.scale = 0.3
             cupPanel.setScale(cupPanel.scale)
             self.trophyPanels.append(cupPanel)
 
-        self.ticketDisplay = DirectLabel(parent=self, relief=None, image=loader.loadModel('phase_6/models/karting/tickets'), image_pos=(0.2, 0, -0.635), image_scale=0.2, text=TTLocalizer.KartPageTickets + str(self.avatar.getTickets()), text_scale=0.07, text_fg=(0, 0, 0.95, 1.0), text_pos=(0, -0.65), text_font=ToontownGlobals.getSignFont())
-        self.trophyTextDisplay = DirectLabel(parent=self, relief=None, text='', text_scale=0.07, text_fg=(1, 0, 0, 1), text_shadow=(0, 0, 0, 0), text_pos=(0.0, -0.175), text_font=ToontownGlobals.getInterfaceFont())
+        self.ticketDisplay = DirectLabel(parent = self, relief = None,
+                                         image = loader.loadModel('phase_6/models/karting/tickets'),
+                                         image_pos = (0.2, 0, -0.635), image_scale = 0.2,
+                                         text = TTLocalizer.KartPageTickets + str(self.avatar.getTickets()),
+                                         text_scale = 0.07, text_fg = (0, 0, 0.95, 1.0), text_pos = (0, -0.65),
+                                         text_font = ToontownGlobals.getSignFont())
+        self.trophyTextDisplay = DirectLabel(parent = self, relief = None, text = '', text_scale = 0.07,
+                                             text_fg = (1, 0, 0, 1), text_shadow = (0, 0, 0, 0),
+                                             text_pos = (0.0, -0.175), text_font = ToontownGlobals.getInterfaceFont())
         self.updateTrophies()
         return
 
     def grow(self, index, pos):
         self.trophyPanels[index]['image_color'] = Vec4(1.0, 1.0, 0.8, 1.0)
-        self.trophyTextDisplay['text'] = TTLocalizer.KartPageTrophyDetail % (index + 1, TTLocalizer.KartTrophyDescriptions[index])
+        self.trophyTextDisplay['text'] = TTLocalizer.KartPageTrophyDetail % (
+        index + 1, TTLocalizer.KartTrophyDescriptions[index])
 
     def shrink(self, index, pos):
         self.trophyPanels[index]['image_color'] = Vec4(1.0, 1.0, 1.0, 1.0)
@@ -295,8 +341,8 @@ class RacingTrophiesUI(DirectFrame):
                 trophyModel.nameLabel.hide()
                 trophyModel.setPos(0, 0, -0.4)
                 trophyPanel['image_color'] = Vec4(1.0, 1.0, 1.0, 1.0)
-                trophyPanel.bind(DGG.ENTER, self.grow, extraArgs=[t])
-                trophyPanel.bind(DGG.EXIT, self.shrink, extraArgs=[t])
+                trophyPanel.bind(DGG.ENTER, self.grow, extraArgs = [t])
+                trophyPanel.bind(DGG.EXIT, self.shrink, extraArgs = [t])
 
 
 class ItemSelector(DirectFrame):
@@ -312,7 +358,7 @@ class ItemSelector(DirectFrame):
             self.avatar = avatar
             self.currAccessoryType = None
             self.texCount = 1
-            DirectFrame.__init__(self, parent=parent, relief=None, pos=(0, 0, 0), scale=(1.0, 1.0, 1.0))
+            DirectFrame.__init__(self, parent = parent, relief = None, pos = (0, 0, 0), scale = (1.0, 1.0, 1.0))
             return
 
         def destroy(self):
@@ -354,8 +400,10 @@ class ItemSelector(DirectFrame):
             self.itemList = itemList
 
         def load(self, uiRootNode):
-            self.uiBgFrame = DirectFrame(parent=self, relief=None, geom=uiRootNode.find('**/uiAccessoryViewerFrame'), scale=1.0)
-            self.uiImagePlane = DirectFrame(parent=self, relief=None, geom=uiRootNode.find('**/uiAccessoryImagePlane'), scale=0.75)
+            self.uiBgFrame = DirectFrame(parent = self, relief = None,
+                                         geom = uiRootNode.find('**/uiAccessoryViewerFrame'), scale = 1.0)
+            self.uiImagePlane = DirectFrame(parent = self, relief = None,
+                                            geom = uiRootNode.find('**/uiAccessoryImagePlane'), scale = 0.75)
             bounds = self.uiImagePlane.getBounds()
             cm = CardMaker('uiImagePlane')
             cm.setFrame(bounds[0], bounds[1], bounds[2], bounds[3])
@@ -369,20 +417,32 @@ class ItemSelector(DirectFrame):
             tex = loader.loadTexture('phase_6/maps/NoAccessoryIcon3.png')
             self.uiImagePlane.component('geom0').setTexture(tex, self.texCount)
             self.texCount += 1
-            self.uiTextBox = DirectFrame(parent=self, relief=None, scale=1.0, text='', text_font=ToontownGlobals.getInterfaceFont(), text_fg=(0.5, 0, 0, 1), text_shadow=(0, 0, 0, 1), text_scale=0.0715, text_pos=(0.0, -0.23, 0.0))
-            self.deleteButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/uiAccessorydelete_up'),
-             uiRootNode.find('**/uiAccessorydelete_down'),
-             uiRootNode.find('**/uiAccessorydelete_rollover'),
-             uiRootNode.find('**/uiAccessorydelete_rollover')), text=TTLocalizer.KartShtikerDelete, text_font=ToontownGlobals.getSignFont(), text_pos=(0, -0.125, 0), text_scale=TTLocalizer.KPdeleteButton, text_fg=(1, 1, 1, 1), scale=1.0, pressEffect=False, command=lambda : self.__handleItemDeleteConfirm())
+            self.uiTextBox = DirectFrame(parent = self, relief = None, scale = 1.0, text = '',
+                                         text_font = ToontownGlobals.getInterfaceFont(), text_fg = (0.5, 0, 0, 1),
+                                         text_shadow = (0, 0, 0, 1), text_scale = 0.0715, text_pos = (0.0, -0.23, 0.0))
+            self.deleteButton = DirectButton(parent = self, relief = None,
+                                             geom = (uiRootNode.find('**/uiAccessorydelete_up'),
+                                                     uiRootNode.find('**/uiAccessorydelete_down'),
+                                                     uiRootNode.find('**/uiAccessorydelete_rollover'),
+                                                     uiRootNode.find('**/uiAccessorydelete_rollover')),
+                                             text = TTLocalizer.KartShtikerDelete,
+                                             text_font = ToontownGlobals.getSignFont(), text_pos = (0, -0.125, 0),
+                                             text_scale = TTLocalizer.KPdeleteButton, text_fg = (1, 1, 1, 1),
+                                             scale = 1.0, pressEffect = False,
+                                             command = lambda: self.__handleItemDeleteConfirm())
             self.deleteButton.hide()
-            self.leftArrowButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/ArrowLeftButtonUp'),
-             uiRootNode.find('**/ArrowLeftButtonDown'),
-             uiRootNode.find('**/ArrowLeftButtonRollover'),
-             uiRootNode.find('**/ArrowLeftButtonInactive')), scale=1.0, pressEffect=False, command=lambda : self.__handleItemChange(-1))
-            self.rightArrowButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/ArrowRightButtonUp'),
-             uiRootNode.find('**/ArrowRightButtonDown'),
-             uiRootNode.find('**/ArrowRightButtonRollover'),
-             uiRootNode.find('**/ArrowRightButtonInactive')), scale=1.0, pressEffect=False, command=lambda : self.__handleItemChange(1))
+            self.leftArrowButton = DirectButton(parent = self, relief = None,
+                                                geom = (uiRootNode.find('**/ArrowLeftButtonUp'),
+                                                        uiRootNode.find('**/ArrowLeftButtonDown'),
+                                                        uiRootNode.find('**/ArrowLeftButtonRollover'),
+                                                        uiRootNode.find('**/ArrowLeftButtonInactive')), scale = 1.0,
+                                                pressEffect = False, command = lambda: self.__handleItemChange(-1))
+            self.rightArrowButton = DirectButton(parent = self, relief = None,
+                                                 geom = (uiRootNode.find('**/ArrowRightButtonUp'),
+                                                         uiRootNode.find('**/ArrowRightButtonDown'),
+                                                         uiRootNode.find('**/ArrowRightButtonRollover'),
+                                                         uiRootNode.find('**/ArrowRightButtonInactive')), scale = 1.0,
+                                                 pressEffect = False, command = lambda: self.__handleItemChange(1))
             return
 
         def enable(self):
@@ -433,22 +493,28 @@ class ItemSelector(DirectFrame):
                 if len(self.itemList) == 1:
                     if self.currAccessoryType == KartDNA.rimsType:
                         self.disable()
-                        self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                        self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[
+                            self.currAccessoryType]))
                     elif self.currAccessoryType in colorTypeList:
                         self.disable()
-                        self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                        self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[
+                            self.currAccessoryType]))
                     else:
                         self.enable()
                 elif len(self.itemList) == 0:
                     self.disable()
-                    self.setViewerText(TTLocalizer.KartShtikerNo % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                    self.setViewerText(
+                        TTLocalizer.KartShtikerNo % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
                 else:
                     if self.currAccessoryType == KartDNA.rimsType:
-                        self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                        self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[
+                            self.currAccessoryType]))
                     elif self.currAccessoryType in colorTypeList:
-                        self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                        self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[
+                            self.currAccessoryType]))
                     elif self.currItem == InvalidEntry:
-                        self.setViewerText(TTLocalizer.KartShtikerNo % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                        self.setViewerText(TTLocalizer.KartShtikerNo % getattr(TTLocalizer, AccessoryTypeNameDict[
+                            self.currAccessoryType]))
                     self.enable()
 
         def resetViewer(self):
@@ -480,11 +546,13 @@ class ItemSelector(DirectFrame):
                     self.__updateDeleteButton(DGG.NORMAL, TTLocalizer.KartShtikerDelete)
             else:
                 if self.currAccessoryType in accList:
-                    self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                    self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[
+                        self.currAccessoryType]))
                     self.__handleShowItem()
                 else:
                     self.__handleHideItem()
-                    self.setViewerText(TTLocalizer.KartShtikerNo % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                    self.setViewerText(
+                        TTLocalizer.KartShtikerNo % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
                 self.__updateDeleteButton(DGG.DISABLED)
 
         def __handleItemChange(self, direction):
@@ -522,9 +590,9 @@ class ItemSelector(DirectFrame):
         def __handleShowItem(self):
             self.uiImagePlane.component('geom0').setColorScale(1.0, 1.0, 1.0, 1.0)
             if self.currAccessoryType in [KartDNA.ebType,
-             KartDNA.spType,
-             KartDNA.fwwType,
-             KartDNA.bwwType]:
+                                          KartDNA.spType,
+                                          KartDNA.fwwType,
+                                          KartDNA.bwwType]:
                 texNodePath = getTexCardNode(self.currItem)
                 tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath)
             elif self.currAccessoryType == KartDNA.rimsType:
@@ -549,30 +617,44 @@ class ItemSelector(DirectFrame):
             colorTypeList = [KartDNA.bodyColor, KartDNA.accColor]
             if self.currItem == InvalidEntry:
                 if self.currAccessoryType == KartDNA.rimsType:
-                    self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                    self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[
+                        self.currAccessoryType]))
                 elif self.currAccessoryType in colorTypeList:
-                    self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                    self.setViewerText(TTLocalizer.KartShtikerDefault % getattr(TTLocalizer, AccessoryTypeNameDict[
+                        self.currAccessoryType]))
                 elif self.currItem == InvalidEntry:
-                    self.setViewerText(TTLocalizer.KartShtikerNo % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                    self.setViewerText(
+                        TTLocalizer.KartShtikerNo % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
             else:
-                self.setViewerText(getAccName(self.currItem) + ' ' + getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                self.setViewerText(getAccName(self.currItem) + ' ' + getattr(TTLocalizer, AccessoryTypeNameDict[
+                    self.currAccessoryType]))
             self.uiImagePlane.component('geom0').setTexture(tex, self.texCount)
             self.texCount += 1
 
         def __handleHideItem(self):
             self.uiImagePlane.component('geom0').setColorScale(1.0, 1.0, 1.0, 1.0)
-            self.uiImagePlane.component('geom0').setTexture(loader.loadTexture('phase_6/maps/NoAccessoryIcon3.png'), self.texCount)
+            self.uiImagePlane.component('geom0').setTexture(loader.loadTexture('phase_6/maps/NoAccessoryIcon3.png'),
+                                                            self.texCount)
             self.texCount += 1
 
         def __handleItemDeleteConfirm(self):
             self.notify.debug('__handleItemDeleteConfirm:')
             if not hasattr(self, 'confirmDlg'):
                 uiRootNode = loader.loadModel('phase_6/models/gui/ShtikerBookUI')
-                self.confirmDlg = DirectFrame(parent=aspect2d, relief=None, geom=uiRootNode.find('**/uiAccessoryNotice'), geom_scale=1.0, text=TTLocalizer.KartPageConfirmDelete, text_scale=0.07, text_pos=(0, 0.022))
+                self.confirmDlg = DirectFrame(parent = aspect2d, relief = None,
+                                              geom = uiRootNode.find('**/uiAccessoryNotice'), geom_scale = 1.0,
+                                              text = TTLocalizer.KartPageConfirmDelete, text_scale = 0.07,
+                                              text_pos = (0, 0.022))
                 self.confirmDlg.hide()
                 self.confirmDlg.setPos(aspect2d, 0, -.195, -.195)
-                self.cancelButton = DirectButton(parent=self.confirmDlg, relief=None, image=(uiRootNode.find('**/CancelButtonUp'), uiRootNode.find('**/CancelButtonDown'), uiRootNode.find('**/CancelButtonRollover')), geom=uiRootNode.find('**/CancelIcon'), scale=1.0, pressEffect=False, command=self.confirmDlg.hide)
-                self.confirmButton = DirectButton(parent=self.confirmDlg, relief=None, image=(uiRootNode.find('**/CheckButtonUp'), uiRootNode.find('**/CheckButtonDown'), uiRootNode.find('**/CheckButtonRollover')), geom=uiRootNode.find('**/CheckIcon'), scale=1.0, pressEffect=False, command=self.__handleItemDelete)
+                self.cancelButton = DirectButton(parent = self.confirmDlg, relief = None, image = (
+                uiRootNode.find('**/CancelButtonUp'), uiRootNode.find('**/CancelButtonDown'),
+                uiRootNode.find('**/CancelButtonRollover')), geom = uiRootNode.find('**/CancelIcon'), scale = 1.0,
+                                                 pressEffect = False, command = self.confirmDlg.hide)
+                self.confirmButton = DirectButton(parent = self.confirmDlg, relief = None, image = (
+                uiRootNode.find('**/CheckButtonUp'), uiRootNode.find('**/CheckButtonDown'),
+                uiRootNode.find('**/CheckButtonRollover')), geom = uiRootNode.find('**/CheckIcon'), scale = 1.0,
+                                                  pressEffect = False, command = self.__handleItemDelete)
             self.confirmDlg.show()
             return
 
@@ -610,7 +692,8 @@ class ItemSelector(DirectFrame):
                 handleColorDelete()
             if self.itemList == [] or self.itemList[0] == InvalidEntry:
                 self.disable()
-                self.setViewerText(TTLocalizer.KartShtikerNo % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
+                self.setViewerText(
+                    TTLocalizer.KartShtikerNo % getattr(TTLocalizer, AccessoryTypeNameDict[self.currAccessoryType]))
 
     def __init__(self, avatar, parent = aspect2d):
         self.state = InvalidEntry
@@ -618,7 +701,7 @@ class ItemSelector(DirectFrame):
         self.itemViewers = {}
         self.buttonDict = {}
         self._parent = parent
-        DirectFrame.__init__(self, parent=parent, relief=None, pos=(0, 0, 0), scale=(1.0, 1.0, 1.0))
+        DirectFrame.__init__(self, parent = parent, relief = None, pos = (0, 0, 0), scale = (1.0, 1.0, 1.0))
         return
 
     def destroy(self):
@@ -646,45 +729,67 @@ class ItemSelector(DirectFrame):
         self.itemViewers['main'] = ItemSelector.ItemViewer(self.avatar, self)
         self.itemViewers['main'].load(uiRootNode)
         self.itemViewers['main'].setPos(self.getParent(), uiRootNode.find('**/uiAccessoryView').getPos())
-        self.ebButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/eBlockButton_up'),
-         uiRootNode.find('**/eBlockButton_rollover'),
-         uiRootNode.find('**/eBlockButton_rollover'),
-         uiRootNode.find('**/eBlockButton_inactive')), scale=1.0, pressEffect=False, command=lambda : self.__changeItemCategory(KartDNA.ebType))
+        self.ebButton = DirectButton(parent = self, relief = None, geom = (uiRootNode.find('**/eBlockButton_up'),
+                                                                           uiRootNode.find('**/eBlockButton_rollover'),
+                                                                           uiRootNode.find('**/eBlockButton_rollover'),
+                                                                           uiRootNode.find('**/eBlockButton_inactive')),
+                                     scale = 1.0, pressEffect = False,
+                                     command = lambda: self.__changeItemCategory(KartDNA.ebType))
         self.buttonDict[KartDNA.ebType] = self.ebButton
-        self.spButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/spoilerButton_up'),
-         uiRootNode.find('**/spoilerButton_rollover'),
-         uiRootNode.find('**/spoilerButton_rollover'),
-         uiRootNode.find('**/spoilerButton_inactive')), scale=1.0, pressEffect=False, command=lambda : self.__changeItemCategory(KartDNA.spType))
+        self.spButton = DirectButton(parent = self, relief = None, geom = (uiRootNode.find('**/spoilerButton_up'),
+                                                                           uiRootNode.find('**/spoilerButton_rollover'),
+                                                                           uiRootNode.find('**/spoilerButton_rollover'),
+                                                                           uiRootNode.find(
+                                                                               '**/spoilerButton_inactive')),
+                                     scale = 1.0, pressEffect = False,
+                                     command = lambda: self.__changeItemCategory(KartDNA.spType))
         self.buttonDict[KartDNA.spType] = self.spButton
-        self.fwwButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/frontButton_up'),
-         uiRootNode.find('**/frontButton_rollover'),
-         uiRootNode.find('**/frontButton_rollover'),
-         uiRootNode.find('**/frontButton_inactive')), scale=1.0, pressEffect=False, command=lambda : self.__changeItemCategory(KartDNA.fwwType))
+        self.fwwButton = DirectButton(parent = self, relief = None, geom = (uiRootNode.find('**/frontButton_up'),
+                                                                            uiRootNode.find('**/frontButton_rollover'),
+                                                                            uiRootNode.find('**/frontButton_rollover'),
+                                                                            uiRootNode.find('**/frontButton_inactive')),
+                                      scale = 1.0, pressEffect = False,
+                                      command = lambda: self.__changeItemCategory(KartDNA.fwwType))
         self.buttonDict[KartDNA.fwwType] = self.fwwButton
-        self.bwwButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/rearButton_up'),
-         uiRootNode.find('**/rearButton_rollover'),
-         uiRootNode.find('**/rearButton_rollover'),
-         uiRootNode.find('**/rearButton_inactive')), scale=1.0, pressEffect=False, command=lambda : self.__changeItemCategory(KartDNA.bwwType))
+        self.bwwButton = DirectButton(parent = self, relief = None, geom = (uiRootNode.find('**/rearButton_up'),
+                                                                            uiRootNode.find('**/rearButton_rollover'),
+                                                                            uiRootNode.find('**/rearButton_rollover'),
+                                                                            uiRootNode.find('**/rearButton_inactive')),
+                                      scale = 1.0, pressEffect = False,
+                                      command = lambda: self.__changeItemCategory(KartDNA.bwwType))
         self.buttonDict[KartDNA.bwwType] = self.bwwButton
-        self.rimButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/rimButton_up'),
-         uiRootNode.find('**/rimButton_rollover'),
-         uiRootNode.find('**/rimButton_rollover'),
-         uiRootNode.find('**/rimButton_inactive')), scale=1.0, pressEffect=False, command=lambda : self.__changeItemCategory(KartDNA.rimsType))
+        self.rimButton = DirectButton(parent = self, relief = None, geom = (uiRootNode.find('**/rimButton_up'),
+                                                                            uiRootNode.find('**/rimButton_rollover'),
+                                                                            uiRootNode.find('**/rimButton_rollover'),
+                                                                            uiRootNode.find('**/rimButton_inactive')),
+                                      scale = 1.0, pressEffect = False,
+                                      command = lambda: self.__changeItemCategory(KartDNA.rimsType))
         self.buttonDict[KartDNA.rimsType] = self.rimButton
-        self.decalButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/decalButton_up'),
-         uiRootNode.find('**/decalButton_rollover'),
-         uiRootNode.find('**/decalButton_rollover'),
-         uiRootNode.find('**/decalButton_inactive')), scale=1.0, pressEffect=False, command=lambda : self.__changeItemCategory(KartDNA.decalType))
+        self.decalButton = DirectButton(parent = self, relief = None, geom = (uiRootNode.find('**/decalButton_up'),
+                                                                              uiRootNode.find(
+                                                                                  '**/decalButton_rollover'),
+                                                                              uiRootNode.find(
+                                                                                  '**/decalButton_rollover'),
+                                                                              uiRootNode.find(
+                                                                                  '**/decalButton_inactive')),
+                                        scale = 1.0, pressEffect = False,
+                                        command = lambda: self.__changeItemCategory(KartDNA.decalType))
         self.buttonDict[KartDNA.decalType] = self.decalButton
-        self.paintKartButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/paintKartButton_up'),
-         uiRootNode.find('**/paintKartButton_rollover'),
-         uiRootNode.find('**/paintKartButton_rollover'),
-         uiRootNode.find('**/paintKartButton_inactive')), scale=1.0, pressEffect=False, command=lambda : self.__changeItemCategory(KartDNA.bodyColor))
+        self.paintKartButton = DirectButton(parent = self, relief = None,
+                                            geom = (uiRootNode.find('**/paintKartButton_up'),
+                                                    uiRootNode.find('**/paintKartButton_rollover'),
+                                                    uiRootNode.find('**/paintKartButton_rollover'),
+                                                    uiRootNode.find('**/paintKartButton_inactive')), scale = 1.0,
+                                            pressEffect = False,
+                                            command = lambda: self.__changeItemCategory(KartDNA.bodyColor))
         self.buttonDict[KartDNA.bodyColor] = self.paintKartButton
-        self.paintAccessoryButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/paintAccessoryButton_up'),
-         uiRootNode.find('**/paintAccessoryButton_rollover'),
-         uiRootNode.find('**/paintAccessoryButton_rollover'),
-         uiRootNode.find('**/paintAccessoryButton_inactive')), scale=1.0, pressEffect=False, command=lambda : self.__changeItemCategory(KartDNA.accColor))
+        self.paintAccessoryButton = DirectButton(parent = self, relief = None,
+                                                 geom = (uiRootNode.find('**/paintAccessoryButton_up'),
+                                                         uiRootNode.find('**/paintAccessoryButton_rollover'),
+                                                         uiRootNode.find('**/paintAccessoryButton_rollover'),
+                                                         uiRootNode.find('**/paintAccessoryButton_inactive')),
+                                                 scale = 1.0, pressEffect = False,
+                                                 command = lambda: self.__changeItemCategory(KartDNA.accColor))
         self.buttonDict[KartDNA.accColor] = self.paintAccessoryButton
         return
 
@@ -762,7 +867,7 @@ class KartViewer(DirectFrame):
         self.uiRotateRight = None
         self.uiRotateLeft = None
         self.uiRotateLabel = None
-        DirectFrame.__init__(self, parent=parent, relief=None, pos=(0, 0, 0), scale=(1.0, 1.0, 1.0))
+        DirectFrame.__init__(self, parent = parent, relief = None, pos = (0, 0, 0), scale = (1.0, 1.0, 1.0))
         return
 
     def destroy(self):
@@ -792,27 +897,39 @@ class KartViewer(DirectFrame):
         return
 
     def load(self, uiRootNode, bgFrame = 'uiKartViewerFrame1', rightArrow = ['rotate_right_up',
- 'rotate_right_down',
- 'rotate_right_roll',
- 'rotate_right_down',
- (0, 0)], leftArrow = ['rotate_left_up',
- 'rotate_left_down',
- 'rotate_left_roll',
- 'rotate_left_down',
- (0, 0)], rotatePos = (0, 0)):
-        self.uiBgFrame = DirectFrame(parent=self, relief=None, geom=uiRootNode.find('**/' + bgFrame), scale=1.0)
+                                                                             'rotate_right_down',
+                                                                             'rotate_right_roll',
+                                                                             'rotate_right_down',
+                                                                             (0, 0)], leftArrow = ['rotate_left_up',
+                                                                                                   'rotate_left_down',
+                                                                                                   'rotate_left_roll',
+                                                                                                   'rotate_left_down',
+                                                                                                   (0, 0)],
+             rotatePos = (0, 0)):
+        self.uiBgFrame = DirectFrame(parent = self, relief = None, geom = uiRootNode.find('**/' + bgFrame), scale = 1.0)
         if leftArrow and len(leftArrow) == 5:
-            self.uiRotateLeft = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/' + leftArrow[0]),
-             uiRootNode.find('**/' + leftArrow[1]),
-             uiRootNode.find('**/' + leftArrow[2]),
-             uiRootNode.find('**/' + leftArrow[3])), scale=1.0, text=TTLocalizer.KartView_Left, text_scale=TTLocalizer.KProtateButton, text_pos=(leftArrow[4][0], leftArrow[4][1], 0), text_fg=(1, 1, 1, 1.0), text_shadow=(0, 0, 0, 1), text_font=ToontownGlobals.getSignFont(), pressEffect=False)
+            self.uiRotateLeft = DirectButton(parent = self, relief = None,
+                                             geom = (uiRootNode.find('**/' + leftArrow[0]),
+                                                     uiRootNode.find('**/' + leftArrow[1]),
+                                                     uiRootNode.find('**/' + leftArrow[2]),
+                                                     uiRootNode.find('**/' + leftArrow[3])), scale = 1.0,
+                                             text = TTLocalizer.KartView_Left, text_scale = TTLocalizer.KProtateButton,
+                                             text_pos = (leftArrow[4][0], leftArrow[4][1], 0), text_fg = (1, 1, 1, 1.0),
+                                             text_shadow = (0, 0, 0, 1), text_font = ToontownGlobals.getSignFont(),
+                                             pressEffect = False)
             self.uiRotateLeft.bind(DGG.B1PRESS, self.__handleKartRotate, [-3])
             self.uiRotateLeft.bind(DGG.B1RELEASE, self.__endKartRotate)
         if rightArrow and len(rightArrow) == 5:
-            self.uiRotateRight = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/' + rightArrow[0]),
-             uiRootNode.find('**/' + rightArrow[1]),
-             uiRootNode.find('**/' + rightArrow[2]),
-             uiRootNode.find('**/' + rightArrow[3])), scale=1.0, text=TTLocalizer.KartView_Right, text_scale=TTLocalizer.KProtateButton, text_pos=(rightArrow[4][0], rightArrow[4][1], 0), text_fg=(1, 1, 1, 1.0), text_shadow=(0, 0, 0, 1), text_font=ToontownGlobals.getSignFont(), pressEffect=False)
+            self.uiRotateRight = DirectButton(parent = self, relief = None,
+                                              geom = (uiRootNode.find('**/' + rightArrow[0]),
+                                                      uiRootNode.find('**/' + rightArrow[1]),
+                                                      uiRootNode.find('**/' + rightArrow[2]),
+                                                      uiRootNode.find('**/' + rightArrow[3])), scale = 1.0,
+                                              text = TTLocalizer.KartView_Right,
+                                              text_scale = TTLocalizer.KProtateButton,
+                                              text_pos = (rightArrow[4][0], rightArrow[4][1], 0),
+                                              text_fg = (1, 1, 1, 1.0), text_shadow = (0, 0, 0, 1),
+                                              text_font = ToontownGlobals.getSignFont(), pressEffect = False)
             self.uiRotateRight.bind(DGG.B1PRESS, self.__handleKartRotate, [3])
             self.uiRotateRight.bind(DGG.B1RELEASE, self.__endKartRotate)
         return
@@ -828,14 +945,14 @@ class KartViewer(DirectFrame):
             self.kart.delete()
             self.kart = None
         if not hasattr(self, 'kartDisplayRegion'):
-            self.kartDisplayRegion = DirectRegion(parent=self)
+            self.kartDisplayRegion = DirectRegion(parent = self)
             self.kartDisplayRegion.setBounds(*self.bounds)
             self.kartDisplayRegion.setColor(*self.colors)
         frame = self.kartDisplayRegion.load()
         if self.dna:
             self.kart = Kart()
             self.kart.setDNA(self.dna)
-            self.kart.generateKart(forGui=1)
+            self.kart.generateKart(forGui = 1)
             self.kart.setDepthTest(1)
             self.kart.setDepthWrite(1)
             self.pitch = frame.attachNewNode('pitch')
@@ -889,7 +1006,7 @@ class KartViewer(DirectFrame):
         return
 
     def __handleKartRotate(self, direction, extraArgs = []):
-        taskMgr.add(self.__rotateTask, 'kartRotateTask', extraArgs=[direction])
+        taskMgr.add(self.__rotateTask, 'kartRotateTask', extraArgs = [direction])
 
     def __rotateTask(self, direction):
         if hasattr(self, 'pitch'):
@@ -930,7 +1047,9 @@ class RacingTrophy(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('RacingTrophy')
 
     def __init__(self, level, *args, **kwargs):
-        opts = {'relief': None}
+        opts = {
+            'relief': None
+        }
         opts.update(kwargs)
         DirectFrame.__init__(self, *args, **opts)
         self.trophy = loader.loadModel('phase_6/models/gui/racingTrophy')
@@ -954,7 +1073,8 @@ class RacingTrophy(DirectFrame):
         self.goldBowl.setScale(2.0)
         self.goldBowlBase = self.goldBowl.find('**/fishingTrophyBase')
         self.goldBowlBase.hide()
-        self.nameLabel = DirectLabel(parent=self, relief=None, pos=(0, 0, -0.15), text='', text_scale=0.125, text_fg=Vec4(0.9, 0.9, 0.4, 1))
+        self.nameLabel = DirectLabel(parent = self, relief = None, pos = (0, 0, -0.15), text = '', text_scale = 0.125,
+                                     text_fg = Vec4(0.9, 0.9, 0.4, 1))
         self.shadow = loader.loadModel('phase_3/models/props/drop_shadow')
         self.shadow.reparentTo(self)
         self.shadow.setColor(1, 1, 1, 0.2)

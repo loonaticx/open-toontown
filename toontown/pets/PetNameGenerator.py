@@ -6,6 +6,7 @@ from direct.showbase import AppRunnerGlobal
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import *
 
+
 class PetNameGenerator:
     notify = DirectNotifyGlobal.directNotify.newCategory('PetNameGenerator')
     boyFirsts = []
@@ -40,7 +41,8 @@ class PetNameGenerator:
             if currentLine.lstrip()[0:1] != '#':
                 a1 = currentLine.find('*')
                 a2 = currentLine.find('*', a1 + 1)
-                self.nameDictionary[int(currentLine[0:a1])] = (int(currentLine[a1 + 1:a2]), currentLine[a2 + 1:len(currentLine) - 1].strip())
+                self.nameDictionary[int(currentLine[0:a1])] = (
+                int(currentLine[a1 + 1:a2]), currentLine[a2 + 1:len(currentLine) - 1].strip())
             currentLine = input.readline()
 
         masterList = [self.boyFirsts, self.girlFirsts, self.neutralFirsts]

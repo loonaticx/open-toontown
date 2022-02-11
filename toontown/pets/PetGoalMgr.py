@@ -5,6 +5,7 @@ from direct.showbase.PythonUtil import randFloat, lerp
 from toontown.pets import PetConstants
 import random
 
+
 class PetGoalMgr(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('PetGoalMgr')
 

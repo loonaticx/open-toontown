@@ -3,14 +3,16 @@ from direct.distributed import DistributedObject
 from direct.interval.IntervalGlobal import *
 from toontown.effects import DustCloud
 
+
 def getDustCloudIval(toon):
-    dustCloud = DustCloud.DustCloud(fBillboard=0)
+    dustCloud = DustCloud.DustCloud(fBillboard = 0)
     dustCloud.setBillboardAxis(2.0)
     dustCloud.setZ(3)
     dustCloud.setScale(0.4)
     dustCloud.createTrack()
     toon.laffMeter.color = toon.style.getBlackColor()
-    return Sequence(Wait(0.5), Func(dustCloud.reparentTo, toon), dustCloud.track, Func(dustCloud.detachNode), Func(toon.laffMeter.adjustFace, toon.hp, toon.maxHp))
+    return Sequence(Wait(0.5), Func(dustCloud.reparentTo, toon), dustCloud.track, Func(dustCloud.detachNode),
+                    Func(toon.laffMeter.adjustFace, toon.hp, toon.maxHp))
 
 
 class DistributedBlackCatMgr(DistributedObject.DistributedObject):

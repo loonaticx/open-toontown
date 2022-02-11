@@ -14,15 +14,21 @@ from direct.actor import Actor
 import random
 from toontown.toon import DistributedToon
 from direct.directnotify import DirectNotifyGlobal
+
 NUM_CATALOG_ROWS = 3
 NUM_CATALOG_COLS = 2
-CatalogPanelCenters = [[Point3(-0.95, 0, 0.91), Point3(-0.275, 0, 0.91)], [Point3(-0.95, 0, 0.275), Point3(-0.275, 0, 0.275)], [Point3(-0.95, 0, -0.4), Point3(-0.275, 0, -0.4)]]
-CatalogPanelColors = {CatalogItemTypes.FURNITURE_ITEM: Vec4(0.733, 0.78, 0.933, 1.0),
- CatalogItemTypes.CHAT_ITEM: Vec4(0.922, 0.922, 0.753, 1.0),
- CatalogItemTypes.CLOTHING_ITEM: Vec4(0.918, 0.69, 0.69, 1.0),
- CatalogItemTypes.EMOTE_ITEM: Vec4(0.922, 0.922, 0.753, 1.0),
- CatalogItemTypes.WALLPAPER_ITEM: Vec4(0.749, 0.984, 0.608, 1.0),
- CatalogItemTypes.WINDOW_ITEM: Vec4(0.827, 0.91, 0.659, 1.0)}
+CatalogPanelCenters = [[Point3(-0.95, 0, 0.91), Point3(-0.275, 0, 0.91)],
+                       [Point3(-0.95, 0, 0.275), Point3(-0.275, 0, 0.275)],
+                       [Point3(-0.95, 0, -0.4), Point3(-0.275, 0, -0.4)]]
+CatalogPanelColors = {
+    CatalogItemTypes.FURNITURE_ITEM: Vec4(0.733, 0.78, 0.933, 1.0),
+    CatalogItemTypes.CHAT_ITEM: Vec4(0.922, 0.922, 0.753, 1.0),
+    CatalogItemTypes.CLOTHING_ITEM: Vec4(0.918, 0.69, 0.69, 1.0),
+    CatalogItemTypes.EMOTE_ITEM: Vec4(0.922, 0.922, 0.753, 1.0),
+    CatalogItemTypes.WALLPAPER_ITEM: Vec4(0.749, 0.984, 0.608, 1.0),
+    CatalogItemTypes.WINDOW_ITEM: Vec4(0.827, 0.91, 0.659, 1.0)
+}
+
 
 class CatalogScreen(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('CatalogScreen')
@@ -33,11 +39,11 @@ class CatalogScreen(DirectFrame):
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
         guiBack = loader.loadModel('phase_5.5/models/gui/package_delivery_panel')
         optiondefs = (('scale', 0.667, None),
-         ('pos', (0, 1, 0.025), None),
-         ('phone', None, None),
-         ('doneEvent', None, None),
-         ('image', background, None),
-         ('relief', None, None))
+                      ('pos', (0, 1, 0.025), None),
+                      ('phone', None, None),
+                      ('doneEvent', None, None),
+                      ('image', background, None),
+                      ('relief', None, None))
         self.defineoptions(kw, optiondefs)
         DirectFrame.__init__(self, parent)
         self.friendGiftIndex = 0
@@ -304,14 +310,17 @@ class CatalogScreen(DirectFrame):
 
             pIndex = 0
             randGen = random.Random()
-            randGen.seed(base.localAvatar.catalogScheduleCurrentWeek + (self.pageIndex << 8) + (newOrBackOrLoyalty << 16))
+            randGen.seed(
+                base.localAvatar.catalogScheduleCurrentWeek + (self.pageIndex << 8) + (newOrBackOrLoyalty << 16))
             for i in range(NUM_CATALOG_ROWS):
                 for j in range(NUM_CATALOG_COLS):
                     if pIndex < len(self.visiblePanels):
                         type = self.visiblePanels[pIndex]['item'].getTypeCode()
-                        self.squares[i][j].setColor(list(CatalogPanelColors.values())[randGen.randint(0, len(CatalogPanelColors) - 1)])
+                        self.squares[i][j].setColor(
+                            list(CatalogPanelColors.values())[randGen.randint(0, len(CatalogPanelColors) - 1)])
                         cs = 0.7 + 0.3 * randGen.random()
-                        self.squares[i][j].setColorScale(0.7 + 0.3 * randGen.random(), 0.7 + 0.3 * randGen.random(), 0.7 + 0.3 * randGen.random(), 1)
+                        self.squares[i][j].setColorScale(0.7 + 0.3 * randGen.random(), 0.7 + 0.3 * randGen.random(),
+                                                         0.7 + 0.3 * randGen.random(), 1)
                     else:
                         self.squares[i][j].setColor(CatalogPanelColors[CatalogItemTypes.CHAT_ITEM])
                         self.squares[i][j].clearColorScale()
@@ -467,7 +476,7 @@ class CatalogScreen(DirectFrame):
         self.visiblePanels = []
         self.responseDialog = None
         catalogBase = guiItems.find('**/catalog_base')
-        self.base = DirectLabel(self, relief=None, image=catalogBase)
+        self.base = DirectLabel(self, relief = None, image = catalogBase)
         newDown = guiItems.find('**/new1')
         newUp = guiItems.find('**/new2')
         backDown = guiItems.find('**/previous2')
@@ -484,82 +493,173 @@ class CatalogScreen(DirectFrame):
         emblemIcon = loader.loadModel('phase_3.5/models/gui/tt_m_gui_gen_emblemIcons')
         silverModel = emblemIcon.find('**/tt_t_gui_gen_emblemSilver')
         goldModel = emblemIcon.find('**/tt_t_gui_gen_emblemGold')
-        self.silverLabel = DirectLabel(parent=self, relief=None, pos=(1.05, 0, -0.6), scale=priceScale, image=silverModel, image_pos=(-0.4, 0, 0.4), text=str(localAvatar.emblems[ToontownGlobals.EmblemTypes.Silver]), text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_font=ToontownGlobals.getSignFont(), text_align=TextNode.ALeft)
+        self.silverLabel = DirectLabel(parent = self, relief = None, pos = (1.05, 0, -0.6), scale = priceScale,
+                                       image = silverModel, image_pos = (-0.4, 0, 0.4),
+                                       text = str(localAvatar.emblems[ToontownGlobals.EmblemTypes.Silver]),
+                                       text_fg = (0.95, 0.95, 0, 1), text_shadow = (0, 0, 0, 1),
+                                       text_font = ToontownGlobals.getSignFont(), text_align = TextNode.ALeft)
         base.silverLabel = self.silverLabel
-        self.goldLabel = DirectLabel(parent=self, relief=None, pos=(1.05, 0, -0.8), scale=priceScale, image=goldModel, image_pos=(-0.4, 0, 0.4), text=str(localAvatar.emblems[ToontownGlobals.EmblemTypes.Gold]), text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_font=ToontownGlobals.getSignFont(), text_align=TextNode.ALeft)
+        self.goldLabel = DirectLabel(parent = self, relief = None, pos = (1.05, 0, -0.8), scale = priceScale,
+                                     image = goldModel, image_pos = (-0.4, 0, 0.4),
+                                     text = str(localAvatar.emblems[ToontownGlobals.EmblemTypes.Gold]),
+                                     text_fg = (0.95, 0.95, 0, 1), text_shadow = (0, 0, 0, 1),
+                                     text_font = ToontownGlobals.getSignFont(), text_align = TextNode.ALeft)
         base.goldLabel = self.goldLabel
         if not base.cr.wantEmblems:
             self.hideEmblems()
-        self.newCatalogButton = DirectButton(self.base, relief=None, pos=(0, 0, 0.17), frameSize=(-0.2,
-         0.25,
-         0.45,
-         1.2), image=[newDown,
-         newDown,
-         newDown,
-         newUp], image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, lift), pressEffect=0, command=self.showNewItems, text=TTLocalizer.CatalogNew, text_font=ToontownGlobals.getSignFont(), text_pos=(-0.4 - lift, 0.13), text3_pos=(-0.4 - lift, 0.1), text_scale=0.08, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
+        self.newCatalogButton = DirectButton(self.base, relief = None, pos = (0, 0, 0.17), frameSize = (-0.2,
+                                                                                                        0.25,
+                                                                                                        0.45,
+                                                                                                        1.2),
+                                             image = [newDown,
+                                                      newDown,
+                                                      newDown,
+                                                      newUp], image_scale = (1.0, 1.0, smash),
+                                             image_pos = (0.0, 0.0, lift), pressEffect = 0, command = self.showNewItems,
+                                             text = TTLocalizer.CatalogNew, text_font = ToontownGlobals.getSignFont(),
+                                             text_pos = (-0.4 - lift, 0.13), text3_pos = (-0.4 - lift, 0.1),
+                                             text_scale = 0.08, text_fg = (0.353, 0.627, 0.627, 1.0),
+                                             text2_fg = (0.353, 0.427, 0.427, 1.0))
         self.newCatalogButton.hide()
-        self.newCatalogButton2 = DirectButton(self.base, relief=None, pos=(0, 0, 0.17), frameSize=(-0.2,
-         0.25,
-         0.45,
-         1.2), image=newDown, image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, lift), pressEffect=0, command=self.showNewItems, text=TTLocalizer.CatalogNew, text_font=ToontownGlobals.getSignFont(), text_pos=(-0.4 - lift, 0.13), text_scale=0.08, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
+        self.newCatalogButton2 = DirectButton(self.base, relief = None, pos = (0, 0, 0.17), frameSize = (-0.2,
+                                                                                                         0.25,
+                                                                                                         0.45,
+                                                                                                         1.2),
+                                              image = newDown, image_scale = (1.0, 1.0, smash),
+                                              image_pos = (0.0, 0.0, lift), pressEffect = 0,
+                                              command = self.showNewItems, text = TTLocalizer.CatalogNew,
+                                              text_font = ToontownGlobals.getSignFont(), text_pos = (-0.4 - lift, 0.13),
+                                              text_scale = 0.08, text_fg = (0.353, 0.627, 0.627, 1.0),
+                                              text2_fg = (0.353, 0.427, 0.427, 1.0))
         self.newCatalogButton2.hide()
-        self.backCatalogButton = DirectButton(self.base, relief=None, pos=(0, 0, 0.269), frameSize=(-0.2,
-         0.25,
-         -0.2,
-         0.4), image=[backDown,
-         backDown,
-         backDown,
-         backUp], image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, lift), pressEffect=0, command=self.showBackorderItems, text=TTLocalizer.CatalogBackorder, text_font=ToontownGlobals.getSignFont(), text_pos=(0.25 - lift, 0.132), text3_pos=(0.25 - lift, 0.112), text_scale=TTLocalizer.CSbackCatalogButton, text_fg=(0.392, 0.549, 0.627, 1.0), text2_fg=(0.392, 0.349, 0.427, 1.0))
+        self.backCatalogButton = DirectButton(self.base, relief = None, pos = (0, 0, 0.269), frameSize = (-0.2,
+                                                                                                          0.25,
+                                                                                                          -0.2,
+                                                                                                          0.4),
+                                              image = [backDown,
+                                                       backDown,
+                                                       backDown,
+                                                       backUp], image_scale = (1.0, 1.0, smash),
+                                              image_pos = (0.0, 0.0, lift), pressEffect = 0,
+                                              command = self.showBackorderItems, text = TTLocalizer.CatalogBackorder,
+                                              text_font = ToontownGlobals.getSignFont(),
+                                              text_pos = (0.25 - lift, 0.132), text3_pos = (0.25 - lift, 0.112),
+                                              text_scale = TTLocalizer.CSbackCatalogButton,
+                                              text_fg = (0.392, 0.549, 0.627, 1.0),
+                                              text2_fg = (0.392, 0.349, 0.427, 1.0))
         self.backCatalogButton.hide()
-        self.backCatalogButton2 = DirectButton(self.base, relief=None, pos=(0, 0, 0.269), frameSize=(-0.2,
-         0.25,
-         -0.2,
-         0.4), image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, lift), image=backDown, pressEffect=0, command=self.showBackorderItems, text=TTLocalizer.CatalogBackorder, text_font=ToontownGlobals.getSignFont(), text_pos=(0.25 - lift, 0.132), text_scale=TTLocalizer.CSbackCatalogButton, text_fg=(0.392, 0.549, 0.627, 1.0), text2_fg=(0.392, 0.349, 0.427, 1.0))
+        self.backCatalogButton2 = DirectButton(self.base, relief = None, pos = (0, 0, 0.269), frameSize = (-0.2,
+                                                                                                           0.25,
+                                                                                                           -0.2,
+                                                                                                           0.4),
+                                               image_scale = (1.0, 1.0, smash), image_pos = (0.0, 0.0, lift),
+                                               image = backDown, pressEffect = 0, command = self.showBackorderItems,
+                                               text = TTLocalizer.CatalogBackorder,
+                                               text_font = ToontownGlobals.getSignFont(),
+                                               text_pos = (0.25 - lift, 0.132),
+                                               text_scale = TTLocalizer.CSbackCatalogButton,
+                                               text_fg = (0.392, 0.549, 0.627, 1.0),
+                                               text2_fg = (0.392, 0.349, 0.427, 1.0))
         self.backCatalogButton2.hide()
-        self.loyaltyCatalogButton = DirectButton(self.base, relief=None, pos=(0, 0, 0.469), frameSize=(-0.2,
-         0.25,
-         -0.85,
-         -0.3), image=[newDown,
-         newDown,
-         newDown,
-         newUp], image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, -1.4 + lift), pressEffect=0, command=self.showLoyaltyItems, text=TTLocalizer.CatalogLoyalty, text_font=ToontownGlobals.getSignFont(), text_pos=(1.0 - lift, 0.132), text3_pos=(1.0 - lift, 0.112), text_scale=0.065, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
+        self.loyaltyCatalogButton = DirectButton(self.base, relief = None, pos = (0, 0, 0.469), frameSize = (-0.2,
+                                                                                                             0.25,
+                                                                                                             -0.85,
+                                                                                                             -0.3),
+                                                 image = [newDown,
+                                                          newDown,
+                                                          newDown,
+                                                          newUp], image_scale = (1.0, 1.0, smash),
+                                                 image_pos = (0.0, 0.0, -1.4 + lift), pressEffect = 0,
+                                                 command = self.showLoyaltyItems, text = TTLocalizer.CatalogLoyalty,
+                                                 text_font = ToontownGlobals.getSignFont(),
+                                                 text_pos = (1.0 - lift, 0.132), text3_pos = (1.0 - lift, 0.112),
+                                                 text_scale = 0.065, text_fg = (0.353, 0.627, 0.627, 1.0),
+                                                 text2_fg = (0.353, 0.427, 0.427, 1.0))
         self.loyaltyCatalogButton.hide()
-        self.loyaltyCatalogButton2 = DirectButton(self.base, relief=None, pos=(0, 0, 0.469), frameSize=(-0.2,
-         0.25,
-         -0.85,
-         -0.3), image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, -1.4 + lift), image=newDown, pressEffect=0, command=self.showLoyaltyItems, text=TTLocalizer.CatalogLoyalty, text_font=ToontownGlobals.getSignFont(), text_pos=(1.0 - lift, 0.132), text_scale=0.065, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
+        self.loyaltyCatalogButton2 = DirectButton(self.base, relief = None, pos = (0, 0, 0.469), frameSize = (-0.2,
+                                                                                                              0.25,
+                                                                                                              -0.85,
+                                                                                                              -0.3),
+                                                  image_scale = (1.0, 1.0, smash), image_pos = (0.0, 0.0, -1.4 + lift),
+                                                  image = newDown, pressEffect = 0, command = self.showLoyaltyItems,
+                                                  text = TTLocalizer.CatalogLoyalty,
+                                                  text_font = ToontownGlobals.getSignFont(),
+                                                  text_pos = (1.0 - lift, 0.132), text_scale = 0.065,
+                                                  text_fg = (0.353, 0.627, 0.627, 1.0),
+                                                  text2_fg = (0.353, 0.427, 0.427, 1.0))
         self.loyaltyCatalogButton2.hide()
-        self.emblemCatalogButton = DirectButton(self.base, relief=None, pos=(0, 0, 1.05), frameSize=(-0.2,
-         0.25,
-         -2.0,
-         -1.45), image=[backDown,
-         backDown,
-         backDown,
-         backUp], image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, -1.9 + lift), pressEffect=0, command=self.showEmblemItems, text=TTLocalizer.CatalogEmblem, text_font=ToontownGlobals.getSignFont(), text_pos=(1.75, 0.132), text3_pos=(1.75, 0.112), text_scale=0.065, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
+        self.emblemCatalogButton = DirectButton(self.base, relief = None, pos = (0, 0, 1.05), frameSize = (-0.2,
+                                                                                                           0.25,
+                                                                                                           -2.0,
+                                                                                                           -1.45),
+                                                image = [backDown,
+                                                         backDown,
+                                                         backDown,
+                                                         backUp], image_scale = (1.0, 1.0, smash),
+                                                image_pos = (0.0, 0.0, -1.9 + lift), pressEffect = 0,
+                                                command = self.showEmblemItems, text = TTLocalizer.CatalogEmblem,
+                                                text_font = ToontownGlobals.getSignFont(), text_pos = (1.75, 0.132),
+                                                text3_pos = (1.75, 0.112), text_scale = 0.065,
+                                                text_fg = (0.353, 0.627, 0.627, 1.0),
+                                                text2_fg = (0.353, 0.427, 0.427, 1.0))
         self.emblemCatalogButton.hide()
-        self.emblemCatalogButton2 = DirectButton(self.base, relief=None, pos=(0, 0, 1.05), frameSize=(-0.2,
-         0.25,
-         -2.0,
-         -1.45), image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, -1.9 + lift), image=backDown, pressEffect=0, command=self.showEmblemItems, text=TTLocalizer.CatalogEmblem, text_font=ToontownGlobals.getSignFont(), text_pos=(1.75, 0.132), text_scale=0.065, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
+        self.emblemCatalogButton2 = DirectButton(self.base, relief = None, pos = (0, 0, 1.05), frameSize = (-0.2,
+                                                                                                            0.25,
+                                                                                                            -2.0,
+                                                                                                            -1.45),
+                                                 image_scale = (1.0, 1.0, smash), image_pos = (0.0, 0.0, -1.9 + lift),
+                                                 image = backDown, pressEffect = 0, command = self.showEmblemItems,
+                                                 text = TTLocalizer.CatalogEmblem,
+                                                 text_font = ToontownGlobals.getSignFont(), text_pos = (1.75, 0.132),
+                                                 text_scale = 0.065, text_fg = (0.353, 0.627, 0.627, 1.0),
+                                                 text2_fg = (0.353, 0.427, 0.427, 1.0))
         self.emblemCatalogButton2.hide()
         self.__makeFFlist()
         if len(self.ffList) > 0:
-            self.giftToggle = DirectButton(self.base, relief=None, pressEffect=0, image=(giftToggleUp, giftToggleDown, giftToggleUp), image_scale=(1.0, 1, 0.7), command=self.__giftToggle, text=TTLocalizer.CatalogGiftToggleOff, text_font=ToontownGlobals.getSignFont(), text_pos=TTLocalizer.CSgiftTogglePos, text_scale=TTLocalizer.CSgiftToggle, text_fg=(0.353, 0.627, 0.627, 1.0), text3_fg=(0.15, 0.3, 0.3, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0), image_color=Vec4(1.0, 1.0, 0.2, 1.0), image1_color=Vec4(0.9, 0.85, 0.2, 1.0), image2_color=Vec4(0.9, 0.85, 0.2, 1.0), image3_color=Vec4(0.5, 0.45, 0.2, 1.0))
+            self.giftToggle = DirectButton(self.base, relief = None, pressEffect = 0,
+                                           image = (giftToggleUp, giftToggleDown, giftToggleUp),
+                                           image_scale = (1.0, 1, 0.7), command = self.__giftToggle,
+                                           text = TTLocalizer.CatalogGiftToggleOff,
+                                           text_font = ToontownGlobals.getSignFont(),
+                                           text_pos = TTLocalizer.CSgiftTogglePos,
+                                           text_scale = TTLocalizer.CSgiftToggle, text_fg = (0.353, 0.627, 0.627, 1.0),
+                                           text3_fg = (0.15, 0.3, 0.3, 1.0), text2_fg = (0.353, 0.427, 0.427, 1.0),
+                                           image_color = Vec4(1.0, 1.0, 0.2, 1.0),
+                                           image1_color = Vec4(0.9, 0.85, 0.2, 1.0),
+                                           image2_color = Vec4(0.9, 0.85, 0.2, 1.0),
+                                           image3_color = Vec4(0.5, 0.45, 0.2, 1.0))
             self.giftToggle.setPos(0.0, 0, -0.035)
-            self.giftLabel = DirectLabel(self.base, relief=None, image=giftFriends, image_scale=(1.15, 1, 1.14), text=' ', text_font=ToontownGlobals.getSignFont(), text_pos=(1.2, -0.97), text_scale=0.07, text_fg=(0.392, 0.549, 0.627, 1.0), sortOrder=100, textMayChange=1)
+            self.giftLabel = DirectLabel(self.base, relief = None, image = giftFriends, image_scale = (1.15, 1, 1.14),
+                                         text = ' ', text_font = ToontownGlobals.getSignFont(), text_pos = (1.2, -0.97),
+                                         text_scale = 0.07, text_fg = (0.392, 0.549, 0.627, 1.0), sortOrder = 100,
+                                         textMayChange = 1)
             self.giftLabel.setPos(-0.15, 0, 0.08)
             self.giftLabel.hide()
-            self.friendLabel = DirectLabel(self.base, relief=None, text='Friend Name', text_font=ToontownGlobals.getSignFont(), text_pos=(-0.25, 0.132), text_scale=0.068, text_align=TextNode.ALeft, text_fg=(0.992, 0.949, 0.327, 1.0), sortOrder=100, textMayChange=1)
+            self.friendLabel = DirectLabel(self.base, relief = None, text = 'Friend Name',
+                                           text_font = ToontownGlobals.getSignFont(), text_pos = (-0.25, 0.132),
+                                           text_scale = 0.068, text_align = TextNode.ALeft,
+                                           text_fg = (0.992, 0.949, 0.327, 1.0), sortOrder = 100, textMayChange = 1)
             self.friendLabel.setPos(0.5, 0, -0.42)
             self.friendLabel.hide()
             gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
-            self.scrollList = DirectScrolledList(parent=self, relief=None, incButton_image=(gui.find('**/FndsLst_ScrollUp'),
-             gui.find('**/FndsLst_ScrollDN'),
-             gui.find('**/FndsLst_ScrollUp_Rllvr'),
-             gui.find('**/FndsLst_ScrollUp')), incButton_relief=None, incButton_pos=(0.0, 0.0, -0.316), incButton_image1_color=Vec4(1.0, 0.9, 0.4, 1.0), incButton_image3_color=Vec4(1.0, 1.0, 0.6, 0.5), incButton_scale=(1.0, 1.0, -1.0), decButton_image=(gui.find('**/FndsLst_ScrollUp'),
-             gui.find('**/FndsLst_ScrollDN'),
-             gui.find('**/FndsLst_ScrollUp_Rllvr'),
-             gui.find('**/FndsLst_ScrollUp')), decButton_relief=None, decButton_pos=(0.0, 0.0, 0.117), decButton_image1_color=Vec4(1.0, 1.0, 0.6, 1.0), decButton_image3_color=Vec4(1.0, 1.0, 0.6, 0.6), itemFrame_pos=(-0.17, 0.0, 0.06), itemFrame_relief=None, numItemsVisible=8, items=[])
+            self.scrollList = DirectScrolledList(parent = self, relief = None,
+                                                 incButton_image = (gui.find('**/FndsLst_ScrollUp'),
+                                                                    gui.find('**/FndsLst_ScrollDN'),
+                                                                    gui.find('**/FndsLst_ScrollUp_Rllvr'),
+                                                                    gui.find('**/FndsLst_ScrollUp')),
+                                                 incButton_relief = None, incButton_pos = (0.0, 0.0, -0.316),
+                                                 incButton_image1_color = Vec4(1.0, 0.9, 0.4, 1.0),
+                                                 incButton_image3_color = Vec4(1.0, 1.0, 0.6, 0.5),
+                                                 incButton_scale = (1.0, 1.0, -1.0),
+                                                 decButton_image = (gui.find('**/FndsLst_ScrollUp'),
+                                                                    gui.find('**/FndsLst_ScrollDN'),
+                                                                    gui.find('**/FndsLst_ScrollUp_Rllvr'),
+                                                                    gui.find('**/FndsLst_ScrollUp')),
+                                                 decButton_relief = None, decButton_pos = (0.0, 0.0, 0.117),
+                                                 decButton_image1_color = Vec4(1.0, 1.0, 0.6, 1.0),
+                                                 decButton_image3_color = Vec4(1.0, 1.0, 0.6, 0.6),
+                                                 itemFrame_pos = (-0.17, 0.0, 0.06), itemFrame_relief = None,
+                                                 numItemsVisible = 8, items = [])
             self.scrollList.setPos(1.2, 0, -0.58)
             self.scrollList.setScale(1.5)
             self.scrollList.hide()
@@ -583,13 +683,13 @@ class CatalogScreen(DirectFrame):
             self.emblemCatalogButton2.component('text%d' % i).setR(90)
 
         self.squares = [[],
-         [],
-         [],
-         []]
+                        [],
+                        [],
+                        []]
         for i in range(NUM_CATALOG_ROWS):
             for j in range(NUM_CATALOG_COLS):
                 square = guiItems.find('**/square%d%db' % (i + 1, j + 1))
-                label = DirectLabel(self.base, image=square, relief=None, state='normal')
+                label = DirectLabel(self.base, image = square, relief = None, state = 'normal')
                 self.squares[i].append(label)
 
         def priceSort(a, b, type):
@@ -611,14 +711,21 @@ class CatalogScreen(DirectFrame):
             if isinstance(item, CatalogInvalidItem.CatalogInvalidItem):
                 self.notify.warning('skipping catalog invalid item %s' % item)
                 continue
-            if isMaxClosetOfferred and item in allClosetItems and item.furnitureType not in CatalogFurnitureItem.MaxClosetIds:
+            if isMaxClosetOfferred and item in allClosetItems and item.furnitureType not in \
+                    CatalogFurnitureItem.MaxClosetIds:
                 continue
             if item.loyaltyRequirement() != 0:
-                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeLoyalty, parentCatalogScreen=self))
+                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent = hidden, item = item,
+                                                                               type = CatalogItem.CatalogTypeLoyalty,
+                                                                               parentCatalogScreen = self))
             elif item.getEmblemPrices():
-                self.emblemPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeWeekly, parentCatalogScreen=self))
+                self.emblemPanelList.append(CatalogItemPanel.CatalogItemPanel(parent = hidden, item = item,
+                                                                              type = CatalogItem.CatalogTypeWeekly,
+                                                                              parentCatalogScreen = self))
             else:
-                self.panelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeWeekly, parentCatalogScreen=self))
+                self.panelList.append(CatalogItemPanel.CatalogItemPanel(parent = hidden, item = item,
+                                                                        type = CatalogItem.CatalogTypeWeekly,
+                                                                        parentCatalogScreen = self))
 
         itemList = base.localAvatar.backCatalog
         itemList.sort(lambda a, b: priceSort(a, b, CatalogItem.CatalogTypeBackorder))
@@ -627,14 +734,21 @@ class CatalogScreen(DirectFrame):
             if isinstance(item, CatalogInvalidItem.CatalogInvalidItem):
                 self.notify.warning('skipping catalog invalid item %s' % item)
                 continue
-            if isMaxClosetOfferred and item in allClosetItems and item.furnitureType not in CatalogFurnitureItem.MaxClosetIds:
+            if isMaxClosetOfferred and item in allClosetItems and item.furnitureType not in \
+                    CatalogFurnitureItem.MaxClosetIds:
                 continue
             if item.loyaltyRequirement() != 0:
-                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeLoyalty, parentCatalogScreen=self))
+                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent = hidden, item = item,
+                                                                               type = CatalogItem.CatalogTypeLoyalty,
+                                                                               parentCatalogScreen = self))
             elif item.getEmblemPrices():
-                self.emblemPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeBackOrder, parentCatalogScreen=self))
+                self.emblemPanelList.append(CatalogItemPanel.CatalogItemPanel(parent = hidden, item = item,
+                                                                              type = CatalogItem.CatalogTypeBackOrder,
+                                                                              parentCatalogScreen = self))
             else:
-                self.backPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeBackorder, parentCatalogScreen=self))
+                self.backPanelList.append(CatalogItemPanel.CatalogItemPanel(parent = hidden, item = item,
+                                                                            type = CatalogItem.CatalogTypeBackorder,
+                                                                            parentCatalogScreen = self))
 
         numPages = self.packPages(self.panelList, self.pageList, 'new')
         self.setNumNewPages(numPages)
@@ -675,35 +789,53 @@ class CatalogScreen(DirectFrame):
         cover.find('**/blue_circle').reparentTo(geom)
         cover.find('**/clarabelle').reparentTo(geom)
         cover.find('**/circle_green').reparentTo(geom)
-        self.cover = DirectLabel(self.base, relief=None, geom=geom)
-        self.catalogNumber = DirectLabel(self.cover, relief=None, scale=0.2, pos=(-0.22, 0, -0.33), text='#%d' % weekNumber, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_font=ToontownGlobals.getInterfaceFont())
-        self.catalogSeries = DirectLabel(self.cover, relief=None, scale=(0.22, 1, 0.18), pos=(-0.76, 0, -0.9), text=TTLocalizer.CatalogSeriesLabel % seriesNumber, text_fg=(0.9, 0.9, 0.4, 1), text_shadow=(0, 0, 0, 1), text_font=ToontownGlobals.getInterfaceFont())
+        self.cover = DirectLabel(self.base, relief = None, geom = geom)
+        self.catalogNumber = DirectLabel(self.cover, relief = None, scale = 0.2, pos = (-0.22, 0, -0.33),
+                                         text = '#%d' % weekNumber, text_fg = (0.95, 0.95, 0, 1),
+                                         text_shadow = (0, 0, 0, 1), text_font = ToontownGlobals.getInterfaceFont())
+        self.catalogSeries = DirectLabel(self.cover, relief = None, scale = (0.22, 1, 0.18), pos = (-0.76, 0, -0.9),
+                                         text = TTLocalizer.CatalogSeriesLabel % seriesNumber,
+                                         text_fg = (0.9, 0.9, 0.4, 1), text_shadow = (0, 0, 0, 1),
+                                         text_font = ToontownGlobals.getInterfaceFont())
         self.catalogSeries.setShxz(0.4)
-        self.rings = DirectLabel(self.base, relief=None, geom=guiItems.find('**/rings'))
-        self.clarabelleFrame = DirectLabel(self, relief=None, image=guiItems.find('**/clarabelle_frame'))
+        self.rings = DirectLabel(self.base, relief = None, geom = guiItems.find('**/rings'))
+        self.clarabelleFrame = DirectLabel(self, relief = None, image = guiItems.find('**/clarabelle_frame'))
         hangupGui = guiItems.find('**/hangup')
         hangupRolloverGui = guiItems.find('**/hangup_rollover')
-        self.hangup = DirectButton(self, relief=None, pos=(1.78, 0, -1.3), image=[hangupGui,
-         hangupRolloverGui,
-         hangupRolloverGui,
-         hangupGui], text=['', TTLocalizer.CatalogHangUp, TTLocalizer.CatalogHangUp], text_fg=Vec4(1), text_scale=0.07, text_pos=(0.0, 0.14), command=self.hangUp)
-        self.beanBank = DirectLabel(self, relief=None, image=guiItems.find('**/bean_bank'), text=str(base.localAvatar.getMoney() + base.localAvatar.getBankMoney()), text_align=TextNode.ARight, text_scale=0.11, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_pos=(0.75, -0.81), text_font=ToontownGlobals.getSignFont())
+        self.hangup = DirectButton(self, relief = None, pos = (1.78, 0, -1.3), image = [hangupGui,
+                                                                                        hangupRolloverGui,
+                                                                                        hangupRolloverGui,
+                                                                                        hangupGui],
+                                   text = ['', TTLocalizer.CatalogHangUp, TTLocalizer.CatalogHangUp], text_fg = Vec4(1),
+                                   text_scale = 0.07, text_pos = (0.0, 0.14), command = self.hangUp)
+        self.beanBank = DirectLabel(self, relief = None, image = guiItems.find('**/bean_bank'),
+                                    text = str(base.localAvatar.getMoney() + base.localAvatar.getBankMoney()),
+                                    text_align = TextNode.ARight, text_scale = 0.11, text_fg = (0.95, 0.95, 0, 1),
+                                    text_shadow = (0, 0, 0, 1), text_pos = (0.75, -0.81),
+                                    text_font = ToontownGlobals.getSignFont())
         nextUp = guiItems.find('**/arrow_up')
         nextRollover = guiItems.find('**/arrow_Rollover')
         nextDown = guiItems.find('**/arrow_Down')
         prevUp = guiItems.find('**/arrowUp')
         prevDown = guiItems.find('**/arrowDown1')
         prevRollover = guiItems.find('**/arrowRollover')
-        self.nextPageButton = DirectButton(self, relief=None, pos=(-0.1, 0, -0.9), image=[nextUp,
-         nextDown,
-         nextRollover,
-         nextUp], image_color=(0.9, 0.9, 0.9, 1), image2_color=(1, 1, 1, 1), command=self.showNextPage)
-        self.backPageButton = DirectButton(self, relief=None, pos=(-0.1, 0, -0.9), image=[prevUp,
-         prevDown,
-         prevRollover,
-         prevUp], image_color=(0.9, 0.9, 0.9, 1), image2_color=(1, 1, 1, 1), command=self.showBackPage)
+        self.nextPageButton = DirectButton(self, relief = None, pos = (-0.1, 0, -0.9), image = [nextUp,
+                                                                                                nextDown,
+                                                                                                nextRollover,
+                                                                                                nextUp],
+                                           image_color = (0.9, 0.9, 0.9, 1), image2_color = (1, 1, 1, 1),
+                                           command = self.showNextPage)
+        self.backPageButton = DirectButton(self, relief = None, pos = (-0.1, 0, -0.9), image = [prevUp,
+                                                                                                prevDown,
+                                                                                                prevRollover,
+                                                                                                prevUp],
+                                           image_color = (0.9, 0.9, 0.9, 1), image2_color = (1, 1, 1, 1),
+                                           command = self.showBackPage)
         self.backPageButton.hide()
-        self.pageLabel = DirectLabel(self.base, relief=None, pos=(-1.33, 0, -0.9), scale=0.06, text=TTLocalizer.CatalogPagePrefix, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_font=ToontownGlobals.getSignFont(), text_align=TextNode.ALeft)
+        self.pageLabel = DirectLabel(self.base, relief = None, pos = (-1.33, 0, -0.9), scale = 0.06,
+                                     text = TTLocalizer.CatalogPagePrefix, text_fg = (0.95, 0.95, 0, 1),
+                                     text_shadow = (0, 0, 0, 1), text_font = ToontownGlobals.getSignFont(),
+                                     text_align = TextNode.ALeft)
         self.loadClarabelle()
         return
 
@@ -724,7 +856,9 @@ class CatalogScreen(DirectFrame):
         self.cDr.setClearColorActive(1)
         self.cDr.setClearColor(Vec4(0.3, 0.3, 0.3, 1))
         self.cDr.setCamera(self.cCam)
-        self.clarabelle = Actor.Actor('phase_5.5/models/char/Clarabelle-zero', {'listen': 'phase_5.5/models/char/Clarabelle-listens'})
+        self.clarabelle = Actor.Actor('phase_5.5/models/char/Clarabelle-zero', {
+            'listen': 'phase_5.5/models/char/Clarabelle-listens'
+        })
         self.clarabelle.loop('listen')
         self.clarabelle.find('**/eyes').setBin('fixed', 0)
         self.clarabelle.find('**/pupilL').setBin('fixed', 1)
@@ -767,18 +901,24 @@ class CatalogScreen(DirectFrame):
         itemList.reverse()
         for item in itemList:
             if item.loyaltyRequirement() != 0:
-                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeLoyalty, parentCatalogScreen=self))
+                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent = hidden, item = item,
+                                                                               type = CatalogItem.CatalogTypeLoyalty,
+                                                                               parentCatalogScreen = self))
             else:
-                self.panelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeWeekly))
+                self.panelList.append(CatalogItemPanel.CatalogItemPanel(parent = hidden, item = item,
+                                                                        type = CatalogItem.CatalogTypeWeekly))
 
         itemList = base.localAvatar.backCatalog
         itemList.sort(lambda a, b: priceSort(a, b, CatalogItem.CatalogTypeBackorder))
         itemList.reverse()
         for item in itemList:
             if item.loyaltyRequirement() != 0:
-                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeLoyalty, parentCatalogScreen=self))
+                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent = hidden, item = item,
+                                                                               type = CatalogItem.CatalogTypeLoyalty,
+                                                                               parentCatalogScreen = self))
             else:
-                self.backPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeBackorder))
+                self.backPanelList.append(CatalogItemPanel.CatalogItemPanel(parent = hidden, item = item,
+                                                                            type = CatalogItem.CatalogTypeBackorder))
 
         numPages = self.packPages(self.panelList, self.pageList, 'new')
         self.setNumNewPages(numPages)
@@ -934,7 +1074,8 @@ class CatalogScreen(DirectFrame):
         if not self.clarabelleChatBalloon:
             self.clarabelleChatBalloon = loader.loadModel('phase_3/models/props/chatbox.bam')
         self.clarabelleChat = ChatBalloon(self.clarabelleChatBalloon.node())
-        chatNode = self.clarabelleChat.generate(str, ToontownGlobals.getInterfaceFont(), 10, Vec4(0, 0, 0, 1), Vec4(1, 1, 1, 1), 0, 0, 0, NodePath(), 0, 0, NodePath())
+        chatNode = self.clarabelleChat.generate(str, ToontownGlobals.getInterfaceFont(), 10, Vec4(0, 0, 0, 1),
+                                                Vec4(1, 1, 1, 1), 0, 0, 0, NodePath(), 0, 0, NodePath())
         self.clarabelleChatNP = self.attachNewNode(chatNode, 1000)
         self.clarabelleChatNP.setScale(0.08)
         self.clarabelleChatNP.setPos(0.7, 0, 0.6)
@@ -1022,14 +1163,17 @@ class CatalogScreen(DirectFrame):
         for ff in self.ffList:
             ffbutton = self.makeFamilyButton(ff[0], ff[1], ff[2])
             if ffbutton:
-                self.scrollList.addItem(ffbutton, refresh=0)
+                self.scrollList.addItem(ffbutton, refresh = 0)
                 self.friends[ff] = ffbutton
 
         self.scrollList.refresh()
 
     def makeFamilyButton(self, familyId, familyName, colorCode):
         fg = NametagGlobals.getNameFg(colorCode, PGButton.SInactive)
-        return DirectButton(relief=None, text=familyName, text_scale=0.04, text_align=TextNode.ALeft, text_fg=fg, text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, text3_fg=self.textDisabledColor, textMayChange=0, command=self.__chooseFriend, extraArgs=[familyId, familyName])
+        return DirectButton(relief = None, text = familyName, text_scale = 0.04, text_align = TextNode.ALeft,
+                            text_fg = fg, text1_bg = self.textDownColor, text2_bg = self.textRolloverColor,
+                            text3_fg = self.textDisabledColor, textMayChange = 0, command = self.__chooseFriend,
+                            extraArgs = [familyId, familyName])
 
     def __chooseFriend(self, friendId, friendName):
         messenger.send('wakeup')

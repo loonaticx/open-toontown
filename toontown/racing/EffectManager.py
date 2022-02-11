@@ -5,6 +5,7 @@ from direct.interval.IntervalGlobal import *
 from toontown.battle.BattleProps import *
 from toontown.battle import MovieUtil
 
+
 class EffectManager(DirectObject):
 
     def __init__(self):

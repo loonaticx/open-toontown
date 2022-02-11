@@ -1,6 +1,7 @@
 from toontown.hood import ZoneUtil
 from toontown.toonbase import ToontownGlobals
 
+
 class ToontownAccess:
 
     def canAccess(self, zoneId = None):
@@ -8,9 +9,9 @@ class ToontownAccess:
             return True
         allowed = False
         allowedZones = [ToontownGlobals.ToontownCentral,
-         ToontownGlobals.MyEstate,
-         ToontownGlobals.GoofySpeedway,
-         ToontownGlobals.Tutorial]
+                        ToontownGlobals.MyEstate,
+                        ToontownGlobals.GoofySpeedway,
+                        ToontownGlobals.Tutorial]
         specialZones = [ToontownGlobals.SellbotLobby]
         if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
             holidayIds = base.cr.newsManager.getHolidayIdList()

@@ -5,7 +5,10 @@ from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
 from toontown.speedchat.TTSCIndexedTerminal import TTSCIndexedTerminal
 from otp.otpbase import OTPLocalizer
 from toontown.cogdominium import CogdoInterior
-SellbotFieldOfficeMenu = [(OTPLocalizer.SellbotFieldOfficeMenuSections[0], list(range(30404, 30409))), (OTPLocalizer.SellbotFieldOfficeMenuSections[1], list(range(30409, 30419)))]
+
+SellbotFieldOfficeMenu = [(OTPLocalizer.SellbotFieldOfficeMenuSections[0], list(range(30404, 30409))),
+                          (OTPLocalizer.SellbotFieldOfficeMenuSections[1], list(range(30409, 30419)))]
+
 
 class TTSCSellbotFieldOfficeMenu(SCMenu):
 

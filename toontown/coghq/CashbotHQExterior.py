@@ -6,17 +6,26 @@ from toontown.building import Elevator
 from toontown.coghq import CogHQExterior
 from toontown.safezone import Train
 
+
 class CashbotHQExterior(CogHQExterior.CogHQExterior):
     notify = DirectNotifyGlobal.directNotify.newCategory('CashbotHQExterior')
     TrackZ = -67
-    TrainTracks = [{'start': Point3(-1000, -54.45, TrackZ),
-      'end': Point3(2200, -54.45, TrackZ)},
-     {'start': Point3(1800, -133.45, TrackZ),
-      'end': Point3(-1200, -133.45, TrackZ)},
-     {'start': Point3(-1000, -212.45, TrackZ),
-      'end': Point3(2200, -212.45, TrackZ)},
-     {'start': Point3(1800, -291.45, TrackZ),
-      'end': Point3(-1200, -291.45, TrackZ)}]
+    TrainTracks = [{
+                       'start': Point3(-1000, -54.45, TrackZ),
+                       'end': Point3(2200, -54.45, TrackZ)
+                   },
+                   {
+                       'start': Point3(1800, -133.45, TrackZ),
+                       'end': Point3(-1200, -133.45, TrackZ)
+                   },
+                   {
+                       'start': Point3(-1000, -212.45, TrackZ),
+                       'end': Point3(2200, -212.45, TrackZ)
+                   },
+                   {
+                       'start': Point3(1800, -291.45, TrackZ),
+                       'end': Point3(-1200, -291.45, TrackZ)
+                   }]
 
     def __init__(self, loader, parentFSM, doneEvent):
         CogHQExterior.CogHQExterior.__init__(self, loader, parentFSM, doneEvent)

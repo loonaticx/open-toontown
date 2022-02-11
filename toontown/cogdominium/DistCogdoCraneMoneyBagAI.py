@@ -4,6 +4,7 @@ from otp.otpbase import OTPGlobals
 from toontown.cogdominium.DistCogdoCraneObjectAI import DistCogdoCraneObjectAI
 from toontown.cogdominium import CogdoCraneGameConsts as GameConsts
 
+
 class DistCogdoCraneMoneyBagAI(DistCogdoCraneObjectAI):
     wantsWatchDrift = 0
 

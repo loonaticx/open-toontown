@@ -15,6 +15,7 @@ from . import SuitBattleGlobals
 from toontown.distributed import DelayDelete
 import random
 
+
 class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattle')
     camFOFov = ToontownBattleGlobals.BattleCamFaceOffFov
@@ -60,10 +61,14 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
         else:
             self.notify.warning('no hood  self.interactiveProp is None')
 
-    def setMembers(self, suits, suitsJoining, suitsPending, suitsActive, suitsLured, suitTraps, toons, toonsJoining, toonsPending, toonsActive, toonsRunning, timestamp):
+    def setMembers(self, suits, suitsJoining, suitsPending, suitsActive, suitsLured, suitTraps, toons, toonsJoining,
+                   toonsPending, toonsActive, toonsRunning, timestamp):
         if self.battleCleanedUp():
             return
-        oldtoons = DistributedBattleBase.DistributedBattleBase.setMembers(self, suits, suitsJoining, suitsPending, suitsActive, suitsLured, suitTraps, toons, toonsJoining, toonsPending, toonsActive, toonsRunning, timestamp)
+        oldtoons = DistributedBattleBase.DistributedBattleBase.setMembers(self, suits, suitsJoining, suitsPending,
+                                                                          suitsActive, suitsLured, suitTraps, toons,
+                                                                          toonsJoining, toonsPending, toonsActive,
+                                                                          toonsRunning, timestamp)
         if len(self.toons) == 4 and len(oldtoons) < 4:
             self.notify.debug('setMembers() - battle is now full of toons')
             self.closeBattleCollision()
@@ -130,15 +135,17 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
         suitTrack.append(Func(suit.clearChat))
         toonTrack.append(Func(toon.headsUp, self, toonPos))
         suitTrack.append(Func(suit.loop, 'walk'))
-        suitTrack.append(LerpPosInterval(suit, faceoffTime, suitPos, other=self))
+        suitTrack.append(LerpPosInterval(suit, faceoffTime, suitPos, other = self))
         suitTrack.append(Func(suit.loop, 'neutral'))
         suitTrack.append(Func(suit.setHpr, self, suitHpr))
         toonTrack.append(Func(toon.loop, 'run'))
-        toonTrack.append(LerpPosInterval(toon, faceoffTime, toonPos, other=self))
+        toonTrack.append(LerpPosInterval(toon, faceoffTime, toonPos, other = self))
         toonTrack.append(Func(toon.loop, 'neutral'))
         toonTrack.append(Func(toon.setHpr, self, toonHpr))
         if base.localAvatar == toon:
-            soundTrack = Sequence(Wait(delay), SoundInterval(base.localAvatar.soundRun, loop=1, duration=faceoffTime, node=base.localAvatar))
+            soundTrack = Sequence(Wait(delay),
+                                  SoundInterval(base.localAvatar.soundRun, loop = 1, duration = faceoffTime,
+                                                node = base.localAvatar))
         else:
             soundTrack = Wait(delay + faceoffTime)
         mtrack = Parallel(suitTrack, toonTrack, soundTrack)
@@ -146,7 +153,7 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
             NametagGlobals.setMasterArrowsOn(0)
             mtrack = Parallel(mtrack, camTrack)
         done = Func(callback)
-        track = Sequence(mtrack, done, name=name)
+        track = Sequence(mtrack, done, name = name)
         track.delayDeletes = [DelayDelete.DelayDelete(toon, '__faceOff'), DelayDelete.DelayDelete(suit, '__faceOff')]
         track.start(ts)
         self.storeInterval(track, name)
@@ -206,7 +213,7 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
     def exitReward(self):
         self.notify.debug('exitReward()')
         self.ignore('resumeAfterReward')
-        self.movie.resetReward(finish=1)
+        self.movie.resetReward(finish = 1)
         self._removeMembersKeep()
         NametagGlobals.setMasterArrowsOn(1)
         Emote.globalEmote.releaseAll(base.localAvatar, 'dbattle, exitReward')

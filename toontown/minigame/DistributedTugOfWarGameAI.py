@@ -7,6 +7,7 @@ import copy
 from . import TugOfWarGameGlobals
 import math
 
+
 class DistributedTugOfWarGameAI(DistributedMinigameAI):
 
     def __init__(self, air, minigameId):
@@ -15,12 +16,16 @@ class DistributedTugOfWarGameAI(DistributedMinigameAI):
         except:
             self.DistributedTugOfWarGameAI_initialized = 1
             DistributedMinigameAI.__init__(self, air, minigameId)
-            self.gameFSM = ClassicFSM.ClassicFSM('DistributedTugOfWarGameAI', [State.State('off', self.enterInactive, self.exitInactive, ['waitClientsReady', 'cleanup']),
-             State.State('waitClientsReady', self.enterWaitClientsReady, self.exitWaitClientsReady, ['sendGoSignal', 'cleanup']),
-             State.State('sendGoSignal', self.enterSendGoSignal, self.exitSendGoSignal, ['waitForResults', 'cleanup']),
-             State.State('waitForResults', self.enterWaitForResults, self.exitWaitForResults, ['waitClientsReady', 'contestOver', 'cleanup']),
-             State.State('contestOver', self.enterContestOver, self.exitContestOver, ['cleanup']),
-             State.State('cleanup', self.enterCleanup, self.exitCleanup, ['off'])], 'off', 'off')
+            self.gameFSM = ClassicFSM.ClassicFSM('DistributedTugOfWarGameAI', [
+                State.State('off', self.enterInactive, self.exitInactive, ['waitClientsReady', 'cleanup']),
+                State.State('waitClientsReady', self.enterWaitClientsReady, self.exitWaitClientsReady,
+                            ['sendGoSignal', 'cleanup']),
+                State.State('sendGoSignal', self.enterSendGoSignal, self.exitSendGoSignal,
+                            ['waitForResults', 'cleanup']),
+                State.State('waitForResults', self.enterWaitForResults, self.exitWaitForResults,
+                            ['waitClientsReady', 'contestOver', 'cleanup']),
+                State.State('contestOver', self.enterContestOver, self.exitContestOver, ['cleanup']),
+                State.State('cleanup', self.enterCleanup, self.exitCleanup, ['off'])], 'off', 'off')
             self.addChildGameFSM(self.gameFSM)
 
         self.switched = 0
@@ -32,13 +37,13 @@ class DistributedTugOfWarGameAI(DistributedMinigameAI):
         self.kMovement = 0.02
         self.suitId = 666
         self.suitForces = [(6, 4),
-         (2, 5),
-         (2, 6.5),
-         (3, 8.0),
-         (5, 6),
-         (8, 8),
-         (9, 8.5),
-         (4, 9)]
+                           (2, 5),
+                           (2, 6.5),
+                           (3, 8.0),
+                           (5, 6),
+                           (8, 8),
+                           (9, 8.5),
+                           (4, 9)]
         self.suitForceMultiplier = 0.75
         self.curSuitForce = 0
         self.suitOffset = 0
@@ -110,7 +115,8 @@ class DistributedTugOfWarGameAI(DistributedMinigameAI):
 
     def enterWaitClientsReady(self):
         self.notify.debug('enterWaitClientsReady')
-        taskMgr.doMethodLater(TugOfWarGameGlobals.WAIT_FOR_CLIENTS_TIMEOUT, self.waitForClientsTimeout, self.taskName('clients-timeout'))
+        taskMgr.doMethodLater(TugOfWarGameGlobals.WAIT_FOR_CLIENTS_TIMEOUT, self.waitForClientsTimeout,
+                              self.taskName('clients-timeout'))
 
     def exitWaitClientsReady(self):
         taskMgr.remove(self.taskName('clients-timeout'))
@@ -168,8 +174,10 @@ class DistributedTugOfWarGameAI(DistributedMinigameAI):
         self.notify.debug('timeForNewSuitForce')
         if self.curSuitForceInd < len(self.suitForces):
             randForce = random.random() - 0.5
-            self.curSuitForce = self.suitForceMultiplier * self.numPlayers * (self.suitForces[self.curSuitForceInd][1] + randForce)
-            taskMgr.doMethodLater(self.suitForces[self.curSuitForceInd][0], self.timeForNewSuitForce, self.taskName('suitForceTimer'))
+            self.curSuitForce = self.suitForceMultiplier * self.numPlayers * (
+                        self.suitForces[self.curSuitForceInd][1] + randForce)
+            taskMgr.doMethodLater(self.suitForces[self.curSuitForceInd][0], self.timeForNewSuitForce,
+                                  self.taskName('suitForceTimer'))
         self.curSuitForceInd += 1
         return Task.done
 

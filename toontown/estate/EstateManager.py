@@ -9,6 +9,7 @@ from toontown.toonbase import TTLocalizer
 from . import HouseGlobals
 from . import Estate
 
+
 class EstateManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('EstateManager')
     neverDisable = 1

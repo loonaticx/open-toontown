@@ -8,6 +8,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.fishing import FishPhoto
 from toontown.fishing import BingoGlobals
 
+
 class BingoCardCell(DirectButton, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('BingoCardCell')
 
@@ -16,12 +17,12 @@ class BingoCardCell(DirectButton, FSM.FSM):
         self.color = color
         buttonToUse = self.model.find('**/mickeyButton')
         optiondefs = (('relief', None, None),
-         ('state', DGG.DISABLED, None),
-         ('image', buttonToUse, None),
-         ('image_color', self.color, None),
-         ('image_hpr', (0, 90, 0), None),
-         ('image_pos', (0, 0, 0), None),
-         ('pressEffect', False, None))
+                      ('state', DGG.DISABLED, None),
+                      ('image', buttonToUse, None),
+                      ('image_color', self.color, None),
+                      ('image_hpr', (0, 90, 0), None),
+                      ('image_pos', (0, 0, 0), None),
+                      ('pressEffect', False, None))
         self.defineoptions(kw, optiondefs)
         DirectButton.__init__(self, parent)
         FSM.FSM.__init__(self, 'BingoCardCell')

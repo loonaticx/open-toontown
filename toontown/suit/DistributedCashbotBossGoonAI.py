@@ -11,10 +11,13 @@ from direct.showbase import PythonUtil
 from toontown.suit import DistributedGoonAI
 import math, random
 
-class DistributedCashbotBossGoonAI(DistributedGoonAI.DistributedGoonAI, DistributedCashbotBossObjectAI.DistributedCashbotBossObjectAI):
+
+class DistributedCashbotBossGoonAI(DistributedGoonAI.DistributedGoonAI,
+                                   DistributedCashbotBossObjectAI.DistributedCashbotBossObjectAI):
     legLength = 10
     directionTable = [
-     (0, 15), (10, 10), (-10, 10), (20, 8), (-20, 8), (40, 5), (-40, 5), (60, 4), (-60, 4), (80, 3), (-80, 3), (120, 2), (-120, 2), (180, 1)]
+        (0, 15), (10, 10), (-10, 10), (20, 8), (-20, 8), (40, 5), (-40, 5), (60, 4), (-60, 4), (80, 3), (-80, 3),
+        (120, 2), (-120, 2), (180, 1)]
     offMask = BitMask32(0)
     onMask = CollisionNode.getDefaultCollideMask()
 
@@ -52,7 +55,7 @@ class DistributedCashbotBossGoonAI(DistributedGoonAI.DistributedGoonAI, Distribu
             self.boss.damageToon(avatar, self.strength)
         DistributedGoonAI.DistributedGoonAI.requestBattle(self, pauseTime)
 
-    def sendMovie(self, type, avId=0, pauseTime=0):
+    def sendMovie(self, type, avId = 0, pauseTime = 0):
         if type == GoonGlobals.GOON_MOVIE_WALK:
             self.demand('Walk')
         else:
@@ -67,7 +70,7 @@ class DistributedCashbotBossGoonAI(DistributedGoonAI.DistributedGoonAI, Distribu
                     else:
                         self.notify.warning('Ignoring movie type %s' % type)
 
-    def __chooseTarget(self, extraDelay=0):
+    def __chooseTarget(self, extraDelay = 0):
         direction = self.__chooseDirection()
         if direction == None:
             self.target = None
@@ -123,11 +126,11 @@ class DistributedCashbotBossGoonAI(DistributedGoonAI.DistributedGoonAI, Distribu
                 seg = self.feelers[i]
                 dist = entries.get(seg, self.feelerLength)
                 return (
-                 heading, dist)
+                    heading, dist)
 
         self.notify.warning('Fell off end of weighted table.')
         return (
-         0, self.legLength)
+            0, self.legLength)
 
     def __startWalk(self):
         if self.arrivalTime == None:
@@ -144,7 +147,7 @@ class DistributedCashbotBossGoonAI(DistributedGoonAI.DistributedGoonAI, Distribu
             self.__reachedTarget(None)
         return
 
-    def __stopWalk(self, pauseTime=None):
+    def __stopWalk(self, pauseTime = None):
         if self.isWalking:
             taskMgr.remove(self.uniqueName('reachedTarget'))
             if pauseTime == None:
@@ -183,7 +186,8 @@ class DistributedCashbotBossGoonAI(DistributedGoonAI.DistributedGoonAI, Distribu
         if toon:
             toonDistance = self.getPos(toon).length()
             if toonDistance > self.attackRadius * 2:
-                self.air.writeServerEvent('suspicious', avId, 'Stunned a goon, but outside of attack radius. Possible multihack.')
+                self.air.writeServerEvent('suspicious', avId,
+                                          'Stunned a goon, but outside of attack radius. Possible multihack.')
                 taskMgr.doMethodLater(0, self.__recoverWalk, self.uniqueName('recoverWalk'))
                 return
         self.__stopWalk(pauseTime)

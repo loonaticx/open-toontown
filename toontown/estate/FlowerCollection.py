@@ -2,6 +2,7 @@ from . import GardenGlobals
 from direct.directnotify import DirectNotifyGlobal
 from . import FlowerBase
 
+
 class FlowerCollection:
     notify = DirectNotifyGlobal.directNotify.newCategory('FlowerCollection')
 
@@ -63,7 +64,7 @@ class FlowerCollection:
         return GardenGlobals.COLLECT_NEW_ENTRY
 
     def collectFlower(self, newFlower):
-        return self.__collect(newFlower, updateCollection=1)
+        return self.__collect(newFlower, updateCollection = 1)
 
     def __str__(self):
         numFlower = len(self.flowerlist)

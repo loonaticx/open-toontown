@@ -4,6 +4,7 @@ from toontown.cogdominium.DistCogdoGameAI import DistCogdoGameAI
 from toontown.cogdominium.CogdoEntityCreatorAI import CogdoEntityCreatorAI
 from toontown.cogdominium.CogdoLevelGameBase import CogdoLevelGameBase
 
+
 class DistCogdoLevelGameAI(CogdoLevelGameBase, DistCogdoGameAI, DistributedLevelAI):
     notify = directNotify.newCategory('DistCogdoLevelGameAI')
 

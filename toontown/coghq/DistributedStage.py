@@ -13,6 +13,7 @@ import random
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
 
+
 class DistributedStage(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStage')
     ReadyPost = 'StageReady'
@@ -22,7 +23,9 @@ class DistributedStage(DistributedObject.DistributedObject):
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
         self.titleColor = (1, 1, 1, 1)
-        self.titleText = OnscreenText.OnscreenText('', fg=self.titleColor, shadow=(0, 0, 0, 1), font=ToontownGlobals.getSuitFont(), pos=(0, -0.5), scale=0.1, drawOrder=0, mayChange=1)
+        self.titleText = OnscreenText.OnscreenText('', fg = self.titleColor, shadow = (0, 0, 0, 1),
+                                                   font = ToontownGlobals.getSuitFont(), pos = (0, -0.5), scale = 0.1,
+                                                   drawOrder = 0, mayChange = 1)
         self.titleSequence = None
         self.pendingZoneChange = 0
         return
@@ -72,7 +75,8 @@ class DistributedStage(DistributedObject.DistributedObject):
 
     def setRoomDoIds(self, roomDoIds):
         self.roomDoIds = roomDoIds
-        self.roomWatcher = BulletinBoardWatcher.BulletinBoardWatcher('roomWatcher-%s' % self.doId, [ DistributedStageRoom.getStageRoomReadyPostName(doId) for doId in self.roomDoIds ], self.gotAllRooms)
+        self.roomWatcher = BulletinBoardWatcher.BulletinBoardWatcher('roomWatcher-%s' % self.doId, [
+            DistributedStageRoom.getStageRoomReadyPostName(doId) for doId in self.roomDoIds], self.gotAllRooms)
 
     def gotAllRooms(self):
         self.notify.debug('stage %s: got all rooms' % self.doId)
@@ -286,7 +290,10 @@ class DistributedStage(DistributedObject.DistributedObject):
             if self.titleSequence:
                 self.titleSequence.finish()
             self.titleSequence = None
-            self.titleSequence = Sequence(Func(self.showTitleText), Wait(3.1), LerpColorScaleInterval(self.titleText, duration=0.5, colorScale=Vec4(1, 1, 1, 0.0)), Func(self.hideTitleText))
+            self.titleSequence = Sequence(Func(self.showTitleText), Wait(3.1),
+                                          LerpColorScaleInterval(self.titleText, duration = 0.5,
+                                                                 colorScale = Vec4(1, 1, 1, 0.0)),
+                                          Func(self.hideTitleText))
             self.titleSequence.start()
         return
 

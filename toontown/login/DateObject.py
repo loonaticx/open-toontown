@@ -1,5 +1,6 @@
 import time
 
+
 class DateObject:
 
     def getYear(self):
@@ -28,7 +29,8 @@ class DateObject:
         return (int(ageMonths / 12), ageMonths % 12)
 
     def getAge(self, dobMonth, dobYear, dobDay = None, curMonth = None, curYear = None, curDay = None):
-        return self.getDetailedAge(dobMonth, dobYear, dobDay=dobDay, curMonth=curMonth, curYear=curYear, curDay=curDay)[0]
+        return self.getDetailedAge(dobMonth, dobYear, dobDay = dobDay, curMonth = curMonth, curYear = curYear,
+                                   curDay = curDay)[0]
 
     def getNumDaysInMonth(self, month = None, year = None):
 

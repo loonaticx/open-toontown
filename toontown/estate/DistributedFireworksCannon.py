@@ -9,6 +9,7 @@ from pandac.PandaModules import CollisionSphere
 from pandac.PandaModules import CollisionNode
 from . import FireworksGui
 
+
 class DistributedFireworksCannon(DistributedFireworkShow.DistributedFireworkShow):
     notify = directNotify.newCategory('DistributedFireworksCannon')
 

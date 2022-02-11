@@ -4,6 +4,7 @@ from toontown.battle import SuitBattleGlobals
 from . import DistributedSuitBaseAI, SuitDialog
 from direct.showbase.PythonUtil import StackTrace
 
+
 class DistributedFactorySuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactorySuitAI')
 
@@ -23,7 +24,10 @@ class DistributedFactorySuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
             try:
                 self.setBattleCellIndex(None)
             except Exception as e:
-                simbase.air.writeServerEvent('avoid_crash', self.doId, 'DistributedFactorySuitAI.delete, factoryIsNotGone, got Exception %s' % str(e))
+                simbase.air.writeServerEvent('avoid_crash', self.doId,
+                                             'DistributedFactorySuitAI.delete, factoryIsNotGone, got Exception %s' %
+                                             str(
+                                                 e))
                 self.notify.warning('delete, factoryIsNotGone, got Exception %s' % str(e))
                 self.notify.warning('stackTrace=%s' % StackTrace().compact())
                 self.notify.warning('doId=%s' % self.doId)
@@ -63,19 +67,21 @@ class DistributedFactorySuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         self.confrontHpr = Vec3(h, p, r)
         if self.sp.requestBattle(self, toonId):
             if self.notify.getDebug():
-                self.notify.debug('Suit %d requesting battle in zone %d with toon %d' % (self.getDoId(), self.zoneId, toonId))
+                self.notify.debug(
+                    'Suit %d requesting battle in zone %d with toon %d' % (self.getDoId(), self.zoneId, toonId))
         else:
             if self.notify.getDebug():
-                self.notify.debug('requestBattle from suit %d, toon %d- denied by battle manager' % (toonId, self.getDoId()))
+                self.notify.debug(
+                    'requestBattle from suit %d, toon %d- denied by battle manager' % (toonId, self.getDoId()))
             self.b_setBrushOff(SuitDialog.getBrushOffIndex(self.getStyleName()))
             self.d_denyBattle(toonId)
 
     def getConfrontPosHpr(self):
         return (
-         self.confrontPos, self.confrontHpr)
+            self.confrontPos, self.confrontHpr)
 
     def setBattleCellIndex(self, battleCellIndex):
-        self.sp.suitBattleCellChange(self, oldCell=self.battleCellIndex, newCell=battleCellIndex)
+        self.sp.suitBattleCellChange(self, oldCell = self.battleCellIndex, newCell = battleCellIndex)
         self.battleCellIndex = battleCellIndex
         self.attachBattleBlocker()
         self.accept(self.sp.getBattleBlockerEvent(self.battleCellIndex), self.attachBattleBlocker)
@@ -115,7 +121,7 @@ class DistributedFactorySuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
     def isForeman(self):
         return self.boss
 
-    def setVirtual(self, isVirtual=1):
+    def setVirtual(self, isVirtual = 1):
         self.virtual = isVirtual
 
     def getVirtual(self):

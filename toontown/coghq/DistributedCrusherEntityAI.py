@@ -1,6 +1,7 @@
 from otp.level import DistributedEntityAI
 from direct.directnotify import DirectNotifyGlobal
 
+
 class DistributedCrusherEntityAI(DistributedEntityAI.DistributedEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCrusherEntityAI')
 
@@ -38,7 +39,7 @@ class DistributedCrusherEntityAI(DistributedEntityAI.DistributedEntityAI):
                 self.crushCell.registerCrusher(self.entId)
         return
 
-    def sendCrushMsg(self, axis=0):
+    def sendCrushMsg(self, axis = 0):
         if self.isCrusher:
             messenger.send(self.crushMsg, [self.entId, axis])
 

@@ -3,6 +3,7 @@ from direct.distributed import DistributedObject
 from toontown.ai import DistributedPhaseEventMgr
 import time
 
+
 class DistributedSillyMeterMgr(DistributedPhaseEventMgr.DistributedPhaseEventMgr):
     neverDisable = 1
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSillyMeterMgr')

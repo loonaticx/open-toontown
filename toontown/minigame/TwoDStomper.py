@@ -3,9 +3,11 @@ from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from toontown.minigame import ToonBlitzGlobals
+
 GOING_UP = 1
 GOING_DOWN = 2
 STUCK_DOWN = 3
+
 
 class TwoDStomper(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDStomper')
@@ -103,16 +105,20 @@ class TwoDStomper(DirectObject):
                     self.stomperState = GOING_DOWN
                     self.checkSquashedToon()
 
-        motionIval = Sequence(LerpFunctionInterval(motionFunc, duration=self.period))
+        motionIval = Sequence(LerpFunctionInterval(motionFunc, duration = self.period))
         return motionIval
 
     def getSmokeTrack(self):
-        smokeTrack = Sequence(Parallel(LerpScaleInterval(self.smoke, 0.2, Point3(1, 1, 1.5)), LerpColorScaleInterval(self.smoke, 0.4, VBase4(1, 1, 1, 0), VBase4(1, 1, 1, 0.5))), Func(self.smoke.reparentTo, hidden), Func(self.smoke.clearColorScale))
+        smokeTrack = Sequence(Parallel(LerpScaleInterval(self.smoke, 0.2, Point3(1, 1, 1.5)),
+                                       LerpColorScaleInterval(self.smoke, 0.4, VBase4(1, 1, 1, 0),
+                                                              VBase4(1, 1, 1, 0.5))),
+                              Func(self.smoke.reparentTo, hidden), Func(self.smoke.clearColorScale))
         return smokeTrack
 
     def adjustShaftScale(self, t):
         heightDiff = self.head.getZ() - self.headStartZ
-        self.shaft.setScale(1, 1, self.shaftStartScaleZ + heightDiff * (self.shaftEndScaleZ - self.shaftStartScaleZ) / self.range)
+        self.shaft.setScale(1, 1, self.shaftStartScaleZ + heightDiff * (
+                    self.shaftEndScaleZ - self.shaftStartScaleZ) / self.range)
 
     def adjustCollSolidHeight(self, t):
         heightDiff = self.head.getZ() - self.headStartZ
@@ -125,9 +131,11 @@ class TwoDStomper(DirectObject):
             del self.ival
             self.ival = None
         self.ival = Parallel()
-        self.ival.append(Sequence(self.getMotionIval(), Func(base.playSfx, self.stompSound, node=self.model, volume=0.3), Func(self.smoke.reparentTo, self.model), self.getSmokeTrack()))
-        self.ival.append(LerpFunctionInterval(self.adjustShaftScale, duration=self.period))
-        self.ival.append(LerpFunctionInterval(self.adjustCollSolidHeight, duration=self.period))
+        self.ival.append(
+            Sequence(self.getMotionIval(), Func(base.playSfx, self.stompSound, node = self.model, volume = 0.3),
+                     Func(self.smoke.reparentTo, self.model), self.getSmokeTrack()))
+        self.ival.append(LerpFunctionInterval(self.adjustShaftScale, duration = self.period))
+        self.ival.append(LerpFunctionInterval(self.adjustCollSolidHeight, duration = self.period))
         self.ival.loop()
         self.ival.setT(elapsedTime)
         return

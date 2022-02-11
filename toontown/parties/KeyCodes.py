@@ -1,10 +1,14 @@
 from pandac.PandaModules import *
 from direct.showbase.DirectObject import DirectObject
-ARROW_KEYCODE_MAP = {'arrow_up': 'u',
- 'arrow_down': 'd',
- 'arrow_left': 'l',
- 'arrow_right': 'r'}
+
+ARROW_KEYCODE_MAP = {
+    'arrow_up': 'u',
+    'arrow_down': 'd',
+    'arrow_left': 'l',
+    'arrow_right': 'r'
+}
 KEYCODE_TIMEOUT_SECONDS = 1.5
+
 
 class KeyCodes(DirectObject):
     notify = directNotify.newCategory('KeyCodes')
@@ -56,7 +60,7 @@ class KeyCodes(DirectObject):
         return self._patternLimit
 
     def getPossibleMatchesList(self):
-        return [ p for p in self._patterns if p.startswith(self._keyCode) ]
+        return [p for p in self._patterns if p.startswith(self._keyCode)]
 
     def reset(self):
         self._keyCode = ''

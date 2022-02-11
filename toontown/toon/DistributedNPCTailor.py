@@ -9,6 +9,7 @@ from toontown.toonbase import TTLocalizer
 from . import ToonDNA
 from toontown.estate import ClosetGlobals
 
+
 class DistributedNPCTailor(DistributedNPCToonBase):
 
     def __init__(self, cr):
@@ -106,10 +107,11 @@ class DistributedNPCTailor(DistributedNPCToonBase):
                     self.popupInfo.reparentTo(hidden)
             if self.clothesGUI:
                 self.clothesGUI.resetClothes(self.oldStyle)
-                self.__handlePurchaseDone(timeout=1)
+                self.__handlePurchaseDone(timeout = 1)
             self.setChatAbsolute(TTLocalizer.STOREOWNER_TOOKTOOLONG, CFSpeech | CFTimeout)
             self.resetTailor()
-        elif mode == NPCToons.PURCHASE_MOVIE_START or mode == NPCToons.PURCHASE_MOVIE_START_BROWSE or mode == NPCToons.PURCHASE_MOVIE_START_NOROOM:
+        elif mode == NPCToons.PURCHASE_MOVIE_START or mode == NPCToons.PURCHASE_MOVIE_START_BROWSE or mode == \
+                NPCToons.PURCHASE_MOVIE_START_NOROOM:
             if mode == NPCToons.PURCHASE_MOVIE_START:
                 self.browsing = 0
                 self.roomAvailable = 1
@@ -131,7 +133,9 @@ class DistributedNPCTailor(DistributedNPCToonBase):
             self.setupAvatars(self.av)
             if self.isLocalToon:
                 camera.wrtReparentTo(render)
-                self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-5, 9, self.getHeight() - 0.5), Point3(-150, -2, 0), other=self, blendType='easeOut', name=self.uniqueName('lerpCamera'))
+                self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-5, 9, self.getHeight() - 0.5),
+                                                            Point3(-150, -2, 0), other = self, blendType = 'easeOut',
+                                                            name = self.uniqueName('lerpCamera'))
                 self.lerpCameraSeq.start()
             if self.browsing == 0:
                 if self.roomAvailable == 0:
@@ -145,11 +149,11 @@ class DistributedNPCTailor(DistributedNPCToonBase):
                 print('-----------Starting tailor interaction-----------')
                 print('avid: %s, gender: %s' % (self.av.doId, self.av.style.gender))
                 print('current top = %s,%s,%s,%s and  bot = %s,%s,' % (self.av.style.topTex,
-                 self.av.style.topTexColor,
-                 self.av.style.sleeveTex,
-                 self.av.style.sleeveTexColor,
-                 self.av.style.botTex,
-                 self.av.style.botTexColor))
+                                                                       self.av.style.topTexColor,
+                                                                       self.av.style.sleeveTex,
+                                                                       self.av.style.sleeveTexColor,
+                                                                       self.av.style.botTex,
+                                                                       self.av.style.botTexColor))
                 print('topsList = %s' % self.av.getClothesTopsList())
                 print('bottomsList = %s' % self.av.getClothesBottomsList())
                 print('-------------------------------------------------')
@@ -159,11 +163,11 @@ class DistributedNPCTailor(DistributedNPCToonBase):
                 print('-----------ending tailor interaction-----------')
                 print('avid: %s, gender: %s' % (self.av.doId, self.av.style.gender))
                 print('current top = %s,%s,%s,%s and  bot = %s,%s,' % (self.av.style.topTex,
-                 self.av.style.topTexColor,
-                 self.av.style.sleeveTex,
-                 self.av.style.sleeveTexColor,
-                 self.av.style.botTex,
-                 self.av.style.botTexColor))
+                                                                       self.av.style.topTexColor,
+                                                                       self.av.style.sleeveTex,
+                                                                       self.av.style.sleeveTexColor,
+                                                                       self.av.style.botTex,
+                                                                       self.av.style.botTexColor))
                 print('topsList = %s' % self.av.getClothesTopsList())
                 print('bottomsList = %s' % self.av.getClothesBottomsList())
                 print('-------------------------------------------------')
@@ -185,10 +189,20 @@ class DistributedNPCTailor(DistributedNPCToonBase):
         self.clothesGUI.showButtons()
         self.gui = loader.loadModel('phase_3/models/gui/create_a_toon_gui')
         if self.browsing == 0:
-            self.button = DirectButton(relief=None, image=(self.gui.find('**/CrtAtoon_Btn1_UP'), self.gui.find('**/CrtAtoon_Btn1_DOWN'), self.gui.find('**/CrtAtoon_Btn1_RLLVR')), pos=(-0.15, 0, -0.85), command=self.__handleButton, text=('', TTLocalizer.MakeAToonDone, TTLocalizer.MakeAToonDone), text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.08, text_pos=(0, -0.03), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
+            self.button = DirectButton(relief = None, image = (
+            self.gui.find('**/CrtAtoon_Btn1_UP'), self.gui.find('**/CrtAtoon_Btn1_DOWN'),
+            self.gui.find('**/CrtAtoon_Btn1_RLLVR')), pos = (-0.15, 0, -0.85), command = self.__handleButton,
+                                       text = ('', TTLocalizer.MakeAToonDone, TTLocalizer.MakeAToonDone),
+                                       text_font = ToontownGlobals.getInterfaceFont(), text_scale = 0.08,
+                                       text_pos = (0, -0.03), text_fg = (1, 1, 1, 1), text_shadow = (0, 0, 0, 1))
         else:
             self.button = None
-        self.cancelButton = DirectButton(relief=None, image=(self.gui.find('**/CrtAtoon_Btn2_UP'), self.gui.find('**/CrtAtoon_Btn2_DOWN'), self.gui.find('**/CrtAtoon_Btn2_RLLVR')), pos=(0.15, 0, -0.85), command=self.__handleCancel, text=('', TTLocalizer.MakeAToonCancel, TTLocalizer.MakeAToonCancel), text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.08, text_pos=(0, -0.03), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
+        self.cancelButton = DirectButton(relief = None, image = (
+        self.gui.find('**/CrtAtoon_Btn2_UP'), self.gui.find('**/CrtAtoon_Btn2_DOWN'),
+        self.gui.find('**/CrtAtoon_Btn2_RLLVR')), pos = (0.15, 0, -0.85), command = self.__handleCancel,
+                                         text = ('', TTLocalizer.MakeAToonCancel, TTLocalizer.MakeAToonCancel),
+                                         text_font = ToontownGlobals.getInterfaceFont(), text_scale = 0.08,
+                                         text_pos = (0, -0.03), text_fg = (1, 1, 1, 1), text_shadow = (0, 0, 0, 1))
         camera.setPosHpr(base.localAvatar, -4.16, 8.25, 2.47, -152.89, 0.0, 0.0)
         self.counter = render.find('**/*mo1_TI_counter')
         self.counter.hide()
@@ -214,7 +228,8 @@ class DistributedNPCTailor(DistributedNPCToonBase):
                 which = which | ClosetGlobals.SHIRT
             if self.clothesGUI.bottomChoice != -1:
                 which = which | ClosetGlobals.SHORTS
-            print('setDNA: which = %d, top = %d, bot = %d' % (which, self.clothesGUI.topChoice, self.clothesGUI.bottomChoice))
+            print('setDNA: which = %d, top = %d, bot = %d' % (
+            which, self.clothesGUI.topChoice, self.clothesGUI.bottomChoice))
             if self.roomAvailable == 0:
                 if self.isLocalToon:
                     if self.av.isClosetFull() or which & ClosetGlobals.SHIRT and which & ClosetGlobals.SHORTS:
@@ -230,45 +245,47 @@ class DistributedNPCTailor(DistributedNPCToonBase):
     def __enterConfirmLoss(self, finished, which):
         if self.popupInfo == None:
             buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
-            okButtonImage = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
-            cancelButtonImage = (buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr'))
+            okButtonImage = (
+            buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
+            cancelButtonImage = (
+            buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr'))
             self.popupInfo = DirectFrame(
-                parent=hidden,
-                relief=None,
-                state='normal',
-                text=TTLocalizer.STOREOWNER_CONFIRM_LOSS,
-                text_wordwrap=10,
-                textMayChange=0,
-                frameSize=(-1, 1, -1, 1),
-                text_pos=(0, -0.05),
-                geom=DGG.getDefaultDialogGeom(),
-                geom_color=ToontownGlobals.GlobalDialogColor,
-                geom_scale=(0.88, 1, 0.55),
-                geom_pos=(0, 0, -.18),
-                text_scale=0.08)
+                parent = hidden,
+                relief = None,
+                state = 'normal',
+                text = TTLocalizer.STOREOWNER_CONFIRM_LOSS,
+                text_wordwrap = 10,
+                textMayChange = 0,
+                frameSize = (-1, 1, -1, 1),
+                text_pos = (0, -0.05),
+                geom = DGG.getDefaultDialogGeom(),
+                geom_color = ToontownGlobals.GlobalDialogColor,
+                geom_scale = (0.88, 1, 0.55),
+                geom_pos = (0, 0, -.18),
+                text_scale = 0.08)
 
             DirectButton(
                 self.popupInfo,
-                image=okButtonImage,
-                relief=None,
-                text=TTLocalizer.STOREOWNER_OK,
-                text_scale=0.05,
-                text_pos=(0.0, -0.1),
-                textMayChange=0,
-                pos=(-0.08, 0.0, -0.31),
-                command=self.__handleConfirmLossOK,
-                extraArgs=[finished, which])
+                image = okButtonImage,
+                relief = None,
+                text = TTLocalizer.STOREOWNER_OK,
+                text_scale = 0.05,
+                text_pos = (0.0, -0.1),
+                textMayChange = 0,
+                pos = (-0.08, 0.0, -0.31),
+                command = self.__handleConfirmLossOK,
+                extraArgs = [finished, which])
 
             DirectButton(
                 self.popupInfo,
-                image=cancelButtonImage,
-                relief=None,
-                text=TTLocalizer.STOREOWNER_CANCEL,
-                text_scale=0.05,
-                text_pos=(0.0, -0.1),
-                textMayChange=0,
-                pos=(0.08, 0.0, -0.31),
-                command=self.__handleConfirmLossCancel)
+                image = cancelButtonImage,
+                relief = None,
+                text = TTLocalizer.STOREOWNER_CANCEL,
+                text_scale = 0.05,
+                text_pos = (0.0, -0.1),
+                textMayChange = 0,
+                pos = (0.08, 0.0, -0.31),
+                command = self.__handleConfirmLossCancel)
 
             buttons.removeNode()
 
@@ -293,7 +310,7 @@ class DistributedNPCTailor(DistributedNPCToonBase):
                     oldTorso = self.av.style.torso
                     self.av.style.makeFromNetString(dnaString)
                     if len(oldTorso) == 2 and len(self.av.style.torso) == 2 and self.av.style.torso[1] != oldTorso[1]:
-                        self.av.swapToonTorso(self.av.style.torso, genClothes=0)
+                        self.av.swapToonTorso(self.av.style.torso, genClothes = 0)
                         self.av.loop('neutral', 0)
                     self.av.generateToonClothes()
         return

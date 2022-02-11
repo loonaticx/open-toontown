@@ -3,6 +3,7 @@ from toontown.catalog import CatalogItem
 from toontown.catalog import CatalogItemList
 from direct.directnotify.DirectNotifyGlobal import *
 
+
 class DistributedFurnitureManager(DistributedObject.DistributedObject):
     notify = directNotify.newCategory('DistributedFurnitureManager')
 
@@ -48,16 +49,16 @@ class DistributedFurnitureManager(DistributedObject.DistributedObject):
         return self.cr.doId2do.get(self.interiorId)
 
     def setAtticItems(self, items):
-        self.atticItems = CatalogItemList.CatalogItemList(items, store=CatalogItem.Customization)
+        self.atticItems = CatalogItemList.CatalogItemList(items, store = CatalogItem.Customization)
 
     def setAtticWallpaper(self, items):
-        self.atticWallpaper = CatalogItemList.CatalogItemList(items, store=CatalogItem.Customization)
+        self.atticWallpaper = CatalogItemList.CatalogItemList(items, store = CatalogItem.Customization)
 
     def setAtticWindows(self, items):
-        self.atticWindows = CatalogItemList.CatalogItemList(items, store=CatalogItem.Customization)
+        self.atticWindows = CatalogItemList.CatalogItemList(items, store = CatalogItem.Customization)
 
     def setDeletedItems(self, items):
-        self.deletedItems = CatalogItemList.CatalogItemList(items, store=CatalogItem.Customization)
+        self.deletedItems = CatalogItemList.CatalogItemList(items, store = CatalogItem.Customization)
 
     def releaseDirector(self):
         if self.director == base.localAvatar.doId:
@@ -85,22 +86,22 @@ class DistributedFurnitureManager(DistributedObject.DistributedObject):
     def moveItemFromAttic(self, index, posHpr, callback):
         context = self.getCallbackContext(callback, [index])
         self.sendUpdate('moveItemFromAtticMessage', [index,
-         posHpr[0],
-         posHpr[1],
-         posHpr[2],
-         posHpr[3],
-         posHpr[4],
-         posHpr[5],
-         context])
+                                                     posHpr[0],
+                                                     posHpr[1],
+                                                     posHpr[2],
+                                                     posHpr[3],
+                                                     posHpr[4],
+                                                     posHpr[5],
+                                                     context])
 
     def deleteItemFromAttic(self, item, index, callback):
         context = self.getCallbackContext(callback, [item, index])
-        blob = item.getBlob(store=CatalogItem.Customization)
+        blob = item.getBlob(store = CatalogItem.Customization)
         self.sendUpdate('deleteItemFromAtticMessage', [blob, index, context])
 
     def deleteItemFromRoom(self, dfitem, callback):
         context = self.getCallbackContext(callback, [dfitem.item])
-        blob = dfitem.item.getBlob(store=CatalogItem.Customization)
+        blob = dfitem.item.getBlob(store = CatalogItem.Customization)
         self.sendUpdate('deleteItemFromRoomMessage', [blob, dfitem.doId, context])
 
     def moveWallpaperFromAttic(self, index, room, callback):
@@ -109,7 +110,7 @@ class DistributedFurnitureManager(DistributedObject.DistributedObject):
 
     def deleteWallpaperFromAttic(self, item, index, callback):
         context = self.getCallbackContext(callback, [item, index])
-        blob = item.getBlob(store=CatalogItem.Customization)
+        blob = item.getBlob(store = CatalogItem.Customization)
         self.sendUpdate('deleteWallpaperFromAtticMessage', [blob, index, context])
 
     def moveWindowToAttic(self, slot, callback):
@@ -126,12 +127,12 @@ class DistributedFurnitureManager(DistributedObject.DistributedObject):
 
     def deleteWindowFromAttic(self, item, index, callback):
         context = self.getCallbackContext(callback, [item, index])
-        blob = item.getBlob(store=CatalogItem.Customization)
+        blob = item.getBlob(store = CatalogItem.Customization)
         self.sendUpdate('deleteWindowFromAtticMessage', [blob, index, context])
 
     def recoverDeletedItem(self, item, index, callback):
         context = self.getCallbackContext(callback, [item, index])
-        blob = item.getBlob(store=CatalogItem.Customization)
+        blob = item.getBlob(store = CatalogItem.Customization)
         self.sendUpdate('recoverDeletedItemMessage', [blob, index, context])
 
     def moveItemToAtticResponse(self, retcode, context):

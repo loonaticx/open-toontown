@@ -1,15 +1,18 @@
 from direct.controls.GravityWalker import GravityWalker
-from pandac.PandaModules import CollisionSphere, CollisionNode, BitMask32, CollisionHandlerEvent, CollisionRay, CollisionHandlerGravity, CollisionHandlerFluidPusher, CollisionHandlerPusher
+from pandac.PandaModules import CollisionSphere, CollisionNode, BitMask32, CollisionHandlerEvent, CollisionRay, \
+    CollisionHandlerGravity, CollisionHandlerFluidPusher, CollisionHandlerPusher
 from toontown.toonbase import ToontownGlobals
 from otp.otpbase import OTPGlobals
+
 
 class CogdoFlyingCollisions(GravityWalker):
     wantFloorSphere = 0
 
     def __init__(self):
-        GravityWalker.__init__(self, gravity=0.0)
+        GravityWalker.__init__(self, gravity = 0.0)
 
-    def initializeCollisions(self, collisionTraverser, avatarNodePath, avatarRadius = 1.4, floorOffset = 1.0, reach = 1.0):
+    def initializeCollisions(self, collisionTraverser, avatarNodePath, avatarRadius = 1.4, floorOffset = 1.0,
+                             reach = 1.0):
         self.cHeadSphereNodePath = None
         self.cFloorEventSphereNodePath = None
         self.setupHeadSphere(avatarNodePath)

@@ -5,15 +5,18 @@ from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 
+
 class Walk(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('Walk')
 
     def __init__(self, doneEvent):
         StateData.StateData.__init__(self, doneEvent)
-        self.fsm = ClassicFSM.ClassicFSM('Walk', [State.State('off', self.enterOff, self.exitOff, ['walking', 'swimming', 'slowWalking']),
-         State.State('walking', self.enterWalking, self.exitWalking, ['swimming', 'slowWalking']),
-         State.State('swimming', self.enterSwimming, self.exitSwimming, ['walking', 'slowWalking']),
-         State.State('slowWalking', self.enterSlowWalking, self.exitSlowWalking, ['walking', 'swimming'])], 'off', 'off')
+        self.fsm = ClassicFSM.ClassicFSM('Walk', [
+            State.State('off', self.enterOff, self.exitOff, ['walking', 'swimming', 'slowWalking']),
+            State.State('walking', self.enterWalking, self.exitWalking, ['swimming', 'slowWalking']),
+            State.State('swimming', self.enterSwimming, self.exitSwimming, ['walking', 'slowWalking']),
+            State.State('slowWalking', self.enterSlowWalking, self.exitSlowWalking, ['walking', 'swimming'])], 'off',
+                                         'off')
         self.fsm.enterInitialState()
         self.IsSwimSoundAudible = 0
         self.swimSoundPlaying = 0
@@ -93,7 +96,7 @@ class Walk(StateData.StateData):
             self.swimSound.stop()
         elif speed > 0 and self.swimSoundPlaying == 0 and self.IsSwimSoundAudible:
             self.swimSoundPlaying = 1
-            base.playSfx(self.swimSound, looping=1)
+            base.playSfx(self.swimSound, looping = 1)
         return Task.cont
 
     def enterSlowWalking(self):

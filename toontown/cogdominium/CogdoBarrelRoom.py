@@ -6,6 +6,7 @@ from toontown.toonbase import ToontownGlobals, ToontownTimer
 from toontown.cogdominium import CogdoBarrelRoomConsts, CogdoBarrelRoomRewardPanel
 from toontown.distributed import DelayDelete
 
+
 class CogdoBarrelRoom:
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBarrelRoom')
 
@@ -122,9 +123,15 @@ class CogdoBarrelRoom:
     def getIntroInterval(self):
         avatar = base.localAvatar
         trackName = '__introBarrelRoom-%d' % avatar.doId
-        track = Parallel(name=trackName)
+        track = Parallel(name = trackName)
         track.append(self.__stomperIntervals())
-        track.append(Sequence(Func(camera.reparentTo, render), Func(camera.setPosHpr, self.model, -20.0, -87.9, 12.0, -30, 0, 0), Func(base.transitions.irisIn, 0.5), Wait(1.0), LerpHprInterval(camera, duration=2.0, startHpr=Vec3(-30, 0, 0), hpr=Vec3(0, 0, 0), blendType='easeInOut'), Wait(2.5), LerpHprInterval(camera, duration=3.0, startHpr=Vec3(0, 0, 0), hpr=Vec3(-45, 0, 0), blendType='easeInOut'), Wait(2.5)))
+        track.append(
+            Sequence(Func(camera.reparentTo, render), Func(camera.setPosHpr, self.model, -20.0, -87.9, 12.0, -30, 0, 0),
+                     Func(base.transitions.irisIn, 0.5), Wait(1.0),
+                     LerpHprInterval(camera, duration = 2.0, startHpr = Vec3(-30, 0, 0), hpr = Vec3(0, 0, 0),
+                                     blendType = 'easeInOut'), Wait(2.5),
+                     LerpHprInterval(camera, duration = 3.0, startHpr = Vec3(0, 0, 0), hpr = Vec3(-45, 0, 0),
+                                     blendType = 'easeInOut'), Wait(2.5)))
         track.delayDelete = DelayDelete.DelayDelete(avatar, 'introBarrelRoomTrack')
         track.setDoneEvent(trackName)
         return (track, trackName)
@@ -142,7 +149,8 @@ class CogdoBarrelRoom:
                 else:
                     startZ, destZ = maxZ, minZ
                 stomperNode.setPos(Point3(0, 0, startZ))
-                ivals.append(LerpPosInterval(stomperNode, CogdoBarrelRoomConsts.StomperHaltTime, Point3(0, 0, destZ), blendType='easeOut'))
+                ivals.append(LerpPosInterval(stomperNode, CogdoBarrelRoomConsts.StomperHaltTime, Point3(0, 0, destZ),
+                                             blendType = 'easeOut'))
             i += 1
 
         return Parallel(*tuple(ivals))
@@ -155,7 +163,8 @@ class CogdoBarrelRoom:
 
     def __rewardCamera(self):
         trackName = 'cogdoBarrelRoom-RewardCamera'
-        track = Sequence(Func(camera.reparentTo, render), Func(camera.setPosHpr, self.model, 0, 0, 11.0, 0, -14, 0), Func(self.showBattleAreaLight, False), name=trackName)
+        track = Sequence(Func(camera.reparentTo, render), Func(camera.setPosHpr, self.model, 0, 0, 11.0, 0, -14, 0),
+                         Func(self.showBattleAreaLight, False), name = trackName)
         return (track, trackName)
 
     def showRewardUi(self, results, callback = None):
@@ -163,7 +172,8 @@ class CogdoBarrelRoom:
         if CogdoBarrelRoomConsts.ShowRewardUI:
             self.rewardUi.setRewards(results)
             self.rewardUi.unstash()
-        taskMgr.doMethodLater(CogdoBarrelRoomConsts.RewardUiTime, self.__rewardUiTimeout, self.rewardUiTaskName, extraArgs=[callback])
+        taskMgr.doMethodLater(CogdoBarrelRoomConsts.RewardUiTime, self.__rewardUiTimeout, self.rewardUiTaskName,
+                              extraArgs = [callback])
         return (track, trackName)
 
     def setRewardResults(self, results):

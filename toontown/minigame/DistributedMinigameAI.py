@@ -13,6 +13,7 @@ from . import MinigameGlobals
 from direct.showbase import PythonUtil
 from . import TravelGameGlobals
 from toontown.toonbase import ToontownGlobals
+
 EXITED = 0
 EXPECTED = 1
 JOINED = 2
@@ -22,6 +23,7 @@ MAX_POINTS = 7
 JOIN_TIMEOUT = 40.0 + MinigameGlobals.latencyTolerance
 READY_TIMEOUT = MinigameGlobals.MaxLoadTime + MinigameGlobals.rulesDuration + MinigameGlobals.latencyTolerance
 EXIT_TIMEOUT = 20.0 + MinigameGlobals.latencyTolerance
+
 
 class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
     notify = directNotify.newCategory('DistributedMinigameAI')
@@ -33,12 +35,21 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             self.DistributedMinigameAI_initialized = 1
             DistributedObjectAI.DistributedObjectAI.__init__(self, air)
             self.minigameId = minigameId
-            self.frameworkFSM = ClassicFSM.ClassicFSM('DistributedMinigameAI', [State.State('frameworkOff', self.enterFrameworkOff, self.exitFrameworkOff, ['frameworkWaitClientsJoin']),
-             State.State('frameworkWaitClientsJoin', self.enterFrameworkWaitClientsJoin, self.exitFrameworkWaitClientsJoin, ['frameworkWaitClientsReady', 'frameworkWaitClientsExit', 'frameworkCleanup']),
-             State.State('frameworkWaitClientsReady', self.enterFrameworkWaitClientsReady, self.exitFrameworkWaitClientsReady, ['frameworkGame', 'frameworkWaitClientsExit', 'frameworkCleanup']),
-             State.State('frameworkGame', self.enterFrameworkGame, self.exitFrameworkGame, ['frameworkWaitClientsExit', 'frameworkCleanup']),
-             State.State('frameworkWaitClientsExit', self.enterFrameworkWaitClientsExit, self.exitFrameworkWaitClientsExit, ['frameworkCleanup']),
-             State.State('frameworkCleanup', self.enterFrameworkCleanup, self.exitFrameworkCleanup, ['frameworkOff'])], 'frameworkOff', 'frameworkOff')
+            self.frameworkFSM = ClassicFSM.ClassicFSM('DistributedMinigameAI', [
+                State.State('frameworkOff', self.enterFrameworkOff, self.exitFrameworkOff,
+                            ['frameworkWaitClientsJoin']),
+                State.State('frameworkWaitClientsJoin', self.enterFrameworkWaitClientsJoin,
+                            self.exitFrameworkWaitClientsJoin,
+                            ['frameworkWaitClientsReady', 'frameworkWaitClientsExit', 'frameworkCleanup']),
+                State.State('frameworkWaitClientsReady', self.enterFrameworkWaitClientsReady,
+                            self.exitFrameworkWaitClientsReady,
+                            ['frameworkGame', 'frameworkWaitClientsExit', 'frameworkCleanup']),
+                State.State('frameworkGame', self.enterFrameworkGame, self.exitFrameworkGame,
+                            ['frameworkWaitClientsExit', 'frameworkCleanup']),
+                State.State('frameworkWaitClientsExit', self.enterFrameworkWaitClientsExit,
+                            self.exitFrameworkWaitClientsExit, ['frameworkCleanup']),
+                State.State('frameworkCleanup', self.enterFrameworkCleanup, self.exitFrameworkCleanup,
+                            ['frameworkOff'])], 'frameworkOff', 'frameworkOff')
             self.frameworkFSM.enterInitialState()
             self.avIdList = []
             self.stateDict = {}
@@ -186,7 +197,7 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
         for avId in self.avIdList:
             self.stateDict[avId] = EXPECTED
             self.scoreDict[avId] = DEFAULT_POINTS
-            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.handleExitedAvatar, extraArgs=[avId])
+            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.handleExitedAvatar, extraArgs = [avId])
 
         def allAvatarsJoined(self = self):
             self.notify.debug('BASE: all avatars joined')
@@ -197,7 +208,8 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             self.notify.debug('BASE: timed out waiting for clients %s to join' % avIds)
             self.setGameAbort()
 
-        self.__barrier = ToonBarrier('waitClientsJoin', self.uniqueName('waitClientsJoin'), self.avIdList, JOIN_TIMEOUT, allAvatarsJoined, handleTimeout)
+        self.__barrier = ToonBarrier('waitClientsJoin', self.uniqueName('waitClientsJoin'), self.avIdList, JOIN_TIMEOUT,
+                                     allAvatarsJoined, handleTimeout)
 
     def setAvatarJoined(self):
         if self.frameworkFSM.getCurrentState().getName() != 'frameworkWaitClientsJoin':
@@ -225,7 +237,8 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             self.notify.debug("BASE: timed out waiting for clients %s to report 'ready'" % avIds)
             self.setGameAbort()
 
-        self.__barrier = ToonBarrier('waitClientsReady', self.uniqueName('waitClientsReady'), self.avIdList, READY_TIMEOUT, allAvatarsReady, handleTimeout)
+        self.__barrier = ToonBarrier('waitClientsReady', self.uniqueName('waitClientsReady'), self.avIdList,
+                                     READY_TIMEOUT, allAvatarsReady, handleTimeout)
         for avId in list(self.stateDict.keys()):
             if self.stateDict[avId] == READY:
                 self.__barrier.clear(avId)
@@ -234,7 +247,8 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
         self.notify.debug('difficulty: %s' % self.getDifficulty())
 
     def setAvatarReady(self):
-        if self.frameworkFSM.getCurrentState().getName() not in ['frameworkWaitClientsReady', 'frameworkWaitClientsJoin']:
+        if self.frameworkFSM.getCurrentState().getName() not in ['frameworkWaitClientsReady',
+                                                                 'frameworkWaitClientsJoin']:
             self.notify.debug('BASE: Ignoring setAvatarReady message')
             return
         avId = self.air.getAvatarIdFromSender()
@@ -268,7 +282,8 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             self.notify.debug('BASE: timed out waiting for clients %s to exit' % avIds)
             self.frameworkFSM.request('frameworkCleanup')
 
-        self.__barrier = ToonBarrier('waitClientsExit', self.uniqueName('waitClientsExit'), self.avIdList, EXIT_TIMEOUT, allAvatarsExited, handleTimeout)
+        self.__barrier = ToonBarrier('waitClientsExit', self.uniqueName('waitClientsExit'), self.avIdList, EXIT_TIMEOUT,
+                                     allAvatarsExited, handleTimeout)
         for avId in list(self.stateDict.keys()):
             if self.stateDict[avId] == EXITED:
                 self.__barrier.clear(avId)
@@ -307,7 +322,8 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
                 score = int(self.scoreDict[avId] + 0.5)
             else:
                 score = randReward
-            if ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY in simbase.air.holidayManager.currentHolidays or ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY_MONTH in simbase.air.holidayManager.currentHolidays:
+            if ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY in simbase.air.holidayManager.currentHolidays or \
+                    ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY_MONTH in simbase.air.holidayManager.currentHolidays:
                 score *= MinigameGlobals.JellybeanTrolleyHolidayScoreMultiplier
             logEvent = False
             if score > 255:
@@ -317,7 +333,8 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
                 score = 0
                 logEvent = True
             if logEvent:
-                self.air.writeServerEvent('suspicious', avId, 'got %s jellybeans playing minigame %s in zone %s' % (score, self.minigameId, self.getSafezoneId()))
+                self.air.writeServerEvent('suspicious', avId, 'got %s jellybeans playing minigame %s in zone %s' % (
+                score, self.minigameId, self.getSafezoneId()))
             scoreList.append(score)
 
         self.requestDelete()
@@ -362,34 +379,43 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             if numToons == 1 and lastAvId in self.newbieIdList:
                 doNewbie = True
             if doNewbie:
-                pm = NewbiePurchaseManagerAI.NewbiePurchaseManagerAI(self.air, lastAvId, self.avIdList, scoreList, self.minigameId, self.trolleyZone)
+                pm = NewbiePurchaseManagerAI.NewbiePurchaseManagerAI(self.air, lastAvId, self.avIdList, scoreList,
+                                                                     self.minigameId, self.trolleyZone)
                 MinigameCreatorAI.acquireMinigameZone(self.zoneId)
                 pm.generateWithRequired(self.zoneId)
             else:
-                pm = PurchaseManagerAI.PurchaseManagerAI(self.air, self.avIdList, scoreList, self.minigameId, self.trolleyZone, self.newbieIdList, votesArray, newRound, desiredNextGame)
+                pm = PurchaseManagerAI.PurchaseManagerAI(self.air, self.avIdList, scoreList, self.minigameId,
+                                                         self.trolleyZone, self.newbieIdList, votesArray, newRound,
+                                                         desiredNextGame)
                 pm.generateWithRequired(self.zoneId)
         else:
             self.notify.debug('last minigame, handling newbies')
-            if ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY in simbase.air.holidayManager.currentHolidays or ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY_MONTH in simbase.air.holidayManager.currentHolidays:
+            if ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY in simbase.air.holidayManager.currentHolidays or \
+                    ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY_MONTH in simbase.air.holidayManager.currentHolidays:
                 votesArray = [MinigameGlobals.JellybeanTrolleyHolidayScoreMultiplier * x for x in votesArray]
             for id in self.newbieIdList:
-                pm = NewbiePurchaseManagerAI.NewbiePurchaseManagerAI(self.air, id, self.avIdList, scoreList, self.minigameId, self.trolleyZone)
+                pm = NewbiePurchaseManagerAI.NewbiePurchaseManagerAI(self.air, id, self.avIdList, scoreList,
+                                                                     self.minigameId, self.trolleyZone)
                 MinigameCreatorAI.acquireMinigameZone(self.zoneId)
                 pm.generateWithRequired(self.zoneId)
 
             if len(self.avIdList) > len(self.newbieIdList):
-                pm = PurchaseManagerAI.PurchaseManagerAI(self.air, self.avIdList, scoreList, self.minigameId, self.trolleyZone, self.newbieIdList, votesArray=votesArray, metagameRound=self.metagameRound)
+                pm = PurchaseManagerAI.PurchaseManagerAI(self.air, self.avIdList, scoreList, self.minigameId,
+                                                         self.trolleyZone, self.newbieIdList, votesArray = votesArray,
+                                                         metagameRound = self.metagameRound)
                 pm.generateWithRequired(self.zoneId)
         return
 
     def handleRegularPurchaseManager(self, scoreList):
         for id in self.newbieIdList:
-            pm = NewbiePurchaseManagerAI.NewbiePurchaseManagerAI(self.air, id, self.avIdList, scoreList, self.minigameId, self.trolleyZone)
+            pm = NewbiePurchaseManagerAI.NewbiePurchaseManagerAI(self.air, id, self.avIdList, scoreList,
+                                                                 self.minigameId, self.trolleyZone)
             MinigameCreatorAI.acquireMinigameZone(self.zoneId)
             pm.generateWithRequired(self.zoneId)
 
         if len(self.avIdList) > len(self.newbieIdList):
-            pm = PurchaseManagerAI.PurchaseManagerAI(self.air, self.avIdList, scoreList, self.minigameId, self.trolleyZone, self.newbieIdList)
+            pm = PurchaseManagerAI.PurchaseManagerAI(self.air, self.avIdList, scoreList, self.minigameId,
+                                                     self.trolleyZone, self.newbieIdList)
             pm.generateWithRequired(self.zoneId)
 
     def exitFrameworkCleanup(self):
@@ -423,7 +449,8 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
         return MinigameGlobals.getSafezoneId(self.trolleyZone)
 
     def logPerfectGame(self, avId):
-        self.air.writeServerEvent('perfectMinigame', avId, '%s|%s|%s' % (self.minigameId, self.trolleyZone, self.avIdList))
+        self.air.writeServerEvent('perfectMinigame', avId,
+                                  '%s|%s|%s' % (self.minigameId, self.trolleyZone, self.avIdList))
 
     def logAllPerfect(self):
         for avId in self.avIdList:

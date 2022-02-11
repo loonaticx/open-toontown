@@ -1,6 +1,7 @@
 from toontown.toonbase import ToontownGlobals
 from toontown.pets import PetMood, PetTraits, PetDetail
 
+
 class PetHandle:
 
     def __init__(self, avatar):
@@ -10,7 +11,7 @@ class PetHandle:
         self.ownerId = avatar.ownerId
         self.bFake = False
         self.cr = avatar.cr
-        self.traits = PetTraits.PetTraits(avatar.traitSeed, avatar.safeZone, traitValueList=avatar.traitList)
+        self.traits = PetTraits.PetTraits(avatar.traitSeed, avatar.safeZone, traitValueList = avatar.traitList)
         self._grabMood(avatar)
 
     def _grabMood(self, avatar):
@@ -46,7 +47,7 @@ class PetHandle:
         return max(0.0, t)
 
     def updateOfflineMood(self):
-        self.mood.driftMood(dt=self.getTimeSinceLastSeen(), curMood=self.lastKnownMood)
+        self.mood.driftMood(dt = self.getTimeSinceLastSeen(), curMood = self.lastKnownMood)
 
     def getDominantMood(self):
         if not hasattr(self, 'mood'):

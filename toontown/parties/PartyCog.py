@@ -15,13 +15,16 @@ from toontown.battle.BattleProps import globalPropPool
 from toontown.battle.BattleSounds import globalBattleSoundCache
 from . import PartyGlobals
 
+
 class PartyCogManager:
 
     def __init__(self):
         self.cogs = []
 
-    def generateCog(self, parentNode, bounceSpeed = 3, bounceHeight = 1, rotateSpeed = 1, heightShift = 1, xMoveSpeed = 0, xMoveDistance = 0, bounceOffset = 0):
-        cog = PartyCog(parentNode, len(self.cogs), bounceSpeed, bounceHeight, rotateSpeed, heightShift, xMoveSpeed, xMoveDistance, bounceOffset)
+    def generateCog(self, parentNode, bounceSpeed = 3, bounceHeight = 1, rotateSpeed = 1, heightShift = 1,
+                    xMoveSpeed = 0, xMoveDistance = 0, bounceOffset = 0):
+        cog = PartyCog(parentNode, len(self.cogs), bounceSpeed, bounceHeight, rotateSpeed, heightShift, xMoveSpeed,
+                       xMoveDistance, bounceOffset)
         self.cogs.append(cog)
         return cog
 
@@ -40,7 +43,8 @@ class PartyCog(FSM):
     hpText = None
     height = 7
 
-    def __init__(self, parentNode, id, bounceSpeed = 3, bounceHeight = 1, rotateSpeed = 1, heightShift = 1, xMoveSpeed = 0, xMoveDistance = 0, bounceOffset = 0):
+    def __init__(self, parentNode, id, bounceSpeed = 3, bounceHeight = 1, rotateSpeed = 1, heightShift = 1,
+                 xMoveSpeed = 0, xMoveDistance = 0, bounceOffset = 0):
         self.id = id
         FSM.__init__(self, 'PartyCogFSM-%d' % self.id)
         self.showFacingStatus = False
@@ -64,13 +68,15 @@ class PartyCog(FSM):
         self.root = NodePath('PartyCog-%d' % self.id)
         self.root.reparentTo(self.parentNode)
         path = 'phase_13/models/parties/cogPinata_'
-        self.actor = Actor(path + 'actor', {'idle': path + 'idle_anim',
-         'down': path + 'down_anim',
-         'up': path + 'up_anim',
-         'bodyHitBack': path + 'bodyHitBack_anim',
-         'bodyHitFront': path + 'bodyHitFront_anim',
-         'headHitBack': path + 'headHitBack_anim',
-         'headHitFront': path + 'headHitFront_anim'})
+        self.actor = Actor(path + 'actor', {
+            'idle': path + 'idle_anim',
+            'down': path + 'down_anim',
+            'up': path + 'up_anim',
+            'bodyHitBack': path + 'bodyHitBack_anim',
+            'bodyHitFront': path + 'bodyHitFront_anim',
+            'headHitBack': path + 'headHitBack_anim',
+            'headHitFront': path + 'headHitFront_anim'
+        })
         self.actor.reparentTo(self.root)
         self.temp_transform = Mat4()
         self.head_locator = self.actor.attachNewNode('temphead')
@@ -153,7 +159,7 @@ class PartyCog(FSM):
         taskMgr.remove('PartyCog.update-%d' % self.id)
         taskMgr.remove('PartyCog.bounceTask-%d' % self.id)
         self.clearHitInterval()
-        self.resetRollIval = self.root.hprInterval(0.5, Point3(self.root.getH(), 0.0, 0.0), blendType='easeInOut')
+        self.resetRollIval = self.root.hprInterval(0.5, Point3(self.root.getH(), 0.0, 0.0), blendType = 'easeInOut')
         self.resetRollIval.start()
         self.actor.stop()
 
@@ -165,7 +171,14 @@ class PartyCog(FSM):
         self.clearHitInterval()
         startScale = self.hole.getScale()
         endScale = Point3(5, 5, 5)
-        self.hitInterval = Sequence(LerpFunc(self.setAlongSpline, duration=1.0, fromData=self.currentT, toData=0.0), LerpScaleInterval(self.hole, duration=0.175, scale=endScale, startScale=startScale, blendType='easeIn'), Parallel(SoundInterval(self.upSound, volume=0.6, node=self.actor, cutOff=PartyGlobals.PARTY_COG_CUTOFF), ActorInterval(self.actor, 'down', loop=0)), LerpScaleInterval(self.hole, duration=0.175, scale=Point3(3, 3, 3), startScale=endScale, blendType='easeOut'))
+        self.hitInterval = Sequence(
+            LerpFunc(self.setAlongSpline, duration = 1.0, fromData = self.currentT, toData = 0.0),
+            LerpScaleInterval(self.hole, duration = 0.175, scale = endScale, startScale = startScale,
+                              blendType = 'easeIn'), Parallel(
+                SoundInterval(self.upSound, volume = 0.6, node = self.actor, cutOff = PartyGlobals.PARTY_COG_CUTOFF),
+                ActorInterval(self.actor, 'down', loop = 0)),
+            LerpScaleInterval(self.hole, duration = 0.175, scale = Point3(3, 3, 3), startScale = endScale,
+                              blendType = 'easeOut'))
         self.hitInterval.start()
 
     def exitDown(self):
@@ -178,7 +191,13 @@ class PartyCog(FSM):
         self.clearHitInterval()
         startScale = self.hole.getScale()
         endScale = Point3(5, 5, 5)
-        self.hitInterval = Sequence(LerpScaleInterval(self.hole, duration=0.175, scale=endScale, startScale=startScale, blendType='easeIn'), Parallel(SoundInterval(self.upSound, volume=0.6, node=self.actor, cutOff=PartyGlobals.PARTY_COG_CUTOFF), ActorInterval(self.actor, 'up', loop=0)), Func(self.actor.loop, 'idle'), LerpScaleInterval(self.hole, duration=0.175, scale=Point3(3, 3, 3), startScale=endScale, blendType='easeOut'))
+        self.hitInterval = Sequence(
+            LerpScaleInterval(self.hole, duration = 0.175, scale = endScale, startScale = startScale,
+                              blendType = 'easeIn'), Parallel(
+                SoundInterval(self.upSound, volume = 0.6, node = self.actor, cutOff = PartyGlobals.PARTY_COG_CUTOFF),
+                ActorInterval(self.actor, 'up', loop = 0)), Func(self.actor.loop, 'idle'),
+            LerpScaleInterval(self.hole, duration = 0.175, scale = Point3(3, 3, 3), startScale = endScale,
+                              blendType = 'easeOut'))
         self.hitInterval.start()
 
     def filterDown(self, request, args):
@@ -243,7 +262,8 @@ class PartyCog(FSM):
         taskMgr.add(self.bounce, 'PartyCog.bounceTask-%d' % self.id)
 
     def bounce(self, task):
-        self.root.setZ(math.sin((self.bounceOffset + task.time) * self.bounceSpeed) * self.bounceHeight + self.heightShift)
+        self.root.setZ(
+            math.sin((self.bounceOffset + task.time) * self.bounceSpeed) * self.bounceHeight + self.heightShift)
         return task.cont
 
     def setPos(self, position):
@@ -294,9 +314,17 @@ class PartyCog(FSM):
         def setSplatAlpha(amount):
             self.splat.setAlphaScale(amount)
 
-        self.hitInterval = Sequence(ActorInterval(self.actor, part + facing, loop=0), Func(self.actor.loop, 'idle'))
+        self.hitInterval = Sequence(ActorInterval(self.actor, part + facing, loop = 0), Func(self.actor.loop, 'idle'))
         self.hitInterval.start()
-        self.kaboomTrack = Parallel(SoundInterval(self.pieHitSound, volume=1.0, node=self.actor, cutOff=PartyGlobals.PARTY_COG_CUTOFF), Sequence(Func(self.splat.showThrough), Parallel(Sequence(LerpScaleInterval(self.splat, duration=0.175, scale=targetscale, startScale=Point3(0.1, 0.1, 0.1), blendType='easeOut'), Wait(0.175)), Sequence(Wait(0.1), LerpFunc(setSplatAlpha, duration=1.0, fromData=1.0, toData=0.0, blendType='easeOut'))), Func(self.splat.cleanup), Func(self.splat.removeNode)))
+        self.kaboomTrack = Parallel(
+            SoundInterval(self.pieHitSound, volume = 1.0, node = self.actor, cutOff = PartyGlobals.PARTY_COG_CUTOFF),
+            Sequence(Func(self.splat.showThrough), Parallel(Sequence(
+                LerpScaleInterval(self.splat, duration = 0.175, scale = targetscale, startScale = Point3(0.1, 0.1, 0.1),
+                                  blendType = 'easeOut'), Wait(0.175)), Sequence(Wait(0.1),
+                                                                                 LerpFunc(setSplatAlpha, duration = 1.0,
+                                                                                          fromData = 1.0, toData = 0.0,
+                                                                                          blendType = 'easeOut'))),
+                     Func(self.splat.cleanup), Func(self.splat.removeNode)))
         self.kaboomTrack.start()
         return
 
@@ -323,7 +351,10 @@ class PartyCog(FSM):
         self.hpText.setBillboardPointEye()
         self.hpText.setBin('fixed', 100)
         self.hpText.setPos(self.root, 0, 0, self.height / 2)
-        seq = Task.sequence(self.hpText.lerpPos(Point3(self.root.getX(render), self.root.getY(render), self.root.getZ(render) + self.height + 1.0), 0.25, blendType='easeOut'), Task.pause(0.25), self.hpText.lerpColor(Vec4(r, g, b, a), Vec4(r, g, b, 0), 0.1), Task.Task(self.__hideHitScoreTask))
+        seq = Task.sequence(self.hpText.lerpPos(
+            Point3(self.root.getX(render), self.root.getY(render), self.root.getZ(render) + self.height + 1.0), 0.25,
+            blendType = 'easeOut'), Task.pause(0.25), self.hpText.lerpColor(Vec4(r, g, b, a), Vec4(r, g, b, 0), 0.1),
+                            Task.Task(self.__hideHitScoreTask))
         taskMgr.add(seq, 'PartyCogHpText' + str(self.id))
 
     def __hideHitScoreTask(self, task):
@@ -338,6 +369,6 @@ class PartyCog(FSM):
         return
 
     def getHeadLocation(self):
-        self.actor.getJoints(jointName='head')[0].getNetTransform(self.temp_transform)
+        self.actor.getJoints(jointName = 'head')[0].getNetTransform(self.temp_transform)
         self.head_locator.setMat(self.temp_transform)
         return self.head_locator.getZ(self.root)

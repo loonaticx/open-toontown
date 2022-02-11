@@ -2,6 +2,7 @@ from .DistributedMinigameAI import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 
+
 class DistributedMinigameTemplateAI(DistributedMinigameAI):
 
     def __init__(self, air, minigameId):
@@ -10,7 +11,10 @@ class DistributedMinigameTemplateAI(DistributedMinigameAI):
         except:
             self.DistributedMinigameTemplateAI_initialized = 1
             DistributedMinigameAI.__init__(self, air, minigameId)
-            self.gameFSM = ClassicFSM.ClassicFSM('DistributedMinigameTemplateAI', [State.State('inactive', self.enterInactive, self.exitInactive, ['play']), State.State('play', self.enterPlay, self.exitPlay, ['cleanup']), State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
+            self.gameFSM = ClassicFSM.ClassicFSM('DistributedMinigameTemplateAI', [
+                State.State('inactive', self.enterInactive, self.exitInactive, ['play']),
+                State.State('play', self.enterPlay, self.exitPlay, ['cleanup']),
+                State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
             self.addChildGameFSM(self.gameFSM)
 
     def generate(self):

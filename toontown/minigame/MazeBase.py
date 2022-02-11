@@ -1,6 +1,7 @@
 from pandac.PandaModules import VBase3
 from direct.showbase.RandomNumGen import RandomNumGen
 
+
 class MazeBase:
 
     def __init__(self, model, mazeData, cellWidth, parent = None):
@@ -36,7 +37,8 @@ class MazeBase:
     def isWalkable(self, tX, tY, rejectList = ()):
         if tX <= 0 or tY <= 0 or tX >= self.width or tY >= self.height:
             return 0
-        return not self.collisionTable[tY][tX] and not self.collisionTable[tY - 1][tX] and not self.collisionTable[tY][tX - 1] and not self.collisionTable[tY - 1][tX - 1] and (tX, tY) not in rejectList
+        return not self.collisionTable[tY][tX] and not self.collisionTable[tY - 1][tX] and not self.collisionTable[tY][
+            tX - 1] and not self.collisionTable[tY - 1][tX - 1] and (tX, tY) not in rejectList
 
     def tile2world(self, TX, TY):
         return [(TX - self.originTX) * self.cellWidth, (TY - self.originTY) * self.cellWidth]
@@ -105,21 +107,21 @@ class MazeBase:
         halfWidth = int(width / 2)
         halfHeight = int(height / 2)
         quadrants = [(0,
-          0,
-          halfWidth - 1,
-          halfHeight - 1),
-         (halfWidth,
-          0,
-          width - 1,
-          halfHeight - 1),
-         (0,
-          halfHeight,
-          halfWidth - 1,
-          height - 1),
-         (halfWidth,
-          halfHeight,
-          width - 1,
-          height - 1)]
+                      0,
+                      halfWidth - 1,
+                      halfHeight - 1),
+                     (halfWidth,
+                      0,
+                      width - 1,
+                      halfHeight - 1),
+                     (0,
+                      halfHeight,
+                      halfWidth - 1,
+                      height - 1),
+                     (halfWidth,
+                      halfHeight,
+                      width - 1,
+                      height - 1)]
         spotsTaken = []
 
         def getEmptySpotInQuadrant(quadrant):

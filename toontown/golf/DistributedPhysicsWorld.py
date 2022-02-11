@@ -16,6 +16,7 @@ from toontown.golf import PhysicsWorldBase
 import random, time
 from direct.interval.SoundInterval import SoundInterval
 
+
 def scalp(vec, scal):
     vec0 = vec[0] * scal
     vec1 = vec[1] * scal
@@ -66,7 +67,8 @@ class DistributedPhysicsWorld(DistributedObject.DistributedObject, PhysicsWorldB
                     base.sfxPlayer.setCutoffDistance(240)
                     self.notify.debug('nodePath = %s' % pandaNodePathGeom)
                     windmillSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Windmill_Loop.ogg')
-                    windMillSoundInterval = SoundInterval(windmillSfx, node=pandaNodePathGeom, listenerNode=base.camera, seamlessLoop=True, volume=0.5)
+                    windMillSoundInterval = SoundInterval(windmillSfx, node = pandaNodePathGeom,
+                                                          listenerNode = base.camera, seamlessLoop = True, volume = 0.5)
                     windMillSoundInterval.loop()
                     self.physicsSfxDict[index] = (windmillSfx, windMillSoundInterval)
                     break
@@ -79,17 +81,18 @@ class DistributedPhysicsWorld(DistributedObject.DistributedObject, PhysicsWorldB
                 if odeBody == box:
                     self.notify.debug('nodePath = %s' % pandaNodePathGeom)
                     moverSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Moving_Barrier.ogg')
-                    moverSoundInterval = SoundInterval(moverSfx, node=pandaNodePathGeom, listenerNode=base.camera, seamlessLoop=True, volume=0.5)
+                    moverSoundInterval = SoundInterval(moverSfx, node = pandaNodePathGeom, listenerNode = base.camera,
+                                                       seamlessLoop = True, volume = 0.5)
                     moverSoundInterval.start()
                     self.physicsSfxDict[index] = (moverSfx, moverSoundInterval, index)
                     break
 
     def commonObjectEvent(self, key, model, type, force, event):
         self.notify.debug('commonObjectForceEvent key %s model %s type %s force %s event %s' % (key,
-         model,
-         type,
-         force,
-         event))
+                                                                                                model,
+                                                                                                type,
+                                                                                                force,
+                                                                                                event))
         if type == 4:
             if event > 0:
                 self.physicsSfxDict[key][1].start()

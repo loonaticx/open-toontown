@@ -9,6 +9,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from . import ZoneUtil
 
+
 class QuietZoneState(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('QuietZoneState')
     Disable = False
@@ -16,12 +17,18 @@ class QuietZoneState(StateData.StateData):
 
     def __init__(self, doneEvent):
         StateData.StateData.__init__(self, doneEvent)
-        self.fsm = ClassicFSM.ClassicFSM('QuietZoneState', [State.State('off', self.enterOff, self.exitOff, ['waitForQuietZoneResponse']),
-         State.State('waitForQuietZoneResponse', self.enterWaitForQuietZoneResponse, self.exitWaitForQuietZoneResponse, ['waitForZoneRedirect']),
-         State.State('waitForZoneRedirect', self.enterWaitForZoneRedirect, self.exitWaitForZoneRedirect, ['waitForSetZoneResponse']),
-         State.State('waitForSetZoneResponse', self.enterWaitForSetZoneResponse, self.exitWaitForSetZoneResponse, ['waitForSetZoneComplete']),
-         State.State('waitForSetZoneComplete', self.enterWaitForSetZoneComplete, self.exitWaitForSetZoneComplete, ['waitForLocalAvatarOnShard']),
-         State.State('waitForLocalAvatarOnShard', self.enterWaitForLocalAvatarOnShard, self.exitWaitForLocalAvatarOnShard, ['off'])], 'off', 'off')
+        self.fsm = ClassicFSM.ClassicFSM('QuietZoneState',
+                                         [State.State('off', self.enterOff, self.exitOff, ['waitForQuietZoneResponse']),
+                                          State.State('waitForQuietZoneResponse', self.enterWaitForQuietZoneResponse,
+                                                      self.exitWaitForQuietZoneResponse, ['waitForZoneRedirect']),
+                                          State.State('waitForZoneRedirect', self.enterWaitForZoneRedirect,
+                                                      self.exitWaitForZoneRedirect, ['waitForSetZoneResponse']),
+                                          State.State('waitForSetZoneResponse', self.enterWaitForSetZoneResponse,
+                                                      self.exitWaitForSetZoneResponse, ['waitForSetZoneComplete']),
+                                          State.State('waitForSetZoneComplete', self.enterWaitForSetZoneComplete,
+                                                      self.exitWaitForSetZoneComplete, ['waitForLocalAvatarOnShard']),
+                                          State.State('waitForLocalAvatarOnShard', self.enterWaitForLocalAvatarOnShard,
+                                                      self.exitWaitForLocalAvatarOnShard, ['off'])], 'off', 'off')
         self._enqueueCount = 0
         self.fsm.enterInitialState()
 
@@ -97,7 +104,7 @@ class QuietZoneState(StateData.StateData):
     def waitForDatabase(self, description):
         if base.endlessQuietZone:
             return
-        base.cr.waitForDatabaseTimeout(requestName='quietZoneState-%s' % description)
+        base.cr.waitForDatabaseTimeout(requestName = 'quietZoneState-%s' % description)
 
     def clearWaitForDatabase(self):
         base.cr.cleanupWaitingForDatabase()

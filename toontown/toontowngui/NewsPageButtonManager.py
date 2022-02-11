@@ -8,6 +8,7 @@ from direct.interval.IntervalGlobal import *
 from toontown.toonbase import TTLocalizer
 from toontown.coghq import CogHQBossBattle
 
+
 class NewsPageButtonManager(FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('NewsPageButtonManager')
 
@@ -37,17 +38,38 @@ class NewsPageButtonManager(FSM.FSM):
         newPos = VBase3(0.914, 0, 0.862)
         shtickerBookPos = VBase3(1.175, 0, -0.83)
         textScale = 0.06
-        self.newIssueButton = DirectButton(relief=None, sortOrder=DGG.BACKGROUND_SORT_INDEX - 1, image=(self.openNewNewsUp, self.openNewNewsHover, self.openNewNewsHover), text=('', TTLocalizer.EventsPageNewsTabName, TTLocalizer.EventsPageNewsTabName), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=textScale, text_font=ToontownGlobals.getInterfaceFont(), pos=newPos, scale=newScale, command=self.__handleGotoNewsButton)
-        self.gotoPrevPageButton = DirectButton(relief=None, image=(self.closeNewsUp, self.closeNewsHover, self.closeNewsHover), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=textScale, text_font=ToontownGlobals.getInterfaceFont(), pos=shtickerBookPos, scale=shtickerBookScale, command=self.__handleGotoPrevPageButton)
-        self.goto3dWorldButton = DirectButton(relief=None, image=(self.closeNewsUp, self.closeNewsHover, self.closeNewsHover), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=textScale, text_font=ToontownGlobals.getInterfaceFont(), pos=shtickerBookPos, scale=shtickerBookScale, command=self.__handleGoto3dWorldButton)
+        self.newIssueButton = DirectButton(relief = None, sortOrder = DGG.BACKGROUND_SORT_INDEX - 1,
+                                           image = (self.openNewNewsUp, self.openNewNewsHover, self.openNewNewsHover),
+                                           text = (
+                                           '', TTLocalizer.EventsPageNewsTabName, TTLocalizer.EventsPageNewsTabName),
+                                           text_fg = (1, 1, 1, 1), text_shadow = (0, 0, 0, 1), text_scale = textScale,
+                                           text_font = ToontownGlobals.getInterfaceFont(), pos = newPos,
+                                           scale = newScale, command = self.__handleGotoNewsButton)
+        self.gotoPrevPageButton = DirectButton(relief = None,
+                                               image = (self.closeNewsUp, self.closeNewsHover, self.closeNewsHover),
+                                               text_fg = (1, 1, 1, 1), text_shadow = (0, 0, 0, 1),
+                                               text_scale = textScale, text_font = ToontownGlobals.getInterfaceFont(),
+                                               pos = shtickerBookPos, scale = shtickerBookScale,
+                                               command = self.__handleGotoPrevPageButton)
+        self.goto3dWorldButton = DirectButton(relief = None,
+                                              image = (self.closeNewsUp, self.closeNewsHover, self.closeNewsHover),
+                                              text_fg = (1, 1, 1, 1), text_shadow = (0, 0, 0, 1),
+                                              text_scale = textScale, text_font = ToontownGlobals.getInterfaceFont(),
+                                              pos = shtickerBookPos, scale = shtickerBookScale,
+                                              command = self.__handleGoto3dWorldButton)
         self.hideNewIssueButton()
         self.gotoPrevPageButton.hide()
         self.goto3dWorldButton.hide()
         self.accept('newIssueOut', self.handleNewIssueOut)
         bounce1Pos = VBase3(newPos.getX(), newPos.getY(), newPos.getZ() + 0.022)
         bounce2Pos = VBase3(newPos.getX(), newPos.getY(), newPos.getZ() + 0.015)
-        bounceIval = Sequence(LerpPosInterval(self.newIssueButton, 0.1, bounce1Pos, blendType='easeOut'), LerpPosInterval(self.newIssueButton, 0.1, newPos, blendType='easeIn'), LerpPosInterval(self.newIssueButton, 0.07, bounce2Pos, blendType='easeOut'), LerpPosInterval(self.newIssueButton, 0.07, newPos, blendType='easeIn'))
-        self.__blinkIval = Sequence(Func(self.__showOpenEyes), Wait(2), bounceIval, Wait(0.5), Func(self.__showClosedEyes), Wait(0.1), Func(self.__showOpenEyes), Wait(0.1), Func(self.__showClosedEyes), Wait(0.1))
+        bounceIval = Sequence(LerpPosInterval(self.newIssueButton, 0.1, bounce1Pos, blendType = 'easeOut'),
+                              LerpPosInterval(self.newIssueButton, 0.1, newPos, blendType = 'easeIn'),
+                              LerpPosInterval(self.newIssueButton, 0.07, bounce2Pos, blendType = 'easeOut'),
+                              LerpPosInterval(self.newIssueButton, 0.07, newPos, blendType = 'easeIn'))
+        self.__blinkIval = Sequence(Func(self.__showOpenEyes), Wait(2), bounceIval, Wait(0.5),
+                                    Func(self.__showClosedEyes), Wait(0.1), Func(self.__showOpenEyes), Wait(0.1),
+                                    Func(self.__showClosedEyes), Wait(0.1))
         self.__blinkIval.loop()
         self.__blinkIval.pause()
         self.buttonsLoaded = True
@@ -149,7 +171,7 @@ class NewsPageButtonManager(FSM.FSM):
         if not self.buttonsLoaded:
             return
         self.hideAllButtons()
-        localAvatar.book.setPageBeforeNews(enterPage=False)
+        localAvatar.book.setPageBeforeNews(enterPage = False)
         self.clearGoingToNewsInfo()
 
     def enterPrevPage(self):
@@ -170,12 +192,15 @@ class NewsPageButtonManager(FSM.FSM):
             return
         if not self.buttonsLoaded:
             return
-        if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and hasattr(base.cr.playGame.getPlace(), 'fsm') and base.cr.playGame.getPlace().fsm:
+        if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and hasattr(base.cr.playGame.getPlace(),
+                                                                                    'fsm') and \
+                base.cr.playGame.getPlace().fsm:
             fsm = base.cr.playGame.getPlace().fsm
             curState = fsm.getCurrentState().getName()
             book = localAvatar.book
             if curState == 'walk':
-                if localAvatar.tutorialAck and not localAvatar.isDisguised and not isinstance(base.cr.playGame.getPlace(), CogHQBossBattle.CogHQBossBattle):
+                if localAvatar.tutorialAck and not localAvatar.isDisguised and not isinstance(
+                        base.cr.playGame.getPlace(), CogHQBossBattle.CogHQBossBattle):
                     self.request('NormalWalk')
                 else:
                     self.request('Hidden')
@@ -185,7 +210,9 @@ class NewsPageButtonManager(FSM.FSM):
                         self.request('GotoWorld')
                     else:
                         self.request('Hidden')
-                elif self.goingToNewsPageFromStickerBook or hasattr(localAvatar, 'newsPage') and localAvatar.book.isOnPage(localAvatar.newsPage):
+                elif self.goingToNewsPageFromStickerBook or hasattr(localAvatar,
+                                                                    'newsPage') and localAvatar.book.isOnPage(
+                        localAvatar.newsPage):
                     if localAvatar.tutorialAck:
                         self.request('PrevPage')
                     else:

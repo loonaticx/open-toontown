@@ -9,6 +9,7 @@ from toontown.toonbase import ToontownGlobals
 from . import VineGameGlobals
 from . import VineSpider
 
+
 class SwingVine(NodePath):
     notify = DirectNotifyGlobal.directNotify.newCategory('SwingVine')
     defaultNormal = Vec3(1, 0, 0)
@@ -137,13 +138,15 @@ class SwingVine(NodePath):
         colNode = CollisionNode('StaticVine-%d-%d' % (self.vineIndex, tubeIndex))
         bz = 0
         az = 58
-        quad = CollisionPolygon(Point3(0.25, radius + 1, bz), Point3(0.25, radius + 1, az), Point3(0.25, -radius - 1, az), Point3(0.25, -radius - 1, bz))
+        quad = CollisionPolygon(Point3(0.25, radius + 1, bz), Point3(0.25, radius + 1, az),
+                                Point3(0.25, -radius - 1, az), Point3(0.25, -radius - 1, bz))
         colNode.addSolid(quad)
         colNode.setCollideMask(ToontownGlobals.PieBitmask)
         colNode.setBounds(BoundingSphere(Point3(0, 0, 0), 10))
         self.staticVine.attachNewNode(colNode)
         colNode2 = CollisionNode('StaticVine-%d-%d' % (self.vineIndex, tubeIndex))
-        quad2 = CollisionPolygon(Point3(-0.25, -radius - 1, bz), Point3(-0.25, -radius - 1, az), Point3(-0.25, +radius + 1, az), Point3(-0.25, +radius + 1, bz))
+        quad2 = CollisionPolygon(Point3(-0.25, -radius - 1, bz), Point3(-0.25, -radius - 1, az),
+                                 Point3(-0.25, +radius + 1, az), Point3(-0.25, +radius + 1, bz))
         colNode2.addSolid(quad2)
         colNode2.setCollideMask(ToontownGlobals.PieBitmask)
         colNode2.setBounds(BoundingSphere(Point3(0, 0, 0), 10))
@@ -159,12 +162,14 @@ class SwingVine(NodePath):
             ct = CollisionTube(0, 0, az, 0, 0, bz, radius)
             ct.setTangible(0)
             colNode = CollisionNode('SwingVine-%d-%d' % (self.vineIndex, tubeIndex))
-            quad = CollisionPolygon(Point3(0.25, radius + 1, bz), Point3(0.25, radius + 1, az), Point3(0.25, -radius - 1, az), Point3(0.25, -radius - 1, bz))
+            quad = CollisionPolygon(Point3(0.25, radius + 1, bz), Point3(0.25, radius + 1, az),
+                                    Point3(0.25, -radius - 1, az), Point3(0.25, -radius - 1, bz))
             colNode.addSolid(quad)
             colNode.setCollideMask(ToontownGlobals.PieBitmask)
             colNode.setBounds(BoundingSphere(Point3(0, 0, 0), 10))
             colNode2 = CollisionNode('SwingVine-%d-%d' % (self.vineIndex, tubeIndex))
-            quad2 = CollisionPolygon(Point3(-0.25, -radius - 1, bz), Point3(-0.25, -radius - 1, az), Point3(-0.25, +radius + 1, az), Point3(-0.25, +radius + 1, bz))
+            quad2 = CollisionPolygon(Point3(-0.25, -radius - 1, bz), Point3(-0.25, -radius - 1, az),
+                                     Point3(-0.25, +radius + 1, az), Point3(-0.25, +radius + 1, bz))
             colNode2.addSolid(quad2)
             colNode2.setCollideMask(ToontownGlobals.PieBitmask)
             colNode2.setBounds(BoundingSphere(Point3(0, 0, 0), 10))
@@ -264,12 +269,15 @@ class SwingVine(NodePath):
         backX = math.cos(self.minSwingAngle) * self.cableLength
         backZ = math.sin(self.minSwingAngle) * self.cableLength
         self.bottomLink.setPos(backX, 0, backZ)
-        self.ival = Sequence(LerpFunctionInterval(self.swingForward, duration=self.period / 2.0, blendType='easeInOut'))
-        self.ival.append(LerpFunctionInterval(self.swingBack, duration=self.period / 2.0, blendType='easeInOut'))
+        self.ival = Sequence(
+            LerpFunctionInterval(self.swingForward, duration = self.period / 2.0, blendType = 'easeInOut'))
+        self.ival.append(LerpFunctionInterval(self.swingBack, duration = self.period / 2.0, blendType = 'easeInOut'))
         self.ival.loop()
         if self.hasSpider:
-            self.spiderIval = Sequence(LerpFunctionInterval(self.moveSpiderDown, duration=self.spiderPeriod / 2.0, blendType='easeInOut'))
-            self.spiderIval.append(LerpFunctionInterval(self.moveSpiderUp, duration=self.spiderPeriod / 2.0, blendType='easeInOut'))
+            self.spiderIval = Sequence(
+                LerpFunctionInterval(self.moveSpiderDown, duration = self.spiderPeriod / 2.0, blendType = 'easeInOut'))
+            self.spiderIval.append(
+                LerpFunctionInterval(self.moveSpiderUp, duration = self.spiderPeriod / 2.0, blendType = 'easeInOut'))
             self.spiderIval.loop()
 
     def stopSwing(self):
@@ -326,12 +334,12 @@ class SwingVine(NodePath):
         else:
             attachNode.setH(90)
         self.attachedToons[toonId] = [t,
-         temp,
-         Vec3(0, 0, 0),
-         offset,
-         attachNode,
-         facingRight,
-         None]
+                                      temp,
+                                      Vec3(0, 0, 0),
+                                      offset,
+                                      attachNode,
+                                      facingRight,
+                                      None]
         av = base.cr.doId2do.get(toonId)
         if av:
             av.reparentTo(attachNode)
@@ -548,14 +556,17 @@ class SwingVine(NodePath):
                 startingFrame = maxLeftFrame + framesToChopOff
                 halfDur = duration / 2.0
                 swing1Dur = (1 - framesToChopOff / numFirstHalfFrames) * halfDur
-                toonSwing1 = ActorInterval(av, 'swing', startFrame=startingFrame, endFrame=downFrame1, playRate=playRate, name='swingForward1')
-                toonSwing2 = ActorInterval(av, 'swing', startFrame=downFrame2, endFrame=maxRightFrame, playRate=playRate, name='swingForward2')
+                toonSwing1 = ActorInterval(av, 'swing', startFrame = startingFrame, endFrame = downFrame1,
+                                           playRate = playRate, name = 'swingForward1')
+                toonSwing2 = ActorInterval(av, 'swing', startFrame = downFrame2, endFrame = maxRightFrame,
+                                           playRate = playRate, name = 'swingForward2')
                 swingInterval.append(toonSwing1)
                 swingInterval.append(toonSwing2)
             else:
                 secondHalfFramesToChopOff = framesToChopOff - numFirstHalfFrames
                 startingFrame = downFrame2 + secondHalfFramesToChopOff
-                toonSwing2 = ActorInterval(av, 'swing', startFrame=startingFrame, endFrame=maxRightFrame, playRate=playRate, name='swingForward2')
+                toonSwing2 = ActorInterval(av, 'swing', startFrame = startingFrame, endFrame = maxRightFrame,
+                                           playRate = playRate, name = 'swingForward2')
                 swingInterval.append(toonSwing2)
         else:
             maxRightFrame = 35
@@ -568,7 +579,8 @@ class SwingVine(NodePath):
             numFrames = maxLeftFrame - maxRightFrame + 1
             framesToChopOff = numFrames * self.swingT
             startingFrame = maxRightFrame + framesToChopOff
-            toonSwing = ActorInterval(av, 'swing', startFrame=startingFrame, endFrame=maxLeftFrame, playRate=playRate)
+            toonSwing = ActorInterval(av, 'swing', startFrame = startingFrame, endFrame = maxLeftFrame,
+                                      playRate = playRate)
             swingInterval.append(toonSwing)
         self.attachedToons[avId][6] = swingInterval
         swingInterval.start()
@@ -589,13 +601,17 @@ class SwingVine(NodePath):
         slowedPlayRate = desiredFramesPerSecond / framesPerSecondBase
         facingRight = self.attachedToons[avId][5]
         if self.swingingForward and facingRight or not self.swingingForward and not facingRight:
-            toonSwing1 = ActorInterval(av, 'swing', startFrame=startingLeftFrame, endFrame=maxLeftFrame, playRate=slowedPlayRate)
-            toonSwing2 = ActorInterval(av, 'swing', startFrame=maxLeftFrame + 1, endFrame=maxRightFrame - startingLeftFrame, playRate=slowedPlayRate)
+            toonSwing1 = ActorInterval(av, 'swing', startFrame = startingLeftFrame, endFrame = maxLeftFrame,
+                                       playRate = slowedPlayRate)
+            toonSwing2 = ActorInterval(av, 'swing', startFrame = maxLeftFrame + 1,
+                                       endFrame = maxRightFrame - startingLeftFrame, playRate = slowedPlayRate)
             swingInterval.append(toonSwing1)
             swingInterval.append(toonSwing2)
         else:
-            toonSwing1 = ActorInterval(av, 'swing', startFrame=maxRightFrame - startingLeftFrame, endFrame=maxRightFrame, playRate=slowedPlayRate)
-            toonSwing2 = ActorInterval(av, 'swing', startFrame=maxRightFrame, endFrame=startingLeftFrame, playRate=slowedPlayRate)
+            toonSwing1 = ActorInterval(av, 'swing', startFrame = maxRightFrame - startingLeftFrame,
+                                       endFrame = maxRightFrame, playRate = slowedPlayRate)
+            toonSwing2 = ActorInterval(av, 'swing', startFrame = maxRightFrame, endFrame = startingLeftFrame,
+                                       playRate = slowedPlayRate)
             swingInterval.append(toonSwing1)
             swingInterval.append(toonSwing2)
         self.attachedToons[avId][6] = swingInterval
@@ -613,8 +629,10 @@ class SwingVine(NodePath):
         framesPerSecondBase = self.MaxNumberOfFramesInSwingAnim / self.SwingAnimPeriod
         desiredFramesPerSecond = numFrames / duration
         slowedPlayRate = desiredFramesPerSecond / framesPerSecondBase
-        toonSwing1 = ActorInterval(av, 'swing', startFrame=maxLeftFrame, endFrame=maxRightFrame, playRate=slowedPlayRate)
-        toonSwing2 = ActorInterval(av, 'swing', startFrame=maxRightFrame, endFrame=maxLeftFrame, playRate=slowedPlayRate)
+        toonSwing1 = ActorInterval(av, 'swing', startFrame = maxLeftFrame, endFrame = maxRightFrame,
+                                   playRate = slowedPlayRate)
+        toonSwing2 = ActorInterval(av, 'swing', startFrame = maxRightFrame, endFrame = maxLeftFrame,
+                                   playRate = slowedPlayRate)
         swingInterval.append(toonSwing1)
         swingInterval.append(toonSwing2)
         self.attachedToons[avId][6] = swingInterval

@@ -3,22 +3,26 @@ from . import CatalogAtticItem
 from . import CatalogItem
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
+
 WVTModelName = 0
 WVTBasePrice = 1
 WVTSkyName = 2
-WindowViewTypes = {10: ('phase_5.5/models/estate/Garden1', 900, None),
- 20: ('phase_5.5/models/estate/GardenA', 900, None),
- 30: ('phase_5.5/models/estate/GardenB', 900, None),
- 40: ('phase_5.5/models/estate/cityView', 900, None),
- 50: ('phase_5.5/models/estate/westernView', 900, None),
- 60: ('phase_5.5/models/estate/underwaterView', 900, None),
- 70: ('phase_5.5/models/estate/tropicView', 900, None),
- 80: ('phase_5.5/models/estate/spaceView', 900, None),
- 90: ('phase_5.5/models/estate/PoolView', 900, None),
- 100: ('phase_5.5/models/estate/SnowView', 900, None),
- 110: ('phase_5.5/models/estate/FarmView', 900, None),
- 120: ('phase_5.5/models/estate/IndianView', 900, None),
- 130: ('phase_5.5/models/estate/WesternMainStreetView', 900, None)}
+WindowViewTypes = {
+    10: ('phase_5.5/models/estate/Garden1', 900, None),
+    20: ('phase_5.5/models/estate/GardenA', 900, None),
+    30: ('phase_5.5/models/estate/GardenB', 900, None),
+    40: ('phase_5.5/models/estate/cityView', 900, None),
+    50: ('phase_5.5/models/estate/westernView', 900, None),
+    60: ('phase_5.5/models/estate/underwaterView', 900, None),
+    70: ('phase_5.5/models/estate/tropicView', 900, None),
+    80: ('phase_5.5/models/estate/spaceView', 900, None),
+    90: ('phase_5.5/models/estate/PoolView', 900, None),
+    100: ('phase_5.5/models/estate/SnowView', 900, None),
+    110: ('phase_5.5/models/estate/FarmView', 900, None),
+    120: ('phase_5.5/models/estate/IndianView', 900, None),
+    130: ('phase_5.5/models/estate/WesternMainStreetView', 900, None)
+}
+
 
 class CatalogWindowItem(CatalogAtticItem.CatalogAtticItem):
 

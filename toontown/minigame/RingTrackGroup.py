@@ -1,5 +1,3 @@
-
-
 class RingTrackGroup:
 
     def __init__(self, tracks, period, trackTOffsets = None, reverseFlag = 0, tOffset = 0.0):

@@ -2,6 +2,7 @@ from pandac.PandaModules import DecalEffect, DepthWriteAttrib
 from direct.directnotify import DirectNotifyGlobal
 from toontown.building import DistributedBuilding
 
+
 class DistributedAnimBuilding(DistributedBuilding.DistributedBuilding):
 
     def __init__(self, cr):

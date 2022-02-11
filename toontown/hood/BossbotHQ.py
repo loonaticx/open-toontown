@@ -3,6 +3,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.coghq import BossbotCogHQLoader
 from toontown.hood import ZoneUtil
 
+
 class BossbotHQ(CogHood.CogHood):
 
     def __init__(self, parentFSM, doneEvent, dnaStore, hoodId):

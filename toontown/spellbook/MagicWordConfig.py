@@ -31,7 +31,8 @@ MAGIC_WORD_RESPONSES = {
     "NoEffect": "This word doesn't affect anybody!",
     "BadTarget": 'Invalid target specified!',
     "NoAccessToTarget": "You don't have a high enough Access Level to target them!",
-    "NoAccessSingleTarget": "You don't have a high enough Access Level to target {}! Their Access Level: {}. Your Access Level: {}.",
+    "NoAccessSingleTarget": "You don't have a high enough Access Level to target {}! Their Access Level: {}. Your "
+                            "Access Level: {}.",
     "NoTarget": 'Unable to find a target!',
     "NoAccess": 'Your Toon does not have enough power to use this Magic Word!',
     "NotEnoughArgs": 'This command takes at least {}!',

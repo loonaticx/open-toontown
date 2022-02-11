@@ -8,10 +8,12 @@ from otp.otpgui import OTPDialog
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPRender
 from direct.directnotify import DirectNotifyGlobal
+
 try:
     import embedded
 except:
     pass
+
 
 class DisplayOptions:
     notify = DirectNotifyGlobal.directNotify.newCategory('DisplayOptions')
@@ -56,9 +58,9 @@ class DisplayOptions:
         self.settingsEmbedded = embed
         self.notify.debug('settings embedded mode=%s' % str(self.settingsEmbedded))
         self.notify.info('settingsFullScreen = %s, embedded = %s width=%d height=%d' % (self.settingsFullScreen,
-         self.settingsEmbedded,
-         self.settingsWidth,
-         self.settingsHeight))
+                                                                                        self.settingsEmbedded,
+                                                                                        self.settingsWidth,
+                                                                                        self.settingsHeight))
         return
 
     def restrictToEmbedded(self, restrict, change_display = True):
@@ -94,7 +96,9 @@ class DisplayOptions:
         self.notify.debug('  FULLSCREEN: %s' % bool(fullscreen))
         self.notify.debug('  X SIZE:     %s' % width)
         self.notify.debug('  Y SIZE:     %s' % height)
-        if self.current_pipe == pipe and bool(self.current_properties.getParentWindow()) == bool(embedded) and self.current_properties.getFullscreen() == fullscreen and self.current_properties.getXSize() == width and self.current_properties.getYSize() == height:
+        if self.current_pipe == pipe and bool(self.current_properties.getParentWindow()) == bool(
+                embedded) and self.current_properties.getFullscreen() == fullscreen and \
+                self.current_properties.getXSize() == width and self.current_properties.getYSize() == height:
             self.notify.info('DISPLAY NO CHANGE REQUIRED')
             state = True
         else:
@@ -114,7 +118,9 @@ class DisplayOptions:
                 self.notify.debug('  FULLSCREEN: %s' % bool(properties.getFullscreen()))
                 self.notify.debug('  X SIZE:     %s' % properties.getXSize())
                 self.notify.debug('  Y SIZE:     %s' % properties.getYSize())
-                if bool(properties.getParentWindow()) == bool(embedded) and properties.getFullscreen() == fullscreen and properties.getXSize() == width and properties.getYSize() == height:
+                if bool(properties.getParentWindow()) == bool(
+                        embedded) and properties.getFullscreen() == fullscreen and properties.getXSize() == width and\
+                        properties.getYSize() == height:
                     self.notify.info('DISPLAY CHANGE VERIFIED')
                     state = True
                 else:
@@ -141,11 +147,12 @@ class DisplayOptions:
         newProperties.addProperties(properties)
         if base.pipe != pipe:
             gsg = None
-        if gsg == None or currentProperties.getFullscreen() != newProperties.getFullscreen() or currentProperties.getParentWindow() != newProperties.getParentWindow():
+        if gsg == None or currentProperties.getFullscreen() != newProperties.getFullscreen() or \
+                currentProperties.getParentWindow() != newProperties.getParentWindow():
             self.notify.debug('window properties: %s' % properties)
             self.notify.debug('gsg: %s' % gsg)
             base.pipe = pipe
-            if not base.openMainWindow(props=properties, gsg=gsg, keepCamera=True):
+            if not base.openMainWindow(props = properties, gsg = gsg, keepCamera = True):
                 self.notify.warning('OPEN MAIN WINDOW FAILED')
                 return 0
             self.notify.info('OPEN MAIN WINDOW PASSED')

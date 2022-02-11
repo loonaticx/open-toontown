@@ -3,17 +3,20 @@ from direct.gui.DirectGui import DirectFrame, DGG
 from pandac.PandaModules import Vec2, VBase4F
 from pandac.PandaModules import CardMaker, NodePath
 from pandac.PandaModules import Texture, PNMImage
+
 DEFAULT_MASK_RESOLUTION = 32
 DEFAULT_RADIUS_RATIO = 0.05
 MAP_RESOLUTION = 320
 MazeRevealType = Enum(('SmoothCircle', 'HardCircle', 'Square'))
 MAZE_REVEAL_TYPE = MazeRevealType.SmoothCircle
 
+
 class MazeMapGui(DirectFrame):
     notify = directNotify.newCategory('MazeMapGui')
 
-    def __init__(self, mazeCollTable, maskResolution = None, radiusRatio = None, bgColor = (0.8, 0.8, 0.8), fgColor = (0.5, 0.5, 0.5, 1.0)):
-        DirectFrame.__init__(self, relief=None, state=DGG.NORMAL, sortOrder=DGG.BACKGROUND_SORT_INDEX)
+    def __init__(self, mazeCollTable, maskResolution = None, radiusRatio = None, bgColor = (0.8, 0.8, 0.8),
+                 fgColor = (0.5, 0.5, 0.5, 1.0)):
+        DirectFrame.__init__(self, relief = None, state = DGG.NORMAL, sortOrder = DGG.BACKGROUND_SORT_INDEX)
         self.hide()
         self._bgColor = bgColor
         self._fgColor = fgColor
@@ -31,9 +34,11 @@ class MazeMapGui(DirectFrame):
             for u in range(self._mazeWidth):
                 self._revealedCells[y].append(False)
 
-        self._revealFunctions = {MazeRevealType.SmoothCircle: self._revealSmoothCircle,
-         MazeRevealType.HardCircle: self._revealHardCircle,
-         MazeRevealType.Square: self._revealSquare}
+        self._revealFunctions = {
+            MazeRevealType.SmoothCircle: self._revealSmoothCircle,
+            MazeRevealType.HardCircle: self._revealHardCircle,
+            MazeRevealType.Square: self._revealSquare
+        }
         self._revealFunction = MAZE_REVEAL_TYPE
         self.map = self._createMapTextureCard()
         self.map.reparentTo(self)
@@ -58,7 +63,8 @@ class MazeMapGui(DirectFrame):
                     self._drawSquare(mapImage, int(ax), int(ay), 10, fgColor)
 
         mapTexture = Texture('mapTexture')
-        mapTexture.setupTexture(Texture.TT2dTexture, self._maskResolution, self._maskResolution, 1, Texture.TUnsignedByte, Texture.FRgba)
+        mapTexture.setupTexture(Texture.TT2dTexture, self._maskResolution, self._maskResolution, 1,
+                                Texture.TUnsignedByte, Texture.FRgba)
         mapTexture.setMinfilter(Texture.FTLinear)
         mapTexture.load(mapImage)
         mapTexture.setWrapU(Texture.WMClamp)
@@ -78,7 +84,8 @@ class MazeMapGui(DirectFrame):
                 self._maskImage.setXelA(x, y, 0, 0, 0, 1)
 
         self.maskTexture = Texture('maskTexture')
-        self.maskTexture.setupTexture(Texture.TT2dTexture, self._maskResolution, self._maskResolution, 1, Texture.TUnsignedByte, Texture.FRgba)
+        self.maskTexture.setupTexture(Texture.TT2dTexture, self._maskResolution, self._maskResolution, 1,
+                                      Texture.TUnsignedByte, Texture.FRgba)
         self.maskTexture.setMinfilter(Texture.FTLinear)
         self.maskTexture.setWrapU(Texture.WMClamp)
         self.maskTexture.setWrapV(Texture.WMClamp)

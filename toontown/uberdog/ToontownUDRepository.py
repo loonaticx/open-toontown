@@ -14,7 +14,7 @@ class ToontownUDRepository(ToontownInternalRepository):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownUDRepository')
 
     def __init__(self, baseChannel, serverId):
-        ToontownInternalRepository.__init__(self, baseChannel, serverId, dcSuffix='UD')
+        ToontownInternalRepository.__init__(self, baseChannel, serverId, dcSuffix = 'UD')
         self.toontownTimeManager = None
         self.astronLoginManager = None
 
@@ -38,8 +38,8 @@ class ToontownUDRepository(ToontownInternalRepository):
 
     def createLocals(self):
         # Create our Toontown time manager...
-        self.toontownTimeManager = ToontownTimeManager(serverTimeUponLogin=int(time.time()),
-                                                       globalClockRealTimeUponLogin=globalClock.getRealTime())
+        self.toontownTimeManager = ToontownTimeManager(serverTimeUponLogin = int(time.time()),
+                                                       globalClockRealTimeUponLogin = globalClock.getRealTime())
 
     def createGlobals(self):
         if __astron__:

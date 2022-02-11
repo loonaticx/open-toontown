@@ -13,8 +13,10 @@ from otp.level import LevelConstants
 from toontown.toonbase import TTLocalizer
 from toontown.coghq import FactoryCameraViews
 from direct.controls.ControlManager import CollisionHandlerRayStart
+
 if __dev__:
     from otp.level import EditorGlobals
+
 
 class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactory')
@@ -31,7 +33,7 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
         base.localAvatar.physControls.setCollisionRayHeight(10.0)
 
     def createEntityCreator(self):
-        return FactoryEntityCreator.FactoryEntityCreator(level=self)
+        return FactoryEntityCreator.FactoryEntityCreator(level = self)
 
     def generate(self):
         self.notify.debug('generate')
@@ -91,7 +93,8 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
 
         self.acceptOnce(firstSetZoneDoneEvent, handleFirstSetZoneDone)
         modelCount = len(levelSpec.getAllEntIds())
-        loader.beginBulkLoad('factory', TTLocalizer.HeadingToFactoryTitle % TTLocalizer.FactoryNames[self.factoryId], modelCount, 1, TTLocalizer.TIP_COGHQ)
+        loader.beginBulkLoad('factory', TTLocalizer.HeadingToFactoryTitle % TTLocalizer.FactoryNames[self.factoryId],
+                             modelCount, 1, TTLocalizer.TIP_COGHQ)
         DistributedLevel.DistributedLevel.privGotSpec(self, levelSpec)
         loader.endBulkLoad('factory')
 
@@ -99,7 +102,8 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
             pos = base.localAvatar.getPos(self.getZoneNode(self.lastToonZone))
             h = base.localAvatar.getH(self.getZoneNode(self.lastToonZone))
             print('factory pos: %s, h: %s, zone %s' % (repr(pos), h, self.lastToonZone))
-            posStr = 'X: %.3f' % pos[0] + '\nY: %.3f' % pos[1] + '\nZ: %.3f' % pos[2] + '\nH: %.3f' % h + '\nZone: %s' % str(self.lastToonZone)
+            posStr = 'X: %.3f' % pos[0] + '\nY: %.3f' % pos[1] + '\nZ: %.3f' % pos[
+                2] + '\nH: %.3f' % h + '\nZone: %s' % str(self.lastToonZone)
             base.localAvatar.setChatAbsolute(posStr, CFThought | CFTimeout)
 
         self.accept('f2', printPos)

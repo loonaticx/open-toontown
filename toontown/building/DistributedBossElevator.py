@@ -13,6 +13,7 @@ from toontown.hood import ZoneUtil
 from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TTDialog
 
+
 class DistributedBossElevator(DistributedElevatorExt.DistributedElevatorExt):
 
     def __init__(self, cr):
@@ -63,11 +64,13 @@ class DistributedBossElevator(DistributedElevatorExt.DistributedElevatorExt):
     def setBossOfficeZone(self, zoneId):
         if self.localToonOnBoard:
             hoodId = self.cr.playGame.hood.hoodId
-            doneStatus = {'loader': 'cogHQLoader',
-             'where': 'cogHQBossBattle',
-             'how': 'movie',
-             'zoneId': zoneId,
-             'hoodId': hoodId}
+            doneStatus = {
+                'loader': 'cogHQLoader',
+                'where': 'cogHQBossBattle',
+                'how': 'movie',
+                'zoneId': zoneId,
+                'hoodId': hoodId
+            }
             self.cr.playGame.getPlace().elevator.signalDone(doneStatus)
 
     def setBossOfficeZoneForce(self, zoneId):
@@ -75,15 +78,18 @@ class DistributedBossElevator(DistributedElevatorExt.DistributedElevatorExt):
         if place:
             place.fsm.request('elevator', [self, 1])
             hoodId = self.cr.playGame.hood.hoodId
-            doneStatus = {'loader': 'cogHQLoader',
-             'where': 'cogHQBossBattle',
-             'how': 'movie',
-             'zoneId': zoneId,
-             'hoodId': hoodId}
+            doneStatus = {
+                'loader': 'cogHQLoader',
+                'where': 'cogHQBossBattle',
+                'how': 'movie',
+                'zoneId': zoneId,
+                'hoodId': hoodId
+            }
             if hasattr(place, 'elevator') and place.elevator:
                 place.elevator.signalDone(doneStatus)
             else:
-                self.notify.warning("setMintInteriorZoneForce: Couldn't find playGame.getPlace().elevator, zoneId: %s" % zoneId)
+                self.notify.warning(
+                    "setMintInteriorZoneForce: Couldn't find playGame.getPlace().elevator, zoneId: %s" % zoneId)
         else:
             self.notify.warning("setBossOfficeZoneForce: Couldn't find playGame.getPlace(), zoneId: %s" % zoneId)
 

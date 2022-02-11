@@ -3,13 +3,14 @@ from direct.gui.DirectGui import DirectFrame, DirectLabel
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownIntervals
 
+
 class LaffMeter(DirectFrame):
     deathColor = Vec4(0.58039216, 0.80392157, 0.34117647, 1.0)
 
     def __init__(self, avdna, hp, maxHp):
-        DirectFrame.__init__(self, relief=None, sortOrder=50)
+        DirectFrame.__init__(self, relief = None, sortOrder = 50)
         self.initialiseoptions(LaffMeter)
-        self.container = DirectFrame(parent=self, relief=None)
+        self.container = DirectFrame(parent = self, relief = None)
         self.style = avdna
         self.av = None
         self.hp = hp
@@ -59,30 +60,32 @@ class LaffMeter(DirectFrame):
             self.container['image_color'] = self.color
             self.resetFrameSize()
             self.setScale(0.1)
-            self.frown = DirectFrame(parent=self.container, relief=None, image=gui.find('**/frown'))
-            self.smile = DirectFrame(parent=self.container, relief=None, image=gui.find('**/smile'))
-            self.eyes = DirectFrame(parent=self.container, relief=None, image=gui.find('**/eyes'))
-            self.openSmile = DirectFrame(parent=self.container, relief=None, image=gui.find('**/open_smile'))
-            self.tooth1 = DirectFrame(parent=self.openSmile, relief=None, image=gui.find('**/tooth_1'))
-            self.tooth2 = DirectFrame(parent=self.openSmile, relief=None, image=gui.find('**/tooth_2'))
-            self.tooth3 = DirectFrame(parent=self.openSmile, relief=None, image=gui.find('**/tooth_3'))
-            self.tooth4 = DirectFrame(parent=self.openSmile, relief=None, image=gui.find('**/tooth_4'))
-            self.tooth5 = DirectFrame(parent=self.openSmile, relief=None, image=gui.find('**/tooth_5'))
-            self.tooth6 = DirectFrame(parent=self.openSmile, relief=None, image=gui.find('**/tooth_6'))
-            self.maxLabel = DirectLabel(parent=self.eyes, relief=None, pos=(0.442, 0, 0.051), text='120', text_scale=0.4, text_font=ToontownGlobals.getInterfaceFont())
-            self.hpLabel = DirectLabel(parent=self.eyes, relief=None, pos=(-0.398, 0, 0.051), text='120', text_scale=0.4, text_font=ToontownGlobals.getInterfaceFont())
+            self.frown = DirectFrame(parent = self.container, relief = None, image = gui.find('**/frown'))
+            self.smile = DirectFrame(parent = self.container, relief = None, image = gui.find('**/smile'))
+            self.eyes = DirectFrame(parent = self.container, relief = None, image = gui.find('**/eyes'))
+            self.openSmile = DirectFrame(parent = self.container, relief = None, image = gui.find('**/open_smile'))
+            self.tooth1 = DirectFrame(parent = self.openSmile, relief = None, image = gui.find('**/tooth_1'))
+            self.tooth2 = DirectFrame(parent = self.openSmile, relief = None, image = gui.find('**/tooth_2'))
+            self.tooth3 = DirectFrame(parent = self.openSmile, relief = None, image = gui.find('**/tooth_3'))
+            self.tooth4 = DirectFrame(parent = self.openSmile, relief = None, image = gui.find('**/tooth_4'))
+            self.tooth5 = DirectFrame(parent = self.openSmile, relief = None, image = gui.find('**/tooth_5'))
+            self.tooth6 = DirectFrame(parent = self.openSmile, relief = None, image = gui.find('**/tooth_6'))
+            self.maxLabel = DirectLabel(parent = self.eyes, relief = None, pos = (0.442, 0, 0.051), text = '120',
+                                        text_scale = 0.4, text_font = ToontownGlobals.getInterfaceFont())
+            self.hpLabel = DirectLabel(parent = self.eyes, relief = None, pos = (-0.398, 0, 0.051), text = '120',
+                                       text_scale = 0.4, text_font = ToontownGlobals.getInterfaceFont())
             self.teeth = [self.tooth6,
-             self.tooth5,
-             self.tooth4,
-             self.tooth3,
-             self.tooth2,
-             self.tooth1]
+                          self.tooth5,
+                          self.tooth4,
+                          self.tooth3,
+                          self.tooth2,
+                          self.tooth1]
             self.fractions = [0.0,
-             0.166666,
-             0.333333,
-             0.5,
-             0.666666,
-             0.833333]
+                              0.166666,
+                              0.333333,
+                              0.5,
+                              0.666666,
+                              0.833333]
         gui.removeNode()
         return
 

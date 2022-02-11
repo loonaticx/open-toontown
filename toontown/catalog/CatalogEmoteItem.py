@@ -3,7 +3,9 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
+
 LoyaltyEmoteItems = (20, 21, 22, 23, 24)
+
 
 class CatalogEmoteItem(CatalogItem.CatalogItem):
     sequenceNumber = 0
@@ -18,7 +20,8 @@ class CatalogEmoteItem(CatalogItem.CatalogItem):
         return 1
 
     def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
+        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in \
+                avatar.awardMailboxContents or self in avatar.onAwardOrder:
             return 1
         if self.emoteIndex >= len(avatar.emoteAccess):
             return 0
@@ -54,22 +57,22 @@ class CatalogEmoteItem(CatalogItem.CatalogItem):
         self.hasPicture = True
         if self.emoteIndex in Emote.globalEmote.getHeadEmotes():
             toon = ToonHead.ToonHead()
-            toon.setupHead(avatar.style, forGui=1)
+            toon.setupHead(avatar.style, forGui = 1)
         else:
             toon = Toon.Toon()
             toon.setDNA(avatar.style)
             toon.loop('neutral')
         toon.setH(180)
         model, ival = self.makeFrameModel(toon, 0)
-        track, duration = Emote.globalEmote.doEmote(toon, self.emoteIndex, volume=self.volume)
+        track, duration = Emote.globalEmote.doEmote(toon, self.emoteIndex, volume = self.volume)
         if duration == None:
             duration = 0
         name = 'emote-item-%s' % self.sequenceNumber
         CatalogEmoteItem.sequenceNumber += 1
         if track != None:
-            track = Sequence(Sequence(track, duration=0), Wait(duration + 2), name=name)
+            track = Sequence(Sequence(track, duration = 0), Wait(duration + 2), name = name)
         else:
-            track = Sequence(Func(Emote.globalEmote.doEmote, toon, self.emoteIndex), Wait(duration + 4), name=name)
+            track = Sequence(Func(Emote.globalEmote.doEmote, toon, self.emoteIndex), Wait(duration + 4), name = name)
         self.pictureToon = toon
         return (model, track)
 
@@ -81,15 +84,15 @@ class CatalogEmoteItem(CatalogItem.CatalogItem):
         self.volume = volume
         if not hasattr(self, 'pictureToon'):
             return Sequence()
-        track, duration = Emote.globalEmote.doEmote(self.pictureToon, self.emoteIndex, volume=self.volume)
+        track, duration = Emote.globalEmote.doEmote(self.pictureToon, self.emoteIndex, volume = self.volume)
         if duration == None:
             duration = 0
         name = 'emote-item-%s' % self.sequenceNumber
         CatalogEmoteItem.sequenceNumber += 1
         if track != None:
-            track = Sequence(Sequence(track, duration=0), Wait(duration + 2), name=name)
+            track = Sequence(Sequence(track, duration = 0), Wait(duration + 2), name = name)
         else:
-            track = Sequence(Func(Emote.globalEmote.doEmote, toon, self.emoteIndex), Wait(duration + 4), name=name)
+            track = Sequence(Func(Emote.globalEmote.doEmote, toon, self.emoteIndex), Wait(duration + 4), name = name)
         return track
 
     def cleanupPicture(self):

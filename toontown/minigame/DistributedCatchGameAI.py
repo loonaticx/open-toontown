@@ -5,6 +5,7 @@ from direct.fsm import State
 from . import CatchGameGlobals
 from . import MinigameGlobals
 
+
 class DistributedCatchGameAI(DistributedMinigameAI):
 
     def __init__(self, air, minigameId):
@@ -13,7 +14,10 @@ class DistributedCatchGameAI(DistributedMinigameAI):
         except:
             self.DistributedCatchGameAI_initialized = 1
             DistributedMinigameAI.__init__(self, air, minigameId)
-            self.gameFSM = ClassicFSM.ClassicFSM('DistributedCatchGameAI', [State.State('inactive', self.enterInactive, self.exitInactive, ['play']), State.State('play', self.enterPlay, self.exitPlay, ['cleanup']), State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
+            self.gameFSM = ClassicFSM.ClassicFSM('DistributedCatchGameAI', [
+                State.State('inactive', self.enterInactive, self.exitInactive, ['play']),
+                State.State('play', self.enterPlay, self.exitPlay, ['cleanup']),
+                State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
             self.addChildGameFSM(self.gameFSM)
 
     def generate(self):
@@ -78,7 +82,9 @@ class DistributedCatchGameAI(DistributedMinigameAI):
             self.notify.debug('handleTimeout: avatars %s did not report "done"' % avIds)
             self.setGameAbort()
 
-        self.doneBarrier = ToonBarrier('waitClientsDone', self.uniqueName('waitClientsDone'), self.avIdList, CatchGameGlobals.GameDuration + MinigameGlobals.latencyTolerance, allToonsDone, handleTimeout)
+        self.doneBarrier = ToonBarrier('waitClientsDone', self.uniqueName('waitClientsDone'), self.avIdList,
+                                       CatchGameGlobals.GameDuration + MinigameGlobals.latencyTolerance, allToonsDone,
+                                       handleTimeout)
 
     def exitPlay(self):
         del self.caughtList

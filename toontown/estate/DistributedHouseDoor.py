@@ -13,6 +13,7 @@ from toontown.suit import Suit
 from toontown.building import FADoorCodes
 from toontown.building import DoorTypes
 
+
 class DistributedHouseDoor(DistributedDoor.DistributedDoor):
 
     def __init__(self, cr):
@@ -101,7 +102,10 @@ class DistributedHouseDoor(DistributedDoor.DistributedDoor):
         else:
             h = -100
         self.finishDoorTrack()
-        self.doorTrack = Sequence(LerpHprInterval(nodePath=rightDoor, duration=1.0, hpr=VBase3(0, 0, 0), startHpr=VBase3(h, 0, 0), other=otherNP, blendType='easeInOut'), Func(doorFrameHoleRight.hide), Func(self.hideIfHasFlat, rightDoor), SoundInterval(self.closeSfx, node=rightDoor), name=trackName)
+        self.doorTrack = Sequence(
+            LerpHprInterval(nodePath = rightDoor, duration = 1.0, hpr = VBase3(0, 0, 0), startHpr = VBase3(h, 0, 0),
+                            other = otherNP, blendType = 'easeInOut'), Func(doorFrameHoleRight.hide),
+            Func(self.hideIfHasFlat, rightDoor), SoundInterval(self.closeSfx, node = rightDoor), name = trackName)
         self.doorTrack.start(ts)
         if hasattr(self, 'done'):
             base.cr.playGame.hood.loader.setHouse(self.houseId)
@@ -110,14 +114,16 @@ class DistributedHouseDoor(DistributedDoor.DistributedDoor):
                 whereTo = 'house'
             else:
                 whereTo = 'estate'
-            request = {'loader': 'safeZoneLoader',
-             'where': whereTo,
-             'how': 'doorIn',
-             'hoodId': ToontownGlobals.MyEstate,
-             'zoneId': zoneId,
-             'shardId': None,
-             'avId': -1,
-             'allowRedirect': 0,
-             'doorDoId': self.otherDoId}
+            request = {
+                'loader': 'safeZoneLoader',
+                'where': whereTo,
+                'how': 'doorIn',
+                'hoodId': ToontownGlobals.MyEstate,
+                'zoneId': zoneId,
+                'shardId': None,
+                'avId': -1,
+                'allowRedirect': 0,
+                'doorDoId': self.otherDoId
+            }
             messenger.send('doorDoneEvent', [request])
         return

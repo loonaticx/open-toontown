@@ -5,6 +5,7 @@ from otp.ai.AIZoneData import AIZoneData
 from toontown.toonbase import ToontownGlobals
 from toontown.pets import PetConstants
 
+
 def getStartLookingAtOtherEvent(lookingAvId):
     return 'PetLookerAI-%s-startLookingAtOther' % lookingAvId
 
@@ -65,7 +66,8 @@ class PetLookerAI:
                 self._handleLookingAtOtherStop(otherId)
 
             if len(self.others):
-                PetLookerAI.notify.warning('%s: self.others still not empty: %s' % (self.doId, list(self.others.keys())))
+                PetLookerAI.notify.warning(
+                    '%s: self.others still not empty: %s' % (self.doId, list(self.others.keys())))
                 self.others = {}
         self._destroyPetLookSphere()
         self.__collNode.removeNode()

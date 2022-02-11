@@ -1,6 +1,7 @@
 from otp.level import DistributedEntityAI
 from direct.directnotify import DirectNotifyGlobal
 
+
 class DistributedCrushableEntityAI(DistributedEntityAI.DistributedEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCrushableEntityAI')
 
@@ -33,7 +34,7 @@ class DistributedCrushableEntityAI(DistributedEntityAI.DistributedEntityAI):
     def attachToGrid(self):
         if self.gridId is not None:
 
-            def setGrid(gridId=self.gridId, self=self):
+            def setGrid(gridId = self.gridId, self = self):
                 grid = self.level.entities.get(gridId, None)
                 if grid:
                     self.grid = grid

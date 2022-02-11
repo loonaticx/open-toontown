@@ -10,6 +10,7 @@ from . import ToonInteriorColors
 import pickle
 from toontown.toonbase import TTLocalizer
 
+
 class DistributedHQInterior(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
@@ -117,9 +118,9 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
         trophyStar = self.buildTrophyStar()
         trophyStar.reparentTo(row)
         return (row,
-         nameText,
-         scoreText,
-         trophyStar)
+                nameText,
+                scoreText,
+                trophyStar)
 
     def setLeaderBoard(self, leaderData):
         avIds, names, scores = pickle.loads(leaderData)

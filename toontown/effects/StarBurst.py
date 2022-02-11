@@ -4,6 +4,7 @@ from direct.particles import ParticleEffect, Particles, ForceGroup
 from .EffectController import EffectController
 from .PooledEffect import PooledEffect
 
+
 class StarBurst(PooledEffect, EffectController):
 
     def __init__(self):
@@ -50,7 +51,8 @@ class StarBurst(PooledEffect, EffectController):
         self.p0.factory.setAngularVelocitySpread(0.0)
         self.p0.renderer.setAlphaMode(BaseParticleRenderer.PRALPHAOUT)
         self.p0.renderer.setUserAlpha(1.0)
-        self.p0.renderer.setColorBlendMode(ColorBlendAttrib.MAdd, ColorBlendAttrib.OIncomingAlpha, ColorBlendAttrib.OOne)
+        self.p0.renderer.setColorBlendMode(ColorBlendAttrib.MAdd, ColorBlendAttrib.OIncomingAlpha,
+                                           ColorBlendAttrib.OOne)
         self.p0.renderer.setFromNode(self.card)
         self.p0.renderer.setColor(Vec4(1.0, 1.0, 1.0, 1.0))
         self.p0.renderer.setXScaleFlag(1)
@@ -68,7 +70,9 @@ class StarBurst(PooledEffect, EffectController):
         self.setEffectColor(self.effectColor)
 
     def createTrack(self):
-        self.track = Sequence(Func(self.p0.setBirthRate, 0.04), Func(self.p0.clearToInitial), Func(self.f.start, self, self), Wait(0.2), Func(self.p0.setBirthRate, 100.0), Wait(2.0), Func(self.cleanUpEffect))
+        self.track = Sequence(Func(self.p0.setBirthRate, 0.04), Func(self.p0.clearToInitial),
+                              Func(self.f.start, self, self), Wait(0.2), Func(self.p0.setBirthRate, 100.0), Wait(2.0),
+                              Func(self.cleanUpEffect))
 
     def setEffectScale(self, scale):
         self.effectScale = scale

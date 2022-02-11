@@ -4,6 +4,7 @@ from otp.speedchat.SCMenuHolder import SCMenuHolder
 from toontown.chat import ResistanceChat
 from .TTSCResistanceTerminal import TTSCResistanceTerminal
 
+
 class TTSCResistanceMenu(SCMenu):
 
     def __init__(self):

@@ -5,17 +5,21 @@ from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
 from otp.otpbase.OTPLocalizer import SpeedChatStaticText
 from toontown.speedchat.TTSCIndexedTerminal import TTSCIndexedTerminal
 from otp.otpbase import OTPLocalizer
+
 VictoryPartiesMenu = [(OTPLocalizer.VictoryPartiesMenuSections[1], [30350,
-   30351,
-   30352,
-   30353,
-   30354]), (OTPLocalizer.VictoryPartiesMenuSections[2], [30355,
-   30356,
-   30357,
-   30358,
-   30359,
-   30360,
-   30361]), (OTPLocalizer.VictoryPartiesMenuSections[0], [])]
+                                                                    30351,
+                                                                    30352,
+                                                                    30353,
+                                                                    30354]),
+                      (OTPLocalizer.VictoryPartiesMenuSections[2], [30355,
+                                                                    30356,
+                                                                    30357,
+                                                                    30358,
+                                                                    30359,
+                                                                    30360,
+                                                                    30361]),
+                      (OTPLocalizer.VictoryPartiesMenuSections[0], [])]
+
 
 class TTSCVictoryPartiesMenu(SCMenu):
 

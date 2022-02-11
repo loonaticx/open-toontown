@@ -10,6 +10,7 @@ from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import BattleBase
 
+
 class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
 
     def __init__(self, air, bldg, avIds):
@@ -17,7 +18,7 @@ class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
         self.countdownTime = simbase.config.GetFloat('int-elevator-timeout', INTERIOR_ELEVATOR_COUNTDOWN_TIME)
         self.avIds = copy.copy(avIds)
         for avId in avIds:
-            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleAllAvsUnexpectedExit, extraArgs=[avId])
+            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleAllAvsUnexpectedExit, extraArgs = [avId])
 
     def checkBoard(self, av):
         result = 0
@@ -27,7 +28,7 @@ class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
             result = DistributedElevatorAI.DistributedElevatorAI.checkBoard(self, av)
         return result
 
-    def acceptBoarder(self, avId, seatIndex, wantBoardingShow=0):
+    def acceptBoarder(self, avId, seatIndex, wantBoardingShow = 0):
         DistributedElevatorAI.DistributedElevatorAI.acceptBoarder(self, avId, seatIndex, wantBoardingShow)
         self.__closeIfNecessary()
 
@@ -64,8 +65,9 @@ class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
         else:
             self.clearFullNow(seatIndex)
             self.sendUpdate('emptySlot' + str(seatIndex), [
-             avId, 0, globalClockDelta.getRealNetworkTime(), self.countdownTime])
-            taskMgr.doMethodLater(TOON_EXIT_ELEVATOR_TIME, self.clearEmptyNow, self.uniqueName('clearEmpty-%s' % seatIndex), extraArgs=(seatIndex,))
+                avId, 0, globalClockDelta.getRealNetworkTime(), self.countdownTime])
+            taskMgr.doMethodLater(TOON_EXIT_ELEVATOR_TIME, self.clearEmptyNow,
+                                  self.uniqueName('clearEmpty-%s' % seatIndex), extraArgs = (seatIndex,))
         return
 
     def d_forcedExit(self, avId):
@@ -83,7 +85,8 @@ class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
 
     def enterOpening(self):
         DistributedElevatorAI.DistributedElevatorAI.enterOpening(self)
-        taskMgr.doMethodLater(ElevatorData[ELEVATOR_NORMAL]['openTime'], self.waitCountdownTask, self.uniqueName('opening-timer'))
+        taskMgr.doMethodLater(ElevatorData[ELEVATOR_NORMAL]['openTime'], self.waitCountdownTask,
+                              self.uniqueName('opening-timer'))
 
     def waitCountdownTask(self, task):
         self.fsm.request('waitCountdown')
@@ -91,7 +94,8 @@ class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
 
     def enterWaitCountdown(self):
         DistributedElevatorAI.DistributedElevatorAI.enterWaitCountdown(self)
-        taskMgr.doMethodLater(self.countdownTime + BattleBase.SERVER_BUFFER_TIME, self.timeToGoTask, self.uniqueName('countdown-timer'))
+        taskMgr.doMethodLater(self.countdownTime + BattleBase.SERVER_BUFFER_TIME, self.timeToGoTask,
+                              self.uniqueName('countdown-timer'))
 
     def timeToGoTask(self, task):
         self.allAboard()
@@ -126,7 +130,8 @@ class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
 
     def enterClosing(self):
         DistributedElevatorAI.DistributedElevatorAI.enterClosing(self)
-        taskMgr.doMethodLater(ElevatorData[ELEVATOR_NORMAL]['closeTime'] + BattleBase.SERVER_BUFFER_TIME, self.elevatorClosedTask, self.uniqueName('closing-timer'))
+        taskMgr.doMethodLater(ElevatorData[ELEVATOR_NORMAL]['closeTime'] + BattleBase.SERVER_BUFFER_TIME,
+                              self.elevatorClosedTask, self.uniqueName('closing-timer'))
 
     def elevatorClosedTask(self, task):
         self.fsm.request('closed')

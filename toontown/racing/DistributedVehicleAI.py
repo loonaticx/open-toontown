@@ -5,8 +5,10 @@ from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedSmoothNodeAI
 from direct.fsm import FSM
 from direct.task import Task
+
 if (__debug__):
     import pdb
+
 
 class DistributedVehicleAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedVehicleAI')
@@ -74,28 +76,28 @@ class DistributedVehicleAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, FSM.
     def enterControlled(self, avId):
         self.driverId = avId
         fieldList = ['setComponentL',
-         'setComponentX',
-         'setComponentY',
-         'setComponentZ',
-         'setComponentH',
-         'setComponentP',
-         'setComponentR',
-         'setComponentT',
-         'setSmStop',
-         'setSmH',
-         'setSmZ',
-         'setSmXY',
-         'setSmXZ',
-         'setSmPos',
-         'setSmHpr',
-         'setSmXYH',
-         'setSmXYZH',
-         'setSmPosHpr',
-         'setSmPosHprL',
-         'clearSmoothing',
-         'suggestResync',
-         'returnResync']
-        self.air.setAllowClientSend(avId, self, fieldNameList=fieldList)
+                     'setComponentX',
+                     'setComponentY',
+                     'setComponentZ',
+                     'setComponentH',
+                     'setComponentP',
+                     'setComponentR',
+                     'setComponentT',
+                     'setSmStop',
+                     'setSmH',
+                     'setSmZ',
+                     'setSmXY',
+                     'setSmXZ',
+                     'setSmPos',
+                     'setSmHpr',
+                     'setSmXYH',
+                     'setSmXYZH',
+                     'setSmPosHpr',
+                     'setSmPosHprL',
+                     'clearSmoothing',
+                     'suggestResync',
+                     'returnResync']
+        self.air.setAllowClientSend(avId, self, fieldNameList = fieldList)
         self.d_setState('C', self.driverId)
 
     def exitControlled(self):

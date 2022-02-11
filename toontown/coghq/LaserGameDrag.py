@@ -3,6 +3,7 @@ from direct.distributed import ClockDelta
 from direct.task import Task
 import random
 
+
 class LaserGameDrag(LaserGameBase.LaserGameBase):
 
     def __init__(self, funcSuccess, funcFail, funcSendGrid, funcSetGrid):

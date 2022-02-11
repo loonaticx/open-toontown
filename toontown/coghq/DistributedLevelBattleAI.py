@@ -7,17 +7,20 @@ from toontown.battle.BattleBase import *
 from . import CogDisguiseGlobals
 from direct.showbase.PythonUtil import addListsByValue
 
+
 class DistributedLevelBattleAI(DistributedBattleAI.DistributedBattleAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLevelBattleAI')
 
-    def __init__(self, air, battleMgr, pos, suit, toonId, zoneId, level, battleCellId, winState, roundCallback=None, finishCallback=None, maxSuits=4):
+    def __init__(self, air, battleMgr, pos, suit, toonId, zoneId, level, battleCellId, winState, roundCallback = None,
+                 finishCallback = None, maxSuits = 4):
         self.blocker = None
         self.level = level
         self.battleCellId = battleCellId
         self.winState = winState
         self.roundCallback = roundCallback
         self.suitTrack = suit.dna.dept
-        DistributedBattleAI.DistributedBattleAI.__init__(self, air, battleMgr, pos, suit, toonId, zoneId, finishCallback, maxSuits, tutorialFlag=0, levelFlag=1)
+        DistributedBattleAI.DistributedBattleAI.__init__(self, air, battleMgr, pos, suit, toonId, zoneId,
+                                                         finishCallback, maxSuits, tutorialFlag = 0, levelFlag = 1)
         isBossBattle = 0
         for suit in self.battleMgr.level.planner.battleCellId2suits[battleCellId]:
             if suit.boss:
@@ -64,7 +67,7 @@ class DistributedLevelBattleAI(DistributedBattleAI.DistributedBattleAI):
     def storeSuitsKilledThisBattle(self):
         self.suitsKilledPerFloor.append(self.suitsKilledThisBattle)
 
-    def resume(self, topFloor=0):
+    def resume(self, topFloor = 0):
         if len(self.suits) == 0:
             avList = []
             for toonId in self.activeToons:
@@ -86,7 +89,8 @@ class DistributedLevelBattleAI(DistributedBattleAI.DistributedBattleAI):
         else:
             if self.resumeNeedUpdate == 1:
                 self.d_setMembers()
-                if len(self.resumeDeadSuits) > 0 and self.resumeLastActiveSuitDied == 0 or len(self.resumeDeadToons) > 0:
+                if len(self.resumeDeadSuits) > 0 and self.resumeLastActiveSuitDied == 0 or len(
+                        self.resumeDeadToons) > 0:
                     self.needAdjust = 1
             self.setState('WaitForJoin')
         self.resumeNeedUpdate = 0

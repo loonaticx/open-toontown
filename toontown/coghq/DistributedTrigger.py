@@ -9,6 +9,7 @@ from direct.fsm import ClassicFSM
 from . import DistributedSwitch
 from toontown.toonbase import TTLocalizer
 
+
 class DistributedTrigger(DistributedSwitch.DistributedSwitch):
 
     def setupSwitch(self):

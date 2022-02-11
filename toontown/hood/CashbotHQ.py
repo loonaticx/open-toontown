@@ -5,6 +5,7 @@ from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.hood import ZoneUtil
 from toontown.coghq import CashbotCogHQLoader
 
+
 class CashbotHQ(CogHood.CogHood):
     notify = DirectNotifyGlobal.directNotify.newCategory('CashbotHQ')
 

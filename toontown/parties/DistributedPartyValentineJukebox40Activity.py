@@ -1,11 +1,13 @@
 from toontown.parties.DistributedPartyJukeboxActivityBase import DistributedPartyJukeboxActivityBase
 from toontown.parties import PartyGlobals
 
+
 class DistributedPartyValentineJukebox40Activity(DistributedPartyJukeboxActivityBase):
     notify = directNotify.newCategory('DistributedPartyValentineJukebox40Activity')
 
     def __init__(self, cr):
-        DistributedPartyJukeboxActivityBase.__init__(self, cr, PartyGlobals.ActivityIds.PartyValentineJukebox40, PartyGlobals.PhaseToMusicData40)
+        DistributedPartyJukeboxActivityBase.__init__(self, cr, PartyGlobals.ActivityIds.PartyValentineJukebox40,
+                                                     PartyGlobals.PhaseToMusicData40)
 
     def load(self):
         DistributedPartyJukeboxActivityBase.load(self)

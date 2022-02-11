@@ -4,6 +4,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.task import Task
 
+
 class DistributedMazeAI(DistributedEntityAI.DistributedEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMazeAI')
 
@@ -83,5 +84,5 @@ class DistributedMazeAI(DistributedEntityAI.DistributedEntityAI):
         if room:
             playerIds = room.presentAvIds
             if av and senderId in playerIds:
-                av.takeDamage(self.DamageOnFailure, quietly=0)
+                av.takeDamage(self.DamageOnFailure, quietly = 0)
                 room.sendUpdate('forceOuch', [self.DamageOnFailure])

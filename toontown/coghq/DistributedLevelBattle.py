@@ -13,6 +13,7 @@ from direct.fsm import State
 from direct.fsm import ClassicFSM
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedLevelBattle(DistributedBattle.DistributedBattle):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLevelBattle')
 
@@ -41,7 +42,8 @@ class DistributedLevelBattle(DistributedBattle.DistributedBattle):
 
         level = base.cr.doId2do.get(self.levelDoId)
         if level is None:
-            self.notify.warning('level %s not in doId2do yet, battle %s will be mispositioned.' % self.levelDoId, self.doId)
+            self.notify.warning('level %s not in doId2do yet, battle %s will be mispositioned.' % self.levelDoId,
+                                self.doId)
             self.levelRequest = self.cr.relatedObjectMgr.requestObjects([self.levelDoId], doPlacement)
         else:
             doPlacement([level])
@@ -73,7 +75,7 @@ class DistributedLevelBattle(DistributedBattle.DistributedBattle):
     def lockLevelViz(self):
         level = base.cr.doId2do.get(self.levelDoId)
         if level:
-            level.lockVisibility(zoneId=self.zoneId)
+            level.lockVisibility(zoneId = self.zoneId)
         else:
             self.notify.warning("lockLevelViz: couldn't find level %s" % self.levelDoId)
 
@@ -152,7 +154,7 @@ class DistributedLevelBattle(DistributedBattle.DistributedBattle):
             oneToonTrack = Sequence()
             destPos, destHpr = self.getActorPosHpr(toon, self.toons)
             oneToonTrack.append(Wait(delay))
-            oneToonTrack.append(self.createAdjustInterval(toon, destPos, destHpr, toon=1, run=1))
+            oneToonTrack.append(self.createAdjustInterval(toon, destPos, destHpr, toon = 1, run = 1))
             toonTrack.append(oneToonTrack)
 
         if self.hasLocalToon():
@@ -178,7 +180,7 @@ class DistributedLevelBattle(DistributedBattle.DistributedBattle):
             NametagGlobals.setMasterArrowsOn(0)
             mtrack = Parallel(mtrack, camTrack)
         done = Func(callback)
-        track = Sequence(mtrack, done, name=name)
+        track = Sequence(mtrack, done, name = name)
         track.start(ts)
         self.storeInterval(track, name)
         return
@@ -203,10 +205,11 @@ class DistributedLevelBattle(DistributedBattle.DistributedBattle):
     def __playReward(self, ts, callback):
         toonTracks = Parallel()
         for toon in self.toons:
-            toonTracks.append(Sequence(Func(toon.loop, 'victory'), Wait(FLOOR_REWARD_TIMEOUT), Func(toon.loop, 'neutral')))
+            toonTracks.append(
+                Sequence(Func(toon.loop, 'victory'), Wait(FLOOR_REWARD_TIMEOUT), Func(toon.loop, 'neutral')))
 
         name = self.uniqueName('floorReward')
-        track = Sequence(toonTracks, Func(callback), name=name)
+        track = Sequence(toonTracks, Func(callback), name = name)
         camera.setPos(0, 0, 1)
         camera.setHpr(180, 10, 0)
         self.storeInterval(track, name)

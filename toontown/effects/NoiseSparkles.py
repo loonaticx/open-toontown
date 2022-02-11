@@ -5,6 +5,7 @@ from .EffectController import EffectController
 from .PooledEffect import PooledEffect
 import random
 
+
 class NoiseSparkles(PooledEffect, EffectController):
 
     def __init__(self):
@@ -52,7 +53,8 @@ class NoiseSparkles(PooledEffect, EffectController):
         self.p0.factory.setTerminalVelocitySpread(0.0)
         self.p0.renderer.setAlphaMode(BaseParticleRenderer.PRALPHAUSER)
         self.p0.renderer.setUserAlpha(1.0)
-        self.p0.renderer.setColorBlendMode(ColorBlendAttrib.MAdd, ColorBlendAttrib.OIncomingAlpha, ColorBlendAttrib.OOne)
+        self.p0.renderer.setColorBlendMode(ColorBlendAttrib.MAdd, ColorBlendAttrib.OIncomingAlpha,
+                                           ColorBlendAttrib.OOne)
         self.p0.renderer.setFromNode(self.card)
         self.p0.renderer.setColor(Vec4(1.0, 1.0, 1.0, 1.0))
         self.p0.renderer.setXScaleFlag(1)
@@ -70,7 +72,10 @@ class NoiseSparkles(PooledEffect, EffectController):
         self.setEffectColor(self.effectColor)
 
     def createTrack(self):
-        self.track = Sequence(Func(self.p0.setBirthRate, 0.02), Func(self.p0.clearToInitial), Func(self.f.start, self, self), Func(self.noiseForce.setActive, 0), Wait(0.25), Func(self.noiseForce.setActive, 1), Wait(0.5), Func(self.p0.setBirthRate, 100.0), Wait(3.0), Func(self.cleanUpEffect))
+        self.track = Sequence(Func(self.p0.setBirthRate, 0.02), Func(self.p0.clearToInitial),
+                              Func(self.f.start, self, self), Func(self.noiseForce.setActive, 0), Wait(0.25),
+                              Func(self.noiseForce.setActive, 1), Wait(0.5), Func(self.p0.setBirthRate, 100.0),
+                              Wait(3.0), Func(self.cleanUpEffect))
 
     def setEffectScale(self, scale):
         self.effectScale = scale

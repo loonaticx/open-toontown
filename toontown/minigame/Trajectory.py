@@ -2,6 +2,7 @@ from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import *
 from math import *
 
+
 class Trajectory:
     notify = DirectNotifyGlobal.directNotify.newCategory('Trajectory')
     gravity = 32.0
@@ -30,9 +31,9 @@ class Trajectory:
 
     def __str__(self):
         return 'startTime: %s, startPos: %s, startVel: %s, zAcc: %s' % (self.__startTime,
-         repr(self.__startPos),
-         repr(self.__startVel),
-         self.__zAcc)
+                                                                        repr(self.__startPos),
+                                                                        repr(self.__startVel),
+                                                                        self.__zAcc)
 
     def __calcTimeOfHighestPoint(self):
         t = -self.__startVel[2] / self.__zAcc
@@ -66,7 +67,8 @@ class Trajectory:
 
     def getPos(self, t):
         tt = t - self.__startTime
-        return Point3(self.__startPos[0] + self.__startVel[0] * tt, self.__startPos[1] + self.__startVel[1] * tt, self.calcZ(t))
+        return Point3(self.__startPos[0] + self.__startVel[0] * tt, self.__startPos[1] + self.__startVel[1] * tt,
+                      self.calcZ(t))
 
     def getVel(self, t):
         tt = t - self.__startTime

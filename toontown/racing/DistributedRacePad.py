@@ -11,16 +11,19 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.racing.KartShopGlobals import KartGlobals
 
+
 class DistributedRacePad(DistributedKartPad, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRacePad')
-    defaultTransitions = {'Off': ['WaitEmpty'],
-     'WaitEmpty': ['WaitCountdown', 'Off'],
-     'WaitCountdown': ['WaitEmpty',
-                       'WaitBoarding',
-                       'Off',
-                       'AllAboard'],
-     'WaitBoarding': ['AllAboard', 'WaitEmpty', 'Off'],
-     'AllAboard': ['Off', 'WaitEmpty', 'WaitCountdown']}
+    defaultTransitions = {
+        'Off': ['WaitEmpty'],
+        'WaitEmpty': ['WaitCountdown', 'Off'],
+        'WaitCountdown': ['WaitEmpty',
+                          'WaitBoarding',
+                          'Off',
+                          'AllAboard'],
+        'WaitBoarding': ['AllAboard', 'WaitEmpty', 'Off'],
+        'AllAboard': ['Off', 'WaitEmpty', 'WaitCountdown']
+    }
     id = 0
 
     def __init__(self, cr):
@@ -68,11 +71,13 @@ class DistributedRacePad(DistributedKartPad, FSM):
         for block in self.startingBlocks:
             if block.avId == base.localAvatar.getDoId():
                 hoodId = self.cr.playGame.hood.hoodId
-                self.cr.playGame.getPlace().doneStatus = {'loader': 'racetrack',
-                 'where': 'racetrack',
-                 'zoneId': zoneId,
-                 'trackId': self.trackId,
-                 'hoodId': hoodId}
+                self.cr.playGame.getPlace().doneStatus = {
+                    'loader': 'racetrack',
+                    'where': 'racetrack',
+                    'zoneId': zoneId,
+                    'trackId': self.trackId,
+                    'hoodId': hoodId
+                }
                 messenger.send(base.cr.playGame.getPlace().doneEvent)
 
     def setTrackInfo(self, trackInfo):
@@ -202,7 +207,10 @@ class DistributedRacePad(DistributedKartPad, FSM):
             self.makeTextNodes()
         if self.tunnelSignInterval:
             self.tunnelSignInterval.finish()
-        self.tunnelSignInterval = Sequence(Func(self.hideTunnelSignText), Wait(0.2), Func(self.showTunnelSignText), Wait(0.2), Func(self.hideTunnelSignText), Wait(0.2), Func(self.showTunnelSignText), Wait(0.2), Func(self.hideTunnelSignText), Wait(0.2), Func(self.updateTunnelSignText), Func(self.showTunnelSignText))
+        self.tunnelSignInterval = Sequence(Func(self.hideTunnelSignText), Wait(0.2), Func(self.showTunnelSignText),
+                                           Wait(0.2), Func(self.hideTunnelSignText), Wait(0.2),
+                                           Func(self.showTunnelSignText), Wait(0.2), Func(self.hideTunnelSignText),
+                                           Wait(0.2), Func(self.updateTunnelSignText), Func(self.showTunnelSignText))
         self.tunnelSignInterval.start()
 
     def hideTunnelSignText(self):

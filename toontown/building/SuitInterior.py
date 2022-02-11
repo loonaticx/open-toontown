@@ -14,40 +14,42 @@ from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownBattleGlobals
 
+
 class SuitInterior(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('SuitInterior')
 
     def __init__(self, loader, parentFSM, doneEvent):
         Place.Place.__init__(self, loader, doneEvent)
-        self.fsm = ClassicFSM.ClassicFSM('SuitInterior', [State.State('entrance', self.enterEntrance, self.exitEntrance, ['battle', 'walk']),
-         State.State('Elevator', self.enterElevator, self.exitElevator, ['battle', 'walk']),
-         State.State('battle', self.enterBattle, self.exitBattle, ['walk', 'died']),
-         State.State('walk', self.enterWalk, self.exitWalk, ['stickerBook',
-          'stopped',
-          'sit',
-          'died',
-          'teleportOut',
-          'Elevator',
-          'DFA',
-          'trialerFA']),
-         State.State('sit', self.enterSit, self.exitSit, ['walk']),
-         State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
-          'stopped',
-          'sit',
-          'died',
-          'DFA',
-          'trialerFA',
-          'teleportOut',
-          'Elevator']),
-         State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
-         State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
-         State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
-         State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
-         State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'elevatorOut']),
-         State.State('died', self.enterDied, self.exitDied, []),
-         State.State('elevatorOut', self.enterElevatorOut, self.exitElevatorOut, [])], 'entrance', 'elevatorOut')
+        self.fsm = ClassicFSM.ClassicFSM('SuitInterior', [
+            State.State('entrance', self.enterEntrance, self.exitEntrance, ['battle', 'walk']),
+            State.State('Elevator', self.enterElevator, self.exitElevator, ['battle', 'walk']),
+            State.State('battle', self.enterBattle, self.exitBattle, ['walk', 'died']),
+            State.State('walk', self.enterWalk, self.exitWalk, ['stickerBook',
+                                                                'stopped',
+                                                                'sit',
+                                                                'died',
+                                                                'teleportOut',
+                                                                'Elevator',
+                                                                'DFA',
+                                                                'trialerFA']),
+            State.State('sit', self.enterSit, self.exitSit, ['walk']),
+            State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
+                                                                                     'stopped',
+                                                                                     'sit',
+                                                                                     'died',
+                                                                                     'DFA',
+                                                                                     'trialerFA',
+                                                                                     'teleportOut',
+                                                                                     'Elevator']),
+            State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
+            State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
+            State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
+            State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
+            State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
+            State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
+            State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'elevatorOut']),
+            State.State('died', self.enterDied, self.exitDied, []),
+            State.State('elevatorOut', self.enterElevatorOut, self.exitElevatorOut, [])], 'entrance', 'elevatorOut')
         self.parentFSM = parentFSM
         self.elevatorDoneEvent = 'elevatorDoneSI'
         self.currentFloor = 0
@@ -149,7 +151,7 @@ class SuitInterior(Place.Place):
 
     def enterBattle(self, event):
         mult = ToontownBattleGlobals.getCreditMultiplier(self.currentFloor)
-        self.townBattle.enter(event, self.fsm.getStateNamed('battle'), bldg=1, creditMultiplier=mult)
+        self.townBattle.enter(event, self.fsm.getStateNamed('battle'), bldg = 1, creditMultiplier = mult)
         base.localAvatar.b_setAnimState('off', 1)
         base.localAvatar.cantLeaveGame = 1
 

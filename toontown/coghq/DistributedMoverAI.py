@@ -11,6 +11,7 @@ from toontown.coghq import LaserGameMineSweeper
 from toontown.coghq import LaserGameRoll
 import random
 
+
 class DistributedMoverAI(DistributedEntityAI.DistributedEntityAI, NodePath, BasicEntities.NodePathAttribs):
 
     def __init__(self, level, entId):
@@ -97,7 +98,7 @@ class DistributedMoverAI(DistributedEntityAI.DistributedEntityAI, NodePath, Basi
             taskMgr.doMethodLater(self.moveTime[self.cycleType], self.__resetTimer, self.timerName)
         self.oK2Play = 0
 
-    def __resetTimer(self, taskMgrFooler=1):
+    def __resetTimer(self, taskMgrFooler = 1):
         if not self.cycleType == 'oneWay':
             self.oK2Play = 1
             if self.cycleType in ('loop', 'linear') or self.startOn:

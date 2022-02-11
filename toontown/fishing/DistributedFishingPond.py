@@ -7,6 +7,7 @@ from toontown.fishing import DistributedPondBingoManager
 from pandac.PandaModules import Vec3
 from direct.task import Task
 
+
 class DistributedFishingPond(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFishingPond')
     pollInterval = 0.5

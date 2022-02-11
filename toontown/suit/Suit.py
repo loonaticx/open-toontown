@@ -11,6 +11,7 @@ from toontown.toonbase import TTLocalizer
 from pandac.PandaModules import VirtualFileMountHTTP, VirtualFileSystem, Filename, DSearchPath
 from direct.showbase import AppRunnerGlobal
 import os
+
 aSize = 6.06
 bSize = 5.29
 cSize = 4.14
@@ -18,155 +19,166 @@ SuitDialogArray = []
 SkelSuitDialogArray = []
 AllSuits = (('walk', 'walk'), ('run', 'walk'), ('neutral', 'neutral'))
 AllSuitsMinigame = (('victory', 'victory'),
- ('flail', 'flailing'),
- ('tug-o-war', 'tug-o-war'),
- ('slip-backward', 'slip-backward'),
- ('slip-forward', 'slip-forward'))
+                    ('flail', 'flailing'),
+                    ('tug-o-war', 'tug-o-war'),
+                    ('slip-backward', 'slip-backward'),
+                    ('slip-forward', 'slip-forward'))
 AllSuitsTutorialBattle = (('lose', 'lose'), ('pie-small-react', 'pie-small'), ('squirt-small-react', 'squirt-small'))
 AllSuitsBattle = (('drop-react', 'anvil-drop'),
- ('flatten', 'drop'),
- ('sidestep-left', 'sidestep-left'),
- ('sidestep-right', 'sidestep-right'),
- ('squirt-large-react', 'squirt-large'),
- ('landing', 'landing'),
- ('reach', 'walknreach'),
- ('rake-react', 'rake'),
- ('hypnotized', 'hypnotize'),
- ('soak', 'soak'))
+                  ('flatten', 'drop'),
+                  ('sidestep-left', 'sidestep-left'),
+                  ('sidestep-right', 'sidestep-right'),
+                  ('squirt-large-react', 'squirt-large'),
+                  ('landing', 'landing'),
+                  ('reach', 'walknreach'),
+                  ('rake-react', 'rake'),
+                  ('hypnotized', 'hypnotize'),
+                  ('soak', 'soak'))
 SuitsCEOBattle = (('sit', 'sit'),
- ('sit-eat-in', 'sit-eat-in'),
- ('sit-eat-loop', 'sit-eat-loop'),
- ('sit-eat-out', 'sit-eat-out'),
- ('sit-angry', 'sit-angry'),
- ('sit-hungry-left', 'leftsit-hungry'),
- ('sit-hungry-right', 'rightsit-hungry'),
- ('sit-lose', 'sit-lose'),
- ('tray-walk', 'tray-walk'),
- ('tray-neutral', 'tray-neutral'),
- ('sit-lose', 'sit-lose'))
+                  ('sit-eat-in', 'sit-eat-in'),
+                  ('sit-eat-loop', 'sit-eat-loop'),
+                  ('sit-eat-out', 'sit-eat-out'),
+                  ('sit-angry', 'sit-angry'),
+                  ('sit-hungry-left', 'leftsit-hungry'),
+                  ('sit-hungry-right', 'rightsit-hungry'),
+                  ('sit-lose', 'sit-lose'),
+                  ('tray-walk', 'tray-walk'),
+                  ('tray-neutral', 'tray-neutral'),
+                  ('sit-lose', 'sit-lose'))
 f = (('throw-paper', 'throw-paper', 3.5), ('phone', 'phone', 3.5), ('shredder', 'shredder', 3.5))
 p = (('pencil-sharpener', 'pencil-sharpener', 5),
- ('pen-squirt', 'pen-squirt', 5),
- ('hold-eraser', 'hold-eraser', 5),
- ('finger-wag', 'finger-wag', 5),
- ('hold-pencil', 'hold-pencil', 5))
+     ('pen-squirt', 'pen-squirt', 5),
+     ('hold-eraser', 'hold-eraser', 5),
+     ('finger-wag', 'finger-wag', 5),
+     ('hold-pencil', 'hold-pencil', 5))
 ym = (('throw-paper', 'throw-paper', 5),
- ('golf-club-swing', 'golf-club-swing', 5),
- ('magic3', 'magic3', 5),
- ('rubber-stamp', 'rubber-stamp', 5),
- ('smile', 'smile', 5))
+      ('golf-club-swing', 'golf-club-swing', 5),
+      ('magic3', 'magic3', 5),
+      ('rubber-stamp', 'rubber-stamp', 5),
+      ('smile', 'smile', 5))
 mm = (('speak', 'speak', 5),
- ('effort', 'effort', 5),
- ('magic1', 'magic1', 5),
- ('pen-squirt', 'fountain-pen', 5),
- ('finger-wag', 'finger-wag', 5))
+      ('effort', 'effort', 5),
+      ('magic1', 'magic1', 5),
+      ('pen-squirt', 'fountain-pen', 5),
+      ('finger-wag', 'finger-wag', 5))
 ds = (('magic1', 'magic1', 5),
- ('magic2', 'magic2', 5),
- ('throw-paper', 'throw-paper', 5),
- ('magic3', 'magic3', 5))
+      ('magic2', 'magic2', 5),
+      ('throw-paper', 'throw-paper', 5),
+      ('magic3', 'magic3', 5))
 hh = (('pen-squirt', 'fountain-pen', 7),
- ('glower', 'glower', 5),
- ('throw-paper', 'throw-paper', 5),
- ('magic1', 'magic1', 5),
- ('roll-o-dex', 'roll-o-dex', 5))
+      ('glower', 'glower', 5),
+      ('throw-paper', 'throw-paper', 5),
+      ('magic1', 'magic1', 5),
+      ('roll-o-dex', 'roll-o-dex', 5))
 cr = (('pickpocket', 'pickpocket', 5), ('throw-paper', 'throw-paper', 3.5), ('glower', 'glower', 5))
 tbc = (('cigar-smoke', 'cigar-smoke', 8),
- ('glower', 'glower', 5),
- ('song-and-dance', 'song-and-dance', 8),
- ('golf-club-swing', 'golf-club-swing', 5))
+       ('glower', 'glower', 5),
+       ('song-and-dance', 'song-and-dance', 8),
+       ('golf-club-swing', 'golf-club-swing', 5))
 cc = (('speak', 'speak', 5),
- ('glower', 'glower', 5),
- ('phone', 'phone', 3.5),
- ('finger-wag', 'finger-wag', 5))
+      ('glower', 'glower', 5),
+      ('phone', 'phone', 3.5),
+      ('finger-wag', 'finger-wag', 5))
 tm = (('speak', 'speak', 5),
- ('throw-paper', 'throw-paper', 5),
- ('pickpocket', 'pickpocket', 5),
- ('roll-o-dex', 'roll-o-dex', 5),
- ('finger-wag', 'finger-wag', 5))
+      ('throw-paper', 'throw-paper', 5),
+      ('pickpocket', 'pickpocket', 5),
+      ('roll-o-dex', 'roll-o-dex', 5),
+      ('finger-wag', 'finger-wag', 5))
 nd = (('pickpocket', 'pickpocket', 5),
- ('roll-o-dex', 'roll-o-dex', 5),
- ('magic3', 'magic3', 5),
- ('smile', 'smile', 5))
+      ('roll-o-dex', 'roll-o-dex', 5),
+      ('magic3', 'magic3', 5),
+      ('smile', 'smile', 5))
 gh = (('speak', 'speak', 5), ('pen-squirt', 'fountain-pen', 5), ('rubber-stamp', 'rubber-stamp', 5))
 ms = (('effort', 'effort', 5),
- ('throw-paper', 'throw-paper', 5),
- ('stomp', 'stomp', 5),
- ('quick-jump', 'jump', 6))
+      ('throw-paper', 'throw-paper', 5),
+      ('stomp', 'stomp', 5),
+      ('quick-jump', 'jump', 6))
 tf = (('phone', 'phone', 5),
- ('smile', 'smile', 5),
- ('throw-object', 'throw-object', 5),
- ('glower', 'glower', 5))
+      ('smile', 'smile', 5),
+      ('throw-object', 'throw-object', 5),
+      ('glower', 'glower', 5))
 m = (('speak', 'speak', 5),
- ('magic2', 'magic2', 5),
- ('magic1', 'magic1', 5),
- ('golf-club-swing', 'golf-club-swing', 5))
+     ('magic2', 'magic2', 5),
+     ('magic1', 'magic1', 5),
+     ('golf-club-swing', 'golf-club-swing', 5))
 mh = (('magic1', 'magic1', 5),
- ('smile', 'smile', 5),
- ('golf-club-swing', 'golf-club-swing', 5),
- ('song-and-dance', 'song-and-dance', 5))
+      ('smile', 'smile', 5),
+      ('golf-club-swing', 'golf-club-swing', 5),
+      ('song-and-dance', 'song-and-dance', 5))
 sc = (('throw-paper', 'throw-paper', 3.5), ('watercooler', 'watercooler', 5), ('pickpocket', 'pickpocket', 5))
 pp = (('throw-paper', 'throw-paper', 5), ('glower', 'glower', 5), ('finger-wag', 'fingerwag', 5))
 tw = (('throw-paper', 'throw-paper', 3.5),
- ('glower', 'glower', 5),
- ('magic2', 'magic2', 5),
- ('finger-wag', 'finger-wag', 5))
+      ('glower', 'glower', 5),
+      ('magic2', 'magic2', 5),
+      ('finger-wag', 'finger-wag', 5))
 bc = (('phone', 'phone', 5), ('hold-pencil', 'hold-pencil', 5))
 nc = (('phone', 'phone', 5), ('throw-object', 'throw-object', 5))
 mb = (('magic1', 'magic1', 5), ('throw-paper', 'throw-paper', 3.5))
 ls = (('throw-paper', 'throw-paper', 5), ('throw-object', 'throw-object', 5), ('hold-pencil', 'hold-pencil', 5))
 rb = (('glower', 'glower', 5), ('magic1', 'magic1', 5), ('golf-club-swing', 'golf-club-swing', 5))
 bf = (('pickpocket', 'pickpocket', 5),
- ('rubber-stamp', 'rubber-stamp', 5),
- ('shredder', 'shredder', 3.5),
- ('watercooler', 'watercooler', 5))
+      ('rubber-stamp', 'rubber-stamp', 5),
+      ('shredder', 'shredder', 3.5),
+      ('watercooler', 'watercooler', 5))
 b = (('effort', 'effort', 5),
- ('throw-paper', 'throw-paper', 5),
- ('throw-object', 'throw-object', 5),
- ('magic1', 'magic1', 5))
+     ('throw-paper', 'throw-paper', 5),
+     ('throw-object', 'throw-object', 5),
+     ('magic1', 'magic1', 5))
 dt = (('rubber-stamp', 'rubber-stamp', 5),
- ('throw-paper', 'throw-paper', 5),
- ('speak', 'speak', 5),
- ('finger-wag', 'fingerwag', 5),
- ('throw-paper', 'throw-paper', 5))
+      ('throw-paper', 'throw-paper', 5),
+      ('speak', 'speak', 5),
+      ('finger-wag', 'fingerwag', 5),
+      ('throw-paper', 'throw-paper', 5))
 ac = (('throw-object', 'throw-object', 5),
- ('roll-o-dex', 'roll-o-dex', 5),
- ('stomp', 'stomp', 5),
- ('phone', 'phone', 5),
- ('throw-paper', 'throw-paper', 5))
+      ('roll-o-dex', 'roll-o-dex', 5),
+      ('stomp', 'stomp', 5),
+      ('phone', 'phone', 5),
+      ('throw-paper', 'throw-paper', 5))
 bs = (('magic1', 'magic1', 5), ('throw-paper', 'throw-paper', 5), ('finger-wag', 'fingerwag', 5))
 sd = (('magic2', 'magic2', 5),
- ('quick-jump', 'jump', 6),
- ('stomp', 'stomp', 5),
- ('magic3', 'magic3', 5),
- ('hold-pencil', 'hold-pencil', 5),
- ('throw-paper', 'throw-paper', 5))
+      ('quick-jump', 'jump', 6),
+      ('stomp', 'stomp', 5),
+      ('magic3', 'magic3', 5),
+      ('hold-pencil', 'hold-pencil', 5),
+      ('throw-paper', 'throw-paper', 5))
 le = (('speak', 'speak', 5),
- ('throw-object', 'throw-object', 5),
- ('glower', 'glower', 5),
- ('throw-paper', 'throw-paper', 5))
+      ('throw-object', 'throw-object', 5),
+      ('glower', 'glower', 5),
+      ('throw-paper', 'throw-paper', 5))
 bw = (('finger-wag', 'fingerwag', 5),
- ('cigar-smoke', 'cigar-smoke', 8),
- ('gavel', 'gavel', 8),
- ('magic1', 'magic1', 5),
- ('throw-object', 'throw-object', 5),
- ('throw-paper', 'throw-paper', 5))
+      ('cigar-smoke', 'cigar-smoke', 8),
+      ('gavel', 'gavel', 8),
+      ('magic1', 'magic1', 5),
+      ('throw-object', 'throw-object', 5),
+      ('throw-paper', 'throw-paper', 5))
 if not base.config.GetBool('want-new-cogs', 0):
-    ModelDict = {'a': ('/models/char/suitA-', 4),
-     'b': ('/models/char/suitB-', 4),
-     'c': ('/models/char/suitC-', 3.5)}
-    TutorialModelDict = {'a': ('/models/char/suitA-', 4),
-     'b': ('/models/char/suitB-', 4),
-     'c': ('/models/char/suitC-', 3.5)}
+    ModelDict = {
+        'a': ('/models/char/suitA-', 4),
+        'b': ('/models/char/suitB-', 4),
+        'c': ('/models/char/suitC-', 3.5)
+    }
+    TutorialModelDict = {
+        'a': ('/models/char/suitA-', 4),
+        'b': ('/models/char/suitB-', 4),
+        'c': ('/models/char/suitC-', 3.5)
+    }
 else:
-    ModelDict = {'a': ('/models/char/tt_a_ene_cga_', 4),
-     'b': ('/models/char/tt_a_ene_cgb_', 4),
-     'c': ('/models/char/tt_a_ene_cgc_', 3.5)}
-    TutorialModelDict = {'a': ('/models/char/tt_a_ene_cga_', 4),
-     'b': ('/models/char/tt_a_ene_cgb_', 4),
-     'c': ('/models/char/tt_a_ene_cgc_', 3.5)}
-HeadModelDict = {'a': ('/models/char/suitA-', 4),
- 'b': ('/models/char/suitB-', 4),
- 'c': ('/models/char/suitC-', 3.5)}
+    ModelDict = {
+        'a': ('/models/char/tt_a_ene_cga_', 4),
+        'b': ('/models/char/tt_a_ene_cgb_', 4),
+        'c': ('/models/char/tt_a_ene_cgc_', 3.5)
+    }
+    TutorialModelDict = {
+        'a': ('/models/char/tt_a_ene_cga_', 4),
+        'b': ('/models/char/tt_a_ene_cgb_', 4),
+        'c': ('/models/char/tt_a_ene_cgc_', 3.5)
+    }
+HeadModelDict = {
+    'a': ('/models/char/suitA-', 4),
+    'b': ('/models/char/suitB-', 4),
+    'c': ('/models/char/suitC-', 3.5)
+}
+
 
 def loadTutorialSuit():
     loader.loadModel('phase_3.5/models/char/suitC-mod').node()
@@ -174,12 +186,12 @@ def loadTutorialSuit():
 
 
 def loadSuits(level):
-    loadSuitModelsAndAnims(level, flag=1)
+    loadSuitModelsAndAnims(level, flag = 1)
     loadDialog(level)
 
 
 def unloadSuits(level):
-    loadSuitModelsAndAnims(level, flag=0)
+    loadSuitModelsAndAnims(level, flag = 0)
     unloadDialog(level)
 
 
@@ -250,9 +262,9 @@ def loadDialog(level):
     else:
         loadPath = 'phase_3.5/audio/dial/'
         SuitDialogFiles = ['COG_VO_grunt',
-         'COG_VO_murmur',
-         'COG_VO_statement',
-         'COG_VO_question']
+                           'COG_VO_murmur',
+                           'COG_VO_statement',
+                           'COG_VO_question']
         for file in SuitDialogFiles:
             SuitDialogArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
@@ -270,11 +282,11 @@ def loadSkelDialog():
         statement = loader.loadSfx('phase_5/audio/sfx/Skel_COG_VO_statement.ogg')
         question = loader.loadSfx('phase_5/audio/sfx/Skel_COG_VO_question.ogg')
         SkelSuitDialogArray = [grunt,
-         murmur,
-         statement,
-         question,
-         statement,
-         statement]
+                               murmur,
+                               statement,
+                               question,
+                               statement,
+                               statement]
 
 
 def unloadDialog(level):
@@ -316,19 +328,21 @@ def attachSuitHead(node, suitName):
 
 class Suit(Avatar.Avatar):
     healthColors = (Vec4(0, 1, 0, 1),
-     Vec4(1, 1, 0, 1),
-     Vec4(1, 0.5, 0, 1),
-     Vec4(1, 0, 0, 1),
-     Vec4(0.3, 0.3, 0.3, 1))
+                    Vec4(1, 1, 0, 1),
+                    Vec4(1, 0.5, 0, 1),
+                    Vec4(1, 0, 0, 1),
+                    Vec4(0.3, 0.3, 0.3, 1))
     healthGlowColors = (Vec4(0.25, 1, 0.25, 0.5),
-     Vec4(1, 1, 0.25, 0.5),
-     Vec4(1, 0.5, 0.25, 0.5),
-     Vec4(1, 0.25, 0.25, 0.5),
-     Vec4(0.3, 0.3, 0.3, 0))
-    medallionColors = {'c': Vec4(0.863, 0.776, 0.769, 1.0),
-     's': Vec4(0.843, 0.745, 0.745, 1.0),
-     'l': Vec4(0.749, 0.776, 0.824, 1.0),
-     'm': Vec4(0.749, 0.769, 0.749, 1.0)}
+                        Vec4(1, 1, 0.25, 0.5),
+                        Vec4(1, 0.5, 0.25, 0.5),
+                        Vec4(1, 0.25, 0.25, 0.5),
+                        Vec4(0.3, 0.3, 0.3, 0))
+    medallionColors = {
+        'c': Vec4(0.863, 0.776, 0.769, 1.0),
+        's': Vec4(0.843, 0.745, 0.745, 1.0),
+        'l': Vec4(0.749, 0.776, 0.824, 1.0),
+        'm': Vec4(0.749, 0.769, 0.749, 1.0)
+    }
 
     def __init__(self):
         try:
@@ -917,7 +931,9 @@ class Suit(Avatar.Avatar):
                 filePrefix, phase = TutorialModelDict[self.style.body]
                 loseModel = 'phase_' + str(phase) + filePrefix + 'lose-mod'
                 loseAnim = 'phase_' + str(phase) + filePrefix + 'lose'
-                self.loseActor = Actor.Actor(loseModel, {'lose': loseAnim})
+                self.loseActor = Actor.Actor(loseModel, {
+                    'lose': loseAnim
+                })
                 loseNeck = self.loseActor.find('**/joint_head')
                 for part in self.headParts:
                     part.instanceTo(loseNeck)
@@ -930,7 +946,9 @@ class Suit(Avatar.Avatar):
                 loseModel = 'phase_5/models/char/cog' + self.style.body.upper() + '_robot-lose-mod'
                 filePrefix, phase = TutorialModelDict[self.style.body]
                 loseAnim = 'phase_' + str(phase) + filePrefix + 'lose'
-                self.loseActor = Actor.Actor(loseModel, {'lose': loseAnim})
+                self.loseActor = Actor.Actor(loseModel, {
+                    'lose': loseAnim
+                })
                 self.generateCorporateTie(self.loseActor)
         self.loseActor.setScale(self.scale)
         self.loseActor.setPos(self.getPos())
@@ -971,9 +989,11 @@ class Suit(Avatar.Avatar):
             bb.setTwoSided(1)
 
         self.setName(TTLocalizer.Skeleton)
-        nameInfo = TTLocalizer.SuitBaseNameWithLevel % {'name': self._name,
-         'dept': self.getStyleDept(),
-         'level': self.getActualLevel()}
+        nameInfo = TTLocalizer.SuitBaseNameWithLevel % {
+            'name': self._name,
+            'dept': self.getStyleDept(),
+            'level': self.getActualLevel()
+        }
         self.setDisplayName(nameInfo)
         self.leftHand = self.find('**/joint_Lhold')
         self.rightHand = self.find('**/joint_Rhold')

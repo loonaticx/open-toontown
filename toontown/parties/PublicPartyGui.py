@@ -9,6 +9,7 @@ from toontown.toontowngui import TTDialog
 from toontown.parties import PartyGlobals
 from toontown.parties import PartyUtils
 
+
 class PublicPartyGui(DirectFrame):
     notify = directNotify.newCategory('PublicPartyGui')
 
@@ -28,35 +29,53 @@ class PublicPartyGui(DirectFrame):
 
     def load(self):
         for backgroundName in ['background', 'parties_background', 'activities_background']:
-            background = DirectFrame(parent=self, geom=self.gui.find('**/%s' % backgroundName), relief=None)
+            background = DirectFrame(parent = self, geom = self.gui.find('**/%s' % backgroundName), relief = None)
 
-        self.titleLabel = DirectLabel(parent=self, relief=None, text=TTLocalizer.PartyGateTitle, pos=self.gui.find('**/title_locator').getPos(), scale=0.1)
+        self.titleLabel = DirectLabel(parent = self, relief = None, text = TTLocalizer.PartyGateTitle,
+                                      pos = self.gui.find('**/title_locator').getPos(), scale = 0.1)
         self.partyList, self.partyListLabel = self.createPartyListAndLabel('parties', 14)
         self.activityList, self.activityListLabel = self.createListAndLabel('activities', 1)
         pos = self.gui.find('**/startText_locator').getPos()
-        self.partyStartButton = DirectButton(parent=self, relief=None, text=TTLocalizer.PartyGateGoToParty, text_align=TextNode.ACenter, text_scale=TTLocalizer.PPGpartyStartButton, text_pos=(pos[0], pos[2]), geom=(self.gui.find('**/startButton_up'),
-         self.gui.find('**/startButton_down'),
-         self.gui.find('**/startButton_rollover'),
-         self.gui.find('**/startButton_inactive')), command=self._startParty)
-        self.closeButton = DirectButton(parent=self, relief=None, geom=(self.gui.find('**/cancelButton_up'), self.gui.find('**/cancelButton_down'), self.gui.find('**/cancelButton_rollover')), command=self._close)
+        self.partyStartButton = DirectButton(parent = self, relief = None, text = TTLocalizer.PartyGateGoToParty,
+                                             text_align = TextNode.ACenter,
+                                             text_scale = TTLocalizer.PPGpartyStartButton, text_pos = (pos[0], pos[2]),
+                                             geom = (self.gui.find('**/startButton_up'),
+                                                     self.gui.find('**/startButton_down'),
+                                                     self.gui.find('**/startButton_rollover'),
+                                                     self.gui.find('**/startButton_inactive')),
+                                             command = self._startParty)
+        self.closeButton = DirectButton(parent = self, relief = None, geom = (
+        self.gui.find('**/cancelButton_up'), self.gui.find('**/cancelButton_down'),
+        self.gui.find('**/cancelButton_rollover')), command = self._close)
         instructionPos = (0, -0.9)
         if not self.gui.find('**/helpText_locator').isEmpty():
             tempPos = self.gui.find('**/helpText_locator').getPos()
             instructionPos = (tempPos.getX(), tempPos.getZ())
-        self.instructionsLabel = DirectLabel(parent=self, relief=None, text=TTLocalizer.PartyGateInstructions, text_align=TextNode.ACenter, text_scale=TTLocalizer.PPGinstructionsLabel, text_pos=instructionPos)
+        self.instructionsLabel = DirectLabel(parent = self, relief = None, text = TTLocalizer.PartyGateInstructions,
+                                             text_align = TextNode.ACenter,
+                                             text_scale = TTLocalizer.PPGinstructionsLabel, text_pos = instructionPos)
         return
 
     def createListAndLabel(self, typeString, numItems):
-        list = DirectScrolledList(parent=self, relief=None, incButton_image=(self.gui.find('**/%sButtonDown_up' % typeString),
-         self.gui.find('**/%sButtonDown_down' % typeString),
-         self.gui.find('**/%sButtonDown_rollover' % typeString),
-         self.gui.find('**/%sButtonDown_inactive' % typeString)), incButton_relief=None, decButton_image=(self.gui.find('**/%sButtonUp_up' % typeString),
-         self.gui.find('**/%sButtonUp_down' % typeString),
-         self.gui.find('**/%sButtonUp_rollover' % typeString),
-         self.gui.find('**/%sButtonUp_inactive' % typeString)), decButton_relief=None, itemFrame_pos=self.gui.find('**/%s_locator' % typeString).getPos(), itemFrame_relief=None, numItemsVisible=numItems, forceHeight=0.055)
-        strings = {'activities': TTLocalizer.EventsPageHostingTabActivityListTitle,
-         'parties': TTLocalizer.PartyGatePartiesListTitle}
-        label = DirectLabel(parent=self, relief=None, text=strings[typeString], text_scale=0.06, pos=self.gui.find('**/%sText_locator' % typeString).getPos())
+        list = DirectScrolledList(parent = self, relief = None,
+                                  incButton_image = (self.gui.find('**/%sButtonDown_up' % typeString),
+                                                     self.gui.find('**/%sButtonDown_down' % typeString),
+                                                     self.gui.find('**/%sButtonDown_rollover' % typeString),
+                                                     self.gui.find('**/%sButtonDown_inactive' % typeString)),
+                                  incButton_relief = None,
+                                  decButton_image = (self.gui.find('**/%sButtonUp_up' % typeString),
+                                                     self.gui.find('**/%sButtonUp_down' % typeString),
+                                                     self.gui.find('**/%sButtonUp_rollover' % typeString),
+                                                     self.gui.find('**/%sButtonUp_inactive' % typeString)),
+                                  decButton_relief = None,
+                                  itemFrame_pos = self.gui.find('**/%s_locator' % typeString).getPos(),
+                                  itemFrame_relief = None, numItemsVisible = numItems, forceHeight = 0.055)
+        strings = {
+            'activities': TTLocalizer.EventsPageHostingTabActivityListTitle,
+            'parties': TTLocalizer.PartyGatePartiesListTitle
+        }
+        label = DirectLabel(parent = self, relief = None, text = strings[typeString], text_scale = 0.06,
+                            pos = self.gui.find('**/%sText_locator' % typeString).getPos())
         return (list, label)
 
     def refresh(self, partyInfoTupleList):
@@ -80,7 +99,7 @@ class PublicPartyGui(DirectFrame):
             else:
                 return 1
 
-        sortedList.sort(cmp, reverse=True)
+        sortedList.sort(cmp, reverse = True)
         indexToCut = -1
         for index, partyTuple in enumerate(sortedList):
             numberOfGuests = partyTuple[2]
@@ -97,33 +116,44 @@ class PublicPartyGui(DirectFrame):
             hostName = partyTuple[3]
             activityIds = partyTuple[4]
             minLeft = partyTuple[5]
-            item = DirectButton(relief=DGG.RIDGE, borderWidth=(0.01, 0.01), frameSize=(-0.01,
-             0.45,
-             -0.015,
-             0.04), frameColor=self.normalFrameColor, text=hostName, text_align=TextNode.ALeft, text_bg=Vec4(0.0, 0.0, 0.0, 0.0), text_scale=0.045, command=self.partyClicked)
+            item = DirectButton(relief = DGG.RIDGE, borderWidth = (0.01, 0.01), frameSize = (-0.01,
+                                                                                             0.45,
+                                                                                             -0.015,
+                                                                                             0.04),
+                                frameColor = self.normalFrameColor, text = hostName, text_align = TextNode.ALeft,
+                                text_bg = Vec4(0.0, 0.0, 0.0, 0.0), text_scale = 0.045, command = self.partyClicked)
             otherInfoWidth = 0.08
             numActivities = len(activityIds)
             PartyUtils.truncateTextOfLabelBasedOnWidth(item, hostName, PartyGlobals.EventsPageGuestNameMaxWidth)
-            num = DirectLabel(relief=DGG.RIDGE, borderWidth=(0.01, 0.01), frameSize=(0.0,
-             otherInfoWidth,
-             -0.015,
-             0.04), frameColor=self.normalFrameColor, text='%d' % numberOfGuests, text_align=TextNode.ALeft, text_scale=0.045, text_pos=(0.01, 0, 0), pos=(0.45, 0.0, 0.0))
+            num = DirectLabel(relief = DGG.RIDGE, borderWidth = (0.01, 0.01), frameSize = (0.0,
+                                                                                           otherInfoWidth,
+                                                                                           -0.015,
+                                                                                           0.04),
+                              frameColor = self.normalFrameColor, text = '%d' % numberOfGuests,
+                              text_align = TextNode.ALeft, text_scale = 0.045, text_pos = (0.01, 0, 0),
+                              pos = (0.45, 0.0, 0.0))
             num.reparentTo(item)
             item.numLabel = num
             actLabelPos = num.getPos()
             actLabelPos.setX(actLabelPos.getX() + otherInfoWidth)
-            actLabel = DirectLabel(relief=DGG.RIDGE, borderWidth=(0.01, 0.01), frameSize=(0.0,
-             otherInfoWidth,
-             -0.015,
-             0.04), frameColor=self.normalFrameColor, text='%d' % numActivities, text_align=TextNode.ALeft, text_scale=0.045, text_pos=(0.01, 0, 0), pos=actLabelPos)
+            actLabel = DirectLabel(relief = DGG.RIDGE, borderWidth = (0.01, 0.01), frameSize = (0.0,
+                                                                                                otherInfoWidth,
+                                                                                                -0.015,
+                                                                                                0.04),
+                                   frameColor = self.normalFrameColor, text = '%d' % numActivities,
+                                   text_align = TextNode.ALeft, text_scale = 0.045, text_pos = (0.01, 0, 0),
+                                   pos = actLabelPos)
             actLabel.reparentTo(item)
             item.actLabel = actLabel
             minLabelPos = actLabel.getPos()
             minLabelPos.setX(minLabelPos.getX() + otherInfoWidth)
-            minLabel = DirectLabel(relief=DGG.RIDGE, borderWidth=(0.01, 0.01), frameSize=(0.0,
-             otherInfoWidth,
-             -0.015,
-             0.04), frameColor=self.normalFrameColor, text='%d' % minLeft, text_align=TextNode.ALeft, text_scale=0.045, text_pos=(0.01, 0, 0), pos=minLabelPos)
+            minLabel = DirectLabel(relief = DGG.RIDGE, borderWidth = (0.01, 0.01), frameSize = (0.0,
+                                                                                                otherInfoWidth,
+                                                                                                -0.015,
+                                                                                                0.04),
+                                   frameColor = self.normalFrameColor, text = '%d' % minLeft,
+                                   text_align = TextNode.ALeft, text_scale = 0.045, text_pos = (0.01, 0, 0),
+                                   pos = minLabelPos)
             minLabel.reparentTo(item)
             item.minLabel = minLabel
             item['extraArgs'] = [item]
@@ -176,7 +206,10 @@ class PublicPartyGui(DirectFrame):
             text = TTLocalizer.PartyActivityNameDict[activityId]['generic']
             if number > 1:
                 text += ' X %d' % number
-            item = DirectLabel(relief=None, text=text, text_align=TextNode.ACenter, text_scale=0.05, text_pos=(0.0, -0.15), geom_scale=0.3, geom_pos=Vec3(0.0, 0.0, 0.07), geom=PartyUtils.getPartyActivityIcon(self.activityIconsModel, PartyGlobals.ActivityIds.getString(activityId)))
+            item = DirectLabel(relief = None, text = text, text_align = TextNode.ACenter, text_scale = 0.05,
+                               text_pos = (0.0, -0.15), geom_scale = 0.3, geom_pos = Vec3(0.0, 0.0, 0.07),
+                               geom = PartyUtils.getPartyActivityIcon(self.activityIconsModel,
+                                                                      PartyGlobals.ActivityIds.getString(activityId)))
             self.activityList.addItem(item)
 
         return
@@ -215,31 +248,46 @@ class PublicPartyGui(DirectFrame):
         return
 
     def createPartyListAndLabel(self, typeString, numItems):
-        list = DirectScrolledList(parent=self, relief=None, incButton_image=(self.gui.find('**/%sButtonDown_up' % typeString),
-         self.gui.find('**/%sButtonDown_down' % typeString),
-         self.gui.find('**/%sButtonDown_rollover' % typeString),
-         self.gui.find('**/%sButtonDown_inactive' % typeString)), incButton_relief=None, decButton_image=(self.gui.find('**/%sButtonUp_up' % typeString),
-         self.gui.find('**/%sButtonUp_down' % typeString),
-         self.gui.find('**/%sButtonUp_rollover' % typeString),
-         self.gui.find('**/%sButtonUp_inactive' % typeString)), decButton_relief=None, itemFrame_pos=self.gui.find('**/%s_locator' % typeString).getPos(), itemFrame_relief=None, numItemsVisible=numItems, forceHeight=0.055)
-        strings = {'activities': TTLocalizer.EventsPageHostingTabActivityListTitle,
-         'parties': TTLocalizer.PartyGatePartiesListTitle}
+        list = DirectScrolledList(parent = self, relief = None,
+                                  incButton_image = (self.gui.find('**/%sButtonDown_up' % typeString),
+                                                     self.gui.find('**/%sButtonDown_down' % typeString),
+                                                     self.gui.find('**/%sButtonDown_rollover' % typeString),
+                                                     self.gui.find('**/%sButtonDown_inactive' % typeString)),
+                                  incButton_relief = None,
+                                  decButton_image = (self.gui.find('**/%sButtonUp_up' % typeString),
+                                                     self.gui.find('**/%sButtonUp_down' % typeString),
+                                                     self.gui.find('**/%sButtonUp_rollover' % typeString),
+                                                     self.gui.find('**/%sButtonUp_inactive' % typeString)),
+                                  decButton_relief = None,
+                                  itemFrame_pos = self.gui.find('**/%s_locator' % typeString).getPos(),
+                                  itemFrame_relief = None, numItemsVisible = numItems, forceHeight = 0.055)
+        strings = {
+            'activities': TTLocalizer.EventsPageHostingTabActivityListTitle,
+            'parties': TTLocalizer.PartyGatePartiesListTitle
+        }
         hostPos = self.gui.find('**/%sText_locator' % typeString).getPos()
-        label = DirectLabel(parent=self, text_align=TextNode.ALeft, relief=None, text=strings[typeString], text_scale=0.06, pos=hostPos)
+        label = DirectLabel(parent = self, text_align = TextNode.ALeft, relief = None, text = strings[typeString],
+                            text_scale = 0.06, pos = hostPos)
         curPos = label.getPos()
         curPos.setX(curPos.getX() + 0.5)
         if not self.gui.find('**/partiesText_locator1').isEmpty():
             curPos = self.gui.find('**/partiesText_locator1').getPos()
         hpr = Point3(0, 0, -40)
-        toonsLabel = DirectLabel(parent=self, text_align=TextNode.ALeft, relief=None, text=TTLocalizer.PartyGatesPartiesListToons, text_scale=TTLocalizer.PPGtoonsLabel, pos=curPos, hpr=hpr)
+        toonsLabel = DirectLabel(parent = self, text_align = TextNode.ALeft, relief = None,
+                                 text = TTLocalizer.PartyGatesPartiesListToons, text_scale = TTLocalizer.PPGtoonsLabel,
+                                 pos = curPos, hpr = hpr)
         curPos.setX(curPos.getX() + 0.1)
         if not self.gui.find('**/partiesText_locator2').isEmpty():
             curPos = self.gui.find('**/partiesText_locator2').getPos()
-        activitiesLabel = DirectLabel(parent=self, text_align=TextNode.ALeft, relief=None, text=TTLocalizer.PartyGatesPartiesListActivities, text_scale=TTLocalizer.PPGactivitiesLabel, pos=curPos, hpr=hpr)
+        activitiesLabel = DirectLabel(parent = self, text_align = TextNode.ALeft, relief = None,
+                                      text = TTLocalizer.PartyGatesPartiesListActivities,
+                                      text_scale = TTLocalizer.PPGactivitiesLabel, pos = curPos, hpr = hpr)
         curPos.setX(curPos.getX() + 0.1)
         if not self.gui.find('**/partiesText_locator3').isEmpty():
             curPos = self.gui.find('**/partiesText_locator3').getPos()
-        minLeftLabel = DirectLabel(parent=self, text_align=TextNode.ALeft, relief=None, text=TTLocalizer.PartyGatesPartiesListMinLeft, text_scale=TTLocalizer.PPGminLeftLabel, pos=curPos, hpr=hpr)
+        minLeftLabel = DirectLabel(parent = self, text_align = TextNode.ALeft, relief = None,
+                                   text = TTLocalizer.PartyGatesPartiesListMinLeft,
+                                   text_scale = TTLocalizer.PPGminLeftLabel, pos = curPos, hpr = hpr)
         return (list, label)
 
     def stash(self):

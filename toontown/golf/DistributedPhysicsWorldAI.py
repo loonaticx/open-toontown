@@ -8,6 +8,7 @@ from math import *
 import math
 from toontown.golf import PhysicsWorldBase
 
+
 class DistributedPhysicsWorldAI(DistributedObjectAI.DistributedObjectAI, PhysicsWorldBase.PhysicsWorldBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPhysicsWorldAI')
 
@@ -34,7 +35,8 @@ class DistributedPhysicsWorldAI(DistributedObjectAI.DistributedObjectAI, Physics
         pass
 
     def createCommonObject(self, type, pos, hpr, sizeX = 0, sizeY = 0, moveDistance = 0):
-        commonObjectDatam = PhysicsWorldBase.PhysicsWorldBase.createCommonObject(self, type, None, pos, hpr, sizeX, sizeY, moveDistance)
+        commonObjectDatam = PhysicsWorldBase.PhysicsWorldBase.createCommonObject(self, type, None, pos, hpr, sizeX,
+                                                                                 sizeY, moveDistance)
         self.sendUpdate('clientCommonObject', commonObjectDatam)
         return
 

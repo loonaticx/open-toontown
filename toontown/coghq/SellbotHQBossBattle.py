@@ -4,6 +4,7 @@ from toontown.suit import DistributedSellbotBoss
 from direct.directnotify import DirectNotifyGlobal
 from toontown.coghq import CogHQBossBattle
 
+
 class SellbotHQBossBattle(CogHQBossBattle.CogHQBossBattle):
     notify = DirectNotifyGlobal.directNotify.newCategory('SellbotHQBossBattle')
 

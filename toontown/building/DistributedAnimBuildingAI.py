@@ -3,6 +3,7 @@ from toontown.building import DistributedBuildingAI
 from toontown.building import DistributedAnimDoorAI
 from toontown.building import DoorTypes
 
+
 class DistributedAnimBuildingAI(DistributedBuildingAI.DistributedBuildingAI):
 
     def __init__(self, air, blockNumber, zoneId, trophyMgr):

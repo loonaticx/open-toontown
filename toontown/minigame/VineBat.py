@@ -5,6 +5,7 @@ from pandac.PandaModules import *
 from . import VineGameGlobals
 from direct.interval.SoundInterval import SoundInterval
 
+
 class VineBat(NodePath, DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('VineBat')
     notify.setDebug(True)
@@ -54,7 +55,8 @@ class VineBat(NodePath, DirectObject):
         self.flySfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_bat_flying_lp.ogg')
         self.oldCutoffDistance = base.sfxPlayer.getCutoffDistance()
         base.sfxPlayer.setCutoffDistance(240)
-        self.soundInterval = SoundInterval(self.flySfx, node=self, listenerNode=base.localAvatar, seamlessLoop=True, volume=0.5, cutOff=240)
+        self.soundInterval = SoundInterval(self.flySfx, node = self, listenerNode = base.localAvatar,
+                                           seamlessLoop = True, volume = 0.5, cutOff = 240)
         self.reparentTo(render)
         self.startedFlying = False
         self.warnedForThisLap = False

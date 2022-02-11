@@ -2,6 +2,7 @@ import random
 from . import PlayingCardGlobals
 from toontown.minigame.PlayingCard import PlayingCardBase
 
+
 class PlayingCardDeck:
 
     def __init__(self):

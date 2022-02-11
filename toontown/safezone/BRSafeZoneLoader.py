@@ -4,6 +4,7 @@ from . import SafeZoneLoader
 from . import BRPlayground
 from toontown.battle import BattleParticles
 
+
 class BRSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
     SnowFadeLerpTime = 2.0
 
@@ -64,13 +65,16 @@ class BRSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
     def fadeInSnow(self):
         self.resetSnowLerp()
         currentScale = self.snowRender.getColorScale()[3]
-        ivals = [LerpFunctionInterval(self.snowRender.setAlphaScale, fromData=currentScale, toData=1.0, duration=self.SnowFadeLerpTime), FunctionInterval(self.snowRender.clearColorScale)]
+        ivals = [LerpFunctionInterval(self.snowRender.setAlphaScale, fromData = currentScale, toData = 1.0,
+                                      duration = self.SnowFadeLerpTime),
+                 FunctionInterval(self.snowRender.clearColorScale)]
         self.snowFade = Track(ivals, 'snow-fade')
         self.snowFade.play()
 
     def fadeOutSnow(self):
         self.resetSnowLerp()
         currentScale = self.snowRender.getColorScale()[3]
-        ivals = [LerpFunctionInterval(self.snowRender.setAlphaScale, fromData=currentScale, toData=0.0, duration=self.SnowFadeLerpTime)]
+        ivals = [LerpFunctionInterval(self.snowRender.setAlphaScale, fromData = currentScale, toData = 0.0,
+                                      duration = self.SnowFadeLerpTime)]
         self.snowFade = Track(ivals, 'snow-fade')
         self.snowFade.play()

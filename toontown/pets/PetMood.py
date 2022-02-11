@@ -4,10 +4,13 @@ from direct.showbase.PythonUtil import lerp, average, clampScalar
 from toontown.toonbase import TTLocalizer
 import random, time, weakref
 
+
 class PetMood:
     notify = DirectNotifyGlobal.directNotify.newCategory('PetMood')
     Neutral = 'neutral'
-    Components = ('boredom', 'restlessness', 'playfulness', 'loneliness', 'sadness', 'affection', 'hunger', 'confusion', 'excitement', 'fatigue', 'anger', 'surprise')
+    Components = (
+    'boredom', 'restlessness', 'playfulness', 'loneliness', 'sadness', 'affection', 'hunger', 'confusion', 'excitement',
+    'fatigue', 'anger', 'surprise')
     SerialNum = 0
     ContentedMoods = ('neutral', 'excitement', 'playfulness', 'affection')
     ExcitedMoods = ('excitement', 'playfulness')
@@ -157,7 +160,8 @@ class PetMood:
 
     def start(self):
         pet = self.getPet()
-        taskMgr.doMethodLater(simbase.petMoodDriftPeriod / simbase.petMoodTimescale * random.random(), self._driftMoodTask, self.getMoodDriftTaskName())
+        taskMgr.doMethodLater(simbase.petMoodDriftPeriod / simbase.petMoodTimescale * random.random(),
+                              self._driftMoodTask, self.getMoodDriftTaskName())
         self.started = 1
 
     def stop(self):
@@ -203,7 +207,8 @@ class PetMood:
 
     def _driftMoodTask(self, task = None):
         self.driftMood()
-        taskMgr.doMethodLater(simbase.petMoodDriftPeriod / simbase.petMoodTimescale, self._driftMoodTask, self.getMoodDriftTaskName())
+        taskMgr.doMethodLater(simbase.petMoodDriftPeriod / simbase.petMoodTimescale, self._driftMoodTask,
+                              self.getMoodDriftTaskName())
         return Task.done
 
     def __repr__(self):

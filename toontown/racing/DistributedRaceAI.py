@@ -8,10 +8,12 @@ import random
 from toontown.racing import Racer, RaceGlobals
 from direct.distributed.ClockDelta import *
 
+
 class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRaceAI')
 
-    def __init__(self, air, trackId, zoneId, avIds, laps, raceType, racerFinishedFunc, raceDoneFunc, circuitLoop, circuitPoints, circuitTimes, qualTimes=[], circuitTimeList={}, circuitTotalBonusTickets={}):
+    def __init__(self, air, trackId, zoneId, avIds, laps, raceType, racerFinishedFunc, raceDoneFunc, circuitLoop,
+                 circuitPoints, circuitTimes, qualTimes = [], circuitTimeList = {}, circuitTotalBonusTickets = {}):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.trackId = trackId
         self.direction = self.trackId % 2
@@ -42,7 +44,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
             self.gagList = []
         else:
             self.gagList = [
-             0] * len(RaceGlobals.TrackDict[trackId][4])
+                               0] * len(RaceGlobals.TrackDict[trackId][4])
         self.circuitLoop = circuitLoop
         self.qualTimes = qualTimes
         self.circuitTimeList = circuitTimeList
@@ -66,7 +68,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
             self.notify.debug('deleting object: %s' % object.doId)
             object.requestDelete()
 
-    def requestDelete(self, lastRace=True):
+    def requestDelete(self, lastRace = True):
         self.notify.debug('requestDelete: %s' % self.doId)
         self.ignoreBarrier('waitingForExit')
         for i in self.thrownGags:
@@ -250,14 +252,15 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
                 self.ignore(racer.exitEvent)
                 racer.exited = True
                 racer.finished = True
-                taskMgr.doMethodLater(10, self.removeObject, 'removeKart-%s' % racer.kart.doId, extraArgs=[racer.kart])
+                taskMgr.doMethodLater(10, self.removeObject, 'removeKart-%s' % racer.kart.doId,
+                                      extraArgs = [racer.kart])
                 taskMgr.remove('make %s invincible' % avId)
                 self.racers[avId].anvilTarget = True
 
         self.checkForEndOfRace()
         return
 
-    def d_kickRacer(self, avId, reason=RaceGlobals.Exit_Barrier):
+    def d_kickRacer(self, avId, reason = RaceGlobals.Exit_Barrier):
         if avId not in self.kickedAvIds:
             self.kickedAvIds.append(avId)
             if self.isCircuit() and not self.isFirstRace() and reason == RaceGlobals.Exit_Barrier:
@@ -286,7 +289,8 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
             id = possibleTargets[0].avId
             if id != ownerId:
                 possibleTargets[0].anvilTarget = True
-                taskMgr.doMethodLater(4, setattr, 'make %s invincible' % id, extraArgs=[self.racers[id], 'anvilTarget', False])
+                taskMgr.doMethodLater(4, setattr, 'make %s invincible' % id,
+                                      extraArgs = [self.racers[id], 'anvilTarget', False])
             self.sendUpdate('dropAnvilOn', [ownerId, id, globalClockDelta.getFrameNetworkTime()])
 
     def d_makeBanana(self, avId, x, y, z):
@@ -303,7 +307,9 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
             targetRacer = simbase.air.doId2do.get(iiId, None)
             if not (targetRacer and targetRacer.kart and ownerRacer and ownerRacer.kart):
                 continue
-            if targetRacer.kart.getPos(ownerRacer.kart)[1] < 500 and targetRacer.kart.getPos(ownerRacer.kart)[1] >= 0 and abs(targetRacer.kart.getPos(ownerRacer.kart)[0]) < 50 and avId != iiId and targetDist > targetRacer.kart.getPos(ownerRacer.kart)[1]:
+            if targetRacer.kart.getPos(ownerRacer.kart)[1] < 500 and targetRacer.kart.getPos(ownerRacer.kart)[
+                1] >= 0 and abs(targetRacer.kart.getPos(ownerRacer.kart)[0]) < 50 and avId != iiId and targetDist > \
+                    targetRacer.kart.getPos(ownerRacer.kart)[1]:
                 targetId = iiId
                 targetDist = targetRacer.kart.getPos(ownerRacer.kart)[1]
 
@@ -312,7 +318,8 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
                 targetRacer = simbase.air.doId2do.get(iiId, None)
                 if not (targetRacer and targetRacer.kart and ownerRacer and ownerRacer.kart):
                     continue
-                if targetRacer.kart.getPos(ownerRacer.kart)[1] > -80 and targetRacer.kart.getPos(ownerRacer.kart)[1] <= 0 and abs(targetRacer.kart.getPos(ownerRacer.kart)[0]) < 50 and avId != iiId:
+                if targetRacer.kart.getPos(ownerRacer.kart)[1] > -80 and targetRacer.kart.getPos(ownerRacer.kart)[
+                    1] <= 0 and abs(targetRacer.kart.getPos(ownerRacer.kart)[0]) < 50 and avId != iiId:
                     targetId = iiId
 
         self.sendUpdate('shootPiejectile', [avId, targetId, type])
@@ -332,7 +339,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
         if avId in self.racers and avId == avIdFromClient:
             self.notify.debug('Removing %d from race %d' % (avId, self.doId))
             racer = self.racers[avId]
-            taskMgr.doMethodLater(10, self.removeObject, racer.kart.uniqueName('removeIt'), extraArgs=[racer.kart])
+            taskMgr.doMethodLater(10, self.removeObject, racer.kart.uniqueName('removeIt'), extraArgs = [racer.kart])
             if racer.avatar:
                 racer.avatar.kart = None
             self.racers[avId].exited = True
@@ -357,7 +364,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
                 return
             if self.gagList[slot] == index:
                 self.gagList[slot] = None
-                taskMgr.doMethodLater(5, self.d_genGag, 'remakeGag-' + str(slot), extraArgs=[slot])
+                taskMgr.doMethodLater(5, self.d_genGag, 'remakeGag-' + str(slot), extraArgs = [slot])
                 self.racers[avId].hasGag = True
                 self.racers[avId].gagType = type
             else:
@@ -413,7 +420,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
                     self.flushPending()
         return
 
-    def flushPending(self, task=None):
+    def flushPending(self, task = None):
         for racer in self.finishPending:
             self.racerFinishedFunc(self, racer)
 
@@ -421,8 +428,11 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
         self.flushPendingTask = None
         return
 
-    def d_setPlace(self, avId, totalTime, place, entryFee, qualify, winnings, bonus, trophies, circuitPoints, circuitTime):
-        self.sendUpdate('setPlace', [avId, totalTime, place, entryFee, qualify, winnings, bonus, trophies, circuitPoints, circuitTime])
+    def d_setPlace(self, avId, totalTime, place, entryFee, qualify, winnings, bonus, trophies, circuitPoints,
+                   circuitTime):
+        self.sendUpdate('setPlace',
+                        [avId, totalTime, place, entryFee, qualify, winnings, bonus, trophies, circuitPoints,
+                         circuitTime])
 
     def d_setCircuitPlace(self, avId, place, entryFee, winnings, bonus, trophies):
         self.sendUpdate('setCircuitPlace', [avId, place, entryFee, winnings, bonus, trophies])
@@ -437,7 +447,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
             self.sendUpdate('racerDisconnected', [avId])
             self.ignore(racer.exitEvent)
             racer.exited = True
-            taskMgr.doMethodLater(10, self.removeObject, 'removeKart-%s' % racer.kart.doId, extraArgs=[racer.kart])
+            taskMgr.doMethodLater(10, self.removeObject, 'removeKart-%s' % racer.kart.doId, extraArgs = [racer.kart])
             taskMgr.remove('make %s invincible' % id)
             self.racers[avId].anvilTarget = True
             self.checkForEndOfRace()

@@ -7,9 +7,10 @@ from direct.distributed import DistributedObjectAI
 from direct.fsm import State
 from toontown.toonbase import ToontownAccessAI
 
+
 class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
 
-    def __init__(self, air, blockNumber, doorType, doorIndex=0, lockValue=0, swing=3):
+    def __init__(self, air, blockNumber, doorType, doorIndex = 0, lockValue = 0, swing = 3):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.block = blockNumber
         self.swing = swing
@@ -18,28 +19,28 @@ class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
         self.doorIndex = doorIndex
         self.setDoorLock(lockValue)
         self.fsm = ClassicFSM.ClassicFSM('DistributedDoorAI_right', [
-         State.State('off', self.enterOff, self.exitOff, [
-          'closing', 'closed', 'opening', 'open']),
-         State.State('closing', self.enterClosing, self.exitClosing, [
-          'closed', 'opening']),
-         State.State('closed', self.enterClosed, self.exitClosed, [
-          'opening']),
-         State.State('opening', self.enterOpening, self.exitOpening, [
-          'open']),
-         State.State('open', self.enterOpen, self.exitOpen, [
-          'closing', 'open'])], 'off', 'off')
+            State.State('off', self.enterOff, self.exitOff, [
+                'closing', 'closed', 'opening', 'open']),
+            State.State('closing', self.enterClosing, self.exitClosing, [
+                'closed', 'opening']),
+            State.State('closed', self.enterClosed, self.exitClosed, [
+                'opening']),
+            State.State('opening', self.enterOpening, self.exitOpening, [
+                'open']),
+            State.State('open', self.enterOpen, self.exitOpen, [
+                'closing', 'open'])], 'off', 'off')
         self.fsm.enterInitialState()
         self.exitDoorFSM = ClassicFSM.ClassicFSM('DistributedDoorAI_left', [
-         State.State('off', self.exitDoorEnterOff, self.exitDoorExitOff, [
-          'closing', 'closed', 'opening', 'open']),
-         State.State('closing', self.exitDoorEnterClosing, self.exitDoorExitClosing, [
-          'closed', 'opening']),
-         State.State('closed', self.exitDoorEnterClosed, self.exitDoorExitClosed, [
-          'opening']),
-         State.State('opening', self.exitDoorEnterOpening, self.exitDoorExitOpening, [
-          'open']),
-         State.State('open', self.exitDoorEnterOpen, self.exitDoorExitOpen, [
-          'closing', 'open'])], 'off', 'off')
+            State.State('off', self.exitDoorEnterOff, self.exitDoorExitOff, [
+                'closing', 'closed', 'opening', 'open']),
+            State.State('closing', self.exitDoorEnterClosing, self.exitDoorExitClosing, [
+                'closed', 'opening']),
+            State.State('closed', self.exitDoorEnterClosed, self.exitDoorExitClosed, [
+                'opening']),
+            State.State('opening', self.exitDoorEnterOpening, self.exitDoorExitOpening, [
+                'open']),
+            State.State('open', self.exitDoorEnterOpen, self.exitDoorExitOpen, [
+                'closing', 'open'])], 'off', 'off')
         self.exitDoorFSM.enterInitialState()
         self.doLaterTask = None
         self.exitDoorDoLaterTask = None
@@ -74,7 +75,7 @@ class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
 
     def getZoneIdAndBlock(self):
         r = [
-         self.zoneId, self.block]
+            self.zoneId, self.block]
         return r
 
     def setOtherDoor(self, door):
@@ -85,11 +86,11 @@ class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
 
     def getState(self):
         return [
-         self.fsm.getCurrentState().getName(), globalClockDelta.getRealNetworkTime()]
+            self.fsm.getCurrentState().getName(), globalClockDelta.getRealNetworkTime()]
 
     def getExitDoorState(self):
         return [
-         self.exitDoorFSM.getCurrentState().getName(), globalClockDelta.getRealNetworkTime()]
+            self.exitDoorFSM.getCurrentState().getName(), globalClockDelta.getRealNetworkTime()]
 
     def isOpen(self):
         state = self.fsm.getCurrentState().getName()
@@ -120,7 +121,7 @@ class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
         else:
             self.enqueueAvatarIdEnter(avatarID)
             self.sendUpdateToAvatarId(avatarID, 'setOtherZoneIdAndDoId', [
-             self.otherDoor.getZoneId(), self.otherDoor.getDoId()])
+                self.otherDoor.getZoneId(), self.otherDoor.getDoId()])
 
     def enqueueAvatarIdEnter(self, avatarID):
         if avatarID not in self.avatarsWhoAreEntering:
@@ -229,7 +230,8 @@ class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
 
     def exitDoorEnterClosing(self):
         self.d_setExitDoorState('closing')
-        self.exitDoorDoLaterTask = taskMgr.doMethodLater(1, self.exitDoorClosingTask, self.uniqueName('exit_door_closing-timer'))
+        self.exitDoorDoLaterTask = taskMgr.doMethodLater(1, self.exitDoorClosingTask,
+                                                         self.uniqueName('exit_door_closing-timer'))
 
     def exitDoorExitClosing(self):
         if self.exitDoorDoLaterTask:
@@ -252,7 +254,8 @@ class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
 
     def exitDoorEnterOpening(self):
         self.d_setExitDoorState('opening')
-        self.exitDoorDoLaterTask = taskMgr.doMethodLater(1, self.exitDoorOpeningTask, self.uniqueName('exit_door_opening-timer'))
+        self.exitDoorDoLaterTask = taskMgr.doMethodLater(1, self.exitDoorOpeningTask,
+                                                         self.uniqueName('exit_door_opening-timer'))
 
     def exitDoorExitOpening(self):
         if self.exitDoorDoLaterTask:
@@ -267,7 +270,8 @@ class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
     def exitDoorEnterOpen(self):
         self.d_setExitDoorState('open')
         self.avatarsWhoAreExiting = {}
-        self.exitDoorDoLaterTask = taskMgr.doMethodLater(1, self.exitDoorOpenTask, self.uniqueName('exit_door_open-timer'))
+        self.exitDoorDoLaterTask = taskMgr.doMethodLater(1, self.exitDoorOpenTask,
+                                                         self.uniqueName('exit_door_open-timer'))
 
     def exitDoorExitOpen(self):
         if self.exitDoorDoLaterTask:

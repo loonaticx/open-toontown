@@ -4,7 +4,9 @@ from toontown.toonbase import ToontownGlobals
 from pandac.PandaModules import *
 from math import *
 import math
+
 GEO_ID = 0
+
 
 def circleX(angle, radius, centerX, centerY):
     x = radius * cos(angle) + centerX

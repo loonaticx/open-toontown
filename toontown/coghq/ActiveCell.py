@@ -2,6 +2,7 @@ from pandac.PandaModules import *
 from otp.level import BasicEntities
 from direct.directnotify import DirectNotifyGlobal
 
+
 class ActiveCell(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('ActiveCell')
 

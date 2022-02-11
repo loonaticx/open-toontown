@@ -7,6 +7,7 @@ from .FireworkShows import getShowDuration
 import random
 from direct.task import Task
 
+
 class DistributedFireworkShowAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFireworkShowAI')
 
@@ -55,8 +56,8 @@ class DistributedFireworkShowAI(DistributedObjectAI.DistributedObjectAI):
 
     def d_shootFirework(self, x, y, z, style, color1, color2):
         self.sendUpdate('shootFirework', (x,
-         y,
-         z,
-         style,
-         color1,
-         color2))
+                                          y,
+                                          z,
+                                          style,
+                                          color1,
+                                          color2))

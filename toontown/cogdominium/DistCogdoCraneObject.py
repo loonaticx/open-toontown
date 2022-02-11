@@ -6,7 +6,9 @@ from toontown.toonbase import ToontownGlobals
 from otp.otpbase import OTPGlobals
 from direct.fsm import FSM
 from direct.task import Task
+
 smileyDoId = 1
+
 
 class DistCogdoCraneObject(DistributedSmoothNode.DistributedSmoothNode, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistCogdoCraneObject')
@@ -20,7 +22,9 @@ class DistCogdoCraneObject(DistributedSmoothNode.DistributedSmoothNode, FSM.FSM)
         self.craneId = 0
         self.cleanedUp = 0
         self.collisionNode = CollisionNode('object')
-        self.collisionNode.setIntoCollideMask(ToontownGlobals.PieBitmask | OTPGlobals.WallBitmask | ToontownGlobals.CashbotBossObjectBitmask | OTPGlobals.CameraBitmask)
+        self.collisionNode.setIntoCollideMask(
+            ToontownGlobals.PieBitmask | OTPGlobals.WallBitmask | ToontownGlobals.CashbotBossObjectBitmask |
+            OTPGlobals.CameraBitmask)
         self.collisionNode.setFromCollideMask(ToontownGlobals.PieBitmask | OTPGlobals.FloorBitmask)
         self.collisionNodePath = NodePath(self.collisionNode)
         self.physicsActivated = 0
@@ -29,7 +33,7 @@ class DistCogdoCraneObject(DistributedSmoothNode.DistributedSmoothNode, FSM.FSM)
         self.hitBossSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_safe_miss.ogg')
         self.hitBossSoundInterval = SoundInterval(self.hitBossSfx)
         self.touchedBossSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_sandbag.ogg')
-        self.touchedBossSoundInterval = SoundInterval(self.touchedBossSfx, duration=0.8)
+        self.touchedBossSoundInterval = SoundInterval(self.touchedBossSfx, duration = 0.8)
         self.lerpInterval = None
         return
 
@@ -192,9 +196,9 @@ class DistCogdoCraneObject(DistributedSmoothNode.DistributedSmoothNode, FSM.FSM)
 
     def d_requestFree(self):
         self.sendUpdate('requestFree', [self.getX(),
-         self.getY(),
-         self.getZ(),
-         self.getH()])
+                                        self.getY(),
+                                        self.getZ(),
+                                        self.getH()])
 
     def d_hitBoss(self, impact):
         self.sendUpdate('hitBoss', [impact])

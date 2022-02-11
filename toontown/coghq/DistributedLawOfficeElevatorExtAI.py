@@ -7,10 +7,12 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task import Task
 
+
 class DistributedLawOfficeElevatorExtAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
 
-    def __init__(self, air, bldg, lawOfficeId, entranceId, antiShuffle=0, minLaff=0):
-        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, antiShuffle=antiShuffle, minLaff=minLaff)
+    def __init__(self, air, bldg, lawOfficeId, entranceId, antiShuffle = 0, minLaff = 0):
+        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, antiShuffle = antiShuffle,
+                                                                   minLaff = minLaff)
         self.lawOfficeId = lawOfficeId
         self.entranceId = entranceId
 
@@ -47,4 +49,4 @@ class DistributedLawOfficeElevatorExtAI(DistributedElevatorExtAI.DistributedElev
             for avId in avIdList:
                 if avId:
                     self.sendUpdateToAvatarId(avId, 'setLawOfficeInteriorZoneForce', [
-                     officeZone])
+                        officeZone])

@@ -1,6 +1,7 @@
 from . import DistributedTreasureAI
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedSZTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
 
     def __init__(self, air, treasurePlanner, x, y, z):

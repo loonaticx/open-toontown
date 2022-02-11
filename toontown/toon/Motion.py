@@ -6,6 +6,7 @@ from direct.fsm import State
 from . import TTEmote
 from otp.avatar import Emote
 
+
 class Motion(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('Motion')
 
@@ -14,15 +15,19 @@ class Motion(StateData.StateData):
         self.doneEvent = 'motionDone'
         StateData.StateData.__init__(self, self.doneEvent)
         self.fsm = ClassicFSM.ClassicFSM('Motion', [State.State('off', self.enterOff, self.exitOff),
-         State.State('neutral', self.enterNeutral, self.exitNeutral),
-         State.State('walk', self.enterWalk, self.exitWalk),
-         State.State('run', self.enterRun, self.exitRun),
-         State.State('sad-neutral', self.enterSadNeutral, self.exitSadNeutral),
-         State.State('sad-walk', self.enterSadWalk, self.exitSadWalk),
-         State.State('catch-neutral', self.enterCatchNeutral, self.exitCatchNeutral),
-         State.State('catch-run', self.enterCatchRun, self.exitCatchRun),
-         State.State('catch-eatneutral', self.enterCatchEatNeutral, self.exitCatchEatNeutral),
-         State.State('catch-eatnrun', self.enterCatchEatNRun, self.exitCatchEatNRun)], 'off', 'off')
+                                                    State.State('neutral', self.enterNeutral, self.exitNeutral),
+                                                    State.State('walk', self.enterWalk, self.exitWalk),
+                                                    State.State('run', self.enterRun, self.exitRun),
+                                                    State.State('sad-neutral', self.enterSadNeutral,
+                                                                self.exitSadNeutral),
+                                                    State.State('sad-walk', self.enterSadWalk, self.exitSadWalk),
+                                                    State.State('catch-neutral', self.enterCatchNeutral,
+                                                                self.exitCatchNeutral),
+                                                    State.State('catch-run', self.enterCatchRun, self.exitCatchRun),
+                                                    State.State('catch-eatneutral', self.enterCatchEatNeutral,
+                                                                self.exitCatchEatNeutral),
+                                                    State.State('catch-eatnrun', self.enterCatchEatNRun,
+                                                                self.exitCatchEatNRun)], 'off', 'off')
         self.fsm.enterInitialState()
 
     def delete(self):

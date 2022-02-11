@@ -15,6 +15,7 @@ from toontown.toon import ToonHead
 from toontown.toonbase import TTLocalizer
 from toontown.minigame import Trajectory
 from toontown.effects import DustCloud
+
 GROUND_PLANE_MIN = -15
 CANNON_ROTATION_MIN = -55
 CANNON_ROTATION_MAX = 50
@@ -26,6 +27,7 @@ INITIAL_VELOCITY = 80
 CANNON_MOVE_UPDATE_FREQ = 0.5
 CAMERA_PULLBACK_MIN = 20
 CAMERA_PULLBACK_MAX = 40
+
 
 class DistributedLawbotCannon(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotCannon')
@@ -256,16 +258,29 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
         NametagGlobals.setMasterArrowsOn(0)
         guiModel = 'phase_4/models/gui/cannon_game_gui'
         cannonGui = loader.loadModel(guiModel)
-        self.aimPad = DirectFrame(image=cannonGui.find('**/CannonFire_PAD'), relief=None, pos=(0.7, 0, -0.553333), scale=0.8)
+        self.aimPad = DirectFrame(image = cannonGui.find('**/CannonFire_PAD'), relief = None, pos = (0.7, 0, -0.553333),
+                                  scale = 0.8)
         cannonGui.removeNode()
-        self.fireButton = DirectButton(parent=self.aimPad, image=((guiModel, '**/Fire_Btn_UP'), (guiModel, '**/Fire_Btn_DN'), (guiModel, '**/Fire_Btn_RLVR')), relief=None, pos=(0.0115741, 0, 0.00505051), scale=1.0, command=self.__firePressed)
-        self.upButton = DirectButton(parent=self.aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(0.0115741, 0, 0.221717))
-        self.downButton = DirectButton(parent=self.aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(0.0136112, 0, -0.210101), image_hpr=(0, 0, 180))
-        self.leftButton = DirectButton(parent=self.aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(-0.199352, 0, -0.000505269), image_hpr=(0, 0, -90))
-        self.rightButton = DirectButton(parent=self.aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(0.219167, 0, -0.00101024), image_hpr=(0, 0, 90))
+        self.fireButton = DirectButton(parent = self.aimPad, image = (
+        (guiModel, '**/Fire_Btn_UP'), (guiModel, '**/Fire_Btn_DN'), (guiModel, '**/Fire_Btn_RLVR')), relief = None,
+                                       pos = (0.0115741, 0, 0.00505051), scale = 1.0, command = self.__firePressed)
+        self.upButton = DirectButton(parent = self.aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                     relief = None, pos = (0.0115741, 0, 0.221717))
+        self.downButton = DirectButton(parent = self.aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                       relief = None, pos = (0.0136112, 0, -0.210101), image_hpr = (0, 0, 180))
+        self.leftButton = DirectButton(parent = self.aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                       relief = None, pos = (-0.199352, 0, -0.000505269), image_hpr = (0, 0, -90))
+        self.rightButton = DirectButton(parent = self.aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                        relief = None, pos = (0.219167, 0, -0.00101024), image_hpr = (0, 0, 90))
         guiClose = loader.loadModel('phase_3.5/models/gui/avatar_panel_gui')
         cannonBallText = '%d/%d' % (self.cannonBallsLeft, ToontownGlobals.LawbotBossCannonBallMax)
-        self.cannonBallLabel = DirectLabel(parent=self.aimPad, text=cannonBallText, text_fg=VBase4(1, 1, 1, 1), text_align=TextNode.ACenter, relief=None, pos=(0.475, 0.0, -0.35), scale=0.25)
+        self.cannonBallLabel = DirectLabel(parent = self.aimPad, text = cannonBallText, text_fg = VBase4(1, 1, 1, 1),
+                                           text_align = TextNode.ACenter, relief = None, pos = (0.475, 0.0, -0.35),
+                                           scale = 0.25)
         if self.cannonBallsLeft < 5:
             if self.flashingLabel:
                 self.flashingLabel.stop()
@@ -482,7 +497,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
         if oldRot != pos[0] or oldAng != pos[1]:
             if self.cannonMoving == 0:
                 self.cannonMoving = 1
-                base.playSfx(self.sndCannonMove, looping=1)
+                base.playSfx(self.sndCannonMove, looping = 1)
             self.__updateCannonPosition(self.localAvId)
             if task.time - task.lastPositionBroadcastTime > CANNON_MOVE_UPDATE_FREQ:
                 task.lastPositionBroadcastTime = task.time
@@ -648,7 +663,9 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
         return
 
     def setCannonWillFire(self, avId, fireTime, zRot, angle, timestamp):
-        self.notify.debug('setCannonWillFire: ' + str(avId) + ': zRot=' + str(zRot) + ', angle=' + str(angle) + ', time=' + str(fireTime))
+        self.notify.debug(
+            'setCannonWillFire: ' + str(avId) + ': zRot=' + str(zRot) + ', angle=' + str(angle) + ', time=' + str(
+                fireTime))
         if not self.model_Created:
             self.notify.warning("We walked into the zone mid-flight, so we won't see it")
             return
@@ -702,7 +719,8 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
             camera.setZ(-10.0)
         self.flyColSphere = CollisionSphere(0, 0, self.av.getHeight() / 2.0, 1.0)
         self.flyColNode = CollisionNode(self.uniqueName('flySphere'))
-        self.flyColNode.setCollideMask(ToontownGlobals.WallBitmask | ToontownGlobals.FloorBitmask | ToontownGlobals.PieBitmask)
+        self.flyColNode.setCollideMask(
+            ToontownGlobals.WallBitmask | ToontownGlobals.FloorBitmask | ToontownGlobals.PieBitmask)
         self.flyColNode.addSolid(self.flyColSphere)
         self.flyColNodePath = self.jurorToon.attachNewNode(self.flyColNode)
         self.flyColNodePath.setColor(1, 0, 0, 1)
@@ -872,5 +890,19 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
     def generateCannonAppearTrack(self, avatar):
         self.cannon.setScale(0.1)
         self.cannon.show()
-        kartTrack = Parallel(Sequence(ActorInterval(avatar, 'feedPet'), Func(avatar.loop, 'neutral')), Sequence(Func(self.cannon.reparentTo, avatar.rightHand), Wait(2.1), Func(self.cannon.wrtReparentTo, render), Func(self.cannon.setShear, 0, 0, 0), Parallel(LerpHprInterval(self.cannon, hpr=self.nodePath.getHpr(render), duration=1.2), ProjectileInterval(self.cannon, endPos=self.nodePath.getPos(render), duration=1.2, gravityMult=0.45)), Wait(0.2), Sequence(LerpScaleInterval(self.cannon, scale=Point3(1.1, 1.1, 0.1), duration=0.2), LerpScaleInterval(self.cannon, scale=Point3(0.9, 0.9, 0.1), duration=0.1), LerpScaleInterval(self.cannon, scale=Point3(1.0, 1.0, 0.1), duration=0.1), LerpScaleInterval(self.cannon, scale=Point3(1.0, 1.0, 1.1), duration=0.2), LerpScaleInterval(self.cannon, scale=Point3(1.0, 1.0, 0.9), duration=0.1), LerpScaleInterval(self.cannon, scale=Point3(1.0, 1.0, 1.0), duration=0.1), Func(self.cannon.wrtReparentTo, self.nodePath))))
+        kartTrack = Parallel(Sequence(ActorInterval(avatar, 'feedPet'), Func(avatar.loop, 'neutral')),
+                             Sequence(Func(self.cannon.reparentTo, avatar.rightHand), Wait(2.1),
+                                      Func(self.cannon.wrtReparentTo, render), Func(self.cannon.setShear, 0, 0, 0),
+                                      Parallel(LerpHprInterval(self.cannon, hpr = self.nodePath.getHpr(render),
+                                                               duration = 1.2),
+                                               ProjectileInterval(self.cannon, endPos = self.nodePath.getPos(render),
+                                                                  duration = 1.2, gravityMult = 0.45)), Wait(0.2),
+                                      Sequence(
+                                          LerpScaleInterval(self.cannon, scale = Point3(1.1, 1.1, 0.1), duration = 0.2),
+                                          LerpScaleInterval(self.cannon, scale = Point3(0.9, 0.9, 0.1), duration = 0.1),
+                                          LerpScaleInterval(self.cannon, scale = Point3(1.0, 1.0, 0.1), duration = 0.1),
+                                          LerpScaleInterval(self.cannon, scale = Point3(1.0, 1.0, 1.1), duration = 0.2),
+                                          LerpScaleInterval(self.cannon, scale = Point3(1.0, 1.0, 0.9), duration = 0.1),
+                                          LerpScaleInterval(self.cannon, scale = Point3(1.0, 1.0, 1.0), duration = 0.1),
+                                          Func(self.cannon.wrtReparentTo, self.nodePath))))
         return kartTrack

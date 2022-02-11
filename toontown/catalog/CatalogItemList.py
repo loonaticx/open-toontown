@@ -3,6 +3,7 @@ from pandac.PandaModules import *
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 
+
 class CatalogItemList:
 
     def __init__(self, source = None, store = 0):
@@ -67,7 +68,7 @@ class CatalogItemList:
             else:
                 afterTime.append(item)
 
-        return (CatalogItemList(beforeTime, store=self.store), CatalogItemList(afterTime, store=self.store))
+        return (CatalogItemList(beforeTime, store = self.store), CatalogItemList(afterTime, store = self.store))
 
     def extractOldestItems(self, count):
         return (self[0:count], self[count:])
@@ -187,7 +188,7 @@ class CatalogItemList:
     def __getslice__(self, i, j):
         if self.__list == None:
             self.__decodeList()
-        return CatalogItemList(self.__list[i:j], store=self.store)
+        return CatalogItemList(self.__list[i:j], store = self.store)
 
     def __setslice__(self, i, j, s):
         if self.__list == None:
@@ -214,7 +215,7 @@ class CatalogItemList:
         return self
 
     def __add__(self, other):
-        copy = CatalogItemList(self, store=self.store)
+        copy = CatalogItemList(self, store = self.store)
         copy += other
         return copy
 

@@ -3,6 +3,7 @@ from pandac.PandaModules import VBase3, VBase4
 from direct.interval.IntervalGlobal import Sequence, Wait, Func, LerpColorScaleInterval, LerpScaleInterval
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedSZTreasure(DistributedTreasure.DistributedTreasure):
 
     def __init__(self, cr):
@@ -59,15 +60,18 @@ class DistributedSZTreasure(DistributedTreasure.DistributedTreasure):
             return
 
         def getFadeOutTrack():
-            fadeOutTrack = LerpColorScaleInterval(self.nodePath, 0.8, colorScale=VBase4(0, 0, 0, 0), startColorScale=VBase4(1, 1, 1, 1), blendType='easeIn')
+            fadeOutTrack = LerpColorScaleInterval(self.nodePath, 0.8, colorScale = VBase4(0, 0, 0, 0),
+                                                  startColorScale = VBase4(1, 1, 1, 1), blendType = 'easeIn')
             return fadeOutTrack
 
         def getFadeInTrack():
-            fadeInTrack = LerpColorScaleInterval(self.nodePath, 0.5, colorScale=VBase4(1, 1, 1, 1), startColorScale=VBase4(0, 0, 0, 0), blendType='easeOut')
+            fadeInTrack = LerpColorScaleInterval(self.nodePath, 0.5, colorScale = VBase4(1, 1, 1, 1),
+                                                 startColorScale = VBase4(0, 0, 0, 0), blendType = 'easeOut')
             return fadeInTrack
 
-        base.playSfx(self.rejectSound, node=self.nodePath)
-        self.fadeTrack = Sequence(getFadeOutTrack(), Func(replaceTreasureFunc, newModelPath), getFadeInTrack(), name=self.uniqueName('treasureFadeTrack'))
+        base.playSfx(self.rejectSound, node = self.nodePath)
+        self.fadeTrack = Sequence(getFadeOutTrack(), Func(replaceTreasureFunc, newModelPath), getFadeInTrack(),
+                                  name = self.uniqueName('treasureFadeTrack'))
         self.fadeTrack.start()
         return
 
@@ -76,8 +80,10 @@ class DistributedSZTreasure(DistributedTreasure.DistributedTreasure):
         if ToontownGlobals.VALENTINES_DAY in holidayIds:
             originalScale = self.nodePath.getScale()
             throbScale = VBase3(0.85, 0.85, 0.85)
-            throbInIval = LerpScaleInterval(self.nodePath, 0.3, scale=throbScale, startScale=originalScale, blendType='easeIn')
-            throbOutIval = LerpScaleInterval(self.nodePath, 0.3, scale=originalScale, startScale=throbScale, blendType='easeOut')
+            throbInIval = LerpScaleInterval(self.nodePath, 0.3, scale = throbScale, startScale = originalScale,
+                                            blendType = 'easeIn')
+            throbOutIval = LerpScaleInterval(self.nodePath, 0.3, scale = originalScale, startScale = throbScale,
+                                             blendType = 'easeOut')
             self.heartThrobIval = Sequence(throbInIval, throbOutIval, Wait(0.75))
             self.heartThrobIval.loop()
 

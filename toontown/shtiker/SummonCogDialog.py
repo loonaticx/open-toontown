@@ -9,14 +9,20 @@ from toontown.suit import SuitDNA
 from toontown.suit import Suit
 from toontown.battle import SuitBattleGlobals
 from toontown.toon import NPCToons
+
 TTL = TTLocalizer
+
 
 class SummonCogDialog(DirectFrame, StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('SummonCogDialog')
     notify.setInfo(True)
 
     def __init__(self, suitIndex):
-        DirectFrame.__init__(self, parent=aspect2dp, pos=(0, 0, 0.3), relief=None, image=DGG.getDefaultDialogGeom(), image_scale=(1.6, 1, 0.7), image_pos=(0, 0, 0.18), image_color=ToontownGlobals.GlobalDialogColor, text=TTL.SummonDlgTitle, text_scale=0.12, text_pos=(0, 0.4), borderWidth=(0.01, 0.01), sortOrder=NO_FADE_SORT_INDEX)
+        DirectFrame.__init__(self, parent = aspect2dp, pos = (0, 0, 0.3), relief = None,
+                             image = DGG.getDefaultDialogGeom(), image_scale = (1.6, 1, 0.7), image_pos = (0, 0, 0.18),
+                             image_color = ToontownGlobals.GlobalDialogColor, text = TTL.SummonDlgTitle,
+                             text_scale = 0.12, text_pos = (0, 0.4), borderWidth = (0.01, 0.01),
+                             sortOrder = NO_FADE_SORT_INDEX)
         StateData.StateData.__init__(self, 'summon-cog-done')
         self.initialiseoptions(SummonCogDialog)
         self.suitIndex = suitIndex
@@ -43,15 +49,31 @@ class SummonCogDialog(DirectFrame, StateData.StateData):
         self.head = Suit.attachSuitHead(self, self.suitName)
         z = self.head.getZ()
         self.head.setPos(-0.4, -0.1, z + 0.2)
-        self.suitLabel = DirectLabel(parent=self, relief=None, text=self.suitFullName, text_font=ToontownGlobals.getSuitFont(), pos=(-0.4, 0, 0), scale=0.07)
+        self.suitLabel = DirectLabel(parent = self, relief = None, text = self.suitFullName,
+                                     text_font = ToontownGlobals.getSuitFont(), pos = (-0.4, 0, 0), scale = 0.07)
         closeButtonImage = (gui.find('**/CloseBtn_UP'), gui.find('**/CloseBtn_DN'), gui.find('**/CloseBtn_Rllvr'))
-        buttonImage = (guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR'))
+        buttonImage = (
+        guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR'))
         disabledColor = Vec4(0.5, 0.5, 0.5, 1)
-        self.summonSingleButton = DirectButton(parent=self, relief=None, text=TTL.SummonDlgButton1, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.06, text_pos=(0, -0.01), pos=(0.3, 0, 0.25), command=self.issueSummons, extraArgs=['single'])
-        self.summonBuildingButton = DirectButton(parent=self, relief=None, text=TTL.SummonDlgButton2, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.06, text_pos=(0, -0.01), pos=(0.3, 0, 0.125), command=self.issueSummons, extraArgs=['building'])
-        self.summonInvasionButton = DirectButton(parent=self, relief=None, text=TTL.SummonDlgButton3, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.06, text_pos=(0, -0.01), pos=(0.3, 0, 0.0), command=self.issueSummons, extraArgs=['invasion'])
-        self.statusLabel = DirectLabel(parent=self, relief=None, text='', text_wordwrap=12, pos=(0.3, 0, 0.25), scale=0.07)
-        self.cancel = DirectButton(parent=self, relief=None, image=closeButtonImage, pos=(0.7, 0, -0.1), command=self.__cancel)
+        self.summonSingleButton = DirectButton(parent = self, relief = None, text = TTL.SummonDlgButton1,
+                                               image = buttonImage, image_scale = (1.7, 1, 1),
+                                               image3_color = disabledColor, text_scale = 0.06, text_pos = (0, -0.01),
+                                               pos = (0.3, 0, 0.25), command = self.issueSummons,
+                                               extraArgs = ['single'])
+        self.summonBuildingButton = DirectButton(parent = self, relief = None, text = TTL.SummonDlgButton2,
+                                                 image = buttonImage, image_scale = (1.7, 1, 1),
+                                                 image3_color = disabledColor, text_scale = 0.06, text_pos = (0, -0.01),
+                                                 pos = (0.3, 0, 0.125), command = self.issueSummons,
+                                                 extraArgs = ['building'])
+        self.summonInvasionButton = DirectButton(parent = self, relief = None, text = TTL.SummonDlgButton3,
+                                                 image = buttonImage, image_scale = (1.7, 1, 1),
+                                                 image3_color = disabledColor, text_scale = 0.06, text_pos = (0, -0.01),
+                                                 pos = (0.3, 0, 0.0), command = self.issueSummons,
+                                                 extraArgs = ['invasion'])
+        self.statusLabel = DirectLabel(parent = self, relief = None, text = '', text_wordwrap = 12,
+                                       pos = (0.3, 0, 0.25), scale = 0.07)
+        self.cancel = DirectButton(parent = self, relief = None, image = closeButtonImage, pos = (0.7, 0, -0.1),
+                                   command = self.__cancel)
         gui.removeNode()
         guiButton.removeNode()
         self.hide()
@@ -153,7 +175,8 @@ class SummonCogDialog(DirectFrame, StateData.StateData):
             return
 
         self.reparentTo(self.getParent(), 0)
-        self.popup = TTDialog.TTDialog(parent=aspect2dp, style=TTDialog.YesNo, text=text, fadeScreen=1, command=handleResponse)
+        self.popup = TTDialog.TTDialog(parent = aspect2dp, style = TTDialog.YesNo, text = text, fadeScreen = 1,
+                                       command = handleResponse)
 
     def doIssueSummonsText(self):
         self.disableButtons()

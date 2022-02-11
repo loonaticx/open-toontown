@@ -10,6 +10,7 @@ from .CogdoUtil import CogdoGameMovie
 from . import CogdoMazeGameGlobals as Globals
 from . import CogdoUtil
 
+
 class CogdoMazeGameIntro(CogdoGameMovie):
 
     def __init__(self, maze, exit, rng):
@@ -98,30 +99,40 @@ class CogdoMazeGameIntro(CogdoGameMovie):
 
         def start():
             camera.wrtReparentTo(render)
-            self._exit.open(animate=False)
+            self._exit.open(animate = False)
 
         def showBoss():
-            self._setCamTarget(bossSuit, 20, offset=Point3(0, 0, 7), angle=Point3(0, 15, 0))
+            self._setCamTarget(bossSuit, 20, offset = Point3(0, 0, 7), angle = Point3(0, 15, 0))
             bossSuit.loop('victory')
             self._state = 1
 
         def showExit():
-            self._setCamTarget(self._exit, 10, offset=Point3(0, 0, 0), angle=Point3(0, 60, 0))
+            self._setCamTarget(self._exit, 10, offset = Point3(0, 0, 0), angle = Point3(0, 60, 0))
             self._exit.close()
             self._state = 2
 
-        showExitIval = Parallel(camera.posInterval(waitDuration * 0.5, (10, -25, 20), other=self._exit, blendType='easeInOut'), Sequence(Wait(waitDuration * 0.25), Func(bossSuit.play, 'effort'), camera.hprInterval(waitDuration * 0.25, (30, -30, 0), blendType='easeInOut'), Func(self._exit.close), Wait(waitDuration * 0.5)))
+        showExitIval = Parallel(
+            camera.posInterval(waitDuration * 0.5, (10, -25, 20), other = self._exit, blendType = 'easeInOut'),
+            Sequence(Wait(waitDuration * 0.25), Func(bossSuit.play, 'effort'),
+                     camera.hprInterval(waitDuration * 0.25, (30, -30, 0), blendType = 'easeInOut'),
+                     Func(self._exit.close), Wait(waitDuration * 0.5)))
 
         def showWaterCooler():
             wc = self._maze.getWaterCoolers()[0]
-            self._setCamTarget(wc, 25, angle=Point3(-30, 60, 0))
+            self._setCamTarget(wc, 25, angle = Point3(-30, 60, 0))
             camera.wrtReparentTo(self._camHelperNode)
             self._state = 3
 
         def end():
             self._stopUpdateTask()
 
-        self._ival = Sequence(Func(start), Func(self.displayLine, 'toon', self._getRandomLine(dialogue[0])), showExitIval, Func(showWaterCooler), Func(self.displayLine, 'toon', self._getRandomLine(dialogue[1])), Wait(waitDuration), Func(showBoss), bossSuit.hprInterval(1.0, bossSuit.getHpr() + Point3(180, 0, 0), blendType='easeInOut'), Func(self.displayLine, 'toon', self._getRandomLine(dialogue[2])), Wait(waitDuration - 1.0), Func(end))
+        self._ival = Sequence(Func(start), Func(self.displayLine, 'toon', self._getRandomLine(dialogue[0])),
+                              showExitIval, Func(showWaterCooler),
+                              Func(self.displayLine, 'toon', self._getRandomLine(dialogue[1])), Wait(waitDuration),
+                              Func(showBoss),
+                              bossSuit.hprInterval(1.0, bossSuit.getHpr() + Point3(180, 0, 0), blendType = 'easeInOut'),
+                              Func(self.displayLine, 'toon', self._getRandomLine(dialogue[2])),
+                              Wait(waitDuration - 1.0), Func(end))
         self._startUpdateTask()
 
     def _setCamTarget(self, targetNP, distance, offset = Point3(0, 0, 0), angle = Point3(0, 0, 0)):
@@ -187,7 +198,8 @@ class CogdoMazeGameFinish(CogdoGameMovie):
         if not self._exit.hasPlayer(self._localPlayer):
             loseSfx = base.cogdoGameAudioMgr.createSfx('lose')
             self._ival.append(Sequence(Func(loseSfx.play), Func(self._localPlayer.toon.setAnimState, 'Sad')))
-        self._ival.append(Sequence(Wait(Globals.FinishDurationSeconds - 1.0), Func(base.transitions.irisOut), Wait(1.0)))
+        self._ival.append(
+            Sequence(Wait(Globals.FinishDurationSeconds - 1.0), Func(base.transitions.irisOut), Wait(1.0)))
 
     def unload(self):
         CogdoGameMovie.unload(self)

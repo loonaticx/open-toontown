@@ -18,6 +18,7 @@ from .PartyCogActivityPlayer import PartyCogActivityPlayer
 from .PartyCogActivityPlayer import PartyCogActivityLocalPlayer
 from .StretchingArrow import StretchingArrow
 
+
 class PartyCogActivity(DirectObject):
     notify = directNotify.newCategory('PartyCogActivity')
     cog = None
@@ -77,8 +78,8 @@ class PartyCogActivity(DirectObject):
             end = self.arena.find('**/cog%d_end_locator' % (i + 1))
             cog = self.cogManager.generateCog(self.arena)
             cog.setEndPoints(start.getPos(), end.getPos())
-            arrow1 = StretchingArrow(self.arena, useColor='orange')
-            arrow2 = StretchingArrow(self.arena, useColor='blue')
+            arrow1 = StretchingArrow(self.arena, useColor = 'orange')
+            arrow2 = StretchingArrow(self.arena, useColor = 'blue')
             arrow1.setZ(0.1)
             arrow2.setZ(0.1)
             self.arrows.append([arrow1, arrow2])
@@ -109,7 +110,8 @@ class PartyCogActivity(DirectObject):
         for i in range(len(arenaDoorLocators)):
             arenaDoorLocators[i].wrtReparentTo(self._arenaDoors[i])
 
-        self._arenaDoorTimers = (self.createDoorTimer(PartyGlobals.TeamActivityTeams.LeftTeam), self.createDoorTimer(PartyGlobals.TeamActivityTeams.RightTeam))
+        self._arenaDoorTimers = (self.createDoorTimer(PartyGlobals.TeamActivityTeams.LeftTeam),
+                                 self.createDoorTimer(PartyGlobals.TeamActivityTeams.RightTeam))
         self._arenaDoorIvals = [None, None]
         self._doorStartPos = []
         for i in range(len(self._arenaDoors)):
@@ -136,7 +138,7 @@ class PartyCogActivity(DirectObject):
         return
 
     def createDoorTimer(self, team):
-        timer = ToontownTimer(useImage=False, highlightNearEnd=False)
+        timer = ToontownTimer(useImage = False, highlightNearEnd = False)
         timer['text_font'] = ToontownGlobals.getMinnieFont()
         timer.setFontColor(PartyGlobals.CogActivityColors[team])
         timer.setScale(7.0)
@@ -262,16 +264,16 @@ class PartyCogActivity(DirectObject):
             pos = self._doorStartPos[team]
         else:
             pos = (self._doorStartPos[team] + Point3(0, 0, -7.0),)
-        ival = self._arenaDoors[team].posInterval(0.75, pos, blendType='easeIn')
+        ival = self._arenaDoors[team].posInterval(0.75, pos, blendType = 'easeIn')
         self._arenaDoorIvals[team] = ival
         ival.start()
         return
 
     def openArenaDoorForTeam(self, team):
-        self._playArenaDoorIval(team, opening=True)
+        self._playArenaDoorIval(team, opening = True)
 
     def closeArenaDoorForTeam(self, team):
-        self._playArenaDoorIval(team, opening=False)
+        self._playArenaDoorIval(team, opening = False)
 
     def openArenaDoors(self):
         self.enableEnterGateCollision()
@@ -403,7 +405,9 @@ class PartyCogActivity(DirectObject):
             else:
                 self.activity.teamActivityGui.disableSwitchButton()
 
-        ival = Sequence(Func(self.disableWallCollisions), Func(conditionallyShowSwitchButton, self, False), self.player.getRunToStartPositionIval(), Func(conditionallyShowSwitchButton, self, True), Func(self.enableWallCollisions))
+        ival = Sequence(Func(self.disableWallCollisions), Func(conditionallyShowSwitchButton, self, False),
+                        self.player.getRunToStartPositionIval(), Func(conditionallyShowSwitchButton, self, True),
+                        Func(self.enableWallCollisions))
         self.playToonIval(base.localAvatar.doId, ival)
 
     def finishToonIval(self, toonId):
@@ -490,7 +494,7 @@ class PartyCogActivity(DirectObject):
             return
 
         newTossTrack = Sequence(tossTrack, Func(matchRunningAnim))
-        pieTrack = Parallel(newTossTrack, pieTrack, name='PartyCogActivity.pieTrack-%d-%s' % (avId, timestamp))
+        pieTrack = Parallel(newTossTrack, pieTrack, name = 'PartyCogActivity.pieTrack-%d-%s' % (avId, timestamp))
         elapsedTime = globalClockDelta.localElapsedTime(timestamp)
         if elapsedTime < 16.0 / 24.0:
             elapsedTime = 16.0 / 24.0
@@ -509,12 +513,12 @@ class PartyCogActivity(DirectObject):
         pieType = BattleProps.globalPropPool.getPropType(pieName)
         animPie = Sequence()
         if pieType == 'actor':
-            animPie = ActorInterval(pie, pieName, startFrame=48)
+            animPie = ActorInterval(pie, pieName, startFrame = 48)
         sound = loader.loadSfx('phase_3.5/audio/sfx/AA_pie_throw_only.ogg')
         t = power / 100.0
         dist = lerp(PartyGlobals.CogActivityPieMinDist, PartyGlobals.CogActivityPieMaxDist, t)
         time = lerp(1.0, 1.5, t)
-        proj = ProjectileInterval(None, startPos=Point3(0, 0, 0), endPos=Point3(0, dist, 0), duration=time)
+        proj = ProjectileInterval(None, startPos = Point3(0, 0, 0), endPos = Point3(0, dist, 0), duration = time)
         relVel = proj.startVel
 
         def getVelocity(toon = toon, relVel = relVel):
@@ -526,8 +530,15 @@ class PartyCogActivity(DirectObject):
             else:
                 self.notify.warning('The toon is being destroyed. No attribute animState.')
 
-        toss = Track((0, Sequence(Func(toon.setPosHpr, x, y, z, h, p, r), Func(pie.reparentTo, toon.rightHand), Func(pie.setPosHpr, 0, 0, 0, 0, 0, 0), animPie, Parallel(ActorInterval(toon, 'throw', startFrame=48, playRate=1.5, partName='torso'), animPie), Func(__safeSetAnimState, toon, 'Happy'))), (16.0 / 24.0, Func(pie.detachNode)))
-        fly = Track((14.0 / 24.0, SoundInterval(sound, node=toon, cutOff=PartyGlobals.PARTY_COG_CUTOFF)), (16.0 / 24.0, Sequence(Func(flyPie.reparentTo, render), Func(flyPie.setPosHpr, toon, 0.52, 0.97, 2.24, 0, -45, 0), beginFlyIval, ProjectileInterval(flyPie, startVel=getVelocity, duration=6), Func(flyPie.detachNode))))
+        toss = Track((0, Sequence(Func(toon.setPosHpr, x, y, z, h, p, r), Func(pie.reparentTo, toon.rightHand),
+                                  Func(pie.setPosHpr, 0, 0, 0, 0, 0, 0), animPie, Parallel(
+                ActorInterval(toon, 'throw', startFrame = 48, playRate = 1.5, partName = 'torso'), animPie),
+                                  Func(__safeSetAnimState, toon, 'Happy'))), (16.0 / 24.0, Func(pie.detachNode)))
+        fly = Track((14.0 / 24.0, SoundInterval(sound, node = toon, cutOff = PartyGlobals.PARTY_COG_CUTOFF)), (
+        16.0 / 24.0,
+        Sequence(Func(flyPie.reparentTo, render), Func(flyPie.setPosHpr, toon, 0.52, 0.97, 2.24, 0, -45, 0),
+                 beginFlyIval, ProjectileInterval(flyPie, startVel = getVelocity, duration = 6),
+                 Func(flyPie.detachNode))))
         return (toss, fly, flyPie)
 
     def handlePieCollision(self, colEntry):
@@ -536,7 +547,7 @@ class PartyCogActivity(DirectObject):
         handled = False
         into = colEntry.getIntoNodePath()
         intoName = into.getName()
-        timestamp = globalClockDelta.localToNetworkTime(globalClock.getFrameTime(), bits=32)
+        timestamp = globalClockDelta.localToNetworkTime(globalClock.getFrameTime(), bits = 32)
         if 'PartyCog' in intoName:
             if self.toonPieTracks.get(base.localAvatar.doId) is not None:
                 self.toonPieTracks[base.localAvatar.doId].finish()
@@ -598,7 +609,14 @@ class PartyCogActivity(DirectObject):
         if self.player is None:
             return
         base.localAvatar.showName()
-        self.resultsIval = Sequence(Wait(0.1), Func(self.activity.setStatus, TTLocalizer.PartyCogTimeUp), Func(self.activity.showStatus), Wait(2.0), Func(self.activity.hideStatus), Wait(0.5), Func(self.player.lookAtArena), Func(self.showTeamFlags, self.activity.getTeam(base.localAvatar.doId)), Wait(1.0), Func(self.showArrow, 0), Wait(1.3), Func(self.showArrow, 1), Wait(1.3), Func(self.showArrow, 2), Wait(1.3), Func(self.showTotals, totals), Wait(1.0), Func(self.showWinner, resultsText, winner), Func(self._cleanupResultsIval), name='PartyCog-conclusionSequence')
+        self.resultsIval = Sequence(Wait(0.1), Func(self.activity.setStatus, TTLocalizer.PartyCogTimeUp),
+                                    Func(self.activity.showStatus), Wait(2.0), Func(self.activity.hideStatus),
+                                    Wait(0.5), Func(self.player.lookAtArena),
+                                    Func(self.showTeamFlags, self.activity.getTeam(base.localAvatar.doId)), Wait(1.0),
+                                    Func(self.showArrow, 0), Wait(1.3), Func(self.showArrow, 1), Wait(1.3),
+                                    Func(self.showArrow, 2), Wait(1.3), Func(self.showTotals, totals), Wait(1.0),
+                                    Func(self.showWinner, resultsText, winner), Func(self._cleanupResultsIval),
+                                    name = 'PartyCog-conclusionSequence')
         self.accept('DistributedPartyActivity-showJellybeanReward', self._cleanupResultsIval)
         self.resultsIval.start()
         return
@@ -612,7 +630,8 @@ class PartyCogActivity(DirectObject):
         return
 
     def showTotals(self, totals):
-        newtotals = (totals[1] - totals[0] + PartyGlobals.CogActivityArenaLength / 2.0 * 3, totals[0] - totals[1] + PartyGlobals.CogActivityArenaLength / 2.0 * 3)
+        newtotals = (totals[1] - totals[0] + PartyGlobals.CogActivityArenaLength / 2.0 * 3,
+                     totals[0] - totals[1] + PartyGlobals.CogActivityArenaLength / 2.0 * 3)
         self.winText[0][0].setText(TTLocalizer.PartyCogDistance % newtotals[0])
         self.winText[1][0].setText(TTLocalizer.PartyCogDistance % newtotals[1])
         for textPair in self.winText:
@@ -635,14 +654,15 @@ class PartyCogActivity(DirectObject):
     def showArrow(self, arrowNum):
         arrows = self.arrows[arrowNum]
         cog = self.cogManager.cogs[arrowNum]
-        points = [self.arena.find('**/cog%d_start_locator' % (arrowNum + 1)), self.arena.find('**/cog%d_end_locator' % (arrowNum + 1))]
+        points = [self.arena.find('**/cog%d_start_locator' % (arrowNum + 1)),
+                  self.arena.find('**/cog%d_end_locator' % (arrowNum + 1))]
         Y = cog.root.getY()
         for point in points:
             point.setY(Y)
 
         for i in range(len(arrows)):
             arrow = arrows[i]
-            arrow.draw(points[i].getPos(), cog.root.getPos(), animate=False)
+            arrow.draw(points[i].getPos(), cog.root.getPos(), animate = False)
             arrow.unstash()
 
         i = -1

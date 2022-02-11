@@ -4,7 +4,9 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from toontown.golf import DistributedGolfCourseAI
 from pandac.PandaModules import *
+
 RequestHole = {}
+
 
 def GolfManagerAI():
     if not hasattr(simbase, 'golf'):
@@ -22,7 +24,7 @@ class __GolfManagerAI(DirectObject.DirectObject):
     def delete(self):
         DirectObject.DirectObject.delete(self)
 
-    def readyGolfCourse(self, avIds, courseId=0):
+    def readyGolfCourse(self, avIds, courseId = 0):
         self.notify.debug('readyGolfCourse avIds=%s courseId=%d' % (avIds, courseId))
         golfZone = simbase.air.allocateZone()
         preferredHoleId = None

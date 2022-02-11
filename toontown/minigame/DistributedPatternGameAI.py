@@ -6,6 +6,7 @@ import random
 from . import PatternGameGlobals
 import copy
 
+
 class DistributedPatternGameAI(DistributedMinigameAI):
 
     def __init__(self, air, minigameId):
@@ -14,11 +15,15 @@ class DistributedPatternGameAI(DistributedMinigameAI):
         except:
             self.DistributedPatternGameAI_initialized = 1
             DistributedMinigameAI.__init__(self, air, minigameId)
-            self.gameFSM = ClassicFSM.ClassicFSM('DistributedPatternGameAI', [State.State('off', self.enterInactive, self.exitInactive, ['waitClientsReady', 'cleanup']),
-             State.State('waitClientsReady', self.enterWaitClientsReady, self.exitWaitClientsReady, ['generatePattern', 'cleanup']),
-             State.State('generatePattern', self.enterGeneratePattern, self.exitGeneratePattern, ['waitForResults', 'cleanup']),
-             State.State('waitForResults', self.enterWaitForResults, self.exitWaitForResults, ['waitClientsReady', 'cleanup']),
-             State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off', 'cleanup')
+            self.gameFSM = ClassicFSM.ClassicFSM('DistributedPatternGameAI', [
+                State.State('off', self.enterInactive, self.exitInactive, ['waitClientsReady', 'cleanup']),
+                State.State('waitClientsReady', self.enterWaitClientsReady, self.exitWaitClientsReady,
+                            ['generatePattern', 'cleanup']),
+                State.State('generatePattern', self.enterGeneratePattern, self.exitGeneratePattern,
+                            ['waitForResults', 'cleanup']),
+                State.State('waitForResults', self.enterWaitForResults, self.exitWaitForResults,
+                            ['waitClientsReady', 'cleanup']),
+                State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off', 'cleanup')
             self.addChildGameFSM(self.gameFSM)
 
     def delete(self):
@@ -65,7 +70,9 @@ class DistributedPatternGameAI(DistributedMinigameAI):
 
     def enterWaitClientsReady(self):
         self.notify.debug('enterWaitClientsReady')
-        self.nextRoundBarrier = ToonBarrier('nextRoundReady', self.uniqueName('nextRoundReady'), self.avIdList, PatternGameGlobals.ClientsReadyTimeout, self.__allPlayersReady, self.__clientsReadyTimeout)
+        self.nextRoundBarrier = ToonBarrier('nextRoundReady', self.uniqueName('nextRoundReady'), self.avIdList,
+                                            PatternGameGlobals.ClientsReadyTimeout, self.__allPlayersReady,
+                                            self.__clientsReadyTimeout)
         for avId in self.readyClients:
             self.nextRoundBarrier.clear(avId)
 
@@ -94,7 +101,8 @@ class DistributedPatternGameAI(DistributedMinigameAI):
     def enterGeneratePattern(self):
         self.notify.debug('enterGeneratePattern')
         self.round += 1
-        targetLen = PatternGameGlobals.INITIAL_ROUND_LENGTH + PatternGameGlobals.ROUND_LENGTH_INCREMENT * (self.round - 1)
+        targetLen = PatternGameGlobals.INITIAL_ROUND_LENGTH + PatternGameGlobals.ROUND_LENGTH_INCREMENT * (
+                    self.round - 1)
         count = targetLen - len(self.pattern)
         for i in range(0, count):
             self.pattern.append(random.randint(0, 3))
@@ -110,7 +118,9 @@ class DistributedPatternGameAI(DistributedMinigameAI):
         self.results = [None] * self.numPlayers
         self.fastestTime = PatternGameGlobals.InputTime * 2
         self.fastestAvId = 0
-        self.resultsBarrier = ToonBarrier('results', self.uniqueName('results'), self.avIdList, PatternGameGlobals.InputTimeout + 1.0 * self.round, self.__gotAllPatterns, self.__resultsTimeout)
+        self.resultsBarrier = ToonBarrier('results', self.uniqueName('results'), self.avIdList,
+                                          PatternGameGlobals.InputTimeout + 1.0 * self.round, self.__gotAllPatterns,
+                                          self.__resultsTimeout)
         return
 
     def reportButtonPress(self, index, wrong):

@@ -1,6 +1,7 @@
 from . import ClothesGUI
 from toontown.toon import ToonDNA
 
+
 class MakeClothesGUI(ClothesGUI.ClothesGUI):
     notify = directNotify.newCategory('MakeClothesGUI')
 
@@ -11,8 +12,8 @@ class MakeClothesGUI(ClothesGUI.ClothesGUI):
         self.dna = self.toon.getStyle()
         gender = self.dna.getGender()
         if gender != self.gender:
-            self.tops = ToonDNA.getRandomizedTops(gender, tailorId=ToonDNA.MAKE_A_TOON)
-            self.bottoms = ToonDNA.getRandomizedBottoms(gender, tailorId=ToonDNA.MAKE_A_TOON)
+            self.tops = ToonDNA.getRandomizedTops(gender, tailorId = ToonDNA.MAKE_A_TOON)
+            self.bottoms = ToonDNA.getRandomizedBottoms(gender, tailorId = ToonDNA.MAKE_A_TOON)
             self.gender = gender
             self.topChoice = 0
             self.bottomChoice = 0

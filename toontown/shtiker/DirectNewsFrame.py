@@ -13,6 +13,7 @@ from toontown.shtiker import IssueFrame
 from toontown.shtiker import IssueFrameV2
 from toontown.toonbase import TTLocalizer
 
+
 class DirectNewsFrame(DirectObject.DirectObject):
     TaskName = 'HtmlViewUpdateTask'
     TaskChainName = 'RedownladTaskChain'
@@ -20,19 +21,19 @@ class DirectNewsFrame(DirectObject.DirectObject):
     NewsBaseDir = config.GetString('news-base-dir', '/httpNews')
     NewsStageDir = config.GetString('news-stage-dir', 'news')
     FrameDimensions = (-1.30666637421,
-     1.30666637421,
-     -0.751666665077,
-     0.751666665077)
+                       1.30666637421,
+                       -0.751666665077,
+                       0.751666665077)
     notify = DirectNotifyGlobal.directNotify.newCategory('DirectNewsFrame')
     NewsIndexFilename = config.GetString('news-index-filename', 'http_news_index.txt')
     NewsOverHttp = config.GetBool('news-over-http', True)
     CacheIndexFilename = 'cache_index.txt'
     SectionIdents = ['hom',
-     'new',
-     'evt',
-     'tot',
-     'att',
-     'tnr']
+                     'new',
+                     'evt',
+                     'tot',
+                     'att',
+                     'tnr']
 
     def __init__(self, parent = aspect2d):
         DirectObject.DirectObject.__init__(self)
@@ -78,12 +79,17 @@ class DirectNewsFrame(DirectObject.DirectObject):
                     dateStr = parts[3]
                     majorVer, minorVer = self.calcIssueVersion(dateStr)
                     if majorVer == 1:
-                        oneIssue = IssueFrame.IssueFrame(self.backFrame, newsDir, dateStr, myIssueIndex, len(allHomeFiles), self.strFilenames)
+                        oneIssue = IssueFrame.IssueFrame(self.backFrame, newsDir, dateStr, myIssueIndex,
+                                                         len(allHomeFiles), self.strFilenames)
                     elif majorVer == 2:
-                        oneIssue = IssueFrameV2.IssueFrameV2(self.backFrame, newsDir, dateStr, myIssueIndex, len(allHomeFiles), self.strFilenames, self.newsIndexEntries)
+                        oneIssue = IssueFrameV2.IssueFrameV2(self.backFrame, newsDir, dateStr, myIssueIndex,
+                                                             len(allHomeFiles), self.strFilenames,
+                                                             self.newsIndexEntries)
                     else:
                         self.notify.warning('Dont know how to handle version %s, asuming v2' % majorVer)
-                        oneIssue = IssueFrameV2.IssueFrameV2(self.backFrame, newsDir, dateStr, myIssueIndex, len(allHomeFiles), self.strFilenames, self.newsIndexEntries)
+                        oneIssue = IssueFrameV2.IssueFrameV2(self.backFrame, newsDir, dateStr, myIssueIndex,
+                                                             len(allHomeFiles), self.strFilenames,
+                                                             self.newsIndexEntries)
                     oneIssue.hide()
                     self.issues.append(oneIssue)
 
@@ -124,7 +130,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
             return fileA.getFilename().compareTo(fileB.getFilename())
 
         homeFileNames = list(homeFileNames)
-        homeFileNames.sort(key=functools.cmp_to_key(fileCmp))
+        homeFileNames.sort(key = functools.cmp_to_key(fileCmp))
         self.notify.debug('returned homeFileNames=%s' % homeFileNames)
         return homeFileNames
 
@@ -155,7 +161,11 @@ class DirectNewsFrame(DirectObject.DirectObject):
         upsellBackground = loader.loadModel('phase_3.5/models/gui/tt_m_gui_ign_newsStatusBackground')
         imageScaleX = self.FrameDimensions[1] - self.FrameDimensions[0]
         imageScaleY = self.FrameDimensions[3] - self.FrameDimensions[2]
-        self.backFrame = DirectFrame(parent=self.parent, image=upsellBackground, image_scale=(imageScaleX, 1, imageScaleY), frameColor=(1, 1, 1, 0), frameSize=self.FrameDimensions, pos=(0, 0, 0), relief=DGG.FLAT, text=TTLocalizer.NewsPageDownloadingNews1, text_scale=0.06, text_pos=(0, -0.4))
+        self.backFrame = DirectFrame(parent = self.parent, image = upsellBackground,
+                                     image_scale = (imageScaleX, 1, imageScaleY), frameColor = (1, 1, 1, 0),
+                                     frameSize = self.FrameDimensions, pos = (0, 0, 0), relief = DGG.FLAT,
+                                     text = TTLocalizer.NewsPageDownloadingNews1, text_scale = 0.06,
+                                     text_pos = (0, -0.4))
 
     def addDownloadingTextTask(self):
         self.removeDownloadingTextTask()
@@ -167,10 +177,13 @@ class DirectNewsFrame(DirectObject.DirectObject):
         taskMgr.remove('DirectNewsFrameDownloadingTextTask')
 
     def loadMainPage(self):
-        self.mainFrame = DirectFrame(parent=self.backFrame, frameSize=self.FrameDimensions, frameColor=(1, 0, 0, 1))
+        self.mainFrame = DirectFrame(parent = self.backFrame, frameSize = self.FrameDimensions,
+                                     frameColor = (1, 0, 0, 1))
 
     def activate(self):
-        if hasattr(self, 'createdTime') and self.createdTime < base.cr.inGameNewsMgr.getLatestIssue() and self.NewsOverHttp and not self.redownloadingNews:
+        if hasattr(self,
+                   'createdTime') and self.createdTime < base.cr.inGameNewsMgr.getLatestIssue() and self.NewsOverHttp\
+                and not self.redownloadingNews:
             self.redownloadNews()
         else:
             self.addDownloadingTextTask()
@@ -204,7 +217,8 @@ class DirectNewsFrame(DirectObject.DirectObject):
 
     def loadingTextTask(self, task):
         timeIndex = int(globalClock.getFrameTime() - task.startTime) % 3
-        timeStrs = (TTLocalizer.NewsPageDownloadingNews0, TTLocalizer.NewsPageDownloadingNews1, TTLocalizer.NewsPageDownloadingNews2)
+        timeStrs = (TTLocalizer.NewsPageDownloadingNews0, TTLocalizer.NewsPageDownloadingNews1,
+                    TTLocalizer.NewsPageDownloadingNews2)
         textToDisplay = timeStrs[timeIndex] % int(self.percentDownloaded * 100)
         if self.backFrame['text'] != textToDisplay:
             if TTLocalizer.NewsPageDownloadingNewsSubstr in self.backFrame['text']:
@@ -360,7 +374,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
             return
 
         for filename, (size, date) in list(self.newsCache.items()):
-            print('%s\t%s\t%s' % (filename, size, date), file=file)
+            print('%s\t%s\t%s' % (filename, size, date), file = file)
 
     def handleNewIssueOut(self):
         if hasattr(self, 'createdTime') and base.cr.inGameNewsMgr.getLatestIssue() < self.createdTime:

@@ -10,6 +10,7 @@ from . import CogdoFlyingGameGlobals as Globals
 from .CogdoUtil import CogdoGameMovie
 from . import CogdoUtil
 
+
 class CogdoFlyingGameIntro(CogdoGameMovie):
 
     def __init__(self, level, rng):
@@ -89,8 +90,13 @@ class CogdoFlyingGameIntro(CogdoGameMovie):
         dialogue = TTLocalizer.CogdoFlyingIntroMovieDialogue
         waitDur = introDuration / len(dialogue)
         flyDur = introDuration - waitDur * 0.5
-        flyThroughIval = Parallel(camera.posInterval(flyDur, self._exit.getPos(render) + Point3(0, -22, 1), blendType='easeInOut'), camera.hprInterval(flyDur, Point3(0, 5, 0), blendType='easeInOut'))
-        self._ival = Sequence(Func(start), Parallel(flyThroughIval, Sequence(Func(self.displayLine, 'cog', self._getRandomLine(dialogue[0])), Wait(waitDur), Func(self.displayLine, 'toon', self._getRandomLine(dialogue[1])), Wait(waitDur), Func(self.displayLine, 'cog', self._getRandomLine(dialogue[2])), Wait(waitDur))), Func(end))
+        flyThroughIval = Parallel(
+            camera.posInterval(flyDur, self._exit.getPos(render) + Point3(0, -22, 1), blendType = 'easeInOut'),
+            camera.hprInterval(flyDur, Point3(0, 5, 0), blendType = 'easeInOut'))
+        self._ival = Sequence(Func(start), Parallel(flyThroughIval, Sequence(
+            Func(self.displayLine, 'cog', self._getRandomLine(dialogue[0])), Wait(waitDur),
+            Func(self.displayLine, 'toon', self._getRandomLine(dialogue[1])), Wait(waitDur),
+            Func(self.displayLine, 'cog', self._getRandomLine(dialogue[2])), Wait(waitDur))), Func(end))
 
     def _updateTask(self, task):
         dt = globalClock.getDt()
@@ -132,13 +138,17 @@ class CogdoFlyingGameFinish(CogdoGameMovie):
             self._exit.open()
 
         exitDur = 1.0
-        showExitIval = Sequence(Func(camera.wrtReparentTo, render), Parallel(camera.posInterval(exitDur, Point3(0, -55, 40), other=self._exit, blendType='easeInOut'), camera.hprInterval(exitDur, Point3(0, -45, 0), blendType='easeInOut')))
+        showExitIval = Sequence(Func(camera.wrtReparentTo, render), Parallel(
+            camera.posInterval(exitDur, Point3(0, -55, 40), other = self._exit, blendType = 'easeInOut'),
+            camera.hprInterval(exitDur, Point3(0, -45, 0), blendType = 'easeInOut')))
 
         def showPlayersLeaving():
             for player in self._players:
                 self._exit.toonEnters(player.toon)
 
-        self._ival = Sequence(showExitIval, Func(self._exit.open), Func(showPlayersLeaving), Wait(Globals.Gameplay.FinishDurationSeconds - exitDur - 1.0), Func(base.transitions.irisOut), Wait(1.0))
+        self._ival = Sequence(showExitIval, Func(self._exit.open), Func(showPlayersLeaving),
+                              Wait(Globals.Gameplay.FinishDurationSeconds - exitDur - 1.0),
+                              Func(base.transitions.irisOut), Wait(1.0))
 
     def unload(self):
         CogdoGameMovie.unload(self)

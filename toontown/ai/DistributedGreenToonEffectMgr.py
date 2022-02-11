@@ -4,6 +4,7 @@ from direct.interval.IntervalGlobal import *
 from otp.speedchat import SpeedChatGlobals
 from toontown.toonbase import TTLocalizer
 
+
 class DistributedGreenToonEffectMgr(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGreenToonEffectMgr')
 

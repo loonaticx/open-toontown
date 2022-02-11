@@ -3,6 +3,7 @@ from direct.distributed import DistributedObject
 from . import SuitPlannerBase
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedSuitPlanner(DistributedObject.DistributedObject, SuitPlannerBase.SuitPlannerBase):
 
     def __init__(self, cr):
@@ -10,9 +11,9 @@ class DistributedSuitPlanner(DistributedObject.DistributedObject, SuitPlannerBas
         SuitPlannerBase.SuitPlannerBase.__init__(self)
         self.suitList = []
         self.buildingList = [0,
-         0,
-         0,
-         0]
+                             0,
+                             0,
+                             0]
         self.pathViz = None
         return
 

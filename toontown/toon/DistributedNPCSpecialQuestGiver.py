@@ -6,7 +6,9 @@ from toontown.quest import TrackChoiceGui
 from toontown.toonbase import TTLocalizer
 from toontown.hood import ZoneUtil
 from toontown.toontowngui import TeaserPanel
+
 ChoiceTimeout = 20
+
 
 class DistributedNPCSpecialQuestGiver(DistributedNPCToonBase):
 
@@ -33,7 +35,7 @@ class DistributedNPCSpecialQuestGiver(DistributedNPCToonBase):
         if self.curQuestMovie:
             curQuestMovie = self.curQuestMovie
             self.curQuestMovie = None
-            curQuestMovie.timeout(fFinish=1)
+            curQuestMovie.timeout(fFinish = 1)
             curQuestMovie.cleanup()
         return
 
@@ -49,7 +51,7 @@ class DistributedNPCSpecialQuestGiver(DistributedNPCToonBase):
             self.questChoiceGui = None
         self.ignore(self.uniqueName('doneChatPage'))
         if self.curQuestMovie:
-            self.curQuestMovie.timeout(fFinish=1)
+            self.curQuestMovie.timeout(fFinish = 1)
             self.curQuestMovie.cleanup()
             self.curQuestMovie = None
         if self.trackChoiceGui:
@@ -65,9 +67,9 @@ class DistributedNPCSpecialQuestGiver(DistributedNPCToonBase):
         if hasattr(place, 'id'):
             myHoodId = place.id
         if myHoodId in (ToontownGlobals.ToontownCentral,
-         ToontownGlobals.MyEstate,
-         ToontownGlobals.GoofySpeedway,
-         ToontownGlobals.Tutorial):
+                        ToontownGlobals.MyEstate,
+                        ToontownGlobals.GoofySpeedway,
+                        ToontownGlobals.Tutorial):
             return True
         return False
 
@@ -81,7 +83,7 @@ class DistributedNPCSpecialQuestGiver(DistributedNPCToonBase):
             place = base.cr.playGame.getPlace()
             if place:
                 place.fsm.request('stopped')
-            self.dialog = TeaserPanel.TeaserPanel(pageName='quests', doneFunc=self.handleOkTeaser)
+            self.dialog = TeaserPanel.TeaserPanel(pageName = 'quests', doneFunc = self.handleOkTeaser)
 
     def handleOkTeaser(self):
         self.dialog.destroy()
@@ -107,9 +109,11 @@ class DistributedNPCSpecialQuestGiver(DistributedNPCToonBase):
     def setupCamera(self, mode):
         camera.wrtReparentTo(render)
         if mode == NPCToons.QUEST_MOVIE_QUEST_CHOICE or mode == NPCToons.QUEST_MOVIE_TRACK_CHOICE:
-            camera.lerpPosHpr(5, 9, self.getHeight() - 0.5, 155, -2, 0, 1, other=self, blendType='easeOut', task=self.uniqueName('lerpCamera'))
+            camera.lerpPosHpr(5, 9, self.getHeight() - 0.5, 155, -2, 0, 1, other = self, blendType = 'easeOut',
+                              task = self.uniqueName('lerpCamera'))
         else:
-            camera.lerpPosHpr(-5, 9, self.getHeight() - 0.5, -150, -2, 0, 1, other=self, blendType='easeOut', task=self.uniqueName('lerpCamera'))
+            camera.lerpPosHpr(-5, 9, self.getHeight() - 0.5, -150, -2, 0, 1, other = self, blendType = 'easeOut',
+                              task = self.uniqueName('lerpCamera'))
 
     def setMovie(self, mode, npcId, avId, quests, timestamp):
         timeStamp = ClockDelta.globalClockDelta.localElapsedTime(timestamp)
@@ -132,7 +136,7 @@ class DistributedNPCSpecialQuestGiver(DistributedNPCToonBase):
             return
         if mode == NPCToons.QUEST_MOVIE_REJECT:
             rejectString = Quests.chooseQuestDialogReject()
-            rejectString = Quests.fillInQuestNames(rejectString, avName=av._name)
+            rejectString = Quests.fillInQuestNames(rejectString, avName = av._name)
             self.setChatAbsolute(rejectString, CFSpeech | CFTimeout)
             if isLocalToon:
                 base.localAvatar.posCamera(0, 0)
@@ -140,7 +144,7 @@ class DistributedNPCSpecialQuestGiver(DistributedNPCToonBase):
             return
         if mode == NPCToons.QUEST_MOVIE_TIER_NOT_DONE:
             rejectString = Quests.chooseQuestDialogTierNotDone()
-            rejectString = Quests.fillInQuestNames(rejectString, avName=av._name)
+            rejectString = Quests.fillInQuestNames(rejectString, avName = av._name)
             self.setChatAbsolute(rejectString, CFSpeech | CFTimeout)
             if isLocalToon:
                 base.localAvatar.posCamera(0, 0)
@@ -226,8 +230,8 @@ class DistributedNPCSpecialQuestGiver(DistributedNPCToonBase):
                 self.acceptOnce('chooseTrack', self.sendChooseTrack)
                 self.trackChoiceGui = TrackChoiceGui.TrackChoiceGui(tracks, ChoiceTimeout)
             return
-        fullString = Quests.fillInQuestNames(fullString, avName=av._name, fromNpcId=npcId, toNpcId=toNpcId)
-        self.acceptOnce(self.uniqueName('doneChatPage'), self.finishMovie, extraArgs=[av, isLocalToon])
+        fullString = Quests.fillInQuestNames(fullString, avName = av._name, fromNpcId = npcId, toNpcId = toNpcId)
+        self.acceptOnce(self.uniqueName('doneChatPage'), self.finishMovie, extraArgs = [av, isLocalToon])
         self.clearChat()
         self.setPageChat(avId, 0, fullString, 1)
         return

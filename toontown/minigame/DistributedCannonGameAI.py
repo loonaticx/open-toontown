@@ -5,11 +5,16 @@ from direct.fsm import State
 from direct.task import Task
 from . import CannonGameGlobals
 
+
 class DistributedCannonGameAI(DistributedMinigameAI):
 
     def __init__(self, air, minigameId):
         DistributedMinigameAI.__init__(self, air, minigameId)
-        self.gameFSM = ClassicFSM.ClassicFSM('DistributedCannonGameAI', [State.State('inactive', self.enterInactive, self.exitInactive, ['play']), State.State('play', self.enterPlay, self.exitPlay, ['cleanup']), State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
+        self.gameFSM = ClassicFSM.ClassicFSM('DistributedCannonGameAI',
+                                             [State.State('inactive', self.enterInactive, self.exitInactive, ['play']),
+                                              State.State('play', self.enterPlay, self.exitPlay, ['cleanup']),
+                                              State.State('cleanup', self.enterCleanup, self.exitCleanup,
+                                                          ['inactive'])], 'inactive', 'inactive')
         self.addChildGameFSM(self.gameFSM)
 
     def delete(self):
@@ -92,9 +97,9 @@ class DistributedCannonGameAI(DistributedMinigameAI):
             return
         fireTime = self.getCurrentGameTime() + CannonGameGlobals.FUSE_TIME
         self.sendUpdate('setCannonWillFire', [avId,
-         fireTime,
-         zRot,
-         angle])
+                                              fireTime,
+                                              zRot,
+                                              angle])
 
     def setToonWillLandInWater(self, landTime):
         if not self.__playing():

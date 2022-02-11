@@ -10,6 +10,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.hood import GSHood
 
+
 class DistributedDonald(DistributedCCharBase.DistributedCCharBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedDonald')
 
@@ -19,7 +20,11 @@ class DistributedDonald(DistributedCCharBase.DistributedCCharBase):
         except:
             self.DistributedDonald_initialized = 1
             DistributedCCharBase.DistributedCCharBase.__init__(self, cr, TTLocalizer.Donald, 'd')
-            self.fsm = ClassicFSM.ClassicFSM(self.getName(), [State.State('Off', self.enterOff, self.exitOff, ['Neutral']), State.State('Neutral', self.enterNeutral, self.exitNeutral, ['Walk']), State.State('Walk', self.enterWalk, self.exitWalk, ['Neutral'])], 'Off', 'Off')
+            self.fsm = ClassicFSM.ClassicFSM(self.getName(),
+                                             [State.State('Off', self.enterOff, self.exitOff, ['Neutral']),
+                                              State.State('Neutral', self.enterNeutral, self.exitNeutral, ['Walk']),
+                                              State.State('Walk', self.enterWalk, self.exitWalk, ['Neutral'])], 'Off',
+                                             'Off')
             self.fsm.enterInitialState()
 
         self.handleHolidays()
@@ -66,7 +71,7 @@ class DistributedDonald(DistributedCCharBase.DistributedCCharBase):
 
     def enterNeutral(self):
         self.notify.debug('Neutral ' + self.getName() + '...')
-        self.neutral.enter(startTrack=self.neutralStartTrack, playRate=0.5)
+        self.neutral.enter(startTrack = self.neutralStartTrack, playRate = 0.5)
         self.acceptOnce(self.neutralDoneEvent, self.__decideNextState)
 
     def exitNeutral(self):
@@ -75,7 +80,7 @@ class DistributedDonald(DistributedCCharBase.DistributedCCharBase):
 
     def enterWalk(self):
         self.notify.debug('Walking ' + self.getName() + '...')
-        self.walk.enter(startTrack=self.walkStartTrack)
+        self.walk.enter(startTrack = self.walkStartTrack)
         self.acceptOnce(self.walkDoneEvent, self.__decideNextState)
 
     def exitWalk(self):

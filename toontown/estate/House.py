@@ -11,6 +11,7 @@ from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 
+
 class House(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('House')
 
@@ -22,44 +23,45 @@ class House(Place.Place):
         self.isInterior = 1
         self.tfaDoneEvent = 'tfaDoneEvent'
         self.oldStyle = None
-        self.fsm = ClassicFSM.ClassicFSM('House', [State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn', 'tutorial']),
-         State.State('walk', self.enterWalk, self.exitWalk, ['sit',
-          'stickerBook',
-          'doorOut',
-          'DFA',
-          'teleportOut',
-          'quest',
-          'purchase',
-          'closet',
-          'banking',
-          'phone',
-          'stopped']),
-         State.State('sit', self.enterSit, self.exitSit, ['walk']),
-         State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
-          'DFA',
-          'sit',
-          'doorOut',
-          'teleportOut',
-          'quest',
-          'purchase',
-          'closet',
-          'banking',
-          'phone',
-          'stopped']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut', 'doorOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
-         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
-         State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
-         State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
-         State.State('quest', self.enterQuest, self.exitQuest, ['walk', 'doorOut']),
-         State.State('tutorial', self.enterTutorial, self.exitTutorial, ['walk', 'quest']),
-         State.State('purchase', self.enterPurchase, self.exitPurchase, ['walk', 'doorOut']),
-         State.State('closet', self.enterCloset, self.exitCloset, ['walk']),
-         State.State('banking', self.enterBanking, self.exitBanking, ['walk']),
-         State.State('phone', self.enterPhone, self.exitPhone, ['walk']),
-         State.State('stopped', self.enterStopped, self.exitStopped, ['walk']),
-         State.State('final', self.enterFinal, self.exitFinal, ['start', 'teleportIn'])], 'start', 'final')
+        self.fsm = ClassicFSM.ClassicFSM('House', [
+            State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn', 'tutorial']),
+            State.State('walk', self.enterWalk, self.exitWalk, ['sit',
+                                                                'stickerBook',
+                                                                'doorOut',
+                                                                'DFA',
+                                                                'teleportOut',
+                                                                'quest',
+                                                                'purchase',
+                                                                'closet',
+                                                                'banking',
+                                                                'phone',
+                                                                'stopped']),
+            State.State('sit', self.enterSit, self.exitSit, ['walk']),
+            State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
+                                                                                     'DFA',
+                                                                                     'sit',
+                                                                                     'doorOut',
+                                                                                     'teleportOut',
+                                                                                     'quest',
+                                                                                     'purchase',
+                                                                                     'closet',
+                                                                                     'banking',
+                                                                                     'phone',
+                                                                                     'stopped']),
+            State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut', 'doorOut']),
+            State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
+            State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
+            State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
+            State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
+            State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
+            State.State('quest', self.enterQuest, self.exitQuest, ['walk', 'doorOut']),
+            State.State('tutorial', self.enterTutorial, self.exitTutorial, ['walk', 'quest']),
+            State.State('purchase', self.enterPurchase, self.exitPurchase, ['walk', 'doorOut']),
+            State.State('closet', self.enterCloset, self.exitCloset, ['walk']),
+            State.State('banking', self.enterBanking, self.exitBanking, ['walk']),
+            State.State('phone', self.enterPhone, self.exitPhone, ['walk']),
+            State.State('stopped', self.enterStopped, self.exitStopped, ['walk']),
+            State.State('final', self.enterFinal, self.exitFinal, ['start', 'teleportIn'])], 'start', 'final')
         self.parentFSMState = parentFSMState
         return
 

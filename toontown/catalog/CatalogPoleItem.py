@@ -5,6 +5,7 @@ from direct.actor import Actor
 from toontown.toonbase import TTLocalizer
 from direct.interval.IntervalGlobal import *
 
+
 class CatalogPoleItem(CatalogItem.CatalogItem):
     sequenceNumber = 0
 
@@ -45,7 +46,9 @@ class CatalogPoleItem(CatalogItem.CatalogItem):
 
     def getPicture(self, avatar):
         rodPath = FishGlobals.RodFileDict.get(self.rodId)
-        pole = Actor.Actor(rodPath, {'cast': 'phase_4/models/props/fishing-pole-chan'})
+        pole = Actor.Actor(rodPath, {
+            'cast': 'phase_4/models/props/fishing-pole-chan'
+        })
         pole.setPosHpr(1.47, 0, -1.67, 90, 55, -90)
         pole.setScale(0.8)
         pole.setDepthTest(1)
@@ -54,7 +57,7 @@ class CatalogPoleItem(CatalogItem.CatalogItem):
         frame.attachNewNode(pole.node())
         name = 'pole-item-%s' % self.sequenceNumber
         CatalogPoleItem.sequenceNumber += 1
-        track = Sequence(Func(pole.pose, 'cast', 130), Wait(100), name=name)
+        track = Sequence(Func(pole.pose, 'cast', 130), Wait(100), name = name)
         self.hasPicture = True
         return (frame, track)
 

@@ -5,91 +5,99 @@ from direct.task import Task
 import random
 from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
-AnimDict = {'mk': (('walk', 'walk', 3),
-        ('run', 'run', 3),
-        ('neutral', 'wait', 3),
-        ('left-point-start', 'left-start', 3.5),
-        ('left-point', 'left', 3.5),
-        ('right-point-start', 'right-start', 3.5),
-        ('right-point', 'right', 3.5)),
- 'vmk': (('walk', 'sneak', 3),
-         ('run', 'run', 3),
-         ('neutral', 'idle', 3),
-         ('sneak', 'sneak', 3),
-         ('into_sneak', 'into_sneak', 3),
-         ('chat', 'run', 3),
-         ('into_idle', 'into_idle', 3)),
- 'wmn': (('walk', 'walkHalloween3', 3), ('neutral', 'neutral2', 3)),
- 'mn': (('walk', 'walk', 3),
-        ('run', 'run', 3),
-        ('neutral', 'wait', 3),
-        ('left-point-start', 'start-Lpoint', 3.5),
-        ('left-point', 'Lpoint', 3.5),
-        ('right-point-start', 'start-Rpoint', 3.5),
-        ('right-point', 'Rpoint', 3.5),
-        ('up', 'up', 4),
-        ('down', 'down', 4),
-        ('left', 'left', 4),
-        ('right', 'right', 4)),
- 'g': (('walk', 'Walk', 6), ('run', 'Run', 6), ('neutral', 'Wait', 6)),
- 'sg': (('walk', 'walkStrut2', 6), ('neutral', 'neutral', 6)),
- 'd': (('walk', 'walk', 6),
-       ('trans', 'transition', 6),
-       ('neutral', 'neutral', 6),
-       ('trans-back', 'transBack', 6)),
- 'fd': (('walk', 'walk', 6), ('neutral', 'idle', 6)),
- 'dw': (('wheel', 'wheel', 6), ('neutral', 'wheel', 6)),
- 'p': (('walk', 'walk', 6),
-       ('sit', 'sit', 6),
-       ('neutral', 'neutral', 6),
-       ('stand', 'stand', 6)),
- 'wp': (('walk', 'walk', 6),
-        ('sit', 'sitStart', 6),
-        ('neutral', 'sitLoop', 6),
-        ('stand', 'sitStop', 6)),
- 'cl': (),
- 'dd': (('walk', 'walk', 4), ('neutral', 'idle', 4)),
- 'shdd': (('walk', 'walk', 4), ('neutral', 'idle', 4)),
- 'ch': (('walk', 'walk', 6), ('neutral', 'idle', 6)),
- 'pch': (('walk', 'walk', 6), ('neutral', 'idle', 6)),
- 'da': (('walk', 'walk', 6), ('neutral', 'idle', 6)),
- 'jda': (('walk', 'walk', 6), ('neutral', 'idle', 6))}
-ModelDict = {'mk': 'phase_3/models/char/mickey-',
- 'vmk': 'phase_3.5/models/char/tt_a_chr_csc_mickey_vampire_',
- 'mn': 'phase_3/models/char/minnie-',
- 'wmn': 'phase_3.5/models/char/tt_a_chr_csc_witchMinnie_',
- 'g': 'phase_6/models/char/TT_G',
- 'sg': 'phase_6/models/char/tt_a_chr_csc_goofyCostume_',
- 'd': 'phase_6/models/char/DL_donald-',
- 'fd': 'phase_6/models/char/tt_a_chr_csc_donaldCostume_',
- 'dw': 'phase_6/models/char/donald-wheel-',
- 'p': 'phase_6/models/char/pluto-',
- 'wp': 'phase_6/models/char/tt_a_chr_csc_plutoCostume_',
- 'cl': 'phase_5.5/models/estate/Clara_pose2-',
- 'dd': 'phase_4/models/char/daisyduck_',
- 'shdd': 'phase_4/models/char/tt_a_chr_csc_daisyCostume_',
- 'ch': 'phase_6/models/char/chip_',
- 'pch': 'phase_6/models/char/tt_a_chr_csc_chipCostume_',
- 'da': 'phase_6/models/char/dale_',
- 'jda': 'phase_6/models/char/tt_a_chr_csc_daleCostume_'}
-LODModelDict = {'mk': [1200, 800, 400],
- 'vmk': [1200, 800, 400],
- 'wmn': [1200, 800, 400],
- 'mn': [1200, 800, 400],
- 'g': [1500, 1000, 500],
- 'sg': [1200, 800, 400],
- 'd': [1000, 500, 250],
- 'fd': ['default'],
- 'dw': [1000],
- 'p': [1000, 500, 300],
- 'wp': [1200, 800, 400],
- 'cl': [],
- 'dd': [1600, 800, 400],
- 'shdd': ['default'],
- 'ch': [1000, 500, 250],
- 'pch': ['default'],
- 'da': [1000, 500, 250],
- 'jda': ['default']}
+
+AnimDict = {
+    'mk': (('walk', 'walk', 3),
+           ('run', 'run', 3),
+           ('neutral', 'wait', 3),
+           ('left-point-start', 'left-start', 3.5),
+           ('left-point', 'left', 3.5),
+           ('right-point-start', 'right-start', 3.5),
+           ('right-point', 'right', 3.5)),
+    'vmk': (('walk', 'sneak', 3),
+            ('run', 'run', 3),
+            ('neutral', 'idle', 3),
+            ('sneak', 'sneak', 3),
+            ('into_sneak', 'into_sneak', 3),
+            ('chat', 'run', 3),
+            ('into_idle', 'into_idle', 3)),
+    'wmn': (('walk', 'walkHalloween3', 3), ('neutral', 'neutral2', 3)),
+    'mn': (('walk', 'walk', 3),
+           ('run', 'run', 3),
+           ('neutral', 'wait', 3),
+           ('left-point-start', 'start-Lpoint', 3.5),
+           ('left-point', 'Lpoint', 3.5),
+           ('right-point-start', 'start-Rpoint', 3.5),
+           ('right-point', 'Rpoint', 3.5),
+           ('up', 'up', 4),
+           ('down', 'down', 4),
+           ('left', 'left', 4),
+           ('right', 'right', 4)),
+    'g': (('walk', 'Walk', 6), ('run', 'Run', 6), ('neutral', 'Wait', 6)),
+    'sg': (('walk', 'walkStrut2', 6), ('neutral', 'neutral', 6)),
+    'd': (('walk', 'walk', 6),
+          ('trans', 'transition', 6),
+          ('neutral', 'neutral', 6),
+          ('trans-back', 'transBack', 6)),
+    'fd': (('walk', 'walk', 6), ('neutral', 'idle', 6)),
+    'dw': (('wheel', 'wheel', 6), ('neutral', 'wheel', 6)),
+    'p': (('walk', 'walk', 6),
+          ('sit', 'sit', 6),
+          ('neutral', 'neutral', 6),
+          ('stand', 'stand', 6)),
+    'wp': (('walk', 'walk', 6),
+           ('sit', 'sitStart', 6),
+           ('neutral', 'sitLoop', 6),
+           ('stand', 'sitStop', 6)),
+    'cl': (),
+    'dd': (('walk', 'walk', 4), ('neutral', 'idle', 4)),
+    'shdd': (('walk', 'walk', 4), ('neutral', 'idle', 4)),
+    'ch': (('walk', 'walk', 6), ('neutral', 'idle', 6)),
+    'pch': (('walk', 'walk', 6), ('neutral', 'idle', 6)),
+    'da': (('walk', 'walk', 6), ('neutral', 'idle', 6)),
+    'jda': (('walk', 'walk', 6), ('neutral', 'idle', 6))
+}
+ModelDict = {
+    'mk': 'phase_3/models/char/mickey-',
+    'vmk': 'phase_3.5/models/char/tt_a_chr_csc_mickey_vampire_',
+    'mn': 'phase_3/models/char/minnie-',
+    'wmn': 'phase_3.5/models/char/tt_a_chr_csc_witchMinnie_',
+    'g': 'phase_6/models/char/TT_G',
+    'sg': 'phase_6/models/char/tt_a_chr_csc_goofyCostume_',
+    'd': 'phase_6/models/char/DL_donald-',
+    'fd': 'phase_6/models/char/tt_a_chr_csc_donaldCostume_',
+    'dw': 'phase_6/models/char/donald-wheel-',
+    'p': 'phase_6/models/char/pluto-',
+    'wp': 'phase_6/models/char/tt_a_chr_csc_plutoCostume_',
+    'cl': 'phase_5.5/models/estate/Clara_pose2-',
+    'dd': 'phase_4/models/char/daisyduck_',
+    'shdd': 'phase_4/models/char/tt_a_chr_csc_daisyCostume_',
+    'ch': 'phase_6/models/char/chip_',
+    'pch': 'phase_6/models/char/tt_a_chr_csc_chipCostume_',
+    'da': 'phase_6/models/char/dale_',
+    'jda': 'phase_6/models/char/tt_a_chr_csc_daleCostume_'
+}
+LODModelDict = {
+    'mk': [1200, 800, 400],
+    'vmk': [1200, 800, 400],
+    'wmn': [1200, 800, 400],
+    'mn': [1200, 800, 400],
+    'g': [1500, 1000, 500],
+    'sg': [1200, 800, 400],
+    'd': [1000, 500, 250],
+    'fd': ['default'],
+    'dw': [1000],
+    'p': [1000, 500, 300],
+    'wp': [1200, 800, 400],
+    'cl': [],
+    'dd': [1600, 800, 400],
+    'shdd': ['default'],
+    'ch': [1000, 500, 250],
+    'pch': ['default'],
+    'da': [1000, 500, 250],
+    'jda': ['default']
+}
+
 
 class Char(Avatar.Avatar):
     notify = DirectNotifyGlobal.directNotify.newCategory('Char')
@@ -131,7 +139,8 @@ class Char(Avatar.Avatar):
             self.initializeDropShadow()
             self.initializeNametag3d()
             self.nametag3d.setBin('fixed', 0)
-            if self._name == 'chip' or self._name == 'dale' or self._name == 'police_chip' or self._name == 'jailbird_dale':
+            if self._name == 'chip' or self._name == 'dale' or self._name == 'police_chip' or self._name == \
+                    'jailbird_dale':
                 self.find('**/drop-shadow').setScale(0.33)
 
     def setLODs(self):
@@ -194,9 +203,9 @@ class Char(Avatar.Avatar):
                 else:
                     lodName = 'lodRoot'
                 if self._name == 'goofy':
-                    self.loadModel(filePrefix + '-' + lodStr, lodName=lodName)
+                    self.loadModel(filePrefix + '-' + lodStr, lodName = lodName)
                 else:
-                    self.loadModel(filePrefix + lodStr, lodName=lodName)
+                    self.loadModel(filePrefix + lodStr, lodName = lodName)
 
         else:
             self.loadModel(filePrefix)
@@ -211,7 +220,7 @@ class Char(Avatar.Avatar):
                 lodName = lodStr
             else:
                 lodName = 'lodRoot'
-            self.loadAnims(animDict, lodName=lodName)
+            self.loadAnims(animDict, lodName = lodName)
 
         self.setHeight(height)
         self.loadDialogue(dna.name)
@@ -259,7 +268,7 @@ class Char(Avatar.Avatar):
             self.lpupil = self.find('**/1200/**/joint_pupilL')
             self.rpupil = self.find('**/1200/**/joint_pupilR')
             for lodName in self.getLODNames():
-                self.drawInFront('joint_pupil?', 'eyes*', -3, lodName=lodName)
+                self.drawInFront('joint_pupil?', 'eyes*', -3, lodName = lodName)
 
         elif (self._name == 'witch_minnie' or
               self._name == 'vampire_mickey' or
@@ -291,7 +300,7 @@ class Char(Avatar.Avatar):
             self.lpupil = self.find('**/1000/**/joint_pupilL')
             self.rpupil = self.find('**/1000/**/joint_pupilR')
             for lodName in self.getLODNames():
-                self.drawInFront('joint_pupil?', 'eyes*', -3, lodName=lodName)
+                self.drawInFront('joint_pupil?', 'eyes*', -3, lodName = lodName)
 
         elif self._name == 'daisy':
             self.geoEyes = 1
@@ -346,7 +355,7 @@ class Char(Avatar.Avatar):
                 lodName = lodStr
             else:
                 lodName = 'lodRoot'
-            self.removePart('modelRoot', lodName=lodName)
+            self.removePart('modelRoot', lodName = lodName)
 
         self.setStyle(charStyle)
         self.generateChar()
@@ -398,10 +407,11 @@ class Char(Avatar.Avatar):
             chatterType = chatterTypes[categoryIndex]
             for fileIndex in audioIndexArray[categoryIndex]:
                 if fileIndex:
-                    self.chatterArray[categoryIndex].append(base.loader.loadSfx('%s/CC_%s_chatter_%s%02d.ogg' % (loadPath,
-                     name,
-                     chatterType,
-                     fileIndex)))
+                    self.chatterArray[categoryIndex].append(
+                        base.loader.loadSfx('%s/CC_%s_chatter_%s%02d.ogg' % (loadPath,
+                                                                             name,
+                                                                             chatterType,
+                                                                             fileIndex)))
                 else:
                     self.chatterArray[categoryIndex].append(None)
 
@@ -419,13 +429,13 @@ class Char(Avatar.Avatar):
 
             if language == 'japanese':
                 chatterIndexArray = ([1, 2], [1,
-                  2,
-                  3,
-                  4], [1,
-                  2,
-                  3,
-                  4,
-                  5])
+                                              2,
+                                              3,
+                                              4], [1,
+                                                   2,
+                                                   3,
+                                                   4,
+                                                   5])
                 self.loadChatterDialogue('mickey', chatterIndexArray, 'phase_3/audio/dial', language)
         elif char == 'vmk':
             dialogueFile = base.loader.loadSfx('phase_3/audio/dial/mickey.ogg')
@@ -434,13 +444,13 @@ class Char(Avatar.Avatar):
 
             if language == 'japanese':
                 chatterIndexArray = ([1, 2], [1,
-                  2,
-                  3,
-                  4], [1,
-                  2,
-                  3,
-                  4,
-                  5])
+                                              2,
+                                              3,
+                                              4], [1,
+                                                   2,
+                                                   3,
+                                                   4,
+                                                   5])
                 self.loadChatterDialogue('mickey', chatterIndexArray, 'phase_3/audio/dial', language)
         elif char == 'mn' or char == 'wmn':
             dialogueFile = base.loader.loadSfx('phase_3/audio/dial/minnie.ogg')
@@ -449,22 +459,22 @@ class Char(Avatar.Avatar):
 
             if language == 'japanese':
                 chatterIndexArray = ([1, 2], [1,
-                  2,
-                  3,
-                  4,
-                  5,
-                  6,
-                  7,
-                  8,
-                  9,
-                  10,
-                  11,
-                  12,
-                  13,
-                  14,
-                  15,
-                  16,
-                  17], [1, 2, 3])
+                                              2,
+                                              3,
+                                              4,
+                                              5,
+                                              6,
+                                              7,
+                                              8,
+                                              9,
+                                              10,
+                                              11,
+                                              12,
+                                              13,
+                                              14,
+                                              15,
+                                              16,
+                                              17], [1, 2, 3])
                 self.loadChatterDialogue('minnie', chatterIndexArray, 'phase_3/audio/dial', language)
         elif char == 'dd' or char == 'shdd':
             dialogueFile = base.loader.loadSfx('phase_4/audio/dial/daisy.ogg')
@@ -473,20 +483,20 @@ class Char(Avatar.Avatar):
 
             if language == 'japanese':
                 chatterIndexArray = ([1, 2, 3], [1,
-                  2,
-                  3,
-                  4,
-                  5,
-                  6,
-                  7,
-                  8,
-                  9,
-                  10,
-                  11,
-                  12], [1,
-                  2,
-                  3,
-                  4])
+                                                 2,
+                                                 3,
+                                                 4,
+                                                 5,
+                                                 6,
+                                                 7,
+                                                 8,
+                                                 9,
+                                                 10,
+                                                 11,
+                                                 12], [1,
+                                                       2,
+                                                       3,
+                                                       4])
                 self.loadChatterDialogue('daisy', chatterIndexArray, 'phase_8/audio/dial', language)
         elif char == 'g' or char == 'sg':
             dialogueFile = base.loader.loadSfx('phase_6/audio/dial/goofy.ogg')
@@ -495,20 +505,20 @@ class Char(Avatar.Avatar):
 
             if language == 'japanese':
                 chatterIndexArray = ([1, 2, 3], [1,
-                  2,
-                  3,
-                  4,
-                  5,
-                  6,
-                  7,
-                  8,
-                  9,
-                  10,
-                  11,
-                  12], [1,
-                  2,
-                  3,
-                  4])
+                                                 2,
+                                                 3,
+                                                 4,
+                                                 5,
+                                                 6,
+                                                 7,
+                                                 8,
+                                                 9,
+                                                 10,
+                                                 11,
+                                                 12], [1,
+                                                       2,
+                                                       3,
+                                                       4])
                 self.loadChatterDialogue('goofy', chatterIndexArray, 'phase_6/audio/dial', language)
         elif char == 'd' or char == 'dw' or char == 'fd':
             dialogueFile = base.loader.loadSfx('phase_6/audio/dial/donald.ogg')
@@ -518,19 +528,19 @@ class Char(Avatar.Avatar):
             if char == 'd':
                 if language == 'japanese':
                     chatterIndexArray = ([1, 2], [1,
-                      2,
-                      3,
-                      4,
-                      5,
-                      6,
-                      7,
-                      8,
-                      9,
-                      10,
-                      11], [1,
-                      2,
-                      3,
-                      4])
+                                                  2,
+                                                  3,
+                                                  4,
+                                                  5,
+                                                  6,
+                                                  7,
+                                                  8,
+                                                  9,
+                                                  10,
+                                                  11], [1,
+                                                        2,
+                                                        3,
+                                                        4])
                     self.loadChatterDialogue('donald', chatterIndexArray, 'phase_6/audio/dial', language)
         elif char == 'p' or char == 'wp':
             dialogueFile = base.loader.loadSfx('phase_3.5/audio/dial/AV_dog_med.ogg')

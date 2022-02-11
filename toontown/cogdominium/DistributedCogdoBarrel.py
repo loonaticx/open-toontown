@@ -4,6 +4,7 @@ from direct.distributed import DistributedObject
 from toontown.toonbase import ToontownGlobals, ToontownIntervals
 from toontown.cogdominium import CogdoBarrelRoomConsts
 
+
 class DistributedCogdoBarrel(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBarrel')
 
@@ -103,7 +104,7 @@ class DistributedCogdoBarrel(DistributedObject.DistributedObject):
             self.ignore(self.uniqueName('enterbarrelSphere'))
 
     def handleEnterSphere(self, collEntry = None):
-        base.playSfx(self.bumpSound, volume=0.35, node=self.model, listener=camera)
+        base.playSfx(self.bumpSound, volume = 0.35, node = self.model, listener = camera)
         self.d_requestGrab()
 
     def d_requestGrab(self):
@@ -111,7 +112,8 @@ class DistributedCogdoBarrel(DistributedObject.DistributedObject):
 
     def setGrab(self, avId):
         if avId == base.localAvatar.doId:
-            ToontownIntervals.start(ToontownIntervals.getPulseIval(self.model, self.__pulseIvalName(), 1.15, duration=0.2))
+            ToontownIntervals.start(
+                ToontownIntervals.getPulseIval(self.model, self.__pulseIvalName(), 1.15, duration = 0.2))
             self.setState(CogdoBarrelRoomConsts.StateUsed)
 
     def setReject(self):

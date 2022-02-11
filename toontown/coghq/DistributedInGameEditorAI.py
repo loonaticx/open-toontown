@@ -3,6 +3,7 @@ from direct.distributed import DistributedObjectAI
 from direct.directutil import DistributedLargeBlobSenderAI
 from .SpecImports import *
 
+
 class DistributedInGameEditorAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedInGameEditorAI')
 
@@ -43,7 +44,9 @@ class DistributedInGameEditorAI(DistributedObjectAI.DistributedObjectAI):
         print('requestCurrentLevelSpec')
         spec = self.level.levelSpec
         specStr = repr(spec)
-        largeBlob = DistributedLargeBlobSenderAI.DistributedLargeBlobSenderAI(self.air, self.zoneId, self.editorAvId, specStr, useDisk=simbase.air._specByDisk)
+        largeBlob = DistributedLargeBlobSenderAI.DistributedLargeBlobSenderAI(self.air, self.zoneId, self.editorAvId,
+                                                                              specStr,
+                                                                              useDisk = simbase.air._specByDisk)
         self.sendUpdateToAvatarId(self.editorAvId, 'setSpecSenderDoId', [largeBlob.doId])
 
     def setEdit(self, entId, attribName, valueStr, username):
@@ -51,7 +54,7 @@ class DistributedInGameEditorAI(DistributedObjectAI.DistributedObjectAI):
 
     def handleAttribChange(self, entId, attrib, value, username):
         self.sendUpdateToAvatarId(self.editorAvId, 'setAttribChange', [
-         entId, attrib, repr(value), username])
+            entId, attrib, repr(value), username])
 
     def setFinished(self):
         self.requestDelete()

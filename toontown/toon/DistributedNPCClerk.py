@@ -8,6 +8,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.hood import ZoneUtil
 from toontown.toontowngui import TeaserPanel
 
+
 class DistributedNPCClerk(DistributedNPCToonBase):
 
     def __init__(self, cr):
@@ -54,7 +55,7 @@ class DistributedNPCClerk(DistributedNPCToonBase):
             place = base.cr.playGame.getPlace()
             if place:
                 place.fsm.request('stopped')
-            self.dialog = TeaserPanel.TeaserPanel(pageName='otherGags', doneFunc=self.handleOkTeaser)
+            self.dialog = TeaserPanel.TeaserPanel(pageName = 'otherGags', doneFunc = self.handleOkTeaser)
 
     def __handleUnexpectedExit(self):
         self.notify.warning('unexpected exit')
@@ -105,7 +106,9 @@ class DistributedNPCClerk(DistributedNPCToonBase):
             self.setupAvatars(self.av)
             if self.isLocalToon:
                 camera.wrtReparentTo(render)
-                self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-5, 9, self.getHeight() - 0.5), Point3(-150, -2, 0), other=self, blendType='easeOut', name=self.uniqueName('lerpCamera'))
+                self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-5, 9, self.getHeight() - 0.5),
+                                                            Point3(-150, -2, 0), other = self, blendType = 'easeOut',
+                                                            name = self.uniqueName('lerpCamera'))
                 self.lerpCameraSeq.start()
             self.setChatAbsolute(TTLocalizer.STOREOWNER_GREETING, CFSpeech | CFTimeout)
             if self.isLocalToon:

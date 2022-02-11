@@ -2,6 +2,7 @@ from pandac.PandaModules import *
 from direct.motiontrail.MotionTrail import *
 import random
 
+
 class PolyTrail(NodePath):
 
     def __init__(self, root_node_path = None, vertex_list = None, color_list = None, time_window = 0.25):
@@ -126,9 +127,9 @@ class PolyTrail(NodePath):
         if self.motion_trail:
             black = Vec4(0.0, 0.0, 0.0, 1.0)
             scale_array = [0.25,
-             0.4,
-             0.7,
-             1.0]
+                           0.4,
+                           0.7,
+                           1.0]
             total_scales = len(scale_array)
             for index in range(len(color_list)):
                 color = color_list[index]
@@ -158,7 +159,8 @@ class PolyTrail(NodePath):
 
     def setBlendModeOn(self):
         if self.motion_trail:
-            self.motion_trail.geom_node_path.node().setAttrib(ColorBlendAttrib.make(ColorBlendAttrib.MAdd, ColorBlendAttrib.OIncomingAlpha, ColorBlendAttrib.OOne))
+            self.motion_trail.geom_node_path.node().setAttrib(
+                ColorBlendAttrib.make(ColorBlendAttrib.MAdd, ColorBlendAttrib.OIncomingAlpha, ColorBlendAttrib.OOne))
 
     def setBlendModeOff(self):
         if self.motion_trail:

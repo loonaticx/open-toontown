@@ -5,6 +5,7 @@ from . import TravelGameGlobals
 from toontown.toonbase import ToontownGlobals
 import functools
 
+
 class DistributedTravelGameAI(DistributedMinigameAI):
     notify = directNotify.newCategory('DistributedTravelGameAI')
 
@@ -14,10 +15,13 @@ class DistributedTravelGameAI(DistributedMinigameAI):
         except:
             self.DistributedTravelGameAI_initialized = 1
             DistributedMinigameAI.__init__(self, air, minigameId)
-            self.gameFSM = ClassicFSM.ClassicFSM('DistributedTravelGameAI', [State.State('inactive', self.enterInactive, self.exitInactive, ['waitClientsChoices']),
-             State.State('waitClientsChoices', self.enterWaitClientsChoices, self.exitWaitClientsChoices, ['processChoices', 'cleanup']),
-             State.State('processChoices', self.enterProcessChoices, self.exitProcessChoices, ['waitClientsChoices', 'cleanup']),
-             State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
+            self.gameFSM = ClassicFSM.ClassicFSM('DistributedTravelGameAI', [
+                State.State('inactive', self.enterInactive, self.exitInactive, ['waitClientsChoices']),
+                State.State('waitClientsChoices', self.enterWaitClientsChoices, self.exitWaitClientsChoices,
+                            ['processChoices', 'cleanup']),
+                State.State('processChoices', self.enterProcessChoices, self.exitProcessChoices,
+                            ['waitClientsChoices', 'cleanup']),
+                State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
             self.addChildGameFSM(self.gameFSM)
             self.currentVotes = {}
             self.avatarChoices = {}
@@ -63,14 +67,15 @@ class DistributedTravelGameAI(DistributedMinigameAI):
             curVotesList.append(self.currentVotes[avId])
             bonusesList.append((self.avIdBonuses[avId][0], self.avIdBonuses[avId][1]))
 
-        self.air.writeServerEvent('minigame_travel', self.doId, '%s|%s|%s|%s|%s|%s|%s|%s' % (ToontownGlobals.TravelGameId,
-         self.getSafezoneId(),
-         self.avIdList,
-         scoreList,
-         self.boardIndex,
-         curVotesList,
-         bonusesList,
-         self.desiredNextGame))
+        self.air.writeServerEvent('minigame_travel', self.doId,
+                                  '%s|%s|%s|%s|%s|%s|%s|%s' % (ToontownGlobals.TravelGameId,
+                                                               self.getSafezoneId(),
+                                                               self.avIdList,
+                                                               scoreList,
+                                                               self.boardIndex,
+                                                               curVotesList,
+                                                               bonusesList,
+                                                               self.desiredNextGame))
         self.gameFSM.request('cleanup')
         DistributedMinigameAI.gameOver(self)
 
@@ -83,7 +88,8 @@ class DistributedTravelGameAI(DistributedMinigameAI):
     def enterWaitClientsChoices(self):
         self.notify.debug('enterWaitClientsChoices')
         self.resetChoices()
-        taskMgr.doMethodLater(TravelGameGlobals.InputTimeout, self.waitClientsChoicesTimeout, self.taskName('input-timeout'))
+        taskMgr.doMethodLater(TravelGameGlobals.InputTimeout, self.waitClientsChoicesTimeout,
+                              self.taskName('input-timeout'))
         self.sendUpdate('setTimerStartTime', [globalClockDelta.getFrameNetworkTime()])
 
     def exitWaitClientsChoices(self):
@@ -108,7 +114,7 @@ class DistributedTravelGameAI(DistributedMinigameAI):
             else:
                 return 1
 
-        self.directionVotes.sort(key=functools.cmp_to_key(voteCompare), reverse=True)
+        self.directionVotes.sort(key = functools.cmp_to_key(voteCompare), reverse = True)
         winningVotes = self.directionVotes[0][1]
         self.winningDirections = []
         self.notify.debug('self.directionVotes = %s' % self.directionVotes)
@@ -170,7 +176,8 @@ class DistributedTravelGameAI(DistributedMinigameAI):
 
     def setAvatarChoice(self, votes, direction):
         avatarId = self.air.getAvatarIdFromSender()
-        self.notify.debug('setAvatarChoice: avatar: ' + str(avatarId) + ' votes: ' + str(votes) + ' direction: ' + str(direction))
+        self.notify.debug(
+            'setAvatarChoice: avatar: ' + str(avatarId) + ' votes: ' + str(votes) + ' direction: ' + str(direction))
         self.avatarChoices[avatarId] = self.checkChoice(avatarId, votes, direction)
         self.currentVotes[avatarId] -= self.avatarChoices[avatarId][0]
         if self.currentVotes[avatarId] < 0:
@@ -229,7 +236,8 @@ class DistributedTravelGameAI(DistributedMinigameAI):
         numPlayers = len(self.avIdList)
         if TravelGameGlobals.SpoofFour:
             numPlayers = 4
-        delay = TravelGameGlobals.DisplayVotesTimePerPlayer * (numPlayers + 1) + TravelGameGlobals.MoveTrolleyTime + TravelGameGlobals.FudgeTime
+        delay = TravelGameGlobals.DisplayVotesTimePerPlayer * (
+                    numPlayers + 1) + TravelGameGlobals.MoveTrolleyTime + TravelGameGlobals.FudgeTime
         if didWeReachMiniGame:
             self.desiredNextGame = self.switchToMinigameDict[self.currentSwitch]
             taskMgr.doMethodLater(delay, self.moveTimeoutTaskGameOver, self.taskName('move-timeout'))
@@ -237,9 +245,9 @@ class DistributedTravelGameAI(DistributedMinigameAI):
         else:
             taskMgr.doMethodLater(delay, self.moveTimeoutTask, self.taskName('move-timeout'))
         self.sendUpdate('setServerChoices', [self.votesArray,
-         self.directionArray,
-         self.directionToGo,
-         self.directionReason])
+                                             self.directionArray,
+                                             self.directionToGo,
+                                             self.directionReason])
 
     def moveTimeoutTask(self, task):
         self.notify.debug('Done waiting for trolley move')

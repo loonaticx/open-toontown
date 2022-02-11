@@ -5,6 +5,7 @@ from toontown.toonbase import ToontownGlobals
 from otp.otpbase import OTPGlobals
 from . import DistributedCashbotBossObject
 
+
 class DistributedCashbotBossSafe(DistributedCashbotBossObject.DistributedCashbotBossObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCashbotBossSafe')
     grabPos = (0, 0, -8.2)
@@ -19,9 +20,12 @@ class DistributedCashbotBossSafe(DistributedCashbotBossObject.DistributedCashbot
         self.index = None
         self.flyToMagnetSfx = loader.loadSfx('phase_5/audio/sfx/TL_rake_throw_only.ogg')
         self.hitMagnetSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_safe.ogg')
-        self.toMagnetSoundInterval = Parallel(SoundInterval(self.flyToMagnetSfx, duration=ToontownGlobals.CashbotBossToMagnetTime, node=self), Sequence(Wait(ToontownGlobals.CashbotBossToMagnetTime - 0.02), SoundInterval(self.hitMagnetSfx, duration=1.0, node=self)))
+        self.toMagnetSoundInterval = Parallel(
+            SoundInterval(self.flyToMagnetSfx, duration = ToontownGlobals.CashbotBossToMagnetTime, node = self),
+            Sequence(Wait(ToontownGlobals.CashbotBossToMagnetTime - 0.02),
+                     SoundInterval(self.hitMagnetSfx, duration = 1.0, node = self)))
         self.hitFloorSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_bigweight_miss.ogg')
-        self.hitFloorSoundInterval = SoundInterval(self.hitFloorSfx, node=self)
+        self.hitFloorSoundInterval = SoundInterval(self.hitFloorSfx, node = self)
         return
 
     def announceGenerate(self):

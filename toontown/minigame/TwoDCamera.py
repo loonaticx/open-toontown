@@ -6,6 +6,7 @@ from direct.distributed import DistributedObject
 from toontown.minigame import ToonBlitzGlobals
 import math
 
+
 class TwoDCamera(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDCamera')
 
@@ -32,7 +33,8 @@ class TwoDCamera(DistributedObject.DistributedObject):
 
     def update(self):
         if not self.ivalControllingCamera:
-            camX = base.localAvatar.getX(render) - math.sin(base.localAvatar.getH(render) * math.pi / 180) * self.threeQuarterOffset
+            camX = base.localAvatar.getX(render) - math.sin(
+                base.localAvatar.getH(render) * math.pi / 180) * self.threeQuarterOffset
             self.camera.setX(render, camX)
 
     def clearChangeFacingInterval(self):
@@ -45,7 +47,7 @@ class TwoDCamera(DistributedObject.DistributedObject):
     def setupChangeFacingInterval(self, newHeading):
         self.clearChangeFacingInterval()
         self.newHeading = newHeading
-        self.changeFacingInterval = LerpFunc(self.myLerpPos, duration=5.0)
+        self.changeFacingInterval = LerpFunc(self.myLerpPos, duration = 5.0)
         self.changeFacingInterval.start()
 
     def myLerpPos(self, t):

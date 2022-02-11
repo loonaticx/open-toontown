@@ -3,6 +3,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
 from toontown.cogdominium import CogdoBarrelRoomConsts
 
+
 class DistributedCogdoBarrelAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBarrelAI')
 
@@ -47,7 +48,8 @@ class DistributedCogdoBarrelAI(DistributedObjectAI.DistributedObjectAI):
             self.d_setReject()
 
     def __canGrab(self, av):
-        return self.state == CogdoBarrelRoomConsts.StateAvailable and self.interactive and not av.isToonedUp() and av.doId not in self.grabbedBy
+        return self.state == CogdoBarrelRoomConsts.StateAvailable and self.interactive and not av.isToonedUp() and \
+               av.doId not in self.grabbedBy
 
     def d_setGrab(self, avId):
         self.collectedCallback(self, avId)

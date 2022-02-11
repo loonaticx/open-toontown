@@ -4,6 +4,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
 import random
 
+
 class TreasurePlannerAI(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TreasurePlannerAI')
 
@@ -87,7 +88,9 @@ class TreasurePlannerAI(DirectObject.DirectObject):
             else:
                 secondsPerGrab = elapsed / self.requestCount
                 if self.requestCount >= 3 and secondsPerGrab <= 0.4:
-                    simbase.air.writeServerEvent('suspicious', avId, 'TreasurePlannerAI.grabAttempt %s treasures in %s seconds' % (self.requestCount, elapsed))
+                    simbase.air.writeServerEvent('suspicious', avId,
+                                                 'TreasurePlannerAI.grabAttempt %s treasures in %s seconds' % (
+                                                 self.requestCount, elapsed))
         else:
             self.lastRequestId = avId
             self.requestCount = 1
@@ -114,7 +117,7 @@ class TreasurePlannerAI(DirectObject.DirectObject):
 
     def deleteTreasureSoon(self, treasure):
         taskName = treasure.uniqueName('deletingTreasure')
-        taskMgr.doMethodLater(5, self.__deleteTreasureNow, taskName, extraArgs=(treasure, taskName))
+        taskMgr.doMethodLater(5, self.__deleteTreasureNow, taskName, extraArgs = (treasure, taskName))
         self.deleteTaskNames.add(taskName)
 
     def deleteAllTreasuresNow(self):

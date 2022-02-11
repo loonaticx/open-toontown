@@ -9,6 +9,7 @@ from direct.fsm import ClassicFSM
 from . import DistributedSwitch
 from toontown.toonbase import TTLocalizer
 
+
 class DistributedButton(DistributedSwitch.DistributedSwitch):
     countdownSeconds = 3.0
 
@@ -22,7 +23,8 @@ class DistributedButton(DistributedSwitch.DistributedSwitch):
 
     def avatarExit(self, avatarId):
         DistributedSwitch.DistributedSwitch.avatarExit(self, avatarId)
-        if self.secondsOn != -1.0 and self.secondsOn > 0.0 and self.countdownSeconds > 0.0 and self.countdownSeconds < self.secondsOn and self.fsm.getCurrentState().getName() == 'playing':
+        if self.secondsOn != -1.0 and self.secondsOn > 0.0 and self.countdownSeconds > 0.0 and self.countdownSeconds \
+                < self.secondsOn and self.fsm.getCurrentState().getName() == 'playing':
             track = self.switchCountdownTrack()
             if track is not None:
                 track.start(0.0)
@@ -63,9 +65,9 @@ class DistributedButton(DistributedSwitch.DistributedSwitch):
                     top = 0.475
                     size = 0.5
                     floor = CollisionPolygon(Point3(-size, -size, top),
-                                             Point3( size, -size, top),
-                                             Point3( size,  size, top),
-                                             Point3(-size,  size, top))
+                                             Point3(size, -size, top),
+                                             Point3(size, size, top),
+                                             Point3(-size, size, top))
                     floor.setTangible(1)
                     floorNode = CollisionNode('collision_floor')
                     floorNode.addSolid(floor)
@@ -94,7 +96,15 @@ class DistributedButton(DistributedSwitch.DistributedSwitch):
         halfDur = duration * 0.5
         pos = Vec3(0.0, 0.0, -0.2)
         color = Vec4(0.0, 1.0, 0.0, 1.0)
-        track = Sequence(Func(self.setIsOn, 1), Parallel(SoundInterval(onSfx, node=self.node, volume=0.9), LerpPosInterval(nodePath=self.buttonNode, duration=duration, pos=pos, blendType='easeInOut'), Sequence(Wait(halfDur), LerpColorInterval(nodePath=self.buttonNode, duration=halfDur, color=color, override=1, blendType='easeOut'))))
+        track = Sequence(Func(self.setIsOn, 1), Parallel(SoundInterval(onSfx, node = self.node, volume = 0.9),
+                                                         LerpPosInterval(nodePath = self.buttonNode,
+                                                                         duration = duration, pos = pos,
+                                                                         blendType = 'easeInOut'),
+                                                         Sequence(Wait(halfDur),
+                                                                  LerpColorInterval(nodePath = self.buttonNode,
+                                                                                    duration = halfDur, color = color,
+                                                                                    override = 1,
+                                                                                    blendType = 'easeOut'))))
         return track
 
     def switchCountdownTrack(self):
@@ -105,20 +115,30 @@ class DistributedButton(DistributedSwitch.DistributedSwitch):
             Sequence(
                 Wait(wait),
                 Wait(0.5),
-                LerpColorInterval(nodePath=self.buttonNode, duration=0.1, color=self.color, override=1, blendType='easeIn'),
-                LerpColorInterval(nodePath=self.buttonNode, duration=0.1, color=Vec4(0.0, 1.0, 0.0, 1.0), override=1, blendType='easeOut'),
+                LerpColorInterval(nodePath = self.buttonNode, duration = 0.1, color = self.color, override = 1,
+                                  blendType = 'easeIn'),
+                LerpColorInterval(nodePath = self.buttonNode, duration = 0.1, color = Vec4(0.0, 1.0, 0.0, 1.0),
+                                  override = 1, blendType = 'easeOut'),
                 Wait(0.5),
-                LerpColorInterval(nodePath=self.buttonNode, duration=0.1, color=self.color, override=1, blendType='easeIn'),
-                LerpColorInterval(nodePath=self.buttonNode, duration=0.1, color=Vec4(0.0, 1.0, 0.0, 1.0), override=1, blendType='easeOut'),
+                LerpColorInterval(nodePath = self.buttonNode, duration = 0.1, color = self.color, override = 1,
+                                  blendType = 'easeIn'),
+                LerpColorInterval(nodePath = self.buttonNode, duration = 0.1, color = Vec4(0.0, 1.0, 0.0, 1.0),
+                                  override = 1, blendType = 'easeOut'),
                 Wait(0.4),
-                LerpColorInterval(nodePath=self.buttonNode, duration=0.1, color=self.color, override=1, blendType='easeIn'),
-                LerpColorInterval(nodePath=self.buttonNode, duration=0.1, color=Vec4(0.0, 1.0, 0.0, 1.0), override=1, blendType='easeOut'),
+                LerpColorInterval(nodePath = self.buttonNode, duration = 0.1, color = self.color, override = 1,
+                                  blendType = 'easeIn'),
+                LerpColorInterval(nodePath = self.buttonNode, duration = 0.1, color = Vec4(0.0, 1.0, 0.0, 1.0),
+                                  override = 1, blendType = 'easeOut'),
                 Wait(0.3),
-                LerpColorInterval(nodePath=self.buttonNode, duration=0.1, color=self.color, override=1, blendType='easeIn'),
-                LerpColorInterval(nodePath=self.buttonNode, duration=0.1, color=Vec4(0.0, 1.0, 0.0, 1.0), override=1, blendType='easeOut'),
+                LerpColorInterval(nodePath = self.buttonNode, duration = 0.1, color = self.color, override = 1,
+                                  blendType = 'easeIn'),
+                LerpColorInterval(nodePath = self.buttonNode, duration = 0.1, color = Vec4(0.0, 1.0, 0.0, 1.0),
+                                  override = 1, blendType = 'easeOut'),
                 Wait(0.2),
-                LerpColorInterval(nodePath=self.buttonNode, duration=0.1, color=self.color, override=1, blendType='easeIn'),
-                LerpColorInterval(nodePath=self.buttonNode, duration=0.1, override=1, color=Vec4(0.0, 1.0, 0.0, 1.0), blendType='easeOut'),
+                LerpColorInterval(nodePath = self.buttonNode, duration = 0.1, color = self.color, override = 1,
+                                  blendType = 'easeIn'),
+                LerpColorInterval(nodePath = self.buttonNode, duration = 0.1, override = 1,
+                                  color = Vec4(0.0, 1.0, 0.0, 1.0), blendType = 'easeOut'),
                 Wait(0.1)))
         return track
 
@@ -127,7 +147,11 @@ class DistributedButton(DistributedSwitch.DistributedSwitch):
         duration = 1.0
         halfDur = duration * 0.5
         pos = Vec3(0.0)
-        track = Sequence(Parallel(SoundInterval(offSfx, node=self.node, volume=1.0), LerpPosInterval(nodePath=self.buttonNode, duration=duration, pos=pos, blendType='easeInOut'), Sequence(Wait(halfDur), LerpColorInterval(nodePath=self.buttonNode, duration=halfDur, color=self.color, override=1, blendType='easeIn'))), Func(self.setIsOn, 0))
+        track = Sequence(Parallel(SoundInterval(offSfx, node = self.node, volume = 1.0),
+                                  LerpPosInterval(nodePath = self.buttonNode, duration = duration, pos = pos,
+                                                  blendType = 'easeInOut'), Sequence(Wait(halfDur), LerpColorInterval(
+                nodePath = self.buttonNode, duration = halfDur, color = self.color, override = 1,
+                blendType = 'easeIn'))), Func(self.setIsOn, 0))
         return track
 
     def exitPlaying(self):

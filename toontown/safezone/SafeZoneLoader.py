@@ -17,6 +17,7 @@ from toontown.toonbase.ToontownGlobals import *
 from toontown.building import ToonInterior
 from toontown.hood import QuietZoneState
 
+
 class SafeZoneLoader(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('SafeZoneLoader')
 
@@ -24,12 +25,13 @@ class SafeZoneLoader(StateData.StateData):
         StateData.StateData.__init__(self, doneEvent)
         self.hood = hood
         self.parentFSMState = parentFSMState
-        self.fsm = ClassicFSM.ClassicFSM('SafeZoneLoader', [State.State('start', self.enterStart, self.exitStart, ['quietZone', 'playground', 'toonInterior']),
-         State.State('playground', self.enterPlayground, self.exitPlayground, ['quietZone']),
-         State.State('toonInterior', self.enterToonInterior, self.exitToonInterior, ['quietZone']),
-         State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['playground', 'toonInterior']),
-         State.State('golfcourse', self.enterGolfcourse, self.exitGolfcourse, ['quietZone', 'playground']),
-         State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
+        self.fsm = ClassicFSM.ClassicFSM('SafeZoneLoader', [
+            State.State('start', self.enterStart, self.exitStart, ['quietZone', 'playground', 'toonInterior']),
+            State.State('playground', self.enterPlayground, self.exitPlayground, ['quietZone']),
+            State.State('toonInterior', self.enterToonInterior, self.exitToonInterior, ['quietZone']),
+            State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['playground', 'toonInterior']),
+            State.State('golfcourse', self.enterGolfcourse, self.exitGolfcourse, ['quietZone', 'playground']),
+            State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
         self.placeDoneEvent = 'placeDone'
         self.place = None
         self.playgroundClass = None
@@ -249,7 +251,7 @@ class SafeZoneLoader(StateData.StateData):
             animProp.exit()
 
     def enterGolfcourse(self, requestStatus):
-        base.transitions.fadeOut(t=0)
+        base.transitions.fadeOut(t = 0)
 
     def exitGolfcourse(self):
         pass

@@ -6,6 +6,7 @@ from direct.task import Task
 from toontown.racing.KartShopGlobals import *
 from toontown.racing.KartDNA import *
 
+
 class DistributedNPCKartClerkAI(DistributedNPCToonBaseAI):
 
     def __init__(self, air, npcId):
@@ -29,7 +30,7 @@ class DistributedNPCKartClerkAI(DistributedNPCToonBaseAI):
         self.transactionType = ''
         av = self.air.doId2do[avId]
         self.busy = avId
-        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
+        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs = [avId])
         flag = NPCToons.SELL_MOVIE_START
         self.d_setMovie(avId, flag)
         taskMgr.doMethodLater(KartShopGlobals.KARTCLERK_TIMER, self.sendTimeoutMovie, self.uniqueName('clearMovie'))
@@ -40,10 +41,10 @@ class DistributedNPCKartClerkAI(DistributedNPCToonBaseAI):
 
     def d_setMovie(self, avId, flag, extraArgs = []):
         self.sendUpdate('setMovie', [flag,
-         self.npcId,
-         avId,
-         extraArgs,
-         ClockDelta.globalClockDelta.getRealNetworkTime()])
+                                     self.npcId,
+                                     avId,
+                                     extraArgs,
+                                     ClockDelta.globalClockDelta.getRealNetworkTime()])
 
     def sendTimeoutMovie(self, task):
         self.d_setMovie(self.busy, NPCToons.SELL_MOVIE_TIMEOUT)
@@ -73,8 +74,10 @@ class DistributedNPCKartClerkAI(DistributedNPCToonBaseAI):
                 self.notify.warning('somebody is trying to buy non-existant kart%s! avId: %s' % (whichKart, avId))
                 return
             elif cost > av.getTickets():
-                self.air.writeServerEvent('suspicious', avId, "DistributedNPCKartClerkAI.buyKart and toon doesn't have enough tickets!")
-                self.notify.warning("somebody called buyKart and didn't have enough tickets to purchase! avId: %s" % avId)
+                self.air.writeServerEvent('suspicious', avId,
+                                          "DistributedNPCKartClerkAI.buyKart and toon doesn't have enough tickets!")
+                self.notify.warning(
+                    "somebody called buyKart and didn't have enough tickets to purchase! avId: %s" % avId)
                 return
             av.b_setTickets(av.getTickets() - cost)
             self.air.writeServerEvent('kartingTicketsSpent', avId, '%s' % cost)
@@ -85,11 +88,14 @@ class DistributedNPCKartClerkAI(DistributedNPCToonBaseAI):
         avId = self.air.getAvatarIdFromSender()
         av = simbase.air.doId2do.get(avId)
         if self.busy != avId:
-            self.air.writeServerEvent('suspicious', avId, 'DistributedNPCKartClerkAI.buyAccessory busy with %s' % self.busy)
+            self.air.writeServerEvent('suspicious', avId,
+                                      'DistributedNPCKartClerkAI.buyAccessory busy with %s' % self.busy)
             self.notify.warning('somebody called buyAccessory that I was not busy with! avId: %s' % avId)
             return
         if len(av.getKartAccessoriesOwned()) >= KartShopGlobals.MAX_KART_ACC:
-            self.air.writeServerEvent('suspicious', avId, 'DistributedNPCKartClerkAI.buyAcc and toon already has max number of accessories!')
+            self.air.writeServerEvent('suspicious', avId,
+                                      'DistributedNPCKartClerkAI.buyAcc and toon already has max number of '
+                                      'accessories!')
             self.notify.warning('somebody called buyAcc and already has maximum allowed accessories! avId: %s' % avId)
             return
         av = simbase.air.doId2do.get(avId)
@@ -98,8 +104,10 @@ class DistributedNPCKartClerkAI(DistributedNPCToonBaseAI):
             extraArgs = []
             cost = getAccCost(whichAcc)
             if cost > av.getTickets():
-                self.air.writeServerEvent('suspicious', avId, "DistributedNPCKartClerkAI.buyAcc and toon doesn't have enough tickets!")
-                self.notify.warning("somebody called buyAcc and didn't have enough tickets to purchase! avId: %s" % avId)
+                self.air.writeServerEvent('suspicious', avId,
+                                          "DistributedNPCKartClerkAI.buyAcc and toon doesn't have enough tickets!")
+                self.notify.warning(
+                    "somebody called buyAcc and didn't have enough tickets to purchase! avId: %s" % avId)
                 return
             av.b_setTickets(av.getTickets() - cost)
             self.air.writeServerEvent('kartingTicketsSpent', avId, '%s' % cost)
@@ -110,7 +118,8 @@ class DistributedNPCKartClerkAI(DistributedNPCToonBaseAI):
     def transactionDone(self):
         avId = self.air.getAvatarIdFromSender()
         if self.busy != avId:
-            self.air.writeServerEvent('suspicious', avId, 'DistributedNPCKartClerkAI.transactionDone busy with %s' % self.busy)
+            self.air.writeServerEvent('suspicious', avId,
+                                      'DistributedNPCKartClerkAI.transactionDone busy with %s' % self.busy)
             self.notify.warning('somebody called transactionDone that I was not busy with! avId: %s' % avId)
             return
         av = simbase.air.doId2do.get(avId)

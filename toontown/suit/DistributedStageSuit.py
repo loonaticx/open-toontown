@@ -12,6 +12,7 @@ from toontown.battle import BattleProps
 from toontown.toonbase import TTLocalizer
 import string
 
+
 class DistributedStageSuit(DistributedFactorySuit.DistributedFactorySuit):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStageSuit')
 

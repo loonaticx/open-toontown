@@ -7,6 +7,7 @@ from toontown.toonbase import ToontownGlobals
 import random
 import functools
 
+
 class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCCharBaseAI')
 
@@ -47,7 +48,7 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
             else:
                 avId = fixedAvId
         savedIdFunc = self.air.getAvatarIdFromSender
-        self.air.getAvatarIdFromSender = lambda : avId
+        self.air.getAvatarIdFromSender = lambda: avId
         rrange = random.randrange
         if msg is AvEnter:
             self.avatarEnter()
@@ -69,7 +70,8 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
                         self.setNearbyAvatarSCCustom(rrange(1 << 16))
                     else:
                         if msg is SetSCToontask:
-                            self.setNearbyAvatarSCToontask(rrange(1 << 32), rrange(1 << 32), rrange(1 << 32), rrange(1 << 8))
+                            self.setNearbyAvatarSCToontask(rrange(1 << 32), rrange(1 << 32), rrange(1 << 32),
+                                                           rrange(1 << 8))
         self.air.getAvatarIdFromSender = savedIdFunc
         return task.cont
 
@@ -92,10 +94,13 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
             return
         av = self.air.getDo(avId)
         if not isinstance(av, DistributedPlayerAI):
-            self.air.writeServerEvent('suspicious', avId, 'CCharBaseAI.avatarEnter from non-player object to cchar %s' % self.doId)
+            self.air.writeServerEvent('suspicious', avId,
+                                      'CCharBaseAI.avatarEnter from non-player object to cchar %s' % self.doId)
             return
         if av.zoneId != self.zoneId:
-            self.air.writeServerEvent('suspicious', avId, 'CCharBaseAI.avatarEnter from av in zone %s, my zone is %s' % (av.zoneId, self.zoneId))
+            self.air.writeServerEvent('suspicious', avId,
+                                      'CCharBaseAI.avatarEnter from av in zone %s, my zone is %s' % (
+                                      av.zoneId, self.zoneId))
             return
         self.notify.debug('adding avatar ' + str(avId) + ' to the nearby avatar list')
         if avId not in self.nearbyAvatars:
@@ -139,7 +144,7 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def sortNearbyAvatars(self):
 
-        def nAv_compare(a, b, nAvIDict=self.nearbyAvatarInfoDict):
+        def nAv_compare(a, b, nAvIDict = self.nearbyAvatarInfoDict):
             tsA = nAvIDict[a]['enterTime']
             tsB = nAvIDict[b]['enterTime']
             if tsA == tsB:
@@ -150,7 +155,7 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
                 else:
                     return 1
 
-        self.nearbyAvatars.sort(key=functools.cmp_to_key(nAv_compare))
+        self.nearbyAvatars.sort(key = functools.cmp_to_key(nAv_compare))
 
     def getNearbyAvatars(self):
         return self.nearbyAvatars
@@ -164,7 +169,7 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
     def __initAttentionSpan(self):
         self.__avatarTimeoutBase = 0
 
-    def __interestingAvatarEventOccured(self, t=None):
+    def __interestingAvatarEventOccured(self, t = None):
         if t == None:
             t = globalClock.getRealTime()
         self.__avatarTimeoutBase = t
@@ -196,7 +201,8 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def setNearbyAvatarSCToontask(self, taskId, toNpcId, toonProgress, msgIndex):
         avId = self.air.getAvatarIdFromSender()
-        self.notify.debug('setNearbyAvatarSCToontask: avatar %s said %s' % (avId, (taskId, toNpcId, toonProgress, msgIndex)))
+        self.notify.debug(
+            'setNearbyAvatarSCToontask: avatar %s said %s' % (avId, (taskId, toNpcId, toonProgress, msgIndex)))
         self.__avatarSpoke(avId)
 
     def getWalk(self):

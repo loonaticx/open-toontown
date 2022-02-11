@@ -8,6 +8,7 @@ import random
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 
+
 class DistributedLawbotBossSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotBossSuitAI')
 
@@ -17,20 +18,20 @@ class DistributedLawbotBossSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         self.timeToRelease = 3.15
         self.timeProsecuteStarted = 0
         self.fsm = ClassicFSM.ClassicFSM('DistributedLawbotBossSuitAI', [
-         State.State('Off', self.enterOff, self.exitOff, [
-          'neutral']),
-         State.State('neutral', self.enterNeutral, self.exitNeutral, [
-          'PreThrowProsecute', 'PreThrowAttack', 'Stunned']),
-         State.State('PreThrowProsecute', self.enterPreThrowProsecute, self.exitPreThrowProsecute, [
-          'PostThrowProsecute', 'neutral', 'Stunned']),
-         State.State('PostThrowProsecute', self.enterPostThrowProsecute, self.exitPostThrowProsecute, [
-          'neutral', 'Stunned']),
-         State.State('PreThrowAttack', self.enterPreThrowAttack, self.exitPreThrowAttack, [
-          'PostThrowAttack', 'neutral', 'Stunned']),
-         State.State('PostThrowAttack', self.enterPostThrowAttack, self.exitPostThrowAttack, [
-          'neutral', 'Stunned']),
-         State.State('Stunned', self.enterStunned, self.exitStunned, [
-          'neutral'])], 'Off', 'Off')
+            State.State('Off', self.enterOff, self.exitOff, [
+                'neutral']),
+            State.State('neutral', self.enterNeutral, self.exitNeutral, [
+                'PreThrowProsecute', 'PreThrowAttack', 'Stunned']),
+            State.State('PreThrowProsecute', self.enterPreThrowProsecute, self.exitPreThrowProsecute, [
+                'PostThrowProsecute', 'neutral', 'Stunned']),
+            State.State('PostThrowProsecute', self.enterPostThrowProsecute, self.exitPostThrowProsecute, [
+                'neutral', 'Stunned']),
+            State.State('PreThrowAttack', self.enterPreThrowAttack, self.exitPreThrowAttack, [
+                'PostThrowAttack', 'neutral', 'Stunned']),
+            State.State('PostThrowAttack', self.enterPostThrowAttack, self.exitPostThrowAttack, [
+                'neutral', 'Stunned']),
+            State.State('Stunned', self.enterStunned, self.exitStunned, [
+                'neutral'])], 'Off', 'Off')
         self.fsm.enterInitialState()
 
     def delete(self):
@@ -68,11 +69,11 @@ class DistributedLawbotBossSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
 
     def getPosHpr(self):
         return (
-         self.getX(), self.getY(), self.getZ(), self.getH(), self.getP(), self.getR())
+            self.getX(), self.getY(), self.getZ(), self.getH(), self.getP(), self.getR())
 
     def getConfrontPosHpr(self):
         return (
-         self.confrontPos, self.confrontHpr)
+            self.confrontPos, self.confrontHpr)
 
     def _logDeath(self, toonId):
         pass
@@ -100,7 +101,8 @@ class DistributedLawbotBossSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
             dirVector = toonPos - lawyerPos
             dirVector.normalize()
             dirVector *= 200
-            destPos = Point3(lawyerPos[0] + dirVector[0], lawyerPos[1] + dirVector[1], lawyerPos[2] + dirVector[2] + 1.3)
+            destPos = Point3(lawyerPos[0] + dirVector[0], lawyerPos[1] + dirVector[1],
+                             lawyerPos[2] + dirVector[2] + 1.3)
             self.d_doAttack(lawyerPos[0], lawyerPos[1], lawyerPos[2], destPos[0], destPos[1], destPos[2])
 
     def doProsecute(self):
@@ -133,7 +135,8 @@ class DistributedLawbotBossSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
             curTime = globalClockDelta.getRealNetworkTime()
             deltaTime = curTime - self.timeProsecuteStarted
             deltaTime /= 100.0
-            self.notify.debug('deltaTime = %f, curTime=%f, prosecuteStarted=%f' % (deltaTime, curTime, self.timeProsecuteStarted))
+            self.notify.debug(
+                'deltaTime = %f, curTime=%f, prosecuteStarted=%f' % (deltaTime, curTime, self.timeProsecuteStarted))
             if deltaTime < self.timeToRelease:
                 taskName = self.uniqueName('ProsecutionHealsBoss')
                 taskMgr.remove(taskName)

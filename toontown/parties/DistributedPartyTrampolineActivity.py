@@ -32,12 +32,15 @@ from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
 from toontown.parties.activityFSMs import TrampolineActivityFSM
 from toontown.parties import PartyUtils
 
+
 class DistributedPartyTrampolineActivity(DistributedPartyActivity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyTrampolineActivity')
 
     def __init__(self, cr, doJellyBeans = True, doTricks = False, texture = None):
         DistributedPartyTrampolineActivity.notify.debug('__init__')
-        DistributedPartyActivity.__init__(self, cr, PartyGlobals.ActivityIds.PartyTrampoline, PartyGlobals.ActivityTypes.GuestInitiated, wantLever=False, wantRewardGui=True)
+        DistributedPartyActivity.__init__(self, cr, PartyGlobals.ActivityIds.PartyTrampoline,
+                                          PartyGlobals.ActivityTypes.GuestInitiated, wantLever = False,
+                                          wantRewardGui = True)
         self.doJellyBeans = doJellyBeans
         self.doTricks = doTricks
         self.texture = texture
@@ -81,13 +84,13 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         self.jellyBeanStartHeight = 20.0
         self.jellyBeanStopHeight = 90.0
         self.jellyBeanColors = [VBase4(1.0, 0.5, 0.5, 1.0),
-         VBase4(0.5, 1.0, 0.5, 1.0),
-         VBase4(0.5, 1.0, 1.0, 1.0),
-         VBase4(1.0, 1.0, 0.4, 1.0),
-         VBase4(0.4, 0.4, 1.0, 1.0),
-         VBase4(1.0, 0.5, 1.0, 1.0)]
+                                VBase4(0.5, 1.0, 0.5, 1.0),
+                                VBase4(0.5, 1.0, 1.0, 1.0),
+                                VBase4(1.0, 1.0, 0.4, 1.0),
+                                VBase4(0.4, 0.4, 1.0, 1.0),
+                                VBase4(1.0, 0.5, 1.0, 1.0)]
         delta = (self.jellyBeanStopHeight - self.jellyBeanStartHeight) / (self.numJellyBeans - 1)
-        self.jellyBeanPositions = [ self.jellyBeanStartHeight + n * delta for n in range(self.numJellyBeans) ]
+        self.jellyBeanPositions = [self.jellyBeanStartHeight + n * delta for n in range(self.numJellyBeans)]
         self.doSimulateStep = False
         return
 
@@ -107,7 +110,9 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
     def loadModels(self):
         self.tramp = self.root.attachNewNode(self.uniqueName('tramp'))
         self.screenPlaneElements = NodePath(self.uniqueName('screenPlane'))
-        self.trampActor = Actor('phase_13/models/parties/trampoline_model', {'emptyAnim': 'phase_13/models/parties/trampoline_anim'})
+        self.trampActor = Actor('phase_13/models/parties/trampoline_model', {
+            'emptyAnim': 'phase_13/models/parties/trampoline_anim'
+        })
         self.trampActor.reparentTo(self.tramp)
         if self.texture:
             reskinNode = self.tramp.find('**/trampoline/__Actor_modelRoot/-GeomNode')
@@ -117,7 +122,7 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         self.surface.setZ(self.trampHeight)
         self.trampActor.controlJoint(self.surface, 'modelRoot', 'trampoline_joint1')
         self.sign.setPos(PartyGlobals.TrampolineSignOffset)
-        self.beans = [ loader.loadModelCopy('phase_4/models/props/jellybean4') for i in range(self.numJellyBeans) ]
+        self.beans = [loader.loadModelCopy('phase_4/models/props/jellybean4') for i in range(self.numJellyBeans)]
         for bean in self.beans:
             bean.find('**/jellybean').setP(-35.0)
             bean.setScale(3.0)
@@ -150,7 +155,8 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         jumpLineLocator = self.gui.find('**/jumpLine_locator')
         guiBean = self.gui.find('**/trampolineGUI_GreenJellyBean')
         self.gui.find('**/trampolineGUI_GreenJellyBean').stash()
-        self.guiBeans = [ guiBean.instanceUnderNode(jumpLineLocator, self.uniqueName('guiBean%d' % i)) for i in range(self.numJellyBeans) ]
+        self.guiBeans = [guiBean.instanceUnderNode(jumpLineLocator, self.uniqueName('guiBean%d' % i)) for i in
+                         range(self.numJellyBeans)]
         self.guiBeans[-1].setScale(1.5)
         heightTextNode = TextNode(self.uniqueName('TrampolineActivity.heightTextNode'))
         heightTextNode.setFont(ToontownGlobals.getSignFont())
@@ -167,9 +173,15 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         quitEarlyUp = self.quitEarlyButtonModels.find('**//InventoryButtonUp')
         quitEarlyDown = self.quitEarlyButtonModels.find('**/InventoryButtonDown')
         quitEarlyRollover = self.quitEarlyButtonModels.find('**/InventoryButtonRollover')
-        self.quitEarlyButton = DirectButton(parent=self.screenPlaneElements, relief=None, text=TTLocalizer.PartyTrampolineQuitEarlyButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -0.23), text_scale=0.7, image=(quitEarlyUp, quitEarlyDown, quitEarlyRollover), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(1.15, 0, 0.6), scale=0.09, command=self.leaveTrampoline)
+        self.quitEarlyButton = DirectButton(parent = self.screenPlaneElements, relief = None,
+                                            text = TTLocalizer.PartyTrampolineQuitEarlyButton,
+                                            text_fg = (1, 1, 0.65, 1), text_pos = (0, -0.23), text_scale = 0.7,
+                                            image = (quitEarlyUp, quitEarlyDown, quitEarlyRollover),
+                                            image_color = (1, 0, 0, 1), image_scale = (20, 1, 11), pos = (1.15, 0, 0.6),
+                                            scale = 0.09, command = self.leaveTrampoline)
         self.quitEarlyButton.stash()
-        self.flashText = OnscreenText(text='', pos=(0.0, -0.45), scale=0.2, fg=(1.0, 1.0, 0.65, 1.0), align=TextNode.ACenter, font=ToontownGlobals.getSignFont(), mayChange=True)
+        self.flashText = OnscreenText(text = '', pos = (0.0, -0.45), scale = 0.2, fg = (1.0, 1.0, 0.65, 1.0),
+                                      align = TextNode.ACenter, font = ToontownGlobals.getSignFont(), mayChange = True)
         self.timer = PartyUtils.getNewToontownTimer()
         self.timer.reparentTo(self.screenPlaneElements)
         return
@@ -185,7 +197,9 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
             self.heightText.node().setText(TTLocalizer.PartyTrampolineGetHeight % int(self.toon.getZ()))
             self.heightText.setZ(self.indicatorFactor * self.toon.getZ() + self.heightTextOffset)
 
-        self.heightTextInterval = Sequence(Func(prepareHeightText), LerpFunc(self.heightText.setAlphaScale, fromData=1.0, toData=0.0, duration=1.0))
+        self.heightTextInterval = Sequence(Func(prepareHeightText),
+                                           LerpFunc(self.heightText.setAlphaScale, fromData = 1.0, toData = 0.0,
+                                                    duration = 1.0))
 
     def unload(self):
         DistributedPartyTrampolineActivity.notify.debug('unload')
@@ -305,7 +319,9 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
             self.accept('arrow_left-up', self.onLeftUp)
             self.accept('arrow_right', self.onRight)
             self.accept('arrow_right-up', self.onRightUp)
-            self.beginRoundInterval = Sequence(Func(self._showFlashMessage, TTLocalizer.PartyTrampolineReady), Wait(1.2), Func(self.flashMessage, TTLocalizer.PartyTrampolineGo), Func(self.beginRound))
+            self.beginRoundInterval = Sequence(Func(self._showFlashMessage, TTLocalizer.PartyTrampolineReady),
+                                               Wait(1.2), Func(self.flashMessage, TTLocalizer.PartyTrampolineGo),
+                                               Func(self.beginRound))
             self.beginRoundInterval.start()
         return
 
@@ -339,9 +355,9 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
             beanAnim.loop()
             self.beanAnims.append(beanAnim)
             self.beanDetails.append((height,
-             bean,
-             guiBean,
-             beanAnim))
+                                     bean,
+                                     guiBean,
+                                     beanAnim))
 
         self.beansToCollect = list(range(self.numJellyBeans))
 
@@ -375,13 +391,15 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         self.toon.stopUpdateSmartCamera()
         camera.wrtReparentTo(render)
         self.toon.dropShadow.reparentTo(hidden)
-        self.toon.startPosHprBroadcast(period=0.2)
+        self.toon.startPosHprBroadcast(period = 0.2)
         self.toonAcceleration = 0.0
         self.toonVelocity = 0.0
         self.topHeight = 0.0
         self.trampB = self.normalTrampB
         self.leavingTrampoline = False
-        self.hopOnAnim = Sequence(Func(self.toon.b_setAnimState, 'jump', 1.0), Wait(0.4), PartyUtils.arcPosInterval(0.75, self.toon, Point3(0.0, 0.0, self.trampHeight), 5.0, self.tramp), Func(self.postHopOn))
+        self.hopOnAnim = Sequence(Func(self.toon.b_setAnimState, 'jump', 1.0), Wait(0.4),
+                                  PartyUtils.arcPosInterval(0.75, self.toon, Point3(0.0, 0.0, self.trampHeight), 5.0,
+                                                            self.tramp), Func(self.postHopOn))
         self.hopOnAnim.start()
 
     def postHopOn(self):
@@ -402,7 +420,11 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         self.ignore('arrow_right')
         self.ignore('arrow_right-up')
         taskMgr.remove(self.uniqueName('TrampolineActivity.updateTask'))
-        self.hopOffAnim = Sequence(self.toon.hprInterval(0.5, VBase3(-90.0, 0.0, 0.0), other=self.tramp), Func(self.toon.b_setAnimState, 'jump', 1.0), Func(self.toon.dropShadow.reparentTo, hidden), Wait(0.4), PartyUtils.arcPosInterval(0.75, self.toon, self.hopOffPos, 5.0, self.tramp), Func(self.postHopOff))
+        self.hopOffAnim = Sequence(self.toon.hprInterval(0.5, VBase3(-90.0, 0.0, 0.0), other = self.tramp),
+                                   Func(self.toon.b_setAnimState, 'jump', 1.0),
+                                   Func(self.toon.dropShadow.reparentTo, hidden), Wait(0.4),
+                                   PartyUtils.arcPosInterval(0.75, self.toon, self.hopOffPos, 5.0, self.tramp),
+                                   Func(self.postHopOff))
         self.hopOffAnim.start()
 
     def postHopOff(self):
@@ -426,11 +448,13 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         self.d_toonExitDemand()
 
     def onTrampolineTrigger(self, collEntry):
-        if self.activityFSM.state == 'Idle' and self.toon == None and base.cr.playGame.getPlace().fsm.getCurrentState().getName() == 'walk':
+        if self.activityFSM.state == 'Idle' and self.toon == None and base.cr.playGame.getPlace(
+
+        ).fsm.getCurrentState().getName() == 'walk':
             base.cr.playGame.getPlace().fsm.request('activity')
             self.d_toonJoinRequest()
         else:
-            self.flashMessage(TTLocalizer.PartyTrampolineActivityOccupied, duration=2.0)
+            self.flashMessage(TTLocalizer.PartyTrampolineActivityOccupied, duration = 2.0)
         return
 
     def onJump(self):
@@ -613,7 +637,11 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
             return
         currentAlpha = bean.getColorScale()[3]
         currentScale = bean.getScale()
-        poofAnim = Sequence(Parallel(LerpFunc(bean.setAlphaScale, fromData=currentAlpha, toData=0.0, duration=0.25), LerpFunc(bean.setScale, fromData=currentScale, toData=currentScale * 5.0, duration=0.25)), Func(bean.stash), Func(beanAnim.finish), Func(bean.setAlphaScale, currentAlpha), Func(bean.setScale, currentScale))
+        poofAnim = Sequence(
+            Parallel(LerpFunc(bean.setAlphaScale, fromData = currentAlpha, toData = 0.0, duration = 0.25),
+                     LerpFunc(bean.setScale, fromData = currentScale, toData = currentScale * 5.0, duration = 0.25)),
+            Func(bean.stash), Func(beanAnim.finish), Func(bean.setAlphaScale, currentAlpha),
+            Func(bean.setScale, currentScale))
         poofAnim.start()
         return
 
@@ -630,7 +658,9 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
     def _hideFlashMessage(self, duration = 0.0):
         if self.isDisabled():
             pass
-        self.flashTextInterval = Sequence(Wait(duration), LerpFunc(self.flashText.setAlphaScale, fromData=1.0, toData=0.0, duration=1.0), Func(self.flashText.stash))
+        self.flashTextInterval = Sequence(Wait(duration),
+                                          LerpFunc(self.flashText.setAlphaScale, fromData = 1.0, toData = 0.0,
+                                                   duration = 1.0), Func(self.flashText.stash))
         self.flashTextInterval.start()
 
     def flashMessage(self, message, duration = 0.5):

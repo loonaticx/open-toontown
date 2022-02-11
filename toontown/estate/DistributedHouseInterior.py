@@ -13,7 +13,9 @@ from toontown.catalog import CatalogWallpaperItem
 from toontown.catalog import CatalogFlooringItem
 from toontown.catalog import CatalogMouldingItem
 from toontown.catalog import CatalogWainscotingItem
-WindowPlugNames = ('**/windowcut_a*', '**/windowcut_b*', '**/windowcut_c*', '**/windowcut_d*', '**/windowcut_e*', '**/windowcut_f*')
+
+WindowPlugNames = (
+'**/windowcut_a*', '**/windowcut_b*', '**/windowcut_c*', '**/windowcut_d*', '**/windowcut_e*', '**/windowcut_f*')
 RoomNames = ('**/group2', '**/group1')
 WallNames = ('ceiling*', 'wall_side_middle*', 'wall_front_middle*', 'windowcut_*')
 MouldingNames = ('wall_side_top*', 'wall_front_top*')
@@ -21,10 +23,11 @@ FloorNames = ('floor*',)
 WainscotingNames = ('wall_side_bottom*', 'wall_front_bottom*')
 BorderNames = ('wall_side_middle*_border', 'wall_front_middle*_border', 'windowcut_*_border')
 WallpaperPieceNames = (WallNames,
- MouldingNames,
- FloorNames,
- WainscotingNames,
- BorderNames)
+                       MouldingNames,
+                       FloorNames,
+                       WainscotingNames,
+                       BorderNames)
+
 
 class DistributedHouseInterior(DistributedObject.DistributedObject):
 
@@ -176,27 +179,31 @@ class DistributedHouseInterior(DistributedObject.DistributedObject):
         self.houseIndex = index
 
     def setWallpaper(self, items):
-        self.wallpaper = CatalogItemList.CatalogItemList(items, store=CatalogItem.Customization)
+        self.wallpaper = CatalogItemList.CatalogItemList(items, store = CatalogItem.Customization)
         if self.interior:
             self.__colorWalls()
 
     def setWindows(self, items):
-        self.windows = CatalogItemList.CatalogItemList(items, store=CatalogItem.Customization | CatalogItem.WindowPlacement)
+        self.windows = CatalogItemList.CatalogItemList(items,
+                                                       store = CatalogItem.Customization | CatalogItem.WindowPlacement)
         if self.interior:
             self.__setupWindows()
 
-    def testWallpaperCombo(self, wallpaperType, wallpaperColorIndex, borderIndex, borderColorIndex, mouldingType, mouldingColorIndex, flooringType, flooringColorIndex, wainscotingType, wainscotingColorIndex):
-        wallpaperItem = CatalogWallpaperItem.CatalogWallpaperItem(wallpaperType, wallpaperColorIndex, borderIndex, borderColorIndex)
+    def testWallpaperCombo(self, wallpaperType, wallpaperColorIndex, borderIndex, borderColorIndex, mouldingType,
+                           mouldingColorIndex, flooringType, flooringColorIndex, wainscotingType,
+                           wainscotingColorIndex):
+        wallpaperItem = CatalogWallpaperItem.CatalogWallpaperItem(wallpaperType, wallpaperColorIndex, borderIndex,
+                                                                  borderColorIndex)
         mouldingItem = CatalogMouldingItem.CatalogMouldingItem(mouldingType, mouldingColorIndex)
         flooringItem = CatalogFlooringItem.CatalogFlooringItem(flooringType, flooringColorIndex)
         wainscotingItem = CatalogWainscotingItem.CatalogWainscotingItem(wainscotingType, wainscotingColorIndex)
         self.wallpaper = CatalogItemList.CatalogItemList([wallpaperItem,
-         mouldingItem,
-         flooringItem,
-         wainscotingItem,
-         wallpaperItem,
-         mouldingItem,
-         flooringItem,
-         wainscotingItem], store=CatalogItem.Customization)
+                                                          mouldingItem,
+                                                          flooringItem,
+                                                          wainscotingItem,
+                                                          wallpaperItem,
+                                                          mouldingItem,
+                                                          flooringItem,
+                                                          wainscotingItem], store = CatalogItem.Customization)
         if self.interior:
             self.__colorWalls()

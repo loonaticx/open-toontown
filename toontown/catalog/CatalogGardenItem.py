@@ -7,6 +7,7 @@ from toontown.estate import GardenGlobals
 from direct.actor import Actor
 from pandac.PandaModules import NodePath
 
+
 class CatalogGardenItem(CatalogItem.CatalogItem):
     sequenceNumber = 0
 
@@ -23,7 +24,8 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
             return 100
 
     def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
+        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in \
+                avatar.awardMailboxContents or self in avatar.onAwardOrder:
             return 1
         return 0
 
@@ -160,7 +162,8 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
         result = False
         if canPlant < numBeansRequired:
             result = True
-        if not result and self.gardenIndex in GardenGlobals.Specials and 'minSkill' in GardenGlobals.Specials[self.gardenIndex]:
+        if not result and self.gardenIndex in GardenGlobals.Specials and 'minSkill' in GardenGlobals.Specials[
+            self.gardenIndex]:
             minSkill = GardenGlobals.Specials[self.gardenIndex]['minSkill']
             if avatar.shovelSkill < minSkill:
                 result = True

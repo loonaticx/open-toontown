@@ -8,10 +8,12 @@ from direct.fsm import State
 from direct.task import Task
 from . import CogDisguiseGlobals
 
+
 class DistributedMintElevatorExtAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
 
-    def __init__(self, air, bldg, mintId, antiShuffle=0, minLaff=0):
-        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, antiShuffle=antiShuffle, minLaff=minLaff)
+    def __init__(self, air, bldg, mintId, antiShuffle = 0, minLaff = 0):
+        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, antiShuffle = antiShuffle,
+                                                                   minLaff = minLaff)
         self.mintId = mintId
         self.cogDept = ToontownGlobals.cogHQZoneId2deptIndex(self.mintId)
         self.type = ELEVATOR_MINT
@@ -38,7 +40,7 @@ class DistributedMintElevatorExtAI(DistributedElevatorExtAI.DistributedElevatorE
                 avId = self.seats[seatIndex]
                 if avId:
                     self.sendUpdateToAvatarId(avId, 'setMintInteriorZone', [
-                     mintZone])
+                        mintZone])
                     self.clearFullNow(seatIndex)
 
         else:
@@ -56,4 +58,4 @@ class DistributedMintElevatorExtAI(DistributedElevatorExtAI.DistributedElevatorE
             for avId in avIdList:
                 if avId:
                     self.sendUpdateToAvatarId(avId, 'setMintInteriorZoneForce', [
-                     mintZone])
+                        mintZone])

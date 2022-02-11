@@ -4,6 +4,7 @@ from direct.task import Task
 from otp.distributed import OtpDoGlobals
 import random
 
+
 class NonRepeatableRandomSourceAI(DistributedObjectAI):
     notify = directNotify.newCategory('NonRepeatableRandomSourceAI')
 
@@ -28,7 +29,9 @@ class NonRepeatableRandomSourceAI(DistributedObjectAI):
         return Task.again
 
     def _sampleRandom(self):
-        self.air.sendUpdateToDoId('NonRepeatableRandomSource', 'randomSample', OtpDoGlobals.OTP_DO_ID_TOONTOWN_NON_REPEATABLE_RANDOM_SOURCE, [self.doId, int(random.randrange(1 << 32))])
+        self.air.sendUpdateToDoId('NonRepeatableRandomSource', 'randomSample',
+                                  OtpDoGlobals.OTP_DO_ID_TOONTOWN_NON_REPEATABLE_RANDOM_SOURCE,
+                                  [self.doId, int(random.randrange(1 << 32))])
 
     def randomSampleAck(self):
         self._sampleRandom()
@@ -38,10 +41,11 @@ class NonRepeatableRandomSourceAI(DistributedObjectAI):
             num = 1
         context = next(self._contextGen)
         self._requests[context] = (callback,)
-        self.air.sendUpdateToDoId('NonRepeatableRandomSource', 'getRandomSamples', OtpDoGlobals.OTP_DO_ID_TOONTOWN_NON_REPEATABLE_RANDOM_SOURCE, [self.doId,
-         'NonRepeatableRandomSource',
-         context,
-         num])
+        self.air.sendUpdateToDoId('NonRepeatableRandomSource', 'getRandomSamples',
+                                  OtpDoGlobals.OTP_DO_ID_TOONTOWN_NON_REPEATABLE_RANDOM_SOURCE, [self.doId,
+                                                                                                 'NonRepeatableRandomSource',
+                                                                                                 context,
+                                                                                                 num])
         return
 
     def getRandomSamplesReply(self, context, samples):

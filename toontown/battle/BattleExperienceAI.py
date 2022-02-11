@@ -1,7 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.suit import SuitDNA
+
 BattleExperienceAINotify = DirectNotifyGlobal.directNotify.newCategory('BattleExprienceAI')
+
 
 def getSkillGained(toonSkillPtsGained, toonId, track):
     exp = 0
@@ -11,7 +13,8 @@ def getSkillGained(toonSkillPtsGained, toonId, track):
     return int(exp + 0.5)
 
 
-def getBattleExperience(numToons, activeToons, toonExp, toonSkillPtsGained, toonOrigQuests, toonItems, toonOrigMerits, toonMerits, toonParts, suitsKilled, helpfulToonsList=None):
+def getBattleExperience(numToons, activeToons, toonExp, toonSkillPtsGained, toonOrigQuests, toonItems, toonOrigMerits,
+                        toonMerits, toonParts, suitsKilled, helpfulToonsList = None):
     if helpfulToonsList == None:
         BattleExperienceAINotify.warning('=============\nERROR ERROR helpfulToons=None in assignRewards , tell Red')
     p = []
@@ -131,7 +134,8 @@ def assignRewards(activeToons, toonSkillPtsGained, suitsKilled, zoneId, helpfulT
         for i in range(len(ToontownBattleGlobals.Tracks)):
             uberIndex = ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1
             exp = getSkillGained(toonSkillPtsGained, toon.doId, i)
-            needed = ToontownBattleGlobals.Levels[i][ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1] + ToontownBattleGlobals.UberSkill
+            needed = ToontownBattleGlobals.Levels[i][
+                         ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1] + ToontownBattleGlobals.UberSkill
             hasUber = 0
             totalExp = exp + toon.experience.getExp(i)
             if toon.inventory.numItem(i, uberIndex) > 0:
@@ -140,13 +144,14 @@ def assignRewards(activeToons, toonSkillPtsGained, suitsKilled, zoneId, helpfulT
                 if toon.inventory.totalProps < toon.getMaxCarry() and not hasUber:
                     uberLevel = ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1
                     toon.inventory.addItem(i, uberLevel)
-                    toon.experience.setExp(i, ToontownBattleGlobals.Levels[i][ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1])
+                    toon.experience.setExp(i, ToontownBattleGlobals.Levels[i][
+                        ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1])
                 else:
                     toon.experience.setExp(i, ToontownBattleGlobals.MaxSkill)
             else:
                 if exp > 0:
                     newGagList = toon.experience.getNewGagIndexList(i, exp)
-                    toon.experience.addExp(i, amount=exp)
+                    toon.experience.addExp(i, amount = exp)
                     toon.inventory.addItemWithList(i, newGagList)
         toon.b_setExperience(toon.experience.makeNetString())
         toon.d_setInventory(toon.inventory.makeNetString())

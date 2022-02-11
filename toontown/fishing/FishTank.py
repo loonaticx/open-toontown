@@ -1,6 +1,7 @@
 from . import FishBase
 from . import FishGlobals
 
+
 class FishTank:
 
     def __init__(self):

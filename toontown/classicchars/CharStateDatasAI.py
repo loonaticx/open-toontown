@@ -6,7 +6,9 @@ import random
 from direct.task import Task
 from toontown.toonbase import ToontownGlobals
 from . import CCharChatter, CCharPaths
+
 CHATTY_DURATION = 120.0
+
 
 class CharLonelyStateAI(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('CharLonelyStateAI')
@@ -51,7 +53,7 @@ class CharChattyStateAI(StateData.StateData):
         self.lastChatTarget = 0
         self.nextChatTime = 0
         self.lastMessage = [
-         -1, -1]
+            -1, -1]
         StateData.StateData.load(self)
 
     def enter(self):
@@ -66,7 +68,7 @@ class CharChattyStateAI(StateData.StateData):
             taskMgr.add(self.blather, self.__chatTaskName)
         else:
             self.notify.debug('Chatter is none.. sending done message')
-            self.leave(timeout=1)
+            self.leave(timeout = 1)
         StateData.StateData.enter(self)
         return
 
@@ -93,11 +95,11 @@ class CharChattyStateAI(StateData.StateData):
             self.leave()
             return Task.done
         if task.time > CHATTY_DURATION:
-            self.leave(timeout=1)
+            self.leave(timeout = 1)
             return Task.done
         if not self.chatter:
             self.notify.debug('Chatter doesnt exist')
-            self.leave(timeout=1)
+            self.leave(timeout = 1)
             return Task.done
         if not self.character.getNearbyAvatars():
             return Task.cont
@@ -123,15 +125,15 @@ class CharChattyStateAI(StateData.StateData):
             msg = self.pickMsg(category)
         if msg == None:
             self.notify.debug('Cannot pick a message')
-            self.leave(timeout=1)
+            self.leave(timeout = 1)
             return Task.done
         self.character.sendUpdate('setChat', [category, msg, target])
         self.lastMessage = [
-         category, msg]
+            category, msg]
         self.nextChatTime = now + 8.0 + random.random() * 4.0
         return Task.cont
 
-    def leave(self, timeout=0):
+    def leave(self, timeout = 0):
         if self.chatter != None and not timeout:
             category = CCharChatter.GOODBYE
             msg = random.randint(0, len(self.chatter[CCharChatter.GOODBYE]) - 1)
@@ -160,7 +162,7 @@ class CharChattyStateAI(StateData.StateData):
 class CharWalkStateAI(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('CharWalkStateAI')
 
-    def __init__(self, doneEvent, character, diffPath=None):
+    def __init__(self, doneEvent, character, diffPath = None):
         StateData.StateData.__init__(self, doneEvent)
         self.__doneEvent = doneEvent
         self.character = character
@@ -182,10 +184,13 @@ class CharWalkStateAI(StateData.StateData):
             while destNode == self.__lastWalkNode:
                 destNode = random.choice(CCharPaths.getAdjacentNodes(self.__curWalkNode, self.paths))
 
-        self.notify.debug('Walking ' + self.character.getName() + '... from ' + str(self.__curWalkNode) + '(' + str(CCharPaths.getNodePos(self.__curWalkNode, self.paths)) + ') to ' + str(destNode) + '(' + str(CCharPaths.getNodePos(destNode, self.paths)) + ')')
+        self.notify.debug('Walking ' + self.character.getName() + '... from ' + str(self.__curWalkNode) + '(' + str(
+            CCharPaths.getNodePos(self.__curWalkNode, self.paths)) + ') to ' + str(destNode) + '(' + str(
+            CCharPaths.getNodePos(destNode, self.paths)) + ')')
         self.character.sendUpdate('setWalk', [self.__curWalkNode, destNode, globalClockDelta.getRealNetworkTime()])
         duration = CCharPaths.getWalkDuration(self.__curWalkNode, destNode, self.speed, self.paths)
-        t = taskMgr.doMethodLater(duration, self.doneHandler, self.character.taskName(self.character.getName() + 'DoneWalking'))
+        t = taskMgr.doMethodLater(duration, self.doneHandler,
+                                  self.character.taskName(self.character.getName() + 'DoneWalking'))
         t.newWalkNode = destNode
         self.destNode = destNode
 
@@ -205,7 +210,8 @@ class CharWalkStateAI(StateData.StateData):
     def doneHandler(self, task):
         self.__lastWalkNode = self.__curWalkNode
         self.__curWalkNode = task.newWalkNode
-        self.character.sendUpdate('setWalk', [self.__curWalkNode, self.__curWalkNode, globalClockDelta.getRealNetworkTime()])
+        self.character.sendUpdate('setWalk',
+                                  [self.__curWalkNode, self.__curWalkNode, globalClockDelta.getRealNetworkTime()])
         doneStatus = {}
         doneStatus['state'] = 'walk'
         doneStatus['status'] = 'done'
@@ -236,14 +242,19 @@ class CharFollowChipStateAI(StateData.StateData):
                 destNode = random.choice(CCharPaths.getAdjacentNodes(self.__curWalkNode, self.paths))
 
         destNode = chipDestNode
-        self.notify.debug('Walking ' + self.character.getName() + '... from ' + str(self.__curWalkNode) + '(' + str(CCharPaths.getNodePos(self.__curWalkNode, self.paths)) + ') to ' + str(destNode) + '(' + str(CCharPaths.getNodePos(destNode, self.paths)) + ')')
+        self.notify.debug('Walking ' + self.character.getName() + '... from ' + str(self.__curWalkNode) + '(' + str(
+            CCharPaths.getNodePos(self.__curWalkNode, self.paths)) + ') to ' + str(destNode) + '(' + str(
+            CCharPaths.getNodePos(destNode, self.paths)) + ')')
         self.offsetDistance = ToontownGlobals.DaleOrbitDistance
         angle = random.randint(0, 359)
         self.offsetX = math.cos(deg2Rad(angle)) * self.offsetDistance
         self.offsetY = math.sin(deg2Rad(angle)) * self.offsetDistance
-        self.character.sendUpdate('setFollowChip', [self.__curWalkNode, destNode, globalClockDelta.getRealNetworkTime(), self.offsetX, self.offsetY])
+        self.character.sendUpdate('setFollowChip',
+                                  [self.__curWalkNode, destNode, globalClockDelta.getRealNetworkTime(), self.offsetX,
+                                   self.offsetY])
         duration = CCharPaths.getWalkDuration(self.__curWalkNode, destNode, self.speed, self.paths)
-        t = taskMgr.doMethodLater(duration, self.__doneHandler, self.character.taskName(self.character.getName() + 'DoneWalking'))
+        t = taskMgr.doMethodLater(duration, self.__doneHandler,
+                                  self.character.taskName(self.character.getName() + 'DoneWalking'))
         t.newWalkNode = destNode
 
     def exit(self):
@@ -253,7 +264,9 @@ class CharFollowChipStateAI(StateData.StateData):
     def __doneHandler(self, task):
         self.__lastWalkNode = self.__curWalkNode
         self.__curWalkNode = task.newWalkNode
-        self.character.sendUpdate('setFollowChip', [self.__curWalkNode, self.__curWalkNode, globalClockDelta.getRealNetworkTime(), self.offsetX, self.offsetY])
+        self.character.sendUpdate('setFollowChip',
+                                  [self.__curWalkNode, self.__curWalkNode, globalClockDelta.getRealNetworkTime(),
+                                   self.offsetX, self.offsetY])
         doneStatus = {}
         doneStatus['state'] = 'walk'
         doneStatus['status'] = 'done'
@@ -277,7 +290,7 @@ class ChipChattyStateAI(CharChattyStateAI):
             self.leave()
             return Task.done
         if task.time > CHATTY_DURATION:
-            self.leave(timeout=1)
+            self.leave(timeout = 1)
             return Task.done
         if not self.chatter:
             self.notify.debug('I do not want to talk')
@@ -313,7 +326,7 @@ class ChipChattyStateAI(CharChattyStateAI):
         self.nextChatTime = now + 8.0 + random.random() * 4.0
         return Task.cont
 
-    def leave(self, timeout=0):
+    def leave(self, timeout = 0):
         if self.chatter != None and not timeout:
             category = CCharChatter.GOODBYE
             msg = random.randint(0, len(self.chatter[CCharChatter.GOODBYE]) - 1)

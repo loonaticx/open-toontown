@@ -5,6 +5,7 @@ from direct.task import Task
 import random
 from . import TreasurePlannerAI
 
+
 class RegenTreasurePlannerAI(TreasurePlannerAI.TreasurePlannerAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('RegenTreasurePlannerAI')
 

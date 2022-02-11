@@ -27,77 +27,89 @@ from toontown.hood import PartyHood
 from toontown.toonbase import TTLocalizer
 from toontown.parties.PartyGlobals import GoToPartyStatus
 
+
 class PlayGame(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('PlayGame')
-    Hood2ClassDict = {ToontownGlobals.ToontownCentral: TTHood.TTHood,
-     ToontownGlobals.DonaldsDock: DDHood.DDHood,
-     ToontownGlobals.TheBrrrgh: BRHood.BRHood,
-     ToontownGlobals.MinniesMelodyland: MMHood.MMHood,
-     ToontownGlobals.DaisyGardens: DGHood.DGHood,
-     ToontownGlobals.DonaldsDreamland: DLHood.DLHood,
-     ToontownGlobals.GoofySpeedway: GSHood.GSHood,
-     ToontownGlobals.OutdoorZone: OZHood.OZHood,
-     ToontownGlobals.Tutorial: TutorialHood.TutorialHood,
-     ToontownGlobals.MyEstate: EstateHood.EstateHood,
-     ToontownGlobals.BossbotHQ: BossbotHQ.BossbotHQ,
-     ToontownGlobals.SellbotHQ: SellbotHQ.SellbotHQ,
-     ToontownGlobals.CashbotHQ: CashbotHQ.CashbotHQ,
-     ToontownGlobals.LawbotHQ: LawbotHQ.LawbotHQ,
-     ToontownGlobals.GolfZone: GZHood.GZHood,
-     ToontownGlobals.PartyHood: PartyHood.PartyHood}
-    Hood2StateDict = {ToontownGlobals.ToontownCentral: 'TTHood',
-     ToontownGlobals.DonaldsDock: 'DDHood',
-     ToontownGlobals.TheBrrrgh: 'BRHood',
-     ToontownGlobals.MinniesMelodyland: 'MMHood',
-     ToontownGlobals.DaisyGardens: 'DGHood',
-     ToontownGlobals.DonaldsDreamland: 'DLHood',
-     ToontownGlobals.GoofySpeedway: 'GSHood',
-     ToontownGlobals.OutdoorZone: 'OZHood',
-     ToontownGlobals.Tutorial: 'TutorialHood',
-     ToontownGlobals.MyEstate: 'EstateHood',
-     ToontownGlobals.BossbotHQ: 'BossbotHQ',
-     ToontownGlobals.SellbotHQ: 'SellbotHQ',
-     ToontownGlobals.CashbotHQ: 'CashbotHQ',
-     ToontownGlobals.LawbotHQ: 'LawbotHQ',
-     ToontownGlobals.GolfZone: 'GZHood',
-     ToontownGlobals.PartyHood: 'PartyHood'}
+    Hood2ClassDict = {
+        ToontownGlobals.ToontownCentral: TTHood.TTHood,
+        ToontownGlobals.DonaldsDock: DDHood.DDHood,
+        ToontownGlobals.TheBrrrgh: BRHood.BRHood,
+        ToontownGlobals.MinniesMelodyland: MMHood.MMHood,
+        ToontownGlobals.DaisyGardens: DGHood.DGHood,
+        ToontownGlobals.DonaldsDreamland: DLHood.DLHood,
+        ToontownGlobals.GoofySpeedway: GSHood.GSHood,
+        ToontownGlobals.OutdoorZone: OZHood.OZHood,
+        ToontownGlobals.Tutorial: TutorialHood.TutorialHood,
+        ToontownGlobals.MyEstate: EstateHood.EstateHood,
+        ToontownGlobals.BossbotHQ: BossbotHQ.BossbotHQ,
+        ToontownGlobals.SellbotHQ: SellbotHQ.SellbotHQ,
+        ToontownGlobals.CashbotHQ: CashbotHQ.CashbotHQ,
+        ToontownGlobals.LawbotHQ: LawbotHQ.LawbotHQ,
+        ToontownGlobals.GolfZone: GZHood.GZHood,
+        ToontownGlobals.PartyHood: PartyHood.PartyHood
+    }
+    Hood2StateDict = {
+        ToontownGlobals.ToontownCentral: 'TTHood',
+        ToontownGlobals.DonaldsDock: 'DDHood',
+        ToontownGlobals.TheBrrrgh: 'BRHood',
+        ToontownGlobals.MinniesMelodyland: 'MMHood',
+        ToontownGlobals.DaisyGardens: 'DGHood',
+        ToontownGlobals.DonaldsDreamland: 'DLHood',
+        ToontownGlobals.GoofySpeedway: 'GSHood',
+        ToontownGlobals.OutdoorZone: 'OZHood',
+        ToontownGlobals.Tutorial: 'TutorialHood',
+        ToontownGlobals.MyEstate: 'EstateHood',
+        ToontownGlobals.BossbotHQ: 'BossbotHQ',
+        ToontownGlobals.SellbotHQ: 'SellbotHQ',
+        ToontownGlobals.CashbotHQ: 'CashbotHQ',
+        ToontownGlobals.LawbotHQ: 'LawbotHQ',
+        ToontownGlobals.GolfZone: 'GZHood',
+        ToontownGlobals.PartyHood: 'PartyHood'
+    }
 
     def __init__(self, parentFSM, doneEvent):
         StateData.StateData.__init__(self, doneEvent)
         self.place = None
-        self.fsm = ClassicFSM.ClassicFSM('PlayGame', [State.State('start', self.enterStart, self.exitStart, ['quietZone']),
-         State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['TTHood',
-          'DDHood',
-          'BRHood',
-          'MMHood',
-          'DGHood',
-          'DLHood',
-          'GSHood',
-          'OZHood',
-          'GZHood',
-          'SellbotHQ',
-          'CashbotHQ',
-          'LawbotHQ',
-          'BossbotHQ',
-          'TutorialHood',
-          'EstateHood',
-          'PartyHood']),
-         State.State('TTHood', self.enterTTHood, self.exitTTHood, ['quietZone']),
-         State.State('DDHood', self.enterDDHood, self.exitDDHood, ['quietZone']),
-         State.State('BRHood', self.enterBRHood, self.exitBRHood, ['quietZone']),
-         State.State('MMHood', self.enterMMHood, self.exitMMHood, ['quietZone']),
-         State.State('DGHood', self.enterDGHood, self.exitDGHood, ['quietZone']),
-         State.State('DLHood', self.enterDLHood, self.exitDLHood, ['quietZone']),
-         State.State('GSHood', self.enterGSHood, self.exitGSHood, ['quietZone']),
-         State.State('OZHood', self.enterOZHood, self.exitOZHood, ['quietZone']),
-         State.State('GZHood', self.enterGZHood, self.exitGZHood, ['quietZone']),
-         State.State('BossbotHQ', self.enterBossbotHQ, self.exitBossbotHQ, ['quietZone']),
-         State.State('SellbotHQ', self.enterSellbotHQ, self.exitSellbotHQ, ['quietZone']),
-         State.State('CashbotHQ', self.enterCashbotHQ, self.exitCashbotHQ, ['quietZone']),
-         State.State('LawbotHQ', self.enterLawbotHQ, self.exitLawbotHQ, ['quietZone']),
-         State.State('TutorialHood', self.enterTutorialHood, self.exitTutorialHood, ['quietZone']),
-         State.State('EstateHood', self.enterEstateHood, self.exitEstateHood, ['quietZone']),
-         State.State('PartyHood', self.enterPartyHood, self.exitPartyHood, ['quietZone'])], 'start', 'start')
+        self.fsm = ClassicFSM.ClassicFSM('PlayGame',
+                                         [State.State('start', self.enterStart, self.exitStart, ['quietZone']),
+                                          State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['TTHood',
+                                                                                                             'DDHood',
+                                                                                                             'BRHood',
+                                                                                                             'MMHood',
+                                                                                                             'DGHood',
+                                                                                                             'DLHood',
+                                                                                                             'GSHood',
+                                                                                                             'OZHood',
+                                                                                                             'GZHood',
+                                                                                                             'SellbotHQ',
+                                                                                                             'CashbotHQ',
+                                                                                                             'LawbotHQ',
+                                                                                                             'BossbotHQ',
+                                                                                                             'TutorialHood',
+                                                                                                             'EstateHood',
+                                                                                                             'PartyHood']),
+                                          State.State('TTHood', self.enterTTHood, self.exitTTHood, ['quietZone']),
+                                          State.State('DDHood', self.enterDDHood, self.exitDDHood, ['quietZone']),
+                                          State.State('BRHood', self.enterBRHood, self.exitBRHood, ['quietZone']),
+                                          State.State('MMHood', self.enterMMHood, self.exitMMHood, ['quietZone']),
+                                          State.State('DGHood', self.enterDGHood, self.exitDGHood, ['quietZone']),
+                                          State.State('DLHood', self.enterDLHood, self.exitDLHood, ['quietZone']),
+                                          State.State('GSHood', self.enterGSHood, self.exitGSHood, ['quietZone']),
+                                          State.State('OZHood', self.enterOZHood, self.exitOZHood, ['quietZone']),
+                                          State.State('GZHood', self.enterGZHood, self.exitGZHood, ['quietZone']),
+                                          State.State('BossbotHQ', self.enterBossbotHQ, self.exitBossbotHQ,
+                                                      ['quietZone']),
+                                          State.State('SellbotHQ', self.enterSellbotHQ, self.exitSellbotHQ,
+                                                      ['quietZone']),
+                                          State.State('CashbotHQ', self.enterCashbotHQ, self.exitCashbotHQ,
+                                                      ['quietZone']),
+                                          State.State('LawbotHQ', self.enterLawbotHQ, self.exitLawbotHQ, ['quietZone']),
+                                          State.State('TutorialHood', self.enterTutorialHood, self.exitTutorialHood,
+                                                      ['quietZone']),
+                                          State.State('EstateHood', self.enterEstateHood, self.exitEstateHood,
+                                                      ['quietZone']),
+                                          State.State('PartyHood', self.enterPartyHood, self.exitPartyHood,
+                                                      ['quietZone'])], 'start', 'start')
         self.fsm.enterInitialState()
         self.parentFSM = parentFSM
         self.parentFSM.getStateNamed('playGame').addChild(self.fsm)
@@ -120,13 +132,15 @@ class PlayGame(StateData.StateData):
         else:
             loaderName = ZoneUtil.getLoaderName(zoneId)
             whereName = ZoneUtil.getToonWhereName(zoneId)
-        self.fsm.request('quietZone', [{'loader': loaderName,
-          'where': whereName,
-          'how': 'teleportIn',
-          'hoodId': hoodId,
-          'zoneId': zoneId,
-          'shardId': None,
-          'avId': avId}])
+        self.fsm.request('quietZone', [{
+                                           'loader': loaderName,
+                                           'where': whereName,
+                                           'how': 'teleportIn',
+                                           'hoodId': hoodId,
+                                           'zoneId': zoneId,
+                                           'shardId': None,
+                                           'avId': avId
+                                       }])
         return
 
     def exit(self):
@@ -190,9 +204,9 @@ class PlayGame(StateData.StateData):
             return
         how = doneStatus['how']
         if how in ['tunnelIn',
-         'teleportIn',
-         'doorIn',
-         'elevatorIn']:
+                   'teleportIn',
+                   'doorIn',
+                   'elevatorIn']:
             self.fsm.request('quietZone', [doneStatus])
         else:
             self.notify.error('Exited hood with unexpected mode %s' % how)
@@ -253,22 +267,30 @@ class PlayGame(StateData.StateData):
                         friend = base.cr.identifyAvatar(avId)
                         if friend != None:
                             avName = friend.getName()
-                            loader.beginBulkLoad('hood', TTLocalizer.HeadingToFriend % avName, count, 1, TTLocalizer.TIP_ESTATE)
+                            loader.beginBulkLoad('hood', TTLocalizer.HeadingToFriend % avName, count, 1,
+                                                 TTLocalizer.TIP_ESTATE)
                         else:
                             self.notify.warning("we can't perform this teleport")
                             return
                     else:
                         avName = owner.getName()
-                        loader.beginBulkLoad('hood', TTLocalizer.HeadingToEstate % avName, count, 1, TTLocalizer.TIP_ESTATE)
+                        loader.beginBulkLoad('hood', TTLocalizer.HeadingToEstate % avName, count, 1,
+                                             TTLocalizer.TIP_ESTATE)
             elif ZoneUtil.isCogHQZone(zoneId):
-                loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {'to': toHoodPhrase,
-                 'hood': hoodName}, count, 1, TTLocalizer.TIP_COGHQ)
+                loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {
+                    'to': toHoodPhrase,
+                    'hood': hoodName
+                }, count, 1, TTLocalizer.TIP_COGHQ)
             elif ZoneUtil.isGoofySpeedwayZone(zoneId):
-                loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {'to': toHoodPhrase,
-                 'hood': hoodName}, count, 1, TTLocalizer.TIP_KARTING)
+                loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {
+                    'to': toHoodPhrase,
+                    'hood': hoodName
+                }, count, 1, TTLocalizer.TIP_KARTING)
             else:
-                loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {'to': toHoodPhrase,
-                 'hood': hoodName}, count, 1, TTLocalizer.TIP_GENERAL)
+                loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {
+                    'to': toHoodPhrase,
+                    'hood': hoodName
+                }, count, 1, TTLocalizer.TIP_GENERAL)
         if hoodId == ToontownGlobals.Tutorial:
             self.loadDnaStoreTutorial()
         else:
@@ -419,12 +441,14 @@ class PlayGame(StateData.StateData):
         self._destroyHood()
 
     def getEstateZoneAndGoHome(self, avId, zoneId):
-        self.doneStatus = {'avId': avId,
-         'zoneId': zoneId,
-         'hoodId': ToontownGlobals.MyEstate,
-         'loader': 'safeZoneLoader',
-         'how': 'teleportIn',
-         'shardId': None}
+        self.doneStatus = {
+            'avId': avId,
+            'zoneId': zoneId,
+            'hoodId': ToontownGlobals.MyEstate,
+            'loader': 'safeZoneLoader',
+            'how': 'teleportIn',
+            'shardId': None
+        }
         self.acceptOnce('setLocalEstateZone', self.goHome)
         if avId > 0:
             base.cr.estateMgr.getLocalEstateZone(avId)
@@ -464,12 +488,14 @@ class PlayGame(StateData.StateData):
         loaderName = ZoneUtil.getLoaderName(zoneId)
         whereName = ZoneUtil.getToonWhereName(zoneId)
         base.localAvatar.setSystemMessage(0, message)
-        self.fsm.request('quietZone', [{'loader': loaderName,
-          'where': whereName,
-          'how': 'teleportIn',
-          'hoodId': zoneId,
-          'zoneId': zoneId,
-          'shardId': None}])
+        self.fsm.request('quietZone', [{
+                                           'loader': loaderName,
+                                           'where': whereName,
+                                           'how': 'teleportIn',
+                                           'hoodId': zoneId,
+                                           'zoneId': zoneId,
+                                           'shardId': None
+                                       }])
         return Task.done
 
     def enterPartyHood(self, requestStatus):
@@ -481,15 +507,17 @@ class PlayGame(StateData.StateData):
         self._destroyHood()
 
     def getPartyZoneAndGoToParty(self, avId, zoneId):
-        self.doneStatus = {'avId': avId,
-         'zoneId': zoneId,
-         'hoodId': ToontownGlobals.PartyHood,
-         'loader': 'safeZoneLoader',
-         'how': 'teleportIn',
-         'shardId': None}
+        self.doneStatus = {
+            'avId': avId,
+            'zoneId': zoneId,
+            'hoodId': ToontownGlobals.PartyHood,
+            'loader': 'safeZoneLoader',
+            'how': 'teleportIn',
+            'shardId': None
+        }
         if avId < 0:
             avId = base.localAvatar.getDoId()
-        base.cr.partyManager.requestPartyZone(avId, zoneId, callback=self.goToParty)
+        base.cr.partyManager.requestPartyZone(avId, zoneId, callback = self.goToParty)
         return
 
     def goToParty(self, ownerId, partyId, zoneId):
@@ -512,12 +540,14 @@ class PlayGame(StateData.StateData):
         loaderName = ZoneUtil.getLoaderName(zoneId)
         whereName = ZoneUtil.getToonWhereName(zoneId)
         base.localAvatar.setSystemMessage(0, message)
-        self.fsm.request('quietZone', [{'loader': loaderName,
-          'where': whereName,
-          'how': 'teleportIn',
-          'hoodId': zoneId,
-          'zoneId': zoneId,
-          'shardId': None}])
+        self.fsm.request('quietZone', [{
+                                           'loader': loaderName,
+                                           'where': whereName,
+                                           'how': 'teleportIn',
+                                           'hoodId': zoneId,
+                                           'zoneId': zoneId,
+                                           'shardId': None
+                                       }])
         return Task.done
 
     def getCatalogCodes(self, category):

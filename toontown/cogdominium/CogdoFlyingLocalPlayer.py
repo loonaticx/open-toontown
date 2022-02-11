@@ -22,6 +22,7 @@ from .CogdoFlyingObjects import CogdoFlyingPlatform, CogdoFlyingGatherable
 from .CogdoFlyingLegalEagle import CogdoFlyingLegalEagle
 from . import CogdoFlyingGameGlobals as Globals
 
+
 class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogdoFlyingLocalPlayer')
     BroadcastPosTask = 'CogdoFlyingLocalPlayerBroadcastPos'
@@ -31,51 +32,53 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
 
     def __init__(self, toon, game, level, guiMgr):
         CogdoFlyingPlayer.__init__(self, toon)
-        self.defaultTransitions = {'Inactive': ['FreeFly', 'Running'],
-         'FreeFly': ['Inactive',
-                     'OutOfTime',
-                     'Death',
-                     'FlyingUp',
-                     'Running',
-                     'HitWhileFlying',
-                     'InWhirlwind'],
-         'FlyingUp': ['Inactive',
-                      'OutOfTime',
-                      'Death',
-                      'FreeFly',
-                      'Running',
-                      'HitWhileFlying',
-                      'InWhirlwind'],
-         'InWhirlwind': ['Inactive',
+        self.defaultTransitions = {
+            'Inactive': ['FreeFly', 'Running'],
+            'FreeFly': ['Inactive',
+                        'OutOfTime',
+                        'Death',
+                        'FlyingUp',
+                        'Running',
+                        'HitWhileFlying',
+                        'InWhirlwind'],
+            'FlyingUp': ['Inactive',
                          'OutOfTime',
                          'Death',
                          'FreeFly',
-                         'HitWhileFlying'],
-         'HitWhileFlying': ['Inactive',
+                         'Running',
+                         'HitWhileFlying',
+                         'InWhirlwind'],
+            'InWhirlwind': ['Inactive',
                             'OutOfTime',
                             'Death',
                             'FreeFly',
-                            'InWhirlwind'],
-         'Death': ['Inactive', 'OutOfTime', 'Spawn'],
-         'Running': ['Inactive',
-                     'OutOfTime',
-                     'FreeFly',
-                     'FlyingUp',
-                     'Refuel',
-                     'WaitingForWin',
-                     'HitWhileRunning'],
-         'HitWhileRunning': ['Inactive',
-                             'OutOfTime',
-                             'Death',
-                             'Running',
-                             'FreeFly'],
-         'Spawn': ['Inactive',
-                   'OutOfTime',
-                   'Running',
-                   'WaitingForWin'],
-         'OutOfTime': ['Inactive', 'Spawn'],
-         'WaitingForWin': ['Inactive', 'Win'],
-         'Win': ['Inactive']}
+                            'HitWhileFlying'],
+            'HitWhileFlying': ['Inactive',
+                               'OutOfTime',
+                               'Death',
+                               'FreeFly',
+                               'InWhirlwind'],
+            'Death': ['Inactive', 'OutOfTime', 'Spawn'],
+            'Running': ['Inactive',
+                        'OutOfTime',
+                        'FreeFly',
+                        'FlyingUp',
+                        'Refuel',
+                        'WaitingForWin',
+                        'HitWhileRunning'],
+            'HitWhileRunning': ['Inactive',
+                                'OutOfTime',
+                                'Death',
+                                'Running',
+                                'FreeFly'],
+            'Spawn': ['Inactive',
+                      'OutOfTime',
+                      'Running',
+                      'WaitingForWin'],
+            'OutOfTime': ['Inactive', 'Spawn'],
+            'WaitingForWin': ['Inactive', 'Win'],
+            'Win': ['Inactive']
+        }
         self.game = game
         self._level = level
         self._guiMgr = guiMgr
@@ -156,19 +159,54 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
         return self.playerNumber
 
     def initOrthoWalker(self):
-        orthoDrive = OrthoDrive(9.778, maxFrameMove=0.5, wantSound=True)
-        self.orthoWalk = OrthoWalk(orthoDrive, broadcast=False, collisions=False, broadcastPeriod=Globals.AI.BroadcastPeriod)
+        orthoDrive = OrthoDrive(9.778, maxFrameMove = 0.5, wantSound = True)
+        self.orthoWalk = OrthoWalk(orthoDrive, broadcast = False, collisions = False,
+                                   broadcastPeriod = Globals.AI.BroadcastPeriod)
 
     def initLocalPlayerIntervals(self):
-        self.coolDownAfterHitInterval = Sequence(Wait(Globals.Gameplay.HitCooldownTime), Func(self.setEnemyHitting, False), name='coolDownAfterHitInterval-%i' % self.toon.doId)
-        self.deathInterval = Sequence(Func(self.resetVelocities), Parallel(Parallel(Func(self._deathSfx.play), LerpHprInterval(self.toon, 1.0, Vec3(720, 0, 0)), LerpFunctionInterval(self.toon.setScale, fromData=1.0, toData=0.1, duration=1.0), self.toon.posInterval(0.5, Vec3(0, 0, -25), other=self.toon)), Sequence(Wait(0.5), Func(base.transitions.irisOut))), Func(self.toon.stash), Wait(1.0), Func(self.toonSpawnFunc), name='%s.deathInterval' % self.__class__.__name__)
-        self.outOfTimeInterval = Sequence(Func(messenger.send, CogdoFlyingLocalPlayer.PlayWaitingMusicEventName), Func(self._loseSfx.play), Func(base.transitions.irisOut), Wait(1.0), Func(self.resetVelocities), Func(self._guiMgr.setMessage, '', transition=None), Func(self.toon.stash), Func(self.toonSpawnFunc), name='%s.outOfTimeInterval' % self.__class__.__name__)
-        self.spawnInterval = Sequence(Func(self.resetToonFunc), Func(self._cameraMgr.update, 0.0), Func(self._level.update), Func(self.toon.cnode.broadcastPosHprFull), Func(base.transitions.irisIn), Wait(0.5), Func(self.toon.setAnimState, 'TeleportIn'), Func(self.toon.unstash), Wait(1.5), Func(self.requestPostSpawnState), name='%s.spawnInterval' % self.__class__.__name__)
-        self.waitingForWinInterval = Sequence(Func(self._guiMgr.setMessage, TTLocalizer.CogdoFlyingGameWaiting % '.'), Wait(1.5), Func(self._guiMgr.setMessage, TTLocalizer.CogdoFlyingGameWaiting % '..'), Wait(1.5), Func(self._guiMgr.setMessage, TTLocalizer.CogdoFlyingGameWaiting % '...'), Wait(1.5), name='%s.waitingForWinInterval' % self.__class__.__name__)
-        self.waitingForWinSeq = Sequence(Func(self.setWaitingForWinState), Wait(4.0), Func(self.removeAllMemos), Wait(2.0), Func(self.game.distGame.d_sendRequestAction, Globals.AI.GameActions.LandOnWinPlatform, 0), Func(self.playWaitingForWinInterval), name='%s.waitingForWinSeq' % self.__class__.__name__)
-        self.winInterval = Sequence(Func(self._guiMgr.setMessage, ''), Wait(4.0), Func(self.game.distGame.d_sendRequestAction, Globals.AI.GameActions.WinStateFinished, 0), name='%s.winInterval' % self.__class__.__name__)
-        self.goSadSequence = Sequence(Wait(2.5), Func(base.transitions.irisOut, 1.5), name='%s.goSadSequence' % self.__class__.__name__)
-        self.introGuiSeq = Sequence(Wait(0.5), Parallel(Func(self._guiMgr.setTemporaryMessage, TTLocalizer.CogdoFlyingGameMinimapIntro, duration=5.0), Sequence(Wait(1.0), Func(self._guiMgr.presentProgressGui))), Wait(5.0), Func(self._guiMgr.setMessage, TTLocalizer.CogdoFlyingGamePickUpAPropeller), name='%s.introGuiSeq' % self.__class__.__name__)
+        self.coolDownAfterHitInterval = Sequence(Wait(Globals.Gameplay.HitCooldownTime),
+                                                 Func(self.setEnemyHitting, False),
+                                                 name = 'coolDownAfterHitInterval-%i' % self.toon.doId)
+        self.deathInterval = Sequence(Func(self.resetVelocities), Parallel(
+            Parallel(Func(self._deathSfx.play), LerpHprInterval(self.toon, 1.0, Vec3(720, 0, 0)),
+                     LerpFunctionInterval(self.toon.setScale, fromData = 1.0, toData = 0.1, duration = 1.0),
+                     self.toon.posInterval(0.5, Vec3(0, 0, -25), other = self.toon)),
+            Sequence(Wait(0.5), Func(base.transitions.irisOut))), Func(self.toon.stash), Wait(1.0),
+                                      Func(self.toonSpawnFunc), name = '%s.deathInterval' % self.__class__.__name__)
+        self.outOfTimeInterval = Sequence(Func(messenger.send, CogdoFlyingLocalPlayer.PlayWaitingMusicEventName),
+                                          Func(self._loseSfx.play), Func(base.transitions.irisOut), Wait(1.0),
+                                          Func(self.resetVelocities),
+                                          Func(self._guiMgr.setMessage, '', transition = None), Func(self.toon.stash),
+                                          Func(self.toonSpawnFunc),
+                                          name = '%s.outOfTimeInterval' % self.__class__.__name__)
+        self.spawnInterval = Sequence(Func(self.resetToonFunc), Func(self._cameraMgr.update, 0.0),
+                                      Func(self._level.update), Func(self.toon.cnode.broadcastPosHprFull),
+                                      Func(base.transitions.irisIn), Wait(0.5),
+                                      Func(self.toon.setAnimState, 'TeleportIn'), Func(self.toon.unstash), Wait(1.5),
+                                      Func(self.requestPostSpawnState),
+                                      name = '%s.spawnInterval' % self.__class__.__name__)
+        self.waitingForWinInterval = Sequence(Func(self._guiMgr.setMessage, TTLocalizer.CogdoFlyingGameWaiting % '.'),
+                                              Wait(1.5),
+                                              Func(self._guiMgr.setMessage, TTLocalizer.CogdoFlyingGameWaiting % '..'),
+                                              Wait(1.5),
+                                              Func(self._guiMgr.setMessage, TTLocalizer.CogdoFlyingGameWaiting % '...'),
+                                              Wait(1.5), name = '%s.waitingForWinInterval' % self.__class__.__name__)
+        self.waitingForWinSeq = Sequence(Func(self.setWaitingForWinState), Wait(4.0), Func(self.removeAllMemos),
+                                         Wait(2.0), Func(self.game.distGame.d_sendRequestAction,
+                                                         Globals.AI.GameActions.LandOnWinPlatform, 0),
+                                         Func(self.playWaitingForWinInterval),
+                                         name = '%s.waitingForWinSeq' % self.__class__.__name__)
+        self.winInterval = Sequence(Func(self._guiMgr.setMessage, ''), Wait(4.0),
+                                    Func(self.game.distGame.d_sendRequestAction,
+                                         Globals.AI.GameActions.WinStateFinished, 0),
+                                    name = '%s.winInterval' % self.__class__.__name__)
+        self.goSadSequence = Sequence(Wait(2.5), Func(base.transitions.irisOut, 1.5),
+                                      name = '%s.goSadSequence' % self.__class__.__name__)
+        self.introGuiSeq = Sequence(Wait(0.5), Parallel(
+            Func(self._guiMgr.setTemporaryMessage, TTLocalizer.CogdoFlyingGameMinimapIntro, duration = 5.0),
+            Sequence(Wait(1.0), Func(self._guiMgr.presentProgressGui))), Wait(5.0),
+                                    Func(self._guiMgr.setMessage, TTLocalizer.CogdoFlyingGamePickUpAPropeller),
+                                    name = '%s.introGuiSeq' % self.__class__.__name__)
         return
 
     def goSad(self):
@@ -177,7 +215,7 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
     def setWaitingForWinState(self):
         if self.didTimeRunOut:
             self.toon.b_setAnimState('Sad')
-            self._guiMgr.setMessage(TTLocalizer.CogdoFlyingGameOutOfTime, transition='blink')
+            self._guiMgr.setMessage(TTLocalizer.CogdoFlyingGameOutOfTime, transition = 'blink')
         else:
             self._winSfx.play()
             messenger.send(CogdoFlyingLocalPlayer.PlayWaitingMusicEventName)
@@ -193,10 +231,10 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
             self.waitingForWinInterval.loop()
 
     def resetToonFunc(self):
-        self.resetToon(resetFuel=self.hasPickedUpFirstPropeller)
+        self.resetToon(resetFuel = self.hasPickedUpFirstPropeller)
 
     def _loopPropellerSfx(self, playRate = 1.0, volume = 1.0):
-        self._propellerSfx.loop(playRate=playRate, volume=1.0)
+        self._propellerSfx.loop(playRate = playRate, volume = 1.0)
 
     def initCollisions(self):
         avatarRadius = 2.0
@@ -231,7 +269,8 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
         if index not in self.legalEagleInterestRequest:
             self.legalEagleInterestRequest[index] = True
         else:
-            CogdoFlyingLocalPlayer.notify.warning('Attempting to set an legal eagle interest request when one already exists:%s' % index)
+            CogdoFlyingLocalPlayer.notify.warning(
+                'Attempting to set an legal eagle interest request when one already exists:%s' % index)
 
     def clearLegalEagleInterestRequest(self, index):
         if index in self.legalEagleInterestRequest:
@@ -273,9 +312,10 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
         platform = CogdoFlyingPlatform.getFromNode(intoNodePath)
         if platform is not None:
             if not platform.isStartOrEndPlatform():
-                taskMgr.doMethodLater(0.5, self.delayedLandOnPlatform, 'delayedLandOnPlatform', extraArgs=[platform])
+                taskMgr.doMethodLater(0.5, self.delayedLandOnPlatform, 'delayedLandOnPlatform', extraArgs = [platform])
             elif platform.isEndPlatform():
-                taskMgr.doMethodLater(1.0, self.delayedLandOnWinPlatform, 'delayedLandOnWinPlatform', extraArgs=[platform])
+                taskMgr.doMethodLater(1.0, self.delayedLandOnWinPlatform, 'delayedLandOnWinPlatform',
+                                      extraArgs = [platform])
         self.isToonOnFloor = True
         self.controlVelocity = Vec3(0.0, 0.0, 0.0)
         self.toon.setPos(render, surfacePoint)
@@ -337,7 +377,7 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
                 self.request('OutOfTime')
 
     def ready(self):
-        self.resetToon(resetFuel=False)
+        self.resetToon(resetFuel = False)
         self._cameraMgr.enable()
         self._cameraMgr.update()
 
@@ -621,7 +661,9 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
         if toonPos[2] > self._levelBounds[2][1]:
             self.controlVelocity[2] = 0.0
             self.fanVelocity[2] = 0.0
-        toonPos = Vec3(clamp(toonPos[0], self._levelBounds[0][0], self._levelBounds[0][1]), clamp(toonPos[1], self._levelBounds[1][0], self._levelBounds[1][1]), clamp(toonPos[2], self._levelBounds[2][0], self._levelBounds[2][1]))
+        toonPos = Vec3(clamp(toonPos[0], self._levelBounds[0][0], self._levelBounds[0][1]),
+                       clamp(toonPos[1], self._levelBounds[1][0], self._levelBounds[1][1]),
+                       clamp(toonPos[2], self._levelBounds[2][0], self._levelBounds[2][1]))
         if self.isHeadInCeiling and toonPos[2] > self.surfacePoint[2]:
             toonPos[2] = self.surfacePoint[2]
         self.toon.setPos(toonPos)
@@ -672,7 +714,7 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
 
     def bladeLost(self):
         CogdoFlyingPlayer.bladeLost(self)
-        self._bladeBreakSfx.play(volume=0.35)
+        self._bladeBreakSfx.play(volume = 0.35)
         self._guiMgr.bladeLost()
 
     def updateFuel(self, dt):
@@ -722,13 +764,13 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
                     self.propellerSpinLerp.loop()
                 self.setPropellerSpinRate(Globals.Gameplay.NormalPropSpeed)
                 self._guiMgr.setPropellerSpinRate(Globals.Gameplay.NormalPropSpeed)
-                self._loopPropellerSfx(playRate=0.7, volume=0.8)
+                self._loopPropellerSfx(playRate = 0.7, volume = 0.8)
             elif self.propState == CogdoFlyingLocalPlayer.PropStates.Overdrive:
                 if not self.propellerSpinLerp.isPlaying():
                     self.propellerSpinLerp.loop()
                 self.setPropellerSpinRate(Globals.Gameplay.OverdrivePropSpeed)
                 self._guiMgr.setPropellerSpinRate(Globals.Gameplay.OverdrivePropSpeed)
-                self._loopPropellerSfx(playRate=1.1)
+                self._loopPropellerSfx(playRate = 1.1)
             elif self.propState == CogdoFlyingLocalPlayer.PropStates.Off:
                 self.propellerSpinLerp.pause()
                 self._propellerSfx.stop()
@@ -1004,7 +1046,8 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
 
     def startHitRunningToonInterval(self):
         dur = self.toon.getDuration('slip-backward')
-        self.startEnemyHitIval(Sequence(Wait(dur), Func(self.request, 'Running'), name='hitByLegalEagleIval-%i' % self.toon.doId))
+        self.startEnemyHitIval(
+            Sequence(Wait(dur), Func(self.request, 'Running'), name = 'hitByLegalEagleIval-%i' % self.toon.doId))
 
     def startHitFlyingToonInterval(self):
         hitByEnemyPos = self.toon.getPos(render)
@@ -1020,19 +1063,33 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
                 self.toon.setH(t * 720.0)
 
         direction = random.randint(0, 1)
-        self.startEnemyHitIval(Sequence(Parallel(LerpFunc(spinPlayer, fromData=0.0, toData=1.0, duration=Globals.Gameplay.HitKnockbackTime, blendType='easeInOut', extraArgs=[direction]), LerpPosInterval(self.toon, duration=Globals.Gameplay.HitKnockbackTime, pos=hitByEnemyPos + collVec, blendType='easeOut')), Func(self.request, 'FreeFly'), name='hitByLegalEagleIval-%i' % self.toon.doId))
+        self.startEnemyHitIval(Sequence(Parallel(
+            LerpFunc(spinPlayer, fromData = 0.0, toData = 1.0, duration = Globals.Gameplay.HitKnockbackTime,
+                     blendType = 'easeInOut', extraArgs = [direction]),
+            LerpPosInterval(self.toon, duration = Globals.Gameplay.HitKnockbackTime, pos = hitByEnemyPos + collVec,
+                            blendType = 'easeOut')), Func(self.request, 'FreeFly'),
+                                        name = 'hitByLegalEagleIval-%i' % self.toon.doId))
 
     def startHitByWhirlwindInterval(self):
 
         def spinPlayer(t):
             self.controlVelocity[2] = 1.0
             angle = math.radians(t * (720.0 * 2 - 180))
-            self.toon.setPos(self.activeWhirlwind.model.getX(self.game.level.root) + math.cos(angle) * 2, self.activeWhirlwind.model.getY(self.game.level.root) + math.sin(angle) * 2, self.toon.getZ())
+            self.toon.setPos(self.activeWhirlwind.model.getX(self.game.level.root) + math.cos(angle) * 2,
+                             self.activeWhirlwind.model.getY(self.game.level.root) + math.sin(angle) * 2,
+                             self.toon.getZ())
 
         def movePlayerBack(t):
-            self.toon.setY(self.activeWhirlwind.model.getY(self.game.level.root) - t * Globals.Gameplay.WhirlwindMoveBackDist)
+            self.toon.setY(
+                self.activeWhirlwind.model.getY(self.game.level.root) - t * Globals.Gameplay.WhirlwindMoveBackDist)
 
-        self.startEventIval(Sequence(Func(self._cameraMgr.freeze), Func(self.activeWhirlwind.disable), LerpFunc(spinPlayer, fromData=0.0, toData=1.0, duration=Globals.Gameplay.WhirlwindSpinTime), LerpFunc(movePlayerBack, fromData=0.0, toData=1.0, duration=Globals.Gameplay.WhirlwindMoveBackTime, blendType='easeOut'), Func(self.activeWhirlwind.enable), Func(self._cameraMgr.unfreeze), Func(self.request, 'FreeFly'), name='spinPlayerIval-%i' % self.toon.doId))
+        self.startEventIval(Sequence(Func(self._cameraMgr.freeze), Func(self.activeWhirlwind.disable),
+                                     LerpFunc(spinPlayer, fromData = 0.0, toData = 1.0,
+                                              duration = Globals.Gameplay.WhirlwindSpinTime),
+                                     LerpFunc(movePlayerBack, fromData = 0.0, toData = 1.0,
+                                              duration = Globals.Gameplay.WhirlwindMoveBackTime, blendType = 'easeOut'),
+                                     Func(self.activeWhirlwind.enable), Func(self._cameraMgr.unfreeze),
+                                     Func(self.request, 'FreeFly'), name = 'spinPlayerIval-%i' % self.toon.doId))
 
     def handleEnterWhirlwind(self, whirlwind):
         self.activeWhirlwind = whirlwind
@@ -1097,4 +1154,4 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
             self.setFuel(1.0)
             self._guiMgr.update()
             self._refuelSfx.play()
-            self._refuelSpinSfx.play(volume=0.15)
+            self._refuelSpinSfx.play(volume = 0.15)

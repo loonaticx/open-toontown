@@ -9,6 +9,7 @@ from toontown.racing import RaceGlobals
 from direct.fsm import State
 from toontown.safezone import GolfKart
 
+
 class GZPlayground(Playground.Playground):
 
     def __init__(self, loader, parentFSM, doneEvent):
@@ -71,13 +72,16 @@ class GZPlayground(Playground.Playground):
         reason = requestStatus.get('reason')
         if reason == RaceGlobals.Exit_Barrier:
             requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RaceTimeout, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
+            self.dialog = TTDialog.TTDialog(text = TTLocalizer.KartRace_RaceTimeout, command = self.__cleanupDialog,
+                                            style = TTDialog.Acknowledge)
         elif reason == RaceGlobals.Exit_Slow:
             requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RacerTooSlow, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
+            self.dialog = TTDialog.TTDialog(text = TTLocalizer.KartRace_RacerTooSlow, command = self.__cleanupDialog,
+                                            style = TTDialog.Acknowledge)
         elif reason == RaceGlobals.Exit_BarrierNoRefund:
             requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RaceTimeoutNoRefund, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
+            self.dialog = TTDialog.TTDialog(text = TTLocalizer.KartRace_RaceTimeoutNoRefund,
+                                            command = self.__cleanupDialog, style = TTDialog.Acknowledge)
         Playground.Playground.enterTeleportIn(self, requestStatus)
 
     def __cleanupDialog(self, value):
@@ -129,12 +133,14 @@ class GZPlayground(Playground.Playground):
         elif mode == 'exit':
             self.fsm.request('walk')
         elif mode == 'golfcourse':
-            self.doneStatus = {'loader': 'golfcourse',
-             'where': 'golfcourse',
-             'hoodId': self.loader.hood.id,
-             'zoneId': doneStatus['zoneId'],
-             'shardId': None,
-             'courseId': doneStatus['courseId']}
+            self.doneStatus = {
+                'loader': 'golfcourse',
+                'where': 'golfcourse',
+                'hoodId': self.loader.hood.id,
+                'zoneId': doneStatus['zoneId'],
+                'shardId': None,
+                'courseId': doneStatus['courseId']
+            }
             messenger.send(self.doneEvent)
         else:
             self.notify.error('Unknown mode: ' + mode + ' in handleGolfKartDone')

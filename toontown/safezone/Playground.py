@@ -21,6 +21,7 @@ from direct.gui import DirectLabel
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.quest import Quests
 
+
 class Playground(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('Playground')
 
@@ -187,7 +188,7 @@ class Playground(Place.Place):
                         self.enterFinal,
                         self.exitFinal, [
                             'start'])],
-            'start', 'final')
+                                         'start', 'final')
         self.parentFSM = parentFSM
         self.tunnelOriginList = []
         self.trolleyDoneEvent = 'trolleyDone'
@@ -202,7 +203,7 @@ class Playground(Place.Place):
         messenger.send('enterPlayground')
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
-        base.playMusic(self.loader.music, looping=1, volume=0.8)
+        base.playMusic(self.loader.music, looping = 1, volume = 0.8)
         self.loader.geom.reparentTo(render)
         for i in self.loader.nodeList:
             self.loader.enterAnimatedProps(i)
@@ -220,8 +221,12 @@ class Playground(Place.Place):
         newsManager = base.cr.newsManager
         if newsManager:
             holidayIds = base.cr.newsManager.getDecorationHolidayId()
-            if (ToontownGlobals.HALLOWEEN_COSTUMES in holidayIds or ToontownGlobals.SPOOKY_COSTUMES in holidayIds) and self.loader.hood.spookySkyFile:
-                lightsOff = Sequence(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(0.55, 0.55, 0.65, 1)), Func(self.loader.hood.startSpookySky), Func(__lightDecorationOn__))
+            if (
+                    ToontownGlobals.HALLOWEEN_COSTUMES in holidayIds or ToontownGlobals.SPOOKY_COSTUMES in
+                    holidayIds) and self.loader.hood.spookySkyFile:
+                lightsOff = Sequence(
+                    LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(0.55, 0.55, 0.65, 1)),
+                    Func(self.loader.hood.startSpookySky), Func(__lightDecorationOn__))
                 lightsOff.start()
             else:
                 self.loader.hood.startSky()
@@ -367,24 +372,28 @@ class Playground(Place.Place):
         elif mode == 'exit':
             self.fsm.request('walk')
         elif mode == 'minigame':
-            self.doneStatus = {'loader': 'minigame',
-             'where': 'minigame',
-             'hoodId': self.loader.hood.id,
-             'zoneId': doneStatus['zoneId'],
-             'shardId': None,
-             'minigameId': doneStatus['minigameId']}
+            self.doneStatus = {
+                'loader': 'minigame',
+                'where': 'minigame',
+                'hoodId': self.loader.hood.id,
+                'zoneId': doneStatus['zoneId'],
+                'shardId': None,
+                'minigameId': doneStatus['minigameId']
+            }
             messenger.send(self.doneEvent)
         else:
             self.notify.error('Unknown mode: ' + mode + ' in handleTrolleyDone')
         return
 
     def debugStartMinigame(self, zoneId, minigameId):
-        self.doneStatus = {'loader': 'minigame',
-         'where': 'minigame',
-         'hoodId': self.loader.hood.id,
-         'zoneId': zoneId,
-         'shardId': None,
-         'minigameId': minigameId}
+        self.doneStatus = {
+            'loader': 'minigame',
+            'where': 'minigame',
+            'hoodId': self.loader.hood.id,
+            'zoneId': zoneId,
+            'shardId': None,
+            'minigameId': minigameId
+        }
         messenger.send(self.doneEvent)
         return
 
@@ -423,11 +432,15 @@ class Playground(Place.Place):
         del self.hfa
         if doneStatus['mode'] == 'complete':
             if requestStatus.get('partyHat', 0):
-                outHow = {'teleportIn': 'tunnelOut'}
+                outHow = {
+                    'teleportIn': 'tunnelOut'
+                }
             else:
-                outHow = {'teleportIn': 'teleportOut',
-                 'tunnelIn': 'tunnelOut',
-                 'doorIn': 'doorOut'}
+                outHow = {
+                    'teleportIn': 'teleportOut',
+                    'tunnelIn': 'tunnelOut',
+                    'doorIn': 'doorOut'
+                }
             self.fsm.request(outHow[requestStatus['how']], [requestStatus])
         elif doneStatus['mode'] == 'incomplete':
             self.fsm.request('HFAReject')
@@ -491,9 +504,13 @@ class Playground(Place.Place):
         elif base.localAvatar.hp < 1:
             requestStatus['nextState'] = 'popup'
             x, y, z, h, p, r = base.cr.hoodMgr.getPlaygroundCenterFromId(self.loader.hood.id)
-            self.accept('deathAck', self.__handleDeathAck, extraArgs=[requestStatus])
-            self.deathAckBox = DeathForceAcknowledge.DeathForceAcknowledge(doneEvent='deathAck')
-        elif base.localAvatar.hp > 0 and (Quests.avatarHasTrolleyQuest(base.localAvatar) or Quests.avatarHasFirstCogQuest(base.localAvatar) or Quests.avatarHasFriendQuest(base.localAvatar) or Quests.avatarHasPhoneQuest(base.localAvatar) and Quests.avatarHasCompletedPhoneQuest(base.localAvatar)) and self.loader.hood.id == ToontownGlobals.ToontownCentral:
+            self.accept('deathAck', self.__handleDeathAck, extraArgs = [requestStatus])
+            self.deathAckBox = DeathForceAcknowledge.DeathForceAcknowledge(doneEvent = 'deathAck')
+        elif base.localAvatar.hp > 0 and (
+                Quests.avatarHasTrolleyQuest(base.localAvatar) or Quests.avatarHasFirstCogQuest(
+                base.localAvatar) or Quests.avatarHasFriendQuest(base.localAvatar) or Quests.avatarHasPhoneQuest(
+                base.localAvatar) and Quests.avatarHasCompletedPhoneQuest(
+                base.localAvatar)) and self.loader.hood.id == ToontownGlobals.ToontownCentral:
             requestStatus['nextState'] = 'popup'
             imageModel = loader.loadModel('phase_4/models/gui/tfa_images')
             if base.localAvatar.quests[0][0] == Quests.TROLLEY_QUEST_ID:
@@ -544,8 +561,10 @@ class Playground(Place.Place):
                     imgNodePath = imageModel.find('**/hq-dialog-image')
                     imgPos = (0, 0, 0.05)
                     imgScale = 0.5
-            self.dialog = TTDialog.TTDialog(text=msg, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
-            imgLabel = DirectLabel.DirectLabel(parent=self.dialog, relief=None, pos=imgPos, scale=TTLocalizer.PimgLabel, image=imgNodePath, image_scale=imgScale)
+            self.dialog = TTDialog.TTDialog(text = msg, command = self.__cleanupDialog, style = TTDialog.Acknowledge)
+            imgLabel = DirectLabel.DirectLabel(parent = self.dialog, relief = None, pos = imgPos,
+                                               scale = TTLocalizer.PimgLabel, image = imgNodePath,
+                                               image_scale = imgScale)
             imageModel.removeNode()
         else:
             requestStatus['nextState'] = 'walk'

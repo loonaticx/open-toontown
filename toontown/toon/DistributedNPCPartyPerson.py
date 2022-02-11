@@ -12,6 +12,7 @@ from toontown.parties import PartyGlobals
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TeaserPanel
 
+
 class DistributedNPCPartyPerson(DistributedNPCToonBase):
 
     def __init__(self, cr):
@@ -46,7 +47,11 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
     def announceGenerate(self):
         DistributedNPCToonBase.announceGenerate(self)
         self.planPartyQuestionGuiDoneEvent = 'planPartyQuestionDone'
-        self.askGui = TTDialog.TTGlobalDialog(dialogName=self.uniqueName('askGui'), doneEvent=self.planPartyQuestionGuiDoneEvent, message=TTLocalizer.PartyDoYouWantToPlan, style=TTDialog.YesNo, okButtonText=OTPLocalizer.DialogYes, cancelButtonText=OTPLocalizer.DialogNo)
+        self.askGui = TTDialog.TTGlobalDialog(dialogName = self.uniqueName('askGui'),
+                                              doneEvent = self.planPartyQuestionGuiDoneEvent,
+                                              message = TTLocalizer.PartyDoYouWantToPlan, style = TTDialog.YesNo,
+                                              okButtonText = OTPLocalizer.DialogYes,
+                                              cancelButtonText = OTPLocalizer.DialogNo)
         self.askGui.hide()
 
     def initToonState(self):
@@ -78,9 +83,9 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
     def setupAvatars(self, av):
         self.ignoreAvatars()
         av.stopLookAround()
-        av.lerpLookAt(Point3(-0.5, 4, 0), time=0.5)
+        av.lerpLookAt(Point3(-0.5, 4, 0), time = 0.5)
         self.stopLookAround()
-        self.lerpLookAt(Point3(av.getPos(self)), time=0.5)
+        self.lerpLookAt(Point3(av.getPos(self)), time = 0.5)
 
     def resetPartyPerson(self):
         self.ignoreAll()
@@ -123,7 +128,8 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
             self.setupAvatars(self.av)
             if self.isInteractingWithLocalToon:
                 camera.wrtReparentTo(render)
-                camera.lerpPosHpr(-5, 9, base.localAvatar.getHeight() - 0.5, -150, -2, 0, 1, other=self, blendType='easeOut', task=self.uniqueName('lerpCamera'))
+                camera.lerpPosHpr(-5, 9, base.localAvatar.getHeight() - 0.5, -150, -2, 0, 1, other = self,
+                                  blendType = 'easeOut', task = self.uniqueName('lerpCamera'))
                 taskMgr.doMethodLater(1.0, self.popupAskGUI, self.uniqueName('popupAskGUI'))
             else:
                 self.setChatAbsolute(TTLocalizer.PartyDoYouWantToPlan, CFSpeech | CFTimeout)
@@ -141,13 +147,15 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
                 hoodId, zoneId = extraArgs
                 avId = -1
                 place = base.cr.playGame.getPlace()
-                requestStatus = {'loader': loaderId,
-                 'where': whereId,
-                 'how': 'teleportIn',
-                 'hoodId': hoodId,
-                 'zoneId': zoneId,
-                 'shardId': None,
-                 'avId': avId}
+                requestStatus = {
+                    'loader': loaderId,
+                    'where': whereId,
+                    'how': 'teleportIn',
+                    'hoodId': hoodId,
+                    'zoneId': zoneId,
+                    'shardId': None,
+                    'avId': avId
+                }
                 place.requestLeave(requestStatus)
         elif mode == NPCToons.PARTY_MOVIE_MAYBENEXTTIME:
             self.av = base.cr.doId2do.get(avId)
@@ -184,8 +192,8 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
                 wantsToPlan = 0
                 place = base.cr.playGame.getPlace()
                 if place:
-                    place.fsm.request('stopped', force=1)
-                self.teaserDialog = TeaserPanel.TeaserPanel(pageName='parties', doneFunc=self.handleOkTeaser)
+                    place.fsm.request('stopped', force = 1)
+                self.teaserDialog = TeaserPanel.TeaserPanel(pageName = 'parties', doneFunc = self.handleOkTeaser)
         else:
             wantsToPlan = 0
         self.sendUpdate('answer', [wantsToPlan])

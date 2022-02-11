@@ -1,11 +1,13 @@
 import random
 from pandac.PandaModules import VBase3, Point3
-from direct.interval.IntervalGlobal import Sequence, Wait, Func, Parallel, Track, LerpPosInterval, ProjectileInterval, SoundInterval, ActorInterval
+from direct.interval.IntervalGlobal import Sequence, Wait, Func, Parallel, Track, LerpPosInterval, \
+    ProjectileInterval, SoundInterval, ActorInterval
 from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import DistributedBattleFinal
 from toontown.suit import SuitTimings
 from toontown.toonbase import ToontownGlobals
 from toontown.battle import BattleProps
+
 
 class DistributedBattleDiners(DistributedBattleFinal.DistributedBattleFinal):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleDiners')
@@ -34,7 +36,7 @@ class DistributedBattleDiners(DistributedBattleFinal.DistributedBattleFinal):
                 camera.setPosHpr(20, -4, 7, 60, 0, 0)
             else:
                 camera.setPosHpr(-20, -4, 7, -60, 0, 0)
-        track = Sequence(Wait(0.5), done, name=name)
+        track = Sequence(Wait(0.5), done, name = name)
         track.start(ts)
         self.storeInterval(track, name)
 
@@ -85,7 +87,7 @@ class DistributedBattleDiners(DistributedBattleFinal.DistributedBattleFinal):
                 camX = 4
             camera.setPosHpr(camX, -15, 7, camHeading, 0, 0)
         done = Func(callback)
-        track = Sequence(suitTrack, done, name=name)
+        track = Sequence(suitTrack, done, name = name)
         track.start(ts)
         self.storeInterval(track, name)
         return
@@ -109,7 +111,9 @@ class DistributedBattleDiners(DistributedBattleFinal.DistributedBattleFinal):
         suit.setHpr(chairHpr)
         wayPoint = (chairPos + destPos) / 2.0
         wayPoint.setZ(wayPoint.getZ() + 20)
-        moveIval = Sequence(Func(suit.headsUp, self), Func(suit.pose, 'landing', 0), ProjectileInterval(suit, duration=flyingDur, startPos=chairPos, endPos=destPos, gravityMult=0.25), ActorInterval(suit, 'landing'))
+        moveIval = Sequence(Func(suit.headsUp, self), Func(suit.pose, 'landing', 0),
+                            ProjectileInterval(suit, duration = flyingDur, startPos = chairPos, endPos = destPos,
+                                               gravityMult = 0.25), ActorInterval(suit, 'landing'))
         if suit.prop == None:
             suit.prop = BattleProps.globalPropPool.getProp('propeller')
         propDur = suit.prop.getDuration('propeller')
@@ -118,6 +122,10 @@ class DistributedBattleDiners(DistributedBattleFinal.DistributedBattleFinal):
         spinTime = lastSpinFrame / fr
         openTime = (lastSpinFrame + 1) / fr
         suit.attachPropeller()
-        propTrack = Parallel(SoundInterval(suit.propInSound, duration=flyingDur, node=suit), Sequence(ActorInterval(suit.prop, 'propeller', constrainedLoop=1, duration=flyingDur + 1, startTime=0.0, endTime=spinTime), ActorInterval(suit.prop, 'propeller', duration=landingDur, startTime=openTime), Func(suit.detachPropeller)))
+        propTrack = Parallel(SoundInterval(suit.propInSound, duration = flyingDur, node = suit), Sequence(
+            ActorInterval(suit.prop, 'propeller', constrainedLoop = 1, duration = flyingDur + 1, startTime = 0.0,
+                          endTime = spinTime),
+            ActorInterval(suit.prop, 'propeller', duration = landingDur, startTime = openTime),
+            Func(suit.detachPropeller)))
         result = Parallel(moveIval, propTrack)
         return result

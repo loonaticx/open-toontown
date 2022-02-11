@@ -16,12 +16,13 @@ import random
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 
+
 class DistributedPatternGame(DistributedMinigame):
     phase4snd = 'phase_4/audio/sfx/'
     ButtonSoundNames = (phase4snd + 'm_match_trumpet.ogg',
-     phase4snd + 'm_match_guitar.ogg',
-     phase4snd + 'm_match_drums.ogg',
-     phase4snd + 'm_match_piano.ogg')
+                        phase4snd + 'm_match_guitar.ogg',
+                        phase4snd + 'm_match_drums.ogg',
+                        phase4snd + 'm_match_piano.ogg')
     bgm = 'phase_4/audio/bgm/m_match_bg1.ogg'
     strWatch = TTLocalizer.PatternGameWatch
     strGo = TTLocalizer.PatternGameGo
@@ -33,27 +34,38 @@ class DistributedPatternGame(DistributedMinigame):
     strPleaseWait = TTLocalizer.PatternGamePleaseWait
     strRound = TTLocalizer.PatternGameRound
     minnieAnimNames = ['up',
-     'left',
-     'down',
-     'right']
+                       'left',
+                       'down',
+                       'right']
     toonAnimNames = ['up',
-     'left',
-     'down',
-     'right',
-     'slip-forward',
-     'slip-backward',
-     'victory']
+                     'left',
+                     'down',
+                     'right',
+                     'slip-forward',
+                     'slip-backward',
+                     'victory']
 
     def __init__(self, cr):
         DistributedMinigame.__init__(self, cr)
-        self.gameFSM = ClassicFSM.ClassicFSM('DistributedPatternGame', [State.State('off', self.enterOff, self.exitOff, ['waitForServerPattern']),
-         State.State('waitForServerPattern', self.enterWaitForServerPattern, self.exitWaitForServerPattern, ['showServerPattern', 'cleanup']),
-         State.State('showServerPattern', self.enterShowServerPattern, self.exitShowServerPattern, ['getUserInput', 'playBackPatterns', 'cleanup']),
-         State.State('getUserInput', self.enterGetUserInput, self.exitGetUserInput, ['waitForPlayerPatterns', 'playBackPatterns', 'cleanup']),
-         State.State('waitForPlayerPatterns', self.enterWaitForPlayerPatterns, self.exitWaitForPlayerPatterns, ['playBackPatterns', 'cleanup', 'checkGameOver']),
-         State.State('playBackPatterns', self.enterPlayBackPatterns, self.exitPlayBackPatterns, ['checkGameOver', 'cleanup']),
-         State.State('checkGameOver', self.enterCheckGameOver, self.exitCheckGameOver, ['waitForServerPattern', 'cleanup']),
-         State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off', 'cleanup')
+        self.gameFSM = ClassicFSM.ClassicFSM('DistributedPatternGame',
+                                             [State.State('off', self.enterOff, self.exitOff, ['waitForServerPattern']),
+                                              State.State('waitForServerPattern', self.enterWaitForServerPattern,
+                                                          self.exitWaitForServerPattern,
+                                                          ['showServerPattern', 'cleanup']),
+                                              State.State('showServerPattern', self.enterShowServerPattern,
+                                                          self.exitShowServerPattern,
+                                                          ['getUserInput', 'playBackPatterns', 'cleanup']),
+                                              State.State('getUserInput', self.enterGetUserInput, self.exitGetUserInput,
+                                                          ['waitForPlayerPatterns', 'playBackPatterns', 'cleanup']),
+                                              State.State('waitForPlayerPatterns', self.enterWaitForPlayerPatterns,
+                                                          self.exitWaitForPlayerPatterns,
+                                                          ['playBackPatterns', 'cleanup', 'checkGameOver']),
+                                              State.State('playBackPatterns', self.enterPlayBackPatterns,
+                                                          self.exitPlayBackPatterns, ['checkGameOver', 'cleanup']),
+                                              State.State('checkGameOver', self.enterCheckGameOver,
+                                                          self.exitCheckGameOver, ['waitForServerPattern', 'cleanup']),
+                                              State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off',
+                                             'cleanup')
         self.addChildGameFSM(self.gameFSM)
         self.arrowColor = VBase4(1, 0, 0, 1)
         self.xColor = VBase4(1, 0, 0, 1)
@@ -91,8 +103,12 @@ class DistributedPatternGame(DistributedMinigame):
         self.perfectSound = base.loader.loadSfx('phase_4/audio/sfx/MG_win.ogg')
         self.fallSound = base.loader.loadSfx('phase_4/audio/sfx/MG_Tag_A.ogg')
         self.music = base.loader.loadMusic(self.bgm)
-        self.waitingText = DirectLabel(text=self.strPleaseWait, text_fg=(0.9, 0.9, 0.9, 1.0), frameColor=(1, 1, 1, 0), text_font=ToontownGlobals.getSignFont(), pos=(0, 0, -.78), scale=0.12)
-        self.roundText = DirectLabel(text=self.strRound % 1, text_fg=self.normalTextColor, frameColor=(1, 1, 1, 0), text_font=ToontownGlobals.getSignFont(), pos=(0.014, 0, -.84), scale=0.12)
+        self.waitingText = DirectLabel(text = self.strPleaseWait, text_fg = (0.9, 0.9, 0.9, 1.0),
+                                       frameColor = (1, 1, 1, 0), text_font = ToontownGlobals.getSignFont(),
+                                       pos = (0, 0, -.78), scale = 0.12)
+        self.roundText = DirectLabel(text = self.strRound % 1, text_fg = self.normalTextColor,
+                                     frameColor = (1, 1, 1, 0), text_font = ToontownGlobals.getSignFont(),
+                                     pos = (0.014, 0, -.84), scale = 0.12)
         self.roundText.hide()
         self.waitingText.hide()
         matchingGameGui = loader.loadModel('phase_3.5/models/gui/matching_game_gui')
@@ -110,7 +126,8 @@ class DistributedPatternGame(DistributedMinigame):
             self.xs[x].hide()
 
         self.statusBalls = []
-        self.totalMoves = PatternGameGlobals.INITIAL_ROUND_LENGTH + PatternGameGlobals.ROUND_LENGTH_INCREMENT * (PatternGameGlobals.NUM_ROUNDS - 1)
+        self.totalMoves = PatternGameGlobals.INITIAL_ROUND_LENGTH + PatternGameGlobals.ROUND_LENGTH_INCREMENT * (
+                    PatternGameGlobals.NUM_ROUNDS - 1)
         for x in range(0, 4):
             self.statusBalls.append([None] * self.totalMoves)
 
@@ -219,11 +236,13 @@ class DistributedPatternGame(DistributedMinigame):
         self.toonAnimSpeedMult = {}
         for anim in self.minnieAnimNames:
             numFrames = self.minnie.getNumFrames(anim)
-            self.minnieAnimSpeedMult[anim] = float(self.__numPingPongFrames(numFrames)) / float(self.stdNumDanceStepPingPongFrames)
+            self.minnieAnimSpeedMult[anim] = float(self.__numPingPongFrames(numFrames)) / float(
+                self.stdNumDanceStepPingPongFrames)
 
         for anim in self.toonAnimNames:
             numFrames = self.lt.getNumFrames(anim)
-            self.toonAnimSpeedMult[anim] = float(self.__numPingPongFrames(numFrames)) / float(self.stdNumDanceStepPingPongFrames)
+            self.toonAnimSpeedMult[anim] = float(self.__numPingPongFrames(numFrames)) / float(
+                self.stdNumDanceStepPingPongFrames)
 
         lt = self.lt
         lt.reparentTo(render)
@@ -270,7 +289,7 @@ class DistributedPatternGame(DistributedMinigame):
             self.arrowDict['m'][k].setScale(4)
             self.arrowDict['m'][k].setPos(0, 0, 1.7)
 
-        base.playMusic(self.music, looping=1, volume=1)
+        base.playMusic(self.music, looping = 1, volume = 1)
 
     def offstage(self):
         self.notify.debug('offstage')
@@ -383,7 +402,7 @@ class DistributedPatternGame(DistributedMinigame):
             distance = Vec3(endPos - lastPos).length()
             duration = distance / walkSpeed
             toon.setPos(endPos)
-            track.append(LerpPosInterval(toon, duration=duration, pos=Point3(endPos), startPos=Point3(lastPos)))
+            track.append(LerpPosInterval(toon, duration = duration, pos = Point3(endPos), startPos = Point3(lastPos)))
 
         if lookAtCam:
             saveHpr = toon.getHpr()
@@ -404,11 +423,14 @@ class DistributedPatternGame(DistributedMinigame):
 
     def getDanceStepDuration(self):
         numFrames = self.stdNumDanceStepPingPongFrames
-        return numFrames / abs(self.animPlayRate * self.minnieAnimSpeedMult[self.minnieAnimNames[0]] * self.minnie.getFrameRate(self.minnieAnimNames[0]))
+        return numFrames / abs(
+            self.animPlayRate * self.minnieAnimSpeedMult[self.minnieAnimNames[0]] * self.minnie.getFrameRate(
+                self.minnieAnimNames[0]))
 
     def __getDanceStepAnimTrack(self, toon, anim, speedScale):
         numFrames = toon.getNumFrames(anim)
-        return Sequence(Func(toon.pingpong, anim, fromFrame=0, toFrame=numFrames - 1), Wait(self.getDanceStepDuration()))
+        return Sequence(Func(toon.pingpong, anim, fromFrame = 0, toFrame = numFrames - 1),
+                        Wait(self.getDanceStepDuration()))
 
     def __getMinnieDanceStepAnimTrack(self, minnie, direction):
         animName = self.minnieAnimNames[direction]
@@ -453,14 +475,14 @@ class DistributedPatternGame(DistributedMinigame):
     def returnCelebrationIntervals(self, turnOn):
         ri = []
         if turnOn:
-            ri.append(ActorInterval(actor=self.lt, animName='victory', duration=5.5))
+            ri.append(ActorInterval(actor = self.lt, animName = 'victory', duration = 5.5))
         else:
             ri.append(Func(self.lt.loop, 'neutral'))
         for avId in self.remoteAvIdList:
             toon = self.getAvatar(avId)
             if toon:
                 if turnOn:
-                    ri.append(ActorInterval(actor=toon, animName='victory', duration=5.5))
+                    ri.append(ActorInterval(actor = toon, animName = 'victory', duration = 5.5))
                 else:
                     ri.append(Func(toon.loop, 'neutral'))
 
@@ -502,7 +524,8 @@ class DistributedPatternGame(DistributedMinigame):
         if speedy:
             track = Sequence(Func(self.changeArrow, toonID, index), Wait(wait))
         else:
-            track = Sequence(Func(self.changeArrow, toonID, index), Wait(wait), LerpColorInterval(self.arrowDict[toonID][0], d, self.trans, self.opaq))
+            track = Sequence(Func(self.changeArrow, toonID, index), Wait(wait),
+                             LerpColorInterval(self.arrowDict[toonID][0], d, self.trans, self.opaq))
         return track
 
     def getDanceSequenceAnimTrack(self, toon, pattern):
@@ -585,7 +608,9 @@ class DistributedPatternGame(DistributedMinigame):
         danceTrack = self.getDanceSequenceAnimTrack(self.minnie, self.__serverPattern)
         arrowTrack = self.getDanceArrowAnimTrack('m', self.__serverPattern, 0)
         soundTrack = self.getDanceSequenceButtonSoundTrack(self.__serverPattern)
-        self.showTrack = Sequence(Func(self.__setMinnieChat, text, 1), Wait(0.5), Parallel(danceTrack, soundTrack, arrowTrack), Wait(0.2), Func(self.__clearMinnieChat), Func(self.gameFSM.request, 'getUserInput'))
+        self.showTrack = Sequence(Func(self.__setMinnieChat, text, 1), Wait(0.5),
+                                  Parallel(danceTrack, soundTrack, arrowTrack), Wait(0.2), Func(self.__clearMinnieChat),
+                                  Func(self.gameFSM.request, 'getUserInput'))
         self.showTrack.start()
 
     def exitShowServerPattern(self):
@@ -612,13 +637,13 @@ class DistributedPatternGame(DistributedMinigame):
                 self.__releaseHandler(index)
 
             self.arrowKeys.setPressHandlers([lambda self = self, keyPress = keyPress: keyPress(self, 0),
-             lambda self = self, keyPress = keyPress: keyPress(self, 2),
-             lambda self = self, keyPress = keyPress: keyPress(self, 3),
-             lambda self = self, keyPress = keyPress: keyPress(self, 1)])
+                                             lambda self = self, keyPress = keyPress: keyPress(self, 2),
+                                             lambda self = self, keyPress = keyPress: keyPress(self, 3),
+                                             lambda self = self, keyPress = keyPress: keyPress(self, 1)])
             self.arrowKeys.setReleaseHandlers([lambda self = self, keyRelease = keyRelease: keyRelease(self, 0),
-             lambda self = self, keyRelease = keyRelease: keyRelease(self, 2),
-             lambda self = self, keyRelease = keyRelease: keyRelease(self, 3),
-             lambda self = self, keyRelease = keyRelease: keyRelease(self, 1)])
+                                               lambda self = self, keyRelease = keyRelease: keyRelease(self, 2),
+                                               lambda self = self, keyRelease = keyRelease: keyRelease(self, 3),
+                                               lambda self = self, keyRelease = keyRelease: keyRelease(self, 1)])
 
         self.__localPattern = []
         self.__otherToonIndex.clear()
@@ -627,7 +652,12 @@ class DistributedPatternGame(DistributedMinigame):
             self.showStatusBalls(avId)
             self.__otherToonIndex[avId] = 0
 
-        self.setupTrack = Sequence(Func(self.__setMinnieChat, self.strGo, 0), Func(self.setText, self.roundText, TTLocalizer.PatternGameGo), Func(self.roundText.setScale, 0.3), Func(enableKeys), Func(startTimer), Wait(0.8), Func(self.__clearMinnieChat), Func(self.setText, self.roundText, ' '), Func(self.roundText.setScale, 0.12), Func(self.setTextFG, self.roundText, self.normalTextColor))
+        self.setupTrack = Sequence(Func(self.__setMinnieChat, self.strGo, 0),
+                                   Func(self.setText, self.roundText, TTLocalizer.PatternGameGo),
+                                   Func(self.roundText.setScale, 0.3), Func(enableKeys), Func(startTimer), Wait(0.8),
+                                   Func(self.__clearMinnieChat), Func(self.setText, self.roundText, ' '),
+                                   Func(self.roundText.setScale, 0.12),
+                                   Func(self.setTextFG, self.roundText, self.normalTextColor))
         self.setupTrack.start()
         return
 
@@ -653,7 +683,10 @@ class DistributedPatternGame(DistributedMinigame):
                 acts = ['slip-forward', 'slip-backward']
                 ag = random.choice(acts)
                 self.arrowDict[avId][0].hide()
-                self.animTracks[avId] = Sequence(Func(self.showX, avId), Func(self.colorStatusBall, avId, self.__otherToonIndex[avId], 0), ActorInterval(actor=av, animName=ag, duration=2.35), Func(av.loop, 'neutral'), Func(self.hideX, avId))
+                self.animTracks[avId] = Sequence(Func(self.showX, avId),
+                                                 Func(self.colorStatusBall, avId, self.__otherToonIndex[avId], 0),
+                                                 ActorInterval(actor = av, animName = ag, duration = 2.35),
+                                                 Func(av.loop, 'neutral'), Func(self.hideX, avId))
             else:
                 self.colorStatusBall(avId, self.__otherToonIndex[avId], 1)
                 arrowTrack = self.getDanceArrowAnimTrack(avId, [index], 1)
@@ -675,7 +708,10 @@ class DistributedPatternGame(DistributedMinigame):
             badd = 1
             acts = ['slip-forward', 'slip-backward']
             ag = random.choice(acts)
-            self.animTracks[self.localAvId] = Sequence(Func(self.showX, 'lt'), Func(self.colorStatusBall, 'lt', len(self.__localPattern), 0), ActorInterval(actor=self.lt, animName=ag, duration=2.35), Func(self.lt.loop, 'neutral'), Func(self.hideX, 'lt'))
+            self.animTracks[self.localAvId] = Sequence(Func(self.showX, 'lt'),
+                                                       Func(self.colorStatusBall, 'lt', len(self.__localPattern), 0),
+                                                       ActorInterval(actor = self.lt, animName = ag, duration = 2.35),
+                                                       Func(self.lt.loop, 'neutral'), Func(self.hideX, 'lt'))
             self.arrowDict['lt'][0].hide()
             base.playSfx(self.fallSound)
         else:
@@ -693,7 +729,9 @@ class DistributedPatternGame(DistributedMinigame):
     def __doneGettingInput(self, pattern):
         self.arrowKeys.setPressHandlers(self.arrowKeys.NULL_HANDLERS)
         self.currentTotalTime = globalClock.getFrameTime() - self.currentStartTime
-        self.proceedTrack = Sequence(Wait(self.getDanceStepDuration()), Func(self.sendUpdate, 'reportPlayerPattern', [pattern, self.currentTotalTime]), Func(self.gameFSM.request, 'waitForPlayerPatterns'))
+        self.proceedTrack = Sequence(Wait(self.getDanceStepDuration()),
+                                     Func(self.sendUpdate, 'reportPlayerPattern', [pattern, self.currentTotalTime]),
+                                     Func(self.gameFSM.request, 'waitForPlayerPatterns'))
         self.proceedTrack.start()
 
     def exitGetUserInput(self):
@@ -716,12 +754,14 @@ class DistributedPatternGame(DistributedMinigame):
         if not self.hasLocalToon:
             return
         self.fastestAvId = fastestAvId
-        self.notify.debug('setPlayerPatterns:' + ' pattern1:' + str(pattern1) + ' pattern2:' + str(pattern2) + ' pattern3:' + str(pattern3) + ' pattern4:' + str(pattern4))
+        self.notify.debug(
+            'setPlayerPatterns:' + ' pattern1:' + str(pattern1) + ' pattern2:' + str(pattern2) + ' pattern3:' + str(
+                pattern3) + ' pattern4:' + str(pattern4))
         self.playerPatterns = {}
         patterns = [pattern1,
-         pattern2,
-         pattern3,
-         pattern4]
+                    pattern2,
+                    pattern3,
+                    pattern4]
         for i in range(len(self.avIdList)):
             self.playerPatterns[self.avIdList[i]] = patterns[i]
 
@@ -738,7 +778,8 @@ class DistributedPatternGame(DistributedMinigame):
                 self.roundText['text'] = TTLocalizer.PatternGameFastest
             else:
                 self.roundText['text'] = TTLocalizer.PatternGameFaster
-            jumpTrack = Sequence(ActorInterval(actor=self.lt, animName='jump', duration=1.7), Func(self.lt.loop, 'neutral'))
+            jumpTrack = Sequence(ActorInterval(actor = self.lt, animName = 'jump', duration = 1.7),
+                                 Func(self.lt.loop, 'neutral'))
         elif self.fastestAvId == 0:
             if self.round == PatternGameGlobals.NUM_ROUNDS:
                 self.roundText['text'] = ' '
@@ -753,7 +794,7 @@ class DistributedPatternGame(DistributedMinigame):
         else:
             self.roundText.setScale(0.08)
             av = self.getAvatar(self.fastestAvId)
-            jumpTrack = Sequence(ActorInterval(actor=av, animName='jump', duration=1.7), Func(av.loop, 'neutral'))
+            jumpTrack = Sequence(ActorInterval(actor = av, animName = 'jump', duration = 1.7), Func(av.loop, 'neutral'))
             if self.numPlayers != 2:
                 rewardStr = TTLocalizer.PatternGameOtherFastest
             else:
@@ -773,7 +814,8 @@ class DistributedPatternGame(DistributedMinigame):
             text = self.strWrong
         soundTrack = Sequence(Func(base.playSfx, sound), Wait(1.6))
         textTrack = Sequence(Wait(0.2), Func(self.__setMinnieChat, text, 0), Wait(1.3), Func(self.__clearMinnieChat))
-        self.playBackPatternsTrack = Sequence(Parallel(soundTrack, textTrack, jumpTrack), Func(self.gameFSM.request, 'checkGameOver'))
+        self.playBackPatternsTrack = Sequence(Parallel(soundTrack, textTrack, jumpTrack),
+                                              Func(self.gameFSM.request, 'checkGameOver'))
         self.playBackPatternsTrack.start()
 
     def exitPlayBackPatterns(self):
@@ -796,9 +838,13 @@ class DistributedPatternGame(DistributedMinigame):
                 delay = 2.2
             if self.celebrate:
                 text = TTLocalizer.PatternGameImprov
-                self.__winTrack = Sequence(Func(self.__setMinnieChat, text, 1), Func(base.playSfx, self.perfectSound), Sequence(self.returnCelebrationIntervals(1)), Sequence(self.returnCelebrationIntervals(0)), Func(self.__clearMinnieChat), Func(self.gameOver))
+                self.__winTrack = Sequence(Func(self.__setMinnieChat, text, 1), Func(base.playSfx, self.perfectSound),
+                                           Sequence(self.returnCelebrationIntervals(1)),
+                                           Sequence(self.returnCelebrationIntervals(0)), Func(self.__clearMinnieChat),
+                                           Func(self.gameOver))
             else:
-                self.__winTrack = Sequence(Func(self.__setMinnieChat, text, 1), Func(base.playSfx, sound), Wait(delay), Func(self.__clearMinnieChat), Func(self.gameOver))
+                self.__winTrack = Sequence(Func(self.__setMinnieChat, text, 1), Func(base.playSfx, sound), Wait(delay),
+                                           Func(self.__clearMinnieChat), Func(self.gameOver))
             self.__winTrack.start()
         return
 

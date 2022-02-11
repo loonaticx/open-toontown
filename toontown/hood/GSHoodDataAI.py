@@ -6,13 +6,15 @@ from pandac.PandaModules import *
 from panda3d.toontown import *
 from toontown.racing.RaceGlobals import *
 from toontown.classicchars import DistributedGoofySpeedwayAI
+
 if __debug__:
     import pdb
+
 
 class GSHoodDataAI(HoodDataAI.HoodDataAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('GSHoodDataAI')
 
-    def __init__(self, air, zoneId=None):
+    def __init__(self, air, zoneId = None):
         hoodId = ToontownGlobals.GoofySpeedway
         if zoneId == None:
             zoneId = hoodId
@@ -65,7 +67,7 @@ class GSHoodDataAI(HoodDataAI.HoodDataAI):
 
                 self.addDistObj(distObj)
 
-    def __cycleLeaderBoards(self, task=None):
+    def __cycleLeaderBoards(self, task = None):
         messenger.send('GS_LeaderBoardSwap' + str(self.zoneId))
         taskMgr.doMethodLater(self.cycleDuration, self.__cycleLeaderBoards, str(self) + '_leaderBoardSwitch')
 
@@ -82,7 +84,8 @@ class GSHoodDataAI(HoodDataAI.HoodDataAI):
             if isinstance(dnaData, DNAData):
                 area = ZoneUtil.getCanonicalZoneId(zoneId)
                 foundRacingPads, foundRacingPadGroups = self.air.findRacingPads(dnaData, zoneId, area)
-                foundViewingPads, foundViewingPadGroups = self.air.findRacingPads(dnaData, zoneId, area, type='viewing_pad')
+                foundViewingPads, foundViewingPadGroups = self.air.findRacingPads(dnaData, zoneId, area,
+                                                                                  type = 'viewing_pad')
                 self.racingPads += foundRacingPads
                 self.foundRacingPadGroups += foundRacingPadGroups
                 self.viewingPads += foundViewingPads
@@ -121,4 +124,7 @@ class GSHoodDataAI(HoodDataAI.HoodDataAI):
             if sb == startBlock:
                 if not sb.kartPad:
                     self.notify.warning('%s is in a broken state' % str(self))
-                    self.notify.warning('StartingBlocks: %d, RacePads: %s, ViewPads: %s, RacePadGroups: %s, ViewPadGroups: %s' % (len(self.startingBlocks), str(self.racingPads), str(self.viewingPads), str(self.foundRacingPadGroups), str(self.foundViewingPadGroups)))
+                    self.notify.warning(
+                        'StartingBlocks: %d, RacePads: %s, ViewPads: %s, RacePadGroups: %s, ViewPadGroups: %s' % (
+                        len(self.startingBlocks), str(self.racingPads), str(self.viewingPads),
+                        str(self.foundRacingPadGroups), str(self.foundViewingPadGroups)))

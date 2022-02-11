@@ -16,6 +16,7 @@ from toontown.hood import SkyUtil
 from toontown.parties import PartyPlanner
 from toontown.parties.DistributedParty import DistributedParty
 
+
 class Party(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('Party')
 
@@ -27,43 +28,44 @@ class Party(Place.Place):
         self.loader = loader
         self.musicShouldPlay = False
         self.partyPlannerDoneEvent = 'partyPlannerGuiDone'
-        self.fsm = ClassicFSM.ClassicFSM('Party', [State.State('init', self.enterInit, self.exitInit, ['final', 'teleportIn', 'walk']),
-         State.State('walk', self.enterWalk, self.exitWalk, ['final',
-          'sit',
-          'stickerBook',
-          'options',
-          'quest',
-          'fishing',
-          'stopped',
-          'DFA',
-          'trialerFA',
-          'push',
-          'activity']),
-         State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'teleportOut']),
-         State.State('sit', self.enterSit, self.exitSit, ['walk']),
-         State.State('push', self.enterPush, self.exitPush, ['walk']),
-         State.State('partyPlanning', self.enterPartyPlanning, self.exitPartyPlanning, ['DFA', 'teleportOut']),
-         State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
-          'sit',
-          'quest',
-          'fishing',
-          'stopped',
-          'activity',
-          'push',
-          'DFA',
-          'trialerFA']),
-         State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk', 'partyPlanning']),
-         State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'walk', 'final']),
-         State.State('died', self.enterDied, self.exitDied, ['walk', 'final']),
-         State.State('final', self.enterFinal, self.exitFinal, ['teleportIn']),
-         State.State('quest', self.enterQuest, self.exitQuest, ['walk']),
-         State.State('fishing', self.enterFishing, self.exitFishing, ['walk', 'stopped']),
-         State.State('activity', self.enterActivity, self.exitActivity, ['walk', 'stopped']),
-         State.State('stopped', self.enterStopped, self.exitStopped, ['walk']),
-         State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
-         State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk'])], 'init', 'final')
+        self.fsm = ClassicFSM.ClassicFSM('Party', [
+            State.State('init', self.enterInit, self.exitInit, ['final', 'teleportIn', 'walk']),
+            State.State('walk', self.enterWalk, self.exitWalk, ['final',
+                                                                'sit',
+                                                                'stickerBook',
+                                                                'options',
+                                                                'quest',
+                                                                'fishing',
+                                                                'stopped',
+                                                                'DFA',
+                                                                'trialerFA',
+                                                                'push',
+                                                                'activity']),
+            State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'teleportOut']),
+            State.State('sit', self.enterSit, self.exitSit, ['walk']),
+            State.State('push', self.enterPush, self.exitPush, ['walk']),
+            State.State('partyPlanning', self.enterPartyPlanning, self.exitPartyPlanning, ['DFA', 'teleportOut']),
+            State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
+                                                                                     'sit',
+                                                                                     'quest',
+                                                                                     'fishing',
+                                                                                     'stopped',
+                                                                                     'activity',
+                                                                                     'push',
+                                                                                     'DFA',
+                                                                                     'trialerFA']),
+            State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk', 'partyPlanning']),
+            State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'walk', 'final']),
+            State.State('died', self.enterDied, self.exitDied, ['walk', 'final']),
+            State.State('final', self.enterFinal, self.exitFinal, ['teleportIn']),
+            State.State('quest', self.enterQuest, self.exitQuest, ['walk']),
+            State.State('fishing', self.enterFishing, self.exitFishing, ['walk', 'stopped']),
+            State.State('activity', self.enterActivity, self.exitActivity, ['walk', 'stopped']),
+            State.State('stopped', self.enterStopped, self.exitStopped, ['walk']),
+            State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
+            State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
+            State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
+            State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk'])], 'init', 'final')
         self.fsm.enterInitialState()
         self.doneEvent = doneEvent
         self.parentFSMState = parentFSMState
@@ -114,7 +116,7 @@ class Party(Place.Place):
 
     def playMusic(self):
         if not hasattr(base, 'partyHasJukebox') or not base.partyHasJukebox:
-            base.playMusic(self.loader.music, looping=1, volume=1)
+            base.playMusic(self.loader.music, looping = 1, volume = 1)
 
     def exit(self):
         base.localAvatar.stopChat()
@@ -155,13 +157,15 @@ class Party(Place.Place):
         del self.partyPlanner
         messenger.send('deallocateZoneIdFromPlannedParty', [base.localAvatar.zoneId])
         hoodId = base.localAvatar.lastHood
-        self.fsm.request('teleportOut', [{'avId': -1,
-          'zoneId': hoodId,
-          'shardId': None,
-          'how': 'teleportIn',
-          'hoodId': hoodId,
-          'loader': 'safeZoneLoader',
-          'where': 'playground'}])
+        self.fsm.request('teleportOut', [{
+                                             'avId': -1,
+                                             'zoneId': hoodId,
+                                             'shardId': None,
+                                             'how': 'teleportIn',
+                                             'hoodId': hoodId,
+                                             'loader': 'safeZoneLoader',
+                                             'where': 'playground'
+                                         }])
         return
 
     def exitPartyPlanning(self):
@@ -197,7 +201,8 @@ class Party(Place.Place):
         if hasattr(base, 'distributedParty') and base.distributedParty:
             self.setPartyState(base.distributedParty.getPartyState())
         if hasattr(base.localAvatar, 'aboutToPlanParty') and base.localAvatar.aboutToPlanParty:
-            self._partyTiToken = self.addSetZoneCompleteCallback(Functor(self._partyTeleportInPostZoneComplete, requestStatus), 150)
+            self._partyTiToken = self.addSetZoneCompleteCallback(
+                Functor(self._partyTeleportInPostZoneComplete, requestStatus), 150)
 
     def _partyTeleportInPostZoneComplete(self, requestStatus):
         self.nextState = 'partyPlanning'
@@ -274,11 +279,15 @@ class Party(Place.Place):
     def handleTeleportQuery(self, fromAvatar, toAvatar):
         if self.isPartyEnding:
             teleportNotify.debug('party ending, sending teleportResponse')
-            fromAvatar.d_teleportResponse(toAvatar.doId, 0, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId())
+            fromAvatar.d_teleportResponse(toAvatar.doId, 0, toAvatar.defaultShard, base.cr.playGame.getPlaceId(),
+                                          self.getZoneId())
         elif base.config.GetBool('want-tptrack', False):
             if toAvatar == localAvatar:
-                localAvatar.doTeleportResponse(fromAvatar, toAvatar, toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId(), fromAvatar.doId)
+                localAvatar.doTeleportResponse(fromAvatar, toAvatar, toAvatar.doId, 1, toAvatar.defaultShard,
+                                               base.cr.playGame.getPlaceId(), self.getZoneId(), fromAvatar.doId)
             else:
-                self.notify.warning('handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId, localAvatar.doId))
+                self.notify.warning(
+                    'handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId, localAvatar.doId))
         else:
-            fromAvatar.d_teleportResponse(toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId())
+            fromAvatar.d_teleportResponse(toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(),
+                                          self.getZoneId())

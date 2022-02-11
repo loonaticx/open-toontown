@@ -15,28 +15,31 @@ from direct.task import Task
 from toontown.distributed import DelayDelete
 from direct.showbase import PythonUtil
 
+
 class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedClubElevator')
     JumpOutOffsets = ((3, 5, 0),
-     (1.5, 4, 0),
-     (-1.5, 4, 0),
-     (-3, 4, 0))
-    defaultTransitions = {'Off': ['Opening', 'Closed'],
-     'Opening': ['WaitEmpty',
-                 'WaitCountdown',
-                 'Opening',
-                 'Closing'],
-     'WaitEmpty': ['WaitCountdown', 'Closing', 'Off'],
-     'WaitCountdown': ['WaitEmpty',
-                       'AllAboard',
-                       'Closing',
-                       'WaitCountdown'],
-     'AllAboard': ['WaitEmpty', 'Closing'],
-     'Closing': ['Closed',
-                 'WaitEmpty',
-                 'Closing',
-                 'Opening'],
-     'Closed': ['Opening']}
+                      (1.5, 4, 0),
+                      (-1.5, 4, 0),
+                      (-3, 4, 0))
+    defaultTransitions = {
+        'Off': ['Opening', 'Closed'],
+        'Opening': ['WaitEmpty',
+                    'WaitCountdown',
+                    'Opening',
+                    'Closing'],
+        'WaitEmpty': ['WaitCountdown', 'Closing', 'Off'],
+        'WaitCountdown': ['WaitEmpty',
+                          'AllAboard',
+                          'Closing',
+                          'WaitCountdown'],
+        'AllAboard': ['WaitEmpty', 'Closing'],
+        'Closing': ['Closed',
+                    'WaitEmpty',
+                    'Closing',
+                    'Opening'],
+        'Closed': ['Opening']
+    }
     id = 0
 
     def __init__(self, cr):
@@ -97,10 +100,17 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
         self.endPos.setZ(0.5)
         dist = Vec3(self.endPos - self.enteringPos).length()
         wheelAngle = dist / (4.8 * 1.4 * math.pi) * 360
-        self.kartEnterAnimateInterval = Parallel(LerpHprInterval(self.wheels[0], 5.0, Vec3(self.wheels[0].getH(), wheelAngle, self.wheels[0].getR())), LerpHprInterval(self.wheels[1], 5.0, Vec3(self.wheels[1].getH(), wheelAngle, self.wheels[1].getR())), LerpHprInterval(self.wheels[2], 5.0, Vec3(self.wheels[2].getH(), wheelAngle, self.wheels[2].getR())), LerpHprInterval(self.wheels[3], 5.0, Vec3(self.wheels[3].getH(), wheelAngle, self.wheels[3].getR())), name='CogKartAnimate')
-        trolleyExitTrack1 = Parallel(LerpPosInterval(self.golfKart, 5.0, self.endPos), self.kartEnterAnimateInterval, name='CogKartExitTrack')
+        self.kartEnterAnimateInterval = Parallel(
+            LerpHprInterval(self.wheels[0], 5.0, Vec3(self.wheels[0].getH(), wheelAngle, self.wheels[0].getR())),
+            LerpHprInterval(self.wheels[1], 5.0, Vec3(self.wheels[1].getH(), wheelAngle, self.wheels[1].getR())),
+            LerpHprInterval(self.wheels[2], 5.0, Vec3(self.wheels[2].getH(), wheelAngle, self.wheels[2].getR())),
+            LerpHprInterval(self.wheels[3], 5.0, Vec3(self.wheels[3].getH(), wheelAngle, self.wheels[3].getR())),
+            name = 'CogKartAnimate')
+        trolleyExitTrack1 = Parallel(LerpPosInterval(self.golfKart, 5.0, self.endPos), self.kartEnterAnimateInterval,
+                                     name = 'CogKartExitTrack')
         self.trolleyExitTrack = Sequence(trolleyExitTrack1)
-        self.trolleyEnterTrack = Sequence(LerpPosInterval(self.golfKart, 5.0, self.startingPos, startPos=self.enteringPos))
+        self.trolleyEnterTrack = Sequence(
+            LerpPosInterval(self.golfKart, 5.0, self.startingPos, startPos = self.enteringPos))
         self.closeDoors = Sequence(self.trolleyExitTrack, Func(self.onDoorCloseFinish))
         self.openDoors = Sequence(self.trolleyEnterTrack)
         self.setPos(0, 0, 0)
@@ -126,7 +136,8 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
     def setLatch(self, markerId):
         self.notify.info('Setting latch')
         marker = self.cr.doId2do.get(markerId)
-        self.latchRequest = self.cr.relatedObjectMgr.requestObjects([markerId], allCallback=self.set2Latch, timeout=5)
+        self.latchRequest = self.cr.relatedObjectMgr.requestObjects([markerId], allCallback = self.set2Latch,
+                                                                    timeout = 5)
         self.latch = markerId
 
     def set2Latch(self, taskMgrFooler = None):
@@ -238,13 +249,15 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
     def kickToonsOut(self):
         if not self.localToonOnBoard:
             zoneId = self.cr.playGame.hood.hoodId
-            self.cr.playGame.getPlace().fsm.request('teleportOut', [{'loader': ZoneUtil.getLoaderName(zoneId),
-              'where': ZoneUtil.getToonWhereName(zoneId),
-              'how': 'teleportIn',
-              'hoodId': zoneId,
-              'zoneId': zoneId,
-              'shardId': None,
-              'avId': -1}])
+            self.cr.playGame.getPlace().fsm.request('teleportOut', [{
+                                                                        'loader': ZoneUtil.getLoaderName(zoneId),
+                                                                        'where': ZoneUtil.getToonWhereName(zoneId),
+                                                                        'how': 'teleportIn',
+                                                                        'hoodId': zoneId,
+                                                                        'zoneId': zoneId,
+                                                                        'shardId': None,
+                                                                        'avId': -1
+                                                                    }])
         return
 
     def exitClosing(self):
@@ -356,11 +369,13 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
     def setLawOfficeInteriorZone(self, zoneId):
         if self.localToonOnBoard:
             hoodId = self.cr.playGame.hood.hoodId
-            doneStatus = {'loader': 'cogHQLoader',
-             'where': 'factoryInterior',
-             'how': 'teleportIn',
-             'zoneId': zoneId,
-             'hoodId': hoodId}
+            doneStatus = {
+                'loader': 'cogHQLoader',
+                'where': 'factoryInterior',
+                'how': 'teleportIn',
+                'zoneId': zoneId,
+                'hoodId': hoodId
+            }
             self.cr.playGame.getPlace().elevator.signalDone(doneStatus)
 
     def getElevatorModel(self):
@@ -382,7 +397,7 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
             pass
         elif avId not in self.cr.doId2do:
             func = PythonUtil.Functor(self.gotToon, index, avId)
-            self.toonRequests[index] = self.cr.relatedObjectMgr.requestObjects([avId], allCallback=func)
+            self.toonRequests[index] = self.cr.relatedObjectMgr.requestObjects([avId], allCallback = func)
         elif not self.isSetup:
             self.deferredSlots.append((index, avId))
         else:
@@ -396,7 +411,8 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
             toon.wrtReparentTo(self.golfKart)
             sitStartDuration = toon.getDuration('sit-start')
             jumpTrack = self.generateToonJumpTrack(toon, index)
-            track = Sequence(jumpTrack, Func(toon.setAnimState, 'Sit', 1.0), Func(self.clearToonTrack, avId), name=toon.uniqueName('fillElevator'), autoPause=1)
+            track = Sequence(jumpTrack, Func(toon.setAnimState, 'Sit', 1.0), Func(self.clearToonTrack, avId),
+                             name = toon.uniqueName('fillElevator'), autoPause = 1)
             track.delayDelete = DelayDelete.DelayDelete(toon, 'fillSlot')
             self.storeToonTrack(avId, track)
             track.start()
@@ -438,7 +454,9 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
                     self.notify.warning('getJumpHpr invalid golfKart, returning (0,0,0)')
                 return hpr
 
-            toonJumpTrack = Parallel(ActorInterval(av, 'jump'), Sequence(Wait(0.43), Parallel(LerpHprInterval(av, hpr=getJumpHpr, duration=0.9), ProjectileInterval(av, endPos=getJumpDest, duration=0.9))))
+            toonJumpTrack = Parallel(ActorInterval(av, 'jump'), Sequence(Wait(0.43), Parallel(
+                LerpHprInterval(av, hpr = getJumpHpr, duration = 0.9),
+                ProjectileInterval(av, endPos = getJumpDest, duration = 0.9))))
             return toonJumpTrack
 
         def getToonSitTrack(av):
@@ -447,7 +465,8 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
 
         toonJumpTrack = getToonJumpTrack(av, seatIndex)
         toonSitTrack = getToonSitTrack(av)
-        jumpTrack = Sequence(Parallel(toonJumpTrack, Sequence(Wait(1), toonSitTrack)), Func(av.wrtReparentTo, self.golfKart))
+        jumpTrack = Sequence(Parallel(toonJumpTrack, Sequence(Wait(1), toonSitTrack)),
+                             Func(av.wrtReparentTo, self.golfKart))
         return jumpTrack
 
     def emptySlot(self, index, avId, bailFlag, timestamp):
@@ -470,7 +489,8 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
             toon.stopSmooth()
             sitStartDuration = toon.getDuration('sit-start')
             jumpOutTrack = self.generateToonReverseJumpTrack(toon, index)
-            track = Sequence(jumpOutTrack, Func(self.clearToonTrack, avId), Func(self.notifyToonOffElevator, toon), name=toon.uniqueName('emptyElevator'), autoPause=1)
+            track = Sequence(jumpOutTrack, Func(self.clearToonTrack, avId), Func(self.notifyToonOffElevator, toon),
+                             name = toon.uniqueName('emptyElevator'), autoPause = 1)
             track.delayDelete = DelayDelete.DelayDelete(toon, 'ClubElevator.emptySlot')
             self.storeToonTrack(avId, track)
             track.start()
@@ -485,7 +505,6 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
         self.notify.debug('av.getH() = %s' % av.getH())
 
         def getToonJumpTrack(av, destNode):
-
             def getJumpDest(av = av, node = destNode):
                 dest = node.getPos(av.getParent())
                 dest += Vec3(*self.JumpOutOffsets[seatIndex])
@@ -498,7 +517,8 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
                 hpr.setX(angle)
                 return hpr
 
-            toonJumpTrack = Parallel(ActorInterval(av, 'jump'), Sequence(Wait(0.1), Parallel(ProjectileInterval(av, endPos=getJumpDest, duration=0.9))))
+            toonJumpTrack = Parallel(ActorInterval(av, 'jump'), Sequence(Wait(0.1), Parallel(
+                ProjectileInterval(av, endPos = getJumpDest, duration = 0.9))))
             return toonJumpTrack
 
         toonJumpTrack = getToonJumpTrack(av, self.golfKart)

@@ -5,11 +5,13 @@ from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
 from toontown.parties.activityFSMs import TeamActivityFSM
 from toontown.parties.TeamActivityGui import TeamActivityGui
 
+
 class DistributedPartyTeamActivity(DistributedPartyActivity):
     notify = directNotify.newCategory('DistributedPartyTeamActivity')
 
     def __init__(self, cr, activityId, startDelay = PartyGlobals.TeamActivityStartDelay, balanceTeams = False):
-        DistributedPartyActivity.__init__(self, cr, activityId, PartyGlobals.ActivityTypes.GuestInitiated, wantRewardGui=True)
+        DistributedPartyActivity.__init__(self, cr, activityId, PartyGlobals.ActivityTypes.GuestInitiated,
+                                          wantRewardGui = True)
         self.notify.debug('__init__')
         self.toonIds = ([], [])
         self.isLocalToonPlaying = False
@@ -108,10 +110,11 @@ class DistributedPartyTeamActivity(DistributedPartyActivity):
     def switchTeamRequestDenied(self, reason):
         self.notify.debug('switchTeamRequestDenied')
         if reason == PartyGlobals.DenialReasons.Full:
-            self.showMessage(TTLocalizer.PartyTeamActivityTeamFull, endState='activity')
+            self.showMessage(TTLocalizer.PartyTeamActivityTeamFull, endState = 'activity')
         elif reason == PartyGlobals.DenialReasons.Default:
-            self.showMessage(TTLocalizer.PartyTeamActivitySwitchDenied, endState='activity')
-        if self.isLocalToonPlaying and (self.isState('WaitToStart') or self.isState('WaitForEnough')) and self._canSwitchTeams:
+            self.showMessage(TTLocalizer.PartyTeamActivitySwitchDenied, endState = 'activity')
+        if self.isLocalToonPlaying and (
+                self.isState('WaitToStart') or self.isState('WaitForEnough')) and self._canSwitchTeams:
             self.teamActivityGui.enableSwitchButton()
 
     def setToonsPlaying(self, leftTeamToonIds, rightTeamToonIds):
@@ -214,9 +217,9 @@ class DistributedPartyTeamActivity(DistributedPartyActivity):
                     shifters.append(toonId)
 
         return (list(exitedToons),
-         list(joinedToons),
-         shifters,
-         switchers)
+                list(joinedToons),
+                shifters,
+                switchers)
 
     def getMaxPlayersPerTeam(self):
         return self._maxPlayersPerTeam
@@ -269,7 +272,8 @@ class DistributedPartyTeamActivity(DistributedPartyActivity):
         if self.waitToStartTimestamp is None:
             self.notify.warning('showWaitToStartCountdown was called when self.waitToStartTimestamp was None')
             return
-        self.teamActivityGui.showWaitToStartCountdown(self._startDelay, self.waitToStartTimestamp, almostDoneCallback=self._onCountdownAlmostDone)
+        self.teamActivityGui.showWaitToStartCountdown(self._startDelay, self.waitToStartTimestamp,
+                                                      almostDoneCallback = self._onCountdownAlmostDone)
         self.showStatus()
         self.teamActivityGui.enableExitButton()
         return

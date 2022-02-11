@@ -7,7 +7,9 @@ from pandac.PandaModules import Vec3
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToontownTimer import ToontownTimer
 from toontown.parties import PartyGlobals
+
 notify = DirectNotifyGlobal.directNotify.newCategory('PartyUtils')
+
 
 def getNewToontownTimer():
     timer = ToontownTimer()
@@ -18,11 +20,13 @@ def getNewToontownTimer():
 
 
 def getPartyActivityIcon(activityIconsModel, activityName):
-    activityIconsDict = {'PartyValentineDance': 'tt_t_ara_pty_iconDanceFloorValentine',
-     'PartyValentineDance20': 'tt_t_ara_pty_iconDanceFloorValentine',
-     'PartyValentineJukebox': 'tt_t_ara_pty_iconJukeboxValentine',
-     'PartyValentineJukebox40': 'tt_t_ara_pty_iconJukeboxValentine',
-     'PartyValentineTrampoline': 'tt_t_ara_pty_iconTrampolineValentine'}
+    activityIconsDict = {
+        'PartyValentineDance': 'tt_t_ara_pty_iconDanceFloorValentine',
+        'PartyValentineDance20': 'tt_t_ara_pty_iconDanceFloorValentine',
+        'PartyValentineJukebox': 'tt_t_ara_pty_iconJukeboxValentine',
+        'PartyValentineJukebox40': 'tt_t_ara_pty_iconJukeboxValentine',
+        'PartyValentineTrampoline': 'tt_t_ara_pty_iconTrampolineValentine'
+    }
     iconName = activityIconsDict.get(activityName)
     if iconName:
         icon = activityIconsModel.find('**/%s' % iconName)
@@ -30,7 +34,8 @@ def getPartyActivityIcon(activityIconsModel, activityName):
         icon = activityIconsModel.find('**/%sIcon' % activityName)
     if icon.isEmpty():
         icon = activityIconsModel.find('**/PartyClockIcon')
-        notify.warning("Couldn't find %sIcon in %s, using PartyClockIcon" % (activityName, activityIconsModel.getName()))
+        notify.warning(
+            "Couldn't find %sIcon in %s, using PartyClockIcon" % (activityName, activityIconsModel.getName()))
     return icon
 
 
@@ -50,14 +55,16 @@ def arcPosInterval(duration, object, pos, arcHeight, other):
         newZ = startZ + dz * t + arcHeight * (-(2.0 * t - 1.0) ** 2 + 1.0)
         object.setPos(newX, newY, newZ)
 
-    return LerpFunc(setArcPos, duration=duration)
+    return LerpFunc(setArcPos, duration = duration)
 
 
 def formatDate(year, month, day):
     monthString = TTLocalizer.DateOfBirthEntryMonths[month - 1]
-    return TTLocalizer.PartyDateFormat % {'mm': monthString,
-     'dd': day,
-     'yyyy': year}
+    return TTLocalizer.PartyDateFormat % {
+        'mm': monthString,
+        'dd': day,
+        'yyyy': year
+    }
 
 
 def truncateTextOfLabelBasedOnWidth(directGuiObject, textToTruncate, maxWidth):
@@ -106,6 +113,7 @@ def formatTime(hour, minute):
 
 SecondsInOneDay = 60 * 60 * 24
 
+
 def getTimeDeltaInSeconds(td):
     result = td.days * SecondsInOneDay + td.seconds + td.microseconds / 1000000.0
     return result
@@ -115,14 +123,17 @@ def formatDateTime(dateTimeToShow, inLocalTime = False):
     if inLocalTime:
         curServerTime = base.cr.toontownTimeManager.getCurServerDateTime()
         ltime = time.localtime()
-        localTime = datetime.datetime(year=ltime.tm_year, month=ltime.tm_mon, day=ltime.tm_mday, hour=ltime.tm_hour, minute=ltime.tm_min, second=ltime.tm_sec)
-        naiveServerTime = curServerTime.replace(tzinfo=None)
+        localTime = datetime.datetime(year = ltime.tm_year, month = ltime.tm_mon, day = ltime.tm_mday,
+                                      hour = ltime.tm_hour, minute = ltime.tm_min, second = ltime.tm_sec)
+        naiveServerTime = curServerTime.replace(tzinfo = None)
         newTimeDelta = localTime - naiveServerTime
         localDifference = getTimeDeltaInSeconds(newTimeDelta)
-        dateTimeToShow = dateTimeToShow + datetime.timedelta(seconds=localDifference)
-        return '%s %s' % (formatDate(dateTimeToShow.year, dateTimeToShow.month, dateTimeToShow.day), formatTime(dateTimeToShow.hour, dateTimeToShow.minute))
+        dateTimeToShow = dateTimeToShow + datetime.timedelta(seconds = localDifference)
+        return '%s %s' % (formatDate(dateTimeToShow.year, dateTimeToShow.month, dateTimeToShow.day),
+                          formatTime(dateTimeToShow.hour, dateTimeToShow.minute))
     else:
-        return '%s %s' % (formatDate(dateTimeToShow.year, dateTimeToShow.month, dateTimeToShow.day), formatTime(dateTimeToShow.hour, dateTimeToShow.minute))
+        return '%s %s' % (formatDate(dateTimeToShow.year, dateTimeToShow.month, dateTimeToShow.day),
+                          formatTime(dateTimeToShow.hour, dateTimeToShow.minute))
     return
 
 
@@ -131,7 +142,8 @@ def convertDistanceToPartyGrid(d, index):
 
 
 def convertDistanceFromPartyGrid(d, index):
-    return d * PartyGlobals.PartyGridUnitLength[index] + PartyGlobals.PartyGridToPandaOffset[index] + PartyGlobals.PartyGridUnitLength[index] / 2.0
+    return d * PartyGlobals.PartyGridUnitLength[index] + PartyGlobals.PartyGridToPandaOffset[index] + \
+           PartyGlobals.PartyGridUnitLength[index] / 2.0
 
 
 def convertDegreesToPartyGrid(h):

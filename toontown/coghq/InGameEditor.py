@@ -18,6 +18,7 @@ from otp.level import LevelConstants
 from direct.directtools import DirectSession
 import Pmw
 
+
 class InGameEditor(AppShell):
     appname = 'In-Game Editor'
     frameWidth = 900
@@ -29,7 +30,8 @@ class InGameEditor(AppShell):
     contactemail = 'darren.ranalli@disney.com'
     WantUndo = False
 
-    def __init__(self, level, doneEvent, requestSaveEvent, saveAsEvent, undoEvent, redoEvent, wireframeEvent, oobeEvent, csEvent, runEvent, texEvent, **kw):
+    def __init__(self, level, doneEvent, requestSaveEvent, saveAsEvent, undoEvent, redoEvent, wireframeEvent, oobeEvent,
+                 csEvent, runEvent, texEvent, **kw):
         DGG.INITOPT = Pmw.INITOPT
         optiondefs = (('title', 'In-Game ' + level.getName() + ' Editor', None),)
         self.defineoptions(kw, optiondefs)
@@ -71,20 +73,26 @@ class InGameEditor(AppShell):
 
     def createMenuBar(self):
         menuBar = self.menuBar
-        menuBar.addmenuitem('File', 'command', 'Save the level spec on the AI', label='Save on AI', command=self.handleRequestSave)
-        menuBar.addmenuitem('File', 'command', 'Save the level spec locally', label='Save Locally As...', command=self.handleSaveAs)
+        menuBar.addmenuitem('File', 'command', 'Save the level spec on the AI', label = 'Save on AI',
+                            command = self.handleRequestSave)
+        menuBar.addmenuitem('File', 'command', 'Save the level spec locally', label = 'Save Locally As...',
+                            command = self.handleSaveAs)
         menuBar.addmenuitem('File', 'separator')
-        menuBar.addmenuitem('File', 'command', 'Export a single entity', label='Export Entity...', command=self.level.handleExportEntity)
-        menuBar.addmenuitem('File', 'command', 'Export a tree of entities', label='Export Entity Tree...', command=self.level.handleExportEntityTree)
+        menuBar.addmenuitem('File', 'command', 'Export a single entity', label = 'Export Entity...',
+                            command = self.level.handleExportEntity)
+        menuBar.addmenuitem('File', 'command', 'Export a tree of entities', label = 'Export Entity Tree...',
+                            command = self.level.handleExportEntityTree)
         menuBar.addmenuitem('File', 'separator')
-        menuBar.addmenuitem('File', 'command', 'Import a tree of entities', label='Import Entities...', command=self.level.handleImportEntities)
+        menuBar.addmenuitem('File', 'command', 'Import a tree of entities', label = 'Import Entities...',
+                            command = self.level.handleImportEntities)
         menuBar.addmenuitem('File', 'separator')
         if InGameEditor.WantUndo:
             menuBar.addmenu('Edit', 'Edit Operations')
-            menuBar.addmenuitem('Edit', 'command', 'Undo the last edit', label='Undo', command=self.doUndo)
-            menuBar.addmenuitem('Edit', 'command', 'Redo the last undo', label='Redo', command=self.doRedo)
+            menuBar.addmenuitem('Edit', 'command', 'Undo the last edit', label = 'Undo', command = self.doUndo)
+            menuBar.addmenuitem('Edit', 'command', 'Redo the last undo', label = 'Redo', command = self.doRedo)
         menuBar.addmenu('Entity', 'Entity Operations')
-        menuBar.addmenuitem('Entity', 'command', 'Duplicate Selected Entity', label='Duplicate Selected Entity', command=self.level.duplicateSelectedEntity)
+        menuBar.addmenuitem('Entity', 'command', 'Duplicate Selected Entity', label = 'Duplicate Selected Entity',
+                            command = self.level.duplicateSelectedEntity)
         menuBar.addmenuitem('Entity', 'separator')
         permanentTypes = self.level.entTypeReg.getPermanentTypeNames()
         entTypes = list(self.level.entTypes)
@@ -102,58 +110,69 @@ class InGameEditor(AppShell):
 
             def doInsert(self = self, type = type):
                 self.level.insertEntity(type)
-                self.explorer.update(fUseCachedChildren=0)
+                self.explorer.update(fUseCachedChildren = 0)
 
-            menuBar.addmenuitem(cascadeMenu, 'command', 'Insert %s' % type, label='Insert %s' % type, command=doInsert)
+            menuBar.addmenuitem(cascadeMenu, 'command', 'Insert %s' % type, label = 'Insert %s' % type,
+                                command = doInsert)
 
         menuBar.addmenuitem('Entity', 'separator')
-        menuBar.addmenuitem('Entity', 'command', 'Remove Selected Entity', label='Remove Selected Entity', command=self.removeSelectedEntity)
-        menuBar.addmenuitem('Entity', 'command', 'Remove Selected EntityTree', label='Remove Selected Entity Tree', command=self.removeSelectedEntityTree)
+        menuBar.addmenuitem('Entity', 'command', 'Remove Selected Entity', label = 'Remove Selected Entity',
+                            command = self.removeSelectedEntity)
+        menuBar.addmenuitem('Entity', 'command', 'Remove Selected EntityTree', label = 'Remove Selected Entity Tree',
+                            command = self.removeSelectedEntityTree)
         menuBar.addmenuitem('Entity', 'separator')
-        menuBar.addmenuitem('Entity', 'command', 'Go To Selected Entity', label='Go To Selected Entity', command=self.level.moveAvToSelected)
-        menuBar.addmenuitem('Entity', 'command', 'Refresh Entity Explorer', label='Refresh Entity Explorer', command=self.refreshExplorer)
+        menuBar.addmenuitem('Entity', 'command', 'Go To Selected Entity', label = 'Go To Selected Entity',
+                            command = self.level.moveAvToSelected)
+        menuBar.addmenuitem('Entity', 'command', 'Refresh Entity Explorer', label = 'Refresh Entity Explorer',
+                            command = self.refreshExplorer)
         self.menuBar.addmenu('DIRECT', 'Direct Session Panel Operations')
-        self.menuBar.addmenuitem('DIRECT', 'checkbutton', 'DIRECT Enabled', label='Enable', variable=direct.panel.directEnabled, command=direct.panel.toggleDirect)
-        self.menuBar.addmenuitem('DIRECT', 'checkbutton', 'DIRECT Grid Enabled', label='Enable Grid', variable=direct.panel.directGridEnabled, command=direct.panel.toggleDirectGrid)
-        self.menuBar.addmenuitem('DIRECT', 'command', 'Toggle Object Handles Visability', label='Toggle Widget Viz', command=direct.toggleWidgetVis)
-        self.menuBar.addmenuitem('DIRECT', 'command', 'Toggle Widget Move/COA Mode', label='Toggle Widget Mode', command=direct.manipulationControl.toggleObjectHandlesMode)
-        self.menuBar.addmenuitem('DIRECT', 'checkbutton', 'DIRECT Widget On Top', label='Widget On Top', variable=direct.panel.directWidgetOnTop, command=direct.panel.toggleWidgetOnTop)
-        self.menuBar.addmenuitem('DIRECT', 'command', 'Deselect All', label='Deselect All', command=direct.deselectAll)
+        self.menuBar.addmenuitem('DIRECT', 'checkbutton', 'DIRECT Enabled', label = 'Enable',
+                                 variable = direct.panel.directEnabled, command = direct.panel.toggleDirect)
+        self.menuBar.addmenuitem('DIRECT', 'checkbutton', 'DIRECT Grid Enabled', label = 'Enable Grid',
+                                 variable = direct.panel.directGridEnabled, command = direct.panel.toggleDirectGrid)
+        self.menuBar.addmenuitem('DIRECT', 'command', 'Toggle Object Handles Visability', label = 'Toggle Widget Viz',
+                                 command = direct.toggleWidgetVis)
+        self.menuBar.addmenuitem('DIRECT', 'command', 'Toggle Widget Move/COA Mode', label = 'Toggle Widget Mode',
+                                 command = direct.manipulationControl.toggleObjectHandlesMode)
+        self.menuBar.addmenuitem('DIRECT', 'checkbutton', 'DIRECT Widget On Top', label = 'Widget On Top',
+                                 variable = direct.panel.directWidgetOnTop, command = direct.panel.toggleWidgetOnTop)
+        self.menuBar.addmenuitem('DIRECT', 'command', 'Deselect All', label = 'Deselect All',
+                                 command = direct.deselectAll)
         if InGameEditor.WantUndo:
             undoFrame = Frame(self.menuFrame)
-            self.redoButton = Button(undoFrame, text='Redo', command=self.doRedo)
-            self.redoButton.pack(side=RIGHT, expand=0)
-            self.undoButton = Button(undoFrame, text='Undo', command=self.doUndo)
-            self.undoButton.pack(side=RIGHT, expand=0)
-            undoFrame.pack(side=RIGHT, expand=0)
+            self.redoButton = Button(undoFrame, text = 'Redo', command = self.doRedo)
+            self.redoButton.pack(side = RIGHT, expand = 0)
+            self.undoButton = Button(undoFrame, text = 'Undo', command = self.doUndo)
+            self.undoButton.pack(side = RIGHT, expand = 0)
+            undoFrame.pack(side = RIGHT, expand = 0)
         toggleFrame = Frame(self.menuFrame)
-        self.wireframeButton = Button(toggleFrame, text='Wire', command=self.doWireframe)
-        self.wireframeButton.pack(side=RIGHT, expand=0)
-        self.texButton = Button(toggleFrame, text='Tex', command=self.doTex)
-        self.texButton.pack(side=RIGHT, expand=0)
-        self.csButton = Button(toggleFrame, text='Cs', command=self.doCs)
-        self.csButton.pack(side=RIGHT, expand=0)
-        self.runButton = Button(toggleFrame, text='Run', command=self.doRun)
-        self.runButton.pack(side=RIGHT, expand=0)
-        self.oobeButton = Button(toggleFrame, text='Oobe', command=self.doOobe)
-        self.oobeButton.pack(side=RIGHT, expand=0)
-        toggleFrame.pack(side=RIGHT, expand=0, padx=5)
+        self.wireframeButton = Button(toggleFrame, text = 'Wire', command = self.doWireframe)
+        self.wireframeButton.pack(side = RIGHT, expand = 0)
+        self.texButton = Button(toggleFrame, text = 'Tex', command = self.doTex)
+        self.texButton.pack(side = RIGHT, expand = 0)
+        self.csButton = Button(toggleFrame, text = 'Cs', command = self.doCs)
+        self.csButton.pack(side = RIGHT, expand = 0)
+        self.runButton = Button(toggleFrame, text = 'Run', command = self.doRun)
+        self.runButton.pack(side = RIGHT, expand = 0)
+        self.oobeButton = Button(toggleFrame, text = 'Oobe', command = self.doOobe)
+        self.oobeButton.pack(side = RIGHT, expand = 0)
+        toggleFrame.pack(side = RIGHT, expand = 0, padx = 5)
         AppShell.createMenuBar(self)
 
     def createInterface(self):
         interior = self.interior()
         mainFrame = Frame(interior)
-        self.framePane = Pmw.PanedWidget(mainFrame, orient=DGG.HORIZONTAL)
-        self.explorerFrame = self.framePane.add('left', min=250)
-        self.widgetFrame = self.framePane.add('right', min=300)
-        self.explorer = LevelExplorer(parent=self.explorerFrame, editor=self)
-        self.explorer.pack(fill=BOTH, expand=1)
-        self.explorerFrame.pack(fill=BOTH, expand=1)
-        self.pageOneFrame = Pmw.ScrolledFrame(self.widgetFrame, borderframe_relief=GROOVE, horizflex='elastic')
-        self.pageOneFrame.pack(expand=1, fill=BOTH)
-        self.widgetFrame.pack(fill=BOTH, expand=1)
-        self.framePane.pack(fill=BOTH, expand=1)
-        mainFrame.pack(fill=BOTH, expand=1)
+        self.framePane = Pmw.PanedWidget(mainFrame, orient = DGG.HORIZONTAL)
+        self.explorerFrame = self.framePane.add('left', min = 250)
+        self.widgetFrame = self.framePane.add('right', min = 300)
+        self.explorer = LevelExplorer(parent = self.explorerFrame, editor = self)
+        self.explorer.pack(fill = BOTH, expand = 1)
+        self.explorerFrame.pack(fill = BOTH, expand = 1)
+        self.pageOneFrame = Pmw.ScrolledFrame(self.widgetFrame, borderframe_relief = GROOVE, horizflex = 'elastic')
+        self.pageOneFrame.pack(expand = 1, fill = BOTH)
+        self.widgetFrame.pack(fill = BOTH, expand = 1)
+        self.framePane.pack(fill = BOTH, expand = 1)
+        mainFrame.pack(fill = BOTH, expand = 1)
         self.createButtons()
         self.initialiseoptions(self.__class__)
         self.attribWidgets = []
@@ -211,7 +230,7 @@ class InGameEditor(AppShell):
         else:
             parentEntId = None
         if self.level.removeSelectedEntity() != -1:
-            self.explorer.update(fUseCachedChildren=0)
+            self.explorer.update(fUseCachedChildren = 0)
             if parentEntId:
                 self.selectEntity(parentEntId)
         return
@@ -222,7 +241,7 @@ class InGameEditor(AppShell):
         else:
             parentEntId = None
         if self.level.removeSelectedEntityTree() != -1:
-            self.explorer.update(fUseCachedChildren=0)
+            self.explorer.update(fUseCachedChildren = 0)
             if parentEntId:
                 self.selectEntity(parentEntId)
         return
@@ -296,7 +315,9 @@ class InGameEditor(AppShell):
             widgClass = Slider.Slider
         else:
             widgClass = Floater.Floater
-        widg = widgClass(self.pageOneFrame.interior(), text=attribName, value=entSpec[attribName], numDigits=0, label_width=15, label_anchor=W, label_justify=LEFT, label_font=None, min=minVal, max=maxVal, resolution=1.0)
+        widg = widgClass(self.pageOneFrame.interior(), text = attribName, value = entSpec[attribName], numDigits = 0,
+                         label_width = 15, label_anchor = W, label_justify = LEFT, label_font = None, min = minVal,
+                         max = maxVal, resolution = 1.0)
 
         def clientIntCommand(val):
             entity = self.level.getEntInstance(entId)
@@ -308,7 +329,7 @@ class InGameEditor(AppShell):
 
         widg['command'] = clientIntCommand
         widg['postCallback'] = finalIntCommand
-        widg.pack(fill=X, expand=1)
+        widg.pack(fill = X, expand = 1)
         self.attribWidgets.append(widg)
         self.curEntWidgets[attribName] = lambda x: widg.set(x, 0)
         return
@@ -316,7 +337,9 @@ class InGameEditor(AppShell):
     def addFloatWidget(self, levelSpec, entSpec, entId, attribName, params):
         minVal = params.get('min', None)
         maxVal = params.get('max', None)
-        widg = Floater.Floater(self.pageOneFrame.interior(), text=attribName, value=entSpec[attribName], label_width=15, label_anchor=W, label_justify=LEFT, label_font=None, min=minVal, max=maxVal)
+        widg = Floater.Floater(self.pageOneFrame.interior(), text = attribName, value = entSpec[attribName],
+                               label_width = 15, label_anchor = W, label_justify = LEFT, label_font = None,
+                               min = minVal, max = maxVal)
 
         def clientFloatCommand(val):
             entity = self.level.getEntInstance(entId)
@@ -328,7 +351,7 @@ class InGameEditor(AppShell):
 
         widg['command'] = clientFloatCommand
         widg['postCallback'] = finalFloatCommand
-        widg.pack(fill=X, expand=1)
+        widg.pack(fill = X, expand = 1)
         self.attribWidgets.append(widg)
         self.curEntWidgets[attribName] = lambda x: widg.set(x, 0)
         return
@@ -341,13 +364,13 @@ class InGameEditor(AppShell):
             self.level.setAttribEdit(entId, attribName, flag.get())
 
         frame = Frame(self.pageOneFrame.interior())
-        label = Label(frame, text=attribName, width=15, anchor=W, justify=LEFT)
-        label.pack(side=LEFT, expand=0)
-        trueButton = Radiobutton(frame, text='True', value=1, variable=flag, command=booleanCommand)
-        trueButton.pack(side=LEFT, expand=0)
-        falseButton = Radiobutton(frame, text='False', value=0, variable=flag, command=booleanCommand)
-        falseButton.pack(side=LEFT, expand=0)
-        frame.pack(fill=X, expand=1)
+        label = Label(frame, text = attribName, width = 15, anchor = W, justify = LEFT)
+        label.pack(side = LEFT, expand = 0)
+        trueButton = Radiobutton(frame, text = 'True', value = 1, variable = flag, command = booleanCommand)
+        trueButton.pack(side = LEFT, expand = 0)
+        falseButton = Radiobutton(frame, text = 'False', value = 0, variable = flag, command = booleanCommand)
+        falseButton.pack(side = LEFT, expand = 0)
+        frame.pack(fill = X, expand = 1)
         self.attribWidgets.append(frame)
         self.curEntWidgets[attribName] = flag.set
 
@@ -371,9 +394,9 @@ class InGameEditor(AppShell):
             value = valueDict.get(radioVar.get(), radioVar.get())
             self.level.setAttribEdit(entId, attribName, value)
 
-        frame = Frame(self.pageOneFrame.interior(), relief=GROOVE, borderwidth=2)
-        label = Label(frame, text=attribName, width=15, anchor=W, justify=LEFT)
-        label.pack(side=LEFT, expand=0)
+        frame = Frame(self.pageOneFrame.interior(), relief = GROOVE, borderwidth = 2)
+        label = Label(frame, text = attribName, width = 15, anchor = W, justify = LEFT)
+        label.pack(side = LEFT, expand = 0)
         for choice in params.get('choiceSet', []):
             if type(choice) is str:
                 choiceStr = choice
@@ -381,10 +404,11 @@ class InGameEditor(AppShell):
                 choiceStr = repr(choice)
             if choiceStr not in valueDict:
                 valueDict[choiceStr] = choice
-            choiceButton = Radiobutton(frame, text=choiceStr, value=choiceStr, variable=radioVar, command=radioCommand)
-            choiceButton.pack(side=LEFT, expand=0)
+            choiceButton = Radiobutton(frame, text = choiceStr, value = choiceStr, variable = radioVar,
+                                       command = radioCommand)
+            choiceButton.pack(side = LEFT, expand = 0)
 
-        frame.pack(fill=X, expand=1)
+        frame.pack(fill = X, expand = 1)
         self.attribWidgets.append(frame)
 
         def setRadioVar(attributeValue):
@@ -398,11 +422,11 @@ class InGameEditor(AppShell):
         self.curEntWidgets[attribName] = setRadioVar
 
     def addMultiChoiceWidget(self, levelSpec, entSpec, entId, attribName, params):
-        frame = Frame(self.pageOneFrame.interior(), relief=GROOVE, borderwidth=2)
-        label = Label(frame, text=attribName, width=15, anchor=W, justify=LEFT)
-        label.pack(side=LEFT, expand=0)
+        frame = Frame(self.pageOneFrame.interior(), relief = GROOVE, borderwidth = 2)
+        label = Label(frame, text = attribName, width = 15, anchor = W, justify = LEFT)
+        label.pack(side = LEFT, expand = 0)
         valueDict = params.get('valueDict', {})
-        self.cbDict[attribName] = list2dict(entSpec[attribName], value=1)
+        self.cbDict[attribName] = list2dict(entSpec[attribName], value = 1)
         checkbuttonDict = {}
         base.cbButtons = []
         base.checkbuttonDict = checkbuttonDict
@@ -431,11 +455,11 @@ class InGameEditor(AppShell):
             else:
                 labelStr = repr(choice)
             func = Functor(cbCommand, cbVar)
-            choiceButton = Checkbutton(frame, text=labelStr, variable=cbVar, command=lambda : func())
-            choiceButton.pack(side=LEFT, expand=0)
+            choiceButton = Checkbutton(frame, text = labelStr, variable = cbVar, command = lambda: func())
+            choiceButton.pack(side = LEFT, expand = 0)
             base.cbButtons.append(choiceButton)
 
-        frame.pack(fill=X, expand=1)
+        frame.pack(fill = X, expand = 1)
         self.attribWidgets.append(frame)
 
         def setCheckbuttonVar(attributeValueList):
@@ -469,9 +493,12 @@ class InGameEditor(AppShell):
             floaterType = 'slider'
             minVal = 0
             maxVal = 1000
-        widg = VectorWidgets.VectorEntry(self.pageOneFrame.interior(), text=attribName, value=value, type=floaterType, bd=0, relief=None, min=minVal, max=maxVal, label_justify=LEFT, label_anchor=W, label_width=14, label_bd=0, labelIpadx=0, floaterGroup_labels=floaterLabels)
+        widg = VectorWidgets.VectorEntry(self.pageOneFrame.interior(), text = attribName, value = value,
+                                         type = floaterType, bd = 0, relief = None, min = minVal, max = maxVal,
+                                         label_justify = LEFT, label_anchor = W, label_width = 14, label_bd = 0,
+                                         labelIpadx = 0, floaterGroup_labels = floaterLabels)
         widg['command'] = veCommand
-        widg.pack(fill=X, expand=1)
+        widg.pack(fill = X, expand = 1)
         if attribName in ('pos', 'hpr', 'scale'):
 
             def placeEntity():
@@ -480,7 +507,7 @@ class InGameEditor(AppShell):
                     selectedEntityNP.place()
                 return
 
-            widg.menu.add_command(label='Place...', command=placeEntity)
+            widg.menu.add_command(label = 'Place...', command = placeEntity)
 
         def adjustCopy(vec):
             self.updateEntityCopy(entId)
@@ -507,16 +534,19 @@ class InGameEditor(AppShell):
 
         vec = entSpec[attribName]
         value = [vec[0] * 255.0,
-         vec[1] * 255.0,
-         vec[2] * 255.0,
-         vec[3] * 255.0]
+                 vec[1] * 255.0,
+                 vec[2] * 255.0,
+                 vec[3] * 255.0]
         floaterLabels = ['r',
-         'g',
-         'b',
-         'a']
-        widg = VectorWidgets.ColorEntry(self.pageOneFrame.interior(), text=attribName, type='slider', relief=None, bd=0, label_justify=LEFT, label_anchor=W, label_width=14, label_bd=0, labelIpadx=0, floaterGroup_labels=floaterLabels, value=value, floaterGroup_value=value)
+                         'g',
+                         'b',
+                         'a']
+        widg = VectorWidgets.ColorEntry(self.pageOneFrame.interior(), text = attribName, type = 'slider', relief = None,
+                                        bd = 0, label_justify = LEFT, label_anchor = W, label_width = 14, label_bd = 0,
+                                        labelIpadx = 0, floaterGroup_labels = floaterLabels, value = value,
+                                        floaterGroup_value = value)
         widg['command'] = veCommand
-        widg.pack(fill=X, expand=1)
+        widg.pack(fill = X, expand = 1)
 
         def adjustEntity(vec):
             entity = self.level.getEntInstance(entId)
@@ -527,9 +557,9 @@ class InGameEditor(AppShell):
 
         widg._floaters['command'] = adjustEntity
         widg._floaters.component('valuatorGroup')['postCallback'] = lambda x, y, z, a: veCommand([x,
-         y,
-         z,
-         a])
+                                                                                                  y,
+                                                                                                  z,
+                                                                                                  a])
         self.attribWidgets.append(widg)
         self.curEntWidgets[attribName] = lambda x: widg.set(x * 255.0, 0)
         return
@@ -547,10 +577,12 @@ class InGameEditor(AppShell):
             else:
                 initialDir = Filename.expandFrom('$TTMODELS/built/%s' % text.get()[1:-1]).toOsSpecific()
             print(text, text.get()[1:-1], initialDir)
-            rawFilename = askopenfilename(defaultextension='*', initialdir=initialDir, filetypes=(('Bam Files', '*.bam'),
-             ('Egg Files', '*.egg'),
-             ('Maya Binaries', '*.mb'),
-             ('All files', '*')), title='Load Model File', parent=self.interior())
+            rawFilename = askopenfilename(defaultextension = '*', initialdir = initialDir,
+                                          filetypes = (('Bam Files', '*.bam'),
+                                                       ('Egg Files', '*.egg'),
+                                                       ('Maya Binaries', '*.mb'),
+                                                       ('All files', '*')), title = 'Load Model File',
+                                          parent = self.interior())
             if rawFilename != '':
                 filename = Filename.fromOsSpecific(rawFilename)
                 filename.findOnSearchpath(getModelPath().getValue())
@@ -559,9 +591,9 @@ class InGameEditor(AppShell):
             return
 
         frame = Frame(self.pageOneFrame.interior())
-        label = Button(frame, text=attribName, width=14, borderwidth=0, anchor=W, justify=LEFT)
+        label = Button(frame, text = attribName, width = 14, borderwidth = 0, anchor = W, justify = LEFT)
         label['command'] = askFilename
-        label.pack(side=LEFT, expand=0)
+        label.pack(side = LEFT, expand = 0)
 
         def enterWidget(event, widg = label):
             widg['background'] = '#909090'
@@ -571,10 +603,10 @@ class InGameEditor(AppShell):
 
         label.bind('<Enter>', enterWidget)
         label.bind('<Leave>', leaveWidget)
-        widg = Entry(frame, textvariable=text)
+        widg = Entry(frame, textvariable = text)
         widg.bind('<Return>', handleReturn)
-        widg.pack(side=LEFT, fill=X, expand=1)
-        frame.pack(fill=X, expand=1)
+        widg.pack(side = LEFT, fill = X, expand = 1)
+        frame.pack(fill = X, expand = 1)
         self.attribWidgets.append(frame)
         self.curEntWidgets[attribName] = lambda x: text.set(repr(x))
 
@@ -592,12 +624,13 @@ class InGameEditor(AppShell):
             zoneEntIds = list(self.level.entType2ids['zone'])
             zoneEntIds.remove(LevelConstants.UberZoneEntId)
             zoneEntIds.sort()
-            self.visZonesEditor = LevelVisZonesEditor(self, entId, entSpec[attribName], modelZones=zoneEntIds, updateCommand=handleUpdate)
+            self.visZonesEditor = LevelVisZonesEditor(self, entId, entSpec[attribName], modelZones = zoneEntIds,
+                                                      updateCommand = handleUpdate)
 
         frame = Frame(self.pageOneFrame.interior())
-        label = Button(frame, text=attribName, width=14, borderwidth=0, anchor=W, justify=LEFT)
+        label = Button(frame, text = attribName, width = 14, borderwidth = 0, anchor = W, justify = LEFT)
         label['command'] = getZoneList
-        label.pack(side=LEFT, expand=0)
+        label.pack(side = LEFT, expand = 0)
 
         def enterWidget(event, widg = label):
             widg['background'] = '#909090'
@@ -607,10 +640,10 @@ class InGameEditor(AppShell):
 
         label.bind('<Enter>', enterWidget)
         label.bind('<Leave>', leaveWidget)
-        widg = Entry(frame, textvariable=text)
+        widg = Entry(frame, textvariable = text)
         widg.bind('<Return>', handleReturn)
-        widg.pack(side=LEFT, fill=X, expand=1)
-        frame.pack(fill=X, expand=1)
+        widg.pack(side = LEFT, fill = X, expand = 1)
+        frame.pack(fill = X, expand = 1)
         self.attribWidgets.append(frame)
 
         def refreshWidget(visZoneList):
@@ -632,19 +665,19 @@ class InGameEditor(AppShell):
             self.level.setAttribEdit(entId, attribName, id)
 
         frame = Frame(self.pageOneFrame.interior())
-        label = Label(frame, text=attribName, width=15, anchor=W, justify=LEFT)
-        label.pack(side=LEFT, expand=0)
-        widg = Entry(frame, textvariable=text)
+        label = Label(frame, text = attribName, width = 15, anchor = W, justify = LEFT)
+        label.pack(side = LEFT, expand = 0)
+        widg = Entry(frame, textvariable = text)
         widg.bind('<Return>', handleReturn)
-        widg.pack(side=LEFT, fill=X, expand=1)
+        widg.pack(side = LEFT, fill = X, expand = 1)
         if attribName is 'parentEntId':
             buttonText = 'Reparent To'
         else:
             buttonText = 'Select Entity'
-        entButton = Menubutton(frame, width=8, text=buttonText, relief=RAISED, borderwidth=2)
-        entMenu = Menu(entButton, tearoff=0)
+        entButton = Menubutton(frame, width = 8, text = buttonText, relief = RAISED, borderwidth = 2)
+        entMenu = Menu(entButton, tearoff = 0)
         entButton['menu'] = entMenu
-        entButton.pack(side=LEFT, fill='x', expand=1)
+        entButton.pack(side = LEFT, fill = 'x', expand = 1)
         entType = params.get('type')
         entOutput = params.get('output')
         idDict = {}
@@ -686,25 +719,26 @@ class InGameEditor(AppShell):
 
             if len(idList) == 0:
                 continue
-            subMenu = Menu(entMenu, tearoff=0)
-            entMenu.add_cascade(label=eType, menu=subMenu)
+            subMenu = Menu(entMenu, tearoff = 0)
+            entMenu.add_cascade(label = eType, menu = subMenu)
             idList.sort()
             numIds = len(idList)
             idIndex = 0
             for id in idList:
                 if idIndex % 10 == 0:
                     if numIds > 10:
-                        m = Menu(subMenu, tearoff=0)
+                        m = Menu(subMenu, tearoff = 0)
                         firstId = idList[idIndex]
                         lastIndex = min(idIndex + 9, numIds - 1)
                         lastId = idList[lastIndex]
-                        subMenu.add_cascade(label='Ids %d-%d' % (firstId, lastId), menu=m)
+                        subMenu.add_cascade(label = 'Ids %d-%d' % (firstId, lastId), menu = m)
                     else:
                         m = subMenu
-                m.add_command(label='%d: %s' % (id, self.getEntityName(id)), command=lambda id = id, h = handleMenu: h(id))
+                m.add_command(label = '%d: %s' % (id, self.getEntityName(id)),
+                              command = lambda id = id, h = handleMenu: h(id))
                 idIndex += 1
 
-        frame.pack(fill=X, expand=1)
+        frame.pack(fill = X, expand = 1)
         self.attribWidgets.append(frame)
         self.curEntWidgets[attribName] = text.set
 
@@ -716,23 +750,23 @@ class InGameEditor(AppShell):
             self.level.setAttribEdit(entId, attribName, text.get())
 
         frame = Frame(self.pageOneFrame.interior())
-        label = Label(frame, text=attribName, width=15, anchor=W, justify=LEFT)
-        label.pack(side=LEFT, expand=0)
-        widg = Entry(frame, textvariable=text)
+        label = Label(frame, text = attribName, width = 15, anchor = W, justify = LEFT)
+        label.pack(side = LEFT, expand = 0)
+        widg = Entry(frame, textvariable = text)
         widg.bind('<Return>', handleReturn)
-        widg.pack(side=LEFT, fill=X, expand=1)
-        frame.pack(fill=X, expand=1)
+        widg.pack(side = LEFT, fill = X, expand = 1)
+        frame.pack(fill = X, expand = 1)
         self.attribWidgets.append(frame)
         self.curEntWidgets[attribName] = text.set
 
     def addConstWidget(self, levelSpec, entSpec, entId, attribName, params):
         frame = Frame(self.pageOneFrame.interior())
-        label = Label(frame, text=attribName, width=15, anchor=W, justify=LEFT)
-        label.pack(side=LEFT, expand=0)
+        label = Label(frame, text = attribName, width = 15, anchor = W, justify = LEFT)
+        label.pack(side = LEFT, expand = 0)
         text = str(entSpec[attribName])
-        valueLabel = Label(frame, text=text, anchor=W, justify=LEFT, relief=GROOVE)
-        valueLabel.pack(side=LEFT, fill=X, expand=1)
-        frame.pack(fill=X, expand=1)
+        valueLabel = Label(frame, text = text, anchor = W, justify = LEFT, relief = GROOVE)
+        valueLabel.pack(side = LEFT, fill = X, expand = 1)
+        frame.pack(fill = X, expand = 1)
         self.attribWidgets.append(frame)
 
     def addPythonWidget(self, levelSpec, entSpec, entId, attribName, params):
@@ -743,12 +777,12 @@ class InGameEditor(AppShell):
             self.handleAttributeChangeSubmit(attribName, text, entId, levelSpec)
 
         frame = Frame(self.pageOneFrame.interior())
-        label = Label(frame, text=attribName, width=15, anchor=W, justify=LEFT)
-        label.pack(side=LEFT, expand=0)
-        widg = Entry(frame, textvariable=text)
+        label = Label(frame, text = attribName, width = 15, anchor = W, justify = LEFT)
+        label.pack(side = LEFT, expand = 0)
+        widg = Entry(frame, textvariable = text)
         widg.bind('<Return>', handleReturn)
-        widg.pack(side=LEFT, fill=X, expand=1)
-        frame.pack(fill=X, expand=1)
+        widg.pack(side = LEFT, fill = X, expand = 1)
+        frame.pack(fill = X, expand = 1)
         self.attribWidgets.append(frame)
         self.curEntWidgets[attribName] = lambda x: text.set(repr(x))
 
@@ -757,7 +791,7 @@ class InGameEditor(AppShell):
         try:
             value = eval(newText)
         except:
-            showwarning('ERROR', 'that is not a valid Python object', parent=self.parent)
+            showwarning('ERROR', 'that is not a valid Python object', parent = self.parent)
             return
 
         self.level.setAttribEdit(entId, attribName, value)
@@ -778,9 +812,9 @@ class InGameEditor(AppShell):
 
     def toggleBalloon(self):
         if self.toggleBalloonVar.get():
-            self.balloon().configure(state='both')
+            self.balloon().configure(state = 'both')
         else:
-            self.balloon().configure(state='none')
+            self.balloon().configure(state = 'none')
 
     def onDestroy(self, event):
         from direct.directtools import DirectSession
@@ -802,7 +836,9 @@ class InGameEditor(AppShell):
         messenger.send(self.requestSaveEvent)
 
     def handleSaveAs(self):
-        filename = tkinter.filedialog.asksaveasfilename(parent=self.parent, defaultextension='.py', filetypes=[('Python Source Files', '.py'), ('All Files', '*')])
+        filename = tkinter.filedialog.asksaveasfilename(parent = self.parent, defaultextension = '.py',
+                                                        filetypes = [('Python Source Files', '.py'),
+                                                                     ('All Files', '*')])
         if len(filename) > 0:
             messenger.send(self.saveAsEvent, [filename])
 
@@ -828,19 +864,19 @@ class InGameEditor(AppShell):
         messenger.send(self.texEvent)
 
     def resetLevel(self):
-        self.showTodo(what='resetLevel')
+        self.showTodo(what = 'resetLevel')
 
     def showTodo(self, what = ''):
         self.showWarning('%s\nThis is not yet implemented.' % what, 'TODO')
 
     def showWarning(self, msg, title = 'Warning'):
-        showwarning(title, msg, parent=self.parent)
+        showwarning(title, msg, parent = self.parent)
 
     def askYesNo(self, msg, title = 'Query'):
-        return askyesno(title, msg, parent=self.parent)
+        return askyesno(title, msg, parent = self.parent)
 
     def popupLevelDialog(self):
-        data = askstring('Input Level Data', 'Level Data:', parent=self)
+        data = askstring('Input Level Data', 'Level Data:', parent = self)
         if data:
             self.messageBar().helpmessage(data)
 
@@ -851,7 +887,7 @@ class LevelVisZonesEditor(Pmw.MegaToplevel):
         DGG.INITOPT = Pmw_INITOPT
         optiondefs = (('title', 'Level Vis-Zone Editor', None),)
         self.defineoptions(kw, optiondefs)
-        Pmw.MegaToplevel.__init__(self, parent, title=self['title'])
+        Pmw.MegaToplevel.__init__(self, parent, title = self['title'])
         self.editor = editor
         self.entId = entId
         self.modelZones = modelZones
@@ -859,38 +895,43 @@ class LevelVisZonesEditor(Pmw.MegaToplevel):
         self.updateCommand = updateCommand
         hull = self.component('hull')
         balloon = self.balloon = Pmw.Balloon(hull)
-        self.balloon.configure(state='none')
-        menuFrame = Frame(hull, relief=GROOVE, bd=2)
-        menuFrame.pack(fill=X, expand=1)
-        menuBar = Pmw.MenuBar(menuFrame, hotkeys=1, balloon=balloon)
-        menuBar.pack(side=LEFT, expand=1, fill=X)
+        self.balloon.configure(state = 'none')
+        menuFrame = Frame(hull, relief = GROOVE, bd = 2)
+        menuFrame.pack(fill = X, expand = 1)
+        menuBar = Pmw.MenuBar(menuFrame, hotkeys = 1, balloon = balloon)
+        menuBar.pack(side = LEFT, expand = 1, fill = X)
         menuBar.addmenu('Vis Zones Editor', 'Visability Zones Editor Operations')
-        menuBar.addmenuitem('Vis Zones Editor', 'command', 'Exit Visability Zones Editor', label='Exit', command=self.destroy)
+        menuBar.addmenuitem('Vis Zones Editor', 'command', 'Exit Visability Zones Editor', label = 'Exit',
+                            command = self.destroy)
         menuBar.addmenu('Help', 'Visibility Zones Editor Help Operations')
         self.toggleBalloonVar = IntVar()
         self.toggleBalloonVar.set(0)
-        menuBar.addmenuitem('Help', 'checkbutton', 'Toggle balloon help', label='Balloon Help', variable=self.toggleBalloonVar, command=self.toggleBalloon)
-        sf = Pmw.ScrolledFrame(hull, horizflex='elastic', usehullsize=1, hull_width=200, hull_height=400)
+        menuBar.addmenuitem('Help', 'checkbutton', 'Toggle balloon help', label = 'Balloon Help',
+                            variable = self.toggleBalloonVar, command = self.toggleBalloon)
+        sf = Pmw.ScrolledFrame(hull, horizflex = 'elastic', usehullsize = 1, hull_width = 200, hull_height = 400)
         frame = sf.interior()
-        sf.pack(padx=5, pady=3, fill=BOTH, expand=1)
-        self.radioSelect = Pmw.RadioSelect(frame, selectmode=MULTIPLE, orient=DGG.VERTICAL, pady=0, command=self.toggleVisZone)
+        sf.pack(padx = 5, pady = 3, fill = BOTH, expand = 1)
+        self.radioSelect = Pmw.RadioSelect(frame, selectmode = MULTIPLE, orient = DGG.VERTICAL, pady = 0,
+                                           command = self.toggleVisZone)
         self.buttons = []
         for modelZoneNum in self.modelZones:
             buttonStr = '%d - %s' % (modelZoneNum, self.editor.getEntityName(modelZoneNum))
-            button = self.radioSelect.add(buttonStr, width=12)
-            button.configure(anchor=W, justify=LEFT)
+            button = self.radioSelect.add(buttonStr, width = 12)
+            button.configure(anchor = W, justify = LEFT)
             self.buttons.append(button)
 
-        self.radioSelect.pack(expand=1, fill=X)
+        self.radioSelect.pack(expand = 1, fill = X)
         sf.reposition()
         buttonFrame = Frame(hull)
         self.showMode = IntVar()
         self.showMode.set(self.editor.level.level.getColorZones())
-        self.showActiveButton = Radiobutton(buttonFrame, text='Stash Invisible', value=0, indicatoron=1, variable=self.showMode, command=self.setVisRenderMode)
-        self.showActiveButton.pack(side=LEFT, fill=X, expand=1)
-        self.showAllButton = Radiobutton(buttonFrame, text='Color Invisible', value=1, indicatoron=1, variable=self.showMode, command=self.setVisRenderMode)
-        self.showAllButton.pack(side=LEFT, fill=X, expand=1)
-        buttonFrame.pack(fill=X, expand=1)
+        self.showActiveButton = Radiobutton(buttonFrame, text = 'Stash Invisible', value = 0, indicatoron = 1,
+                                            variable = self.showMode, command = self.setVisRenderMode)
+        self.showActiveButton.pack(side = LEFT, fill = X, expand = 1)
+        self.showAllButton = Radiobutton(buttonFrame, text = 'Color Invisible', value = 1, indicatoron = 1,
+                                         variable = self.showMode, command = self.setVisRenderMode)
+        self.showAllButton.pack(side = LEFT, fill = X, expand = 1)
+        buttonFrame.pack(fill = X, expand = 1)
         self.initialiseoptions(LevelVisZonesEditor)
         self.setVisible(visible)
         return None
@@ -919,10 +960,10 @@ class LevelVisZonesEditor(Pmw.MegaToplevel):
             componentName = button['text']
             modelZone = int(componentName.split('-')[0])
             if modelZone in self.visible:
-                button.configure(relief='sunken')
+                button.configure(relief = 'sunken')
                 self.radioSelect.selection.append(componentName)
             else:
-                button.configure(relief='raised')
+                button.configure(relief = 'raised')
 
     def destroy(self):
         self.editor.visZonesEditor = None
@@ -931,33 +972,34 @@ class LevelVisZonesEditor(Pmw.MegaToplevel):
 
     def toggleBalloon(self):
         if self.toggleBalloonVar.get():
-            self.balloon.configure(state='balloon')
+            self.balloon.configure(state = 'balloon')
         else:
-            self.balloon.configure(state='none')
+            self.balloon.configure(state = 'none')
 
 
 DEFAULT_MENU_ITEMS = ['Update Explorer',
- 'Separator',
- 'Select',
- 'Deselect',
- 'Separator',
- 'Delete',
- 'Separator',
- 'Fit',
- 'Flash',
- 'Isolate',
- 'Toggle Vis',
- 'Show All',
- 'Separator',
- 'Set Reparent Target',
- 'Reparent',
- 'WRT Reparent',
- 'Separator',
- 'Place',
- 'Set Name',
- 'Set Color',
- 'Explore',
- 'Separator']
+                      'Separator',
+                      'Select',
+                      'Deselect',
+                      'Separator',
+                      'Delete',
+                      'Separator',
+                      'Fit',
+                      'Flash',
+                      'Isolate',
+                      'Toggle Vis',
+                      'Show All',
+                      'Separator',
+                      'Set Reparent Target',
+                      'Reparent',
+                      'WRT Reparent',
+                      'Separator',
+                      'Place',
+                      'Set Name',
+                      'Set Color',
+                      'Explore',
+                      'Separator']
+
 
 class LevelExplorer(Pmw.MegaWidget, DirectObject.DirectObject):
 
@@ -967,12 +1009,13 @@ class LevelExplorer(Pmw.MegaWidget, DirectObject.DirectObject):
         Pmw.MegaWidget.__init__(self, parent)
         self.editor = editor
         interior = self.interior()
-        interior.configure(relief=GROOVE, borderwidth=2)
-        self._scrolledCanvas = self.createcomponent('scrolledCanvas', (), None, Pmw.ScrolledCanvas, (interior,), hull_width=300, hull_height=80, usehullsize=1)
+        interior.configure(relief = GROOVE, borderwidth = 2)
+        self._scrolledCanvas = self.createcomponent('scrolledCanvas', (), None, Pmw.ScrolledCanvas, (interior,),
+                                                    hull_width = 300, hull_height = 80, usehullsize = 1)
         self._canvas = self._scrolledCanvas.component('canvas')
         self._canvas['scrollregion'] = ('0i', '0i', '2i', '4i')
         self._scrolledCanvas.resizescrollregion()
-        self._scrolledCanvas.pack(padx=3, pady=3, expand=1, fill=BOTH)
+        self._scrolledCanvas.pack(padx = 3, pady = 3, expand = 1, fill = BOTH)
         self._canvas.bind('<ButtonPress-2>', self.mouse2Down)
         self._canvas.bind('<B2-Motion>', self.mouse2Motion)
         self._canvas.bind('<Configure>', lambda e, sc = self._scrolledCanvas: sc.resizescrollregion())

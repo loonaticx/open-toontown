@@ -2,6 +2,7 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 from otp.avatar import AvatarDetail
 from toontown.toon import DistributedToon
 
+
 class ToonDetail(AvatarDetail.AvatarDetail):
     notify = directNotify.newCategory('ToonDetail')
 
@@ -9,6 +10,6 @@ class ToonDetail(AvatarDetail.AvatarDetail):
         return 'DistributedToon'
 
     def createHolder(self):
-        toon = DistributedToon.DistributedToon(base.cr, bFake=True)
+        toon = DistributedToon.DistributedToon(base.cr, bFake = True)
         toon.forceAllowDelayDelete()
         return toon

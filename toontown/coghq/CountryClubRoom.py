@@ -6,6 +6,7 @@ from toontown.coghq import CountryClubRoomSpecs
 from direct.directnotify import DirectNotifyGlobal
 import random
 
+
 class CountryClubRoom(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('CountryClubRoom')
     FloorCollPrefix = 'mintFloorColl'
@@ -18,7 +19,12 @@ class CountryClubRoom(DirectObject.DirectObject):
             else:
                 loadFunc = loader.loadModel
             self.setGeom(loadFunc(path))
-        self.localToonFSM = ClassicFSM.ClassicFSM('CountryClubRoomLocalToonPresent', [State.State('off', self.enterLtOff, self.exitLtOff, ['notPresent']), State.State('notPresent', self.enterLtNotPresent, self.exitLtNotPresent, ['present']), State.State('present', self.enterLtPresent, self.exitLtPresent, ['notPresent'])], 'notPresent', 'notPresent')
+        self.localToonFSM = ClassicFSM.ClassicFSM('CountryClubRoomLocalToonPresent',
+                                                  [State.State('off', self.enterLtOff, self.exitLtOff, ['notPresent']),
+                                                   State.State('notPresent', self.enterLtNotPresent,
+                                                               self.exitLtNotPresent, ['present']),
+                                                   State.State('present', self.enterLtPresent, self.exitLtPresent,
+                                                               ['notPresent'])], 'notPresent', 'notPresent')
         self.localToonFSM.enterInitialState()
         return
 

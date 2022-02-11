@@ -4,7 +4,9 @@ import string
 from direct.fsm import StateData
 from toontown.toontowngui.TeaserPanel import TeaserPanel
 from toontown.toonbase.ToontownBattleGlobals import gagIsPaidOnly
+
 AttackPanelHidden = 0
+
 
 def hideAttackPanel(flag):
     global AttackPanelHidden
@@ -51,24 +53,32 @@ class TownBattleAttackPanel(StateData.StateData):
             del self._teaserPanel
 
     def __handleRun(self):
-        doneStatus = {'mode': 'Run'}
+        doneStatus = {
+            'mode': 'Run'
+        }
         messenger.send(self.doneEvent, [doneStatus])
 
     def __handleSOS(self):
-        doneStatus = {'mode': 'SOS'}
+        doneStatus = {
+            'mode': 'SOS'
+        }
         messenger.send(self.doneEvent, [doneStatus])
 
     def __handlePass(self):
-        doneStatus = {'mode': 'Pass'}
+        doneStatus = {
+            'mode': 'Pass'
+        }
         messenger.send(self.doneEvent, [doneStatus])
 
     def __handleFire(self):
-        doneStatus = {'mode': 'Fire'}
+        doneStatus = {
+            'mode': 'Fire'
+        }
         messenger.send(self.doneEvent, [doneStatus])
 
     def __handleInventory(self, track, level):
         if not base.cr.isPaid() and gagIsPaidOnly(track, level):
-            self._teaserPanel = TeaserPanel(pageName='useGags')
+            self._teaserPanel = TeaserPanel(pageName = 'useGags')
             return
         if base.localAvatar.inventory.numItem(track, level) > 0:
             doneStatus = {}

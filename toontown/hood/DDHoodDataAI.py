@@ -6,10 +6,11 @@ from toontown.safezone import DDTreasurePlannerAI
 from toontown.safezone import DistributedBoatAI
 from toontown.classicchars import DistributedDonaldDockAI
 
+
 class DDHoodDataAI(HoodDataAI.HoodDataAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DDHoodDataAI')
 
-    def __init__(self, air, zoneId=None):
+    def __init__(self, air, zoneId = None):
         hoodId = ToontownGlobals.DonaldsDock
         if zoneId == None:
             zoneId = hoodId

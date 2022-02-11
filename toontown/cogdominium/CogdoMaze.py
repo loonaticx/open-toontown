@@ -7,6 +7,7 @@ from .CogdoMazeGameObjects import CogdoMazeWaterCooler
 from . import CogdoMazeData
 from . import CogdoUtil
 
+
 class CogdoMaze(MazeBase, DirectObject):
 
     def __init__(self, model, data, cellWidth):
@@ -77,9 +78,11 @@ class CogdoMaze(MazeBase, DirectObject):
 BARRIER_DATA_RIGHT = 1
 BARRIER_DATA_TOP = 1
 
+
 class CogdoMazeFactory:
 
-    def __init__(self, randomNumGen, width, height, frameWallThickness = Globals.FrameWallThickness, cogdoMazeData = CogdoMazeData):
+    def __init__(self, randomNumGen, width, height, frameWallThickness = Globals.FrameWallThickness,
+                 cogdoMazeData = CogdoMazeData):
         self._rng = RandomNumGen(randomNumGen)
         self.width = width
         self.height = height
@@ -95,7 +98,7 @@ class CogdoMazeFactory:
 
     def createCogdoMaze(self, flattenModel = True):
         if not hasattr(self, '_maze'):
-            self._loadAndBuildMazeModel(flatten=flattenModel)
+            self._loadAndBuildMazeModel(flatten = flattenModel)
         return CogdoMaze(self._model, self._data, self.cellWidth)
 
     def _gatherQuadrantData(self):
@@ -113,7 +116,8 @@ class CogdoMazeFactory:
             for x in range(self.width):
                 key = quadrantKeys[i]
                 collTable = self._cogdoMazeData.QuadrantCollisions[key]
-                angle = self._cogdoMazeData.QuadrantAngles[self._rng.randint(0, len(self._cogdoMazeData.QuadrantAngles) - 1)]
+                angle = self._cogdoMazeData.QuadrantAngles[
+                    self._rng.randint(0, len(self._cogdoMazeData.QuadrantAngles) - 1)]
                 self.quadrantData.append((key, collTable[angle], angle))
                 i += 1
                 if x * y >= self._cogdoMazeData.NumQuadrants:
@@ -204,7 +208,7 @@ class CogdoMazeFactory:
         self._data['originX'] = int(self._data['width'] / 2)
         self._data['originY'] = int(self._data['height'] / 2)
         collisionTable = []
-        horizontalWall = [ 1 for x in range(self._data['width']) ]
+        horizontalWall = [1 for x in range(self._data['width'])]
         collisionTable.append(horizontalWall)
         for i in range(0, len(self.quadrantData), self.width):
             for y in range(self.quadrantSize):

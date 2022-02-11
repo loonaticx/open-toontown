@@ -17,6 +17,7 @@ from . import CogdoUtil
 import math
 import random
 
+
 class CogdoMazeGame(DirectObject):
     notify = directNotify.newCategory('CogdoMazeGame')
     UpdateTaskName = 'CogdoMazeGameUpdateTask'
@@ -51,20 +52,20 @@ class CogdoMazeGame(DirectObject):
         serialNum = 0
         for i in range(numSuits[0]):
             suitRng = RandomNumGen(self.distGame.doId + serialNum * 10)
-            suit = CogdoMazeBossSuit(serialNum, self.maze, suitRng, difficulty, startTile=suitSpawnSpot[0][i])
+            suit = CogdoMazeBossSuit(serialNum, self.maze, suitRng, difficulty, startTile = suitSpawnSpot[0][i])
             self.addSuit(suit)
             self.guiMgr.mazeMapGui.addSuit(suit.suit)
             serialNum += 1
 
         for i in range(numSuits[1]):
             suitRng = RandomNumGen(self.distGame.doId + serialNum * 10)
-            suit = CogdoMazeFastMinionSuit(serialNum, self.maze, suitRng, difficulty, startTile=suitSpawnSpot[1][i])
+            suit = CogdoMazeFastMinionSuit(serialNum, self.maze, suitRng, difficulty, startTile = suitSpawnSpot[1][i])
             self.addSuit(suit)
             serialNum += 1
 
         for i in range(numSuits[2]):
             suitRng = RandomNumGen(self.distGame.doId + serialNum * 10)
-            suit = CogdoMazeSlowMinionSuit(serialNum, self.maze, suitRng, difficulty, startTile=suitSpawnSpot[2][i])
+            suit = CogdoMazeSlowMinionSuit(serialNum, self.maze, suitRng, difficulty, startTile = suitSpawnSpot[2][i])
             self.addSuit(suit)
             serialNum += 1
 
@@ -93,7 +94,8 @@ class CogdoMazeGame(DirectObject):
         return
 
     def _initAudio(self):
-        self._audioMgr = CogdoGameAudioManager(Globals.MusicFiles, Globals.SfxFiles, camera, cutoff=Globals.AudioCutoff)
+        self._audioMgr = CogdoGameAudioManager(Globals.MusicFiles, Globals.SfxFiles, camera,
+                                               cutoff = Globals.AudioCutoff)
         self._quakeSfx1 = self._audioMgr.createSfx('quake')
         self._quakeSfx2 = self._audioMgr.createSfx('quake')
 
@@ -323,12 +325,12 @@ class CogdoMazeGame(DirectObject):
         if volume > 3.0:
             volume = 3.0
         if self._quakeSfx1.getAudioSound().status() != self._quakeSfx1.getAudioSound().PLAYING:
-            self._quakeSfx1.loop(volume=volume)
+            self._quakeSfx1.loop(volume = volume)
         else:
             self._quakeSfx1.getAudioSound().setVolume(volume)
         volume = shake * shake / Globals.CameraShakeMax
         if not self.hackTemp and self._quakeSfx2.getAudioSound().status() != self._quakeSfx2.getAudioSound().PLAYING:
-            taskMgr.doMethodLater(1.5, self._quakeSfx2.loop, 'loopSecondQuakeSound', extraArgs=[])
+            taskMgr.doMethodLater(1.5, self._quakeSfx2.loop, 'loopSecondQuakeSound', extraArgs = [])
             self.hackTemp = True
         else:
             self._quakeSfx2.getAudioSound().setVolume(volume)
@@ -519,7 +521,7 @@ class CogdoMazeGame(DirectObject):
         player.request('Done')
 
     def generatePickup(self, x, y):
-        pickup = CogdoMemo(len(self.pickups), pitch=-90)
+        pickup = CogdoMemo(len(self.pickups), pitch = -90)
         self.pickups.append(pickup)
         pickup.reparentTo(self.maze.maze)
         pickup.setPos(x, y, 1)

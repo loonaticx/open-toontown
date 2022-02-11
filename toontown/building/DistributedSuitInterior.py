@@ -11,6 +11,7 @@ from direct.fsm import State
 from toontown.battle import BattleBase
 from toontown.hood import ZoneUtil
 
+
 class DistributedSuitInterior(DistributedObject.DistributedObject):
     id = 0
 
@@ -30,38 +31,41 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
         self.floorModel = None
         self.elevatorOutOpen = 0
         self.BottomFloor_SuitPositions = [Point3(0, 15, 0),
-         Point3(10, 20, 0),
-         Point3(-7, 24, 0),
-         Point3(-10, 0, 0)]
+                                          Point3(10, 20, 0),
+                                          Point3(-7, 24, 0),
+                                          Point3(-10, 0, 0)]
         self.BottomFloor_SuitHs = [75,
-         170,
-         -91,
-         -44]
+                                   170,
+                                   -91,
+                                   -44]
         self.Cubicle_SuitPositions = [Point3(0, 18, 0),
-         Point3(10, 12, 0),
-         Point3(-9, 11, 0),
-         Point3(-3, 13, 0)]
+                                      Point3(10, 12, 0),
+                                      Point3(-9, 11, 0),
+                                      Point3(-3, 13, 0)]
         self.Cubicle_SuitHs = [170,
-         56,
-         -52,
-         10]
+                               56,
+                               -52,
+                               10]
         self.BossOffice_SuitPositions = [Point3(0, 15, 0),
-         Point3(10, 20, 0),
-         Point3(-10, 6, 0),
-         Point3(-17, 34, 11)]
+                                         Point3(10, 20, 0),
+                                         Point3(-10, 6, 0),
+                                         Point3(-17, 34, 11)]
         self.BossOffice_SuitHs = [170,
-         120,
-         12,
-         38]
+                                  120,
+                                  12,
+                                  38]
         self.waitMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_toon_winning_indoor.ogg')
         self.elevatorMusic = base.loader.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
-        self.fsm = ClassicFSM.ClassicFSM('DistributedSuitInterior', [State.State('WaitForAllToonsInside', self.enterWaitForAllToonsInside, self.exitWaitForAllToonsInside, ['Elevator']),
-         State.State('Elevator', self.enterElevator, self.exitElevator, ['Battle']),
-         State.State('Battle', self.enterBattle, self.exitBattle, ['Resting', 'Reward', 'ReservesJoining']),
-         State.State('ReservesJoining', self.enterReservesJoining, self.exitReservesJoining, ['Battle']),
-         State.State('Resting', self.enterResting, self.exitResting, ['Elevator']),
-         State.State('Reward', self.enterReward, self.exitReward, ['Off']),
-         State.State('Off', self.enterOff, self.exitOff, ['Elevator', 'WaitForAllToonsInside', 'Battle'])], 'Off', 'Off')
+        self.fsm = ClassicFSM.ClassicFSM('DistributedSuitInterior', [
+            State.State('WaitForAllToonsInside', self.enterWaitForAllToonsInside, self.exitWaitForAllToonsInside,
+                        ['Elevator']),
+            State.State('Elevator', self.enterElevator, self.exitElevator, ['Battle']),
+            State.State('Battle', self.enterBattle, self.exitBattle, ['Resting', 'Reward', 'ReservesJoining']),
+            State.State('ReservesJoining', self.enterReservesJoining, self.exitReservesJoining, ['Battle']),
+            State.State('Resting', self.enterResting, self.exitResting, ['Elevator']),
+            State.State('Reward', self.enterReward, self.exitReward, ['Off']),
+            State.State('Off', self.enterOff, self.exitOff, ['Elevator', 'WaitForAllToonsInside', 'Battle'])], 'Off',
+                                         'Off')
         self.fsm.enterInitialState()
         return
 
@@ -130,11 +134,11 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
         return
 
     def __addToon(self, toon):
-        self.accept(toon.uniqueName('disable'), self.__handleUnexpectedExit, extraArgs=[toon])
+        self.accept(toon.uniqueName('disable'), self.__handleUnexpectedExit, extraArgs = [toon])
 
     def __handleUnexpectedExit(self, toon):
         self.notify.warning('handleUnexpectedExit() - toon: %d' % toon.doId)
-        self.__removeToon(toon, unexpected=1)
+        self.__removeToon(toon, unexpected = 1)
 
     def __removeToon(self, toon, unexpected = 0):
         if self.toons.count(toon) == 1:
@@ -290,8 +294,10 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
         camera.reparentTo(self.elevatorModelIn)
         camera.setH(180)
         camera.setPos(0, 14, 4)
-        base.playMusic(self.elevatorMusic, looping=1, volume=0.8)
-        track = Sequence(ElevatorUtils.getRideElevatorInterval(ELEVATOR_NORMAL), ElevatorUtils.getOpenInterval(self, self.leftDoorIn, self.rightDoorIn, self.openSfx, None, type=ELEVATOR_NORMAL), Func(camera.wrtReparentTo, render))
+        base.playMusic(self.elevatorMusic, looping = 1, volume = 0.8)
+        track = Sequence(ElevatorUtils.getRideElevatorInterval(ELEVATOR_NORMAL),
+                         ElevatorUtils.getOpenInterval(self, self.leftDoorIn, self.rightDoorIn, self.openSfx, None,
+                                                       type = ELEVATOR_NORMAL), Func(camera.wrtReparentTo, render))
         for toon in self.toons:
             track.append(Func(toon.wrtReparentTo, render))
 
@@ -318,7 +324,21 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
         return None
 
     def __playCloseElevatorOut(self, name):
-        track = Sequence(Wait(SUIT_LEAVE_ELEVATOR_TIME), Parallel(SoundInterval(self.closeSfx), LerpPosInterval(self.leftDoorOut, ElevatorData[ELEVATOR_NORMAL]['closeTime'], ElevatorUtils.getLeftClosePoint(ELEVATOR_NORMAL), startPos=Point3(0, 0, 0), blendType='easeOut'), LerpPosInterval(self.rightDoorOut, ElevatorData[ELEVATOR_NORMAL]['closeTime'], ElevatorUtils.getRightClosePoint(ELEVATOR_NORMAL), startPos=Point3(0, 0, 0), blendType='easeOut')))
+        track = Sequence(Wait(SUIT_LEAVE_ELEVATOR_TIME), Parallel(SoundInterval(self.closeSfx),
+                                                                  LerpPosInterval(self.leftDoorOut,
+                                                                                  ElevatorData[ELEVATOR_NORMAL][
+                                                                                      'closeTime'],
+                                                                                  ElevatorUtils.getLeftClosePoint(
+                                                                                      ELEVATOR_NORMAL),
+                                                                                  startPos = Point3(0, 0, 0),
+                                                                                  blendType = 'easeOut'),
+                                                                  LerpPosInterval(self.rightDoorOut,
+                                                                                  ElevatorData[ELEVATOR_NORMAL][
+                                                                                      'closeTime'],
+                                                                                  ElevatorUtils.getRightClosePoint(
+                                                                                      ELEVATOR_NORMAL),
+                                                                                  startPos = Point3(0, 0, 0),
+                                                                                  blendType = 'easeOut')))
         track.start()
         self.activeIntervals[name] = track
 
@@ -339,12 +359,29 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
         index = 0
         for suit in self.joiningReserves:
             suit.reparentTo(render)
-            suit.setPos(self.elevatorModelOut, Point3(ElevatorPoints[index][0], ElevatorPoints[index][1], ElevatorPoints[index][2]))
+            suit.setPos(self.elevatorModelOut,
+                        Point3(ElevatorPoints[index][0], ElevatorPoints[index][1], ElevatorPoints[index][2]))
             index += 1
             suit.setH(180)
             suit.loop('neutral')
 
-        track = Sequence(Func(camera.wrtReparentTo, self.elevatorModelOut), Func(camera.setPos, Point3(0, -8, 2)), Func(camera.setHpr, Vec3(0, 10, 0)), Parallel(SoundInterval(self.openSfx), LerpPosInterval(self.leftDoorOut, ElevatorData[ELEVATOR_NORMAL]['closeTime'], Point3(0, 0, 0), startPos=ElevatorUtils.getLeftClosePoint(ELEVATOR_NORMAL), blendType='easeOut'), LerpPosInterval(self.rightDoorOut, ElevatorData[ELEVATOR_NORMAL]['closeTime'], Point3(0, 0, 0), startPos=ElevatorUtils.getRightClosePoint(ELEVATOR_NORMAL), blendType='easeOut')), Wait(SUIT_HOLD_ELEVATOR_TIME), Func(camera.wrtReparentTo, render), Func(callback))
+        track = Sequence(Func(camera.wrtReparentTo, self.elevatorModelOut), Func(camera.setPos, Point3(0, -8, 2)),
+                         Func(camera.setHpr, Vec3(0, 10, 0)), Parallel(SoundInterval(self.openSfx),
+                                                                       LerpPosInterval(self.leftDoorOut,
+                                                                                       ElevatorData[ELEVATOR_NORMAL][
+                                                                                           'closeTime'],
+                                                                                       Point3(0, 0, 0),
+                                                                                       startPos = ElevatorUtils.getLeftClosePoint(
+                                                                                           ELEVATOR_NORMAL),
+                                                                                       blendType = 'easeOut'),
+                                                                       LerpPosInterval(self.rightDoorOut,
+                                                                                       ElevatorData[ELEVATOR_NORMAL][
+                                                                                           'closeTime'],
+                                                                                       Point3(0, 0, 0),
+                                                                                       startPos = ElevatorUtils.getRightClosePoint(
+                                                                                           ELEVATOR_NORMAL),
+                                                                                       blendType = 'easeOut')),
+                         Wait(SUIT_HOLD_ELEVATOR_TIME), Func(camera.wrtReparentTo, render), Func(callback))
         track.start(ts)
         self.activeIntervals[name] = track
 
@@ -362,7 +399,7 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
         return None
 
     def enterResting(self, ts = 0):
-        base.playMusic(self.waitMusic, looping=1, volume=0.7)
+        base.playMusic(self.waitMusic, looping = 1, volume = 0.7)
         self.__closeInElevator()
 
     def exitResting(self):
@@ -370,14 +407,16 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
 
     def enterReward(self, ts = 0):
         base.localAvatar.b_setParent(ToontownGlobals.SPHidden)
-        request = {'loader': ZoneUtil.getBranchLoaderName(self.extZoneId),
-         'where': ZoneUtil.getToonWhereName(self.extZoneId),
-         'how': 'elevatorIn',
-         'hoodId': ZoneUtil.getHoodId(self.extZoneId),
-         'zoneId': self.extZoneId,
-         'shardId': None,
-         'avId': -1,
-         'bldgDoId': self.distBldgDoId}
+        request = {
+            'loader': ZoneUtil.getBranchLoaderName(self.extZoneId),
+            'where': ZoneUtil.getToonWhereName(self.extZoneId),
+            'how': 'elevatorIn',
+            'hoodId': ZoneUtil.getHoodId(self.extZoneId),
+            'zoneId': self.extZoneId,
+            'shardId': None,
+            'avId': -1,
+            'bldgDoId': self.distBldgDoId
+        }
         messenger.send('DSIDoneEvent', [request])
         return
 

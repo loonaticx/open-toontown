@@ -19,6 +19,7 @@ from toontown.toon import Toon
 from . import FriendHandle
 from otp.otpbase import OTPGlobals
 
+
 class FriendsListManager:
     notify = DirectNotifyGlobal.directNotify.newCategory('FriendsListManager')
 
@@ -144,9 +145,9 @@ class FriendsListManager:
     def __handlePlayerFriendInvitation(self, avId, avName, inviterDna = None, context = None):
         self.notify.debug('incoming switchboard friend event')
         self.friendsRequestQueue.append((avId,
-         avName,
-         inviterDna,
-         context))
+                                         avName,
+                                         inviterDna,
+                                         context))
         if base.cr.friendManager.getAvailable():
             self.processQueuedRequests()
 

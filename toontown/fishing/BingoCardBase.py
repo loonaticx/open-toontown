@@ -4,10 +4,12 @@ from toontown.fishing import BingoGlobals
 from direct.showbase import RandomNumGen
 from math import ceil, pow
 
+
 class BingoCardBase:
     notify = DirectNotifyGlobal.directNotify.newCategory('BingoCardBase')
 
-    def __init__(self, cardSize = BingoGlobals.CARD_SIZE, rowSize = BingoGlobals.CARD_ROWS, colSize = BingoGlobals.CARD_COLS):
+    def __init__(self, cardSize = BingoGlobals.CARD_SIZE, rowSize = BingoGlobals.CARD_ROWS,
+                 colSize = BingoGlobals.CARD_COLS):
         self.rowSize = rowSize
         self.colSize = colSize
         self.cardSize = cardSize

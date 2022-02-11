@@ -10,6 +10,7 @@ from toontown.toonbase import ToontownTimer
 from toontown.toonbase import TTLocalizer as TTL
 from toontown.toonbase import ToontownGlobals
 
+
 class DistCogdoCraneGame(CogdoCraneGameBase, DistCogdoLevelGame):
     notify = directNotify.newCategory('DistCogdoCraneGame')
 
@@ -148,7 +149,7 @@ class DistCogdoCraneGame(CogdoCraneGameBase, DistCogdoLevelGame):
 
     def enterGame(self):
         DistCogdoLevelGame.enterGame(self)
-        self._physicsTask = taskMgr.add(self._doPhysics, self.uniqueName('physics'), priority=25)
+        self._physicsTask = taskMgr.add(self._doPhysics, self.uniqueName('physics'), priority = 25)
         self.evWalls.stash()
         self._startTimer()
         if __dev__:

@@ -14,6 +14,7 @@ from toontown.minigame import Trajectory
 from direct.interval.IntervalGlobal import *
 from toontown.battle import MovieUtil
 
+
 class DistributedMoleField(DistributedNodePathEntity, MoleFieldBase.MoleFieldBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMoleField')
     ScheduleTaskName = 'moleFieldScheduler'
@@ -116,19 +117,22 @@ class DistributedMoleField(DistributedNodePathEntity, MoleFieldBase.MoleFieldBas
         self.soundCog = base.loader.loadSfx('phase_12/audio/sfx/Mole_Stomp.ogg')
         self.soundUp = base.loader.loadSfx('phase_4/audio/sfx/MG_Tag_C.ogg')
         self.soundDown = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_whizz.ogg')
-        upInterval = SoundInterval(self.soundUp, loop=0)
-        downInterval = SoundInterval(self.soundDown, loop=0)
+        upInterval = SoundInterval(self.soundUp, loop = 0)
+        downInterval = SoundInterval(self.soundDown, loop = 0)
         self.soundIUpDown = Sequence(upInterval, downInterval)
 
     def centerCenterNode(self):
         self.centerNode.setPos(self.dimensionX * 0.5, self.dimensionY * 0.5, 0.0)
 
     def loadGui(self):
-        self.frame2D = DirectFrame(scale=1.0, pos=(0.0, 0, 0.9), relief=DGG.FLAT, parent=aspect2d, frameSize=(-0.3,
-         0.3,
-         -0.05,
-         0.05), frameColor=(0.737, 0.573, 0.345, 0.3))
-        self.scoreLabel = DirectLabel(parent=self.frame2D, relief=None, pos=(0, 0, 0), scale=1.0, text='', text_font=ToontownGlobals.getSignFont(), text0_fg=(1, 1, 1, 1), text_scale=0.075, text_pos=(0, -0.02))
+        self.frame2D = DirectFrame(scale = 1.0, pos = (0.0, 0, 0.9), relief = DGG.FLAT, parent = aspect2d,
+                                   frameSize = (-0.3,
+                                                0.3,
+                                                -0.05,
+                                                0.05), frameColor = (0.737, 0.573, 0.345, 0.3))
+        self.scoreLabel = DirectLabel(parent = self.frame2D, relief = None, pos = (0, 0, 0), scale = 1.0, text = '',
+                                      text_font = ToontownGlobals.getSignFont(), text0_fg = (1, 1, 1, 1),
+                                      text_scale = 0.075, text_pos = (0, -0.02))
         self.updateGuiScore()
         self.frame2D.hide()
         return
@@ -346,13 +350,15 @@ class DistributedMoleField(DistributedNodePathEntity, MoleFieldBase.MoleFieldBas
         startPos = parentNode.getPos()
         dropShadow = toon.dropShadow.copyTo(parentNode)
         dropShadow.setScale(toon.dropShadow.getScale(render))
-        trajectory = Trajectory.Trajectory(0, Point3(0, 0, 0), Point3(0, 0, 50), gravMult=1.0)
+        trajectory = Trajectory.Trajectory(0, Point3(0, 0, 0), Point3(0, 0, 50), gravMult = 1.0)
         flyDur = trajectory.calcTimeOfImpactOnPlane(0.0)
         endTile = [rng.randint(0, self.numSquaresX - 1), rng.randint(0, self.numSquaresY - 1)]
-        endWorldCoords = (self.getX(render) + endTile[0] * self.spacingX, self.getY(render) + endTile[1] * self.spacingY)
+        endWorldCoords = (
+        self.getX(render) + endTile[0] * self.spacingX, self.getY(render) + endTile[1] * self.spacingY)
         endPos = Point3(endWorldCoords[0], endWorldCoords[1], startPos[2])
 
-        def flyFunc(t, trajectory, startPos = startPos, endPos = endPos, dur = flyDur, moveNode = parentNode, flyNode = toon):
+        def flyFunc(t, trajectory, startPos = startPos, endPos = endPos, dur = flyDur, moveNode = parentNode,
+                    flyNode = toon):
             u = t / dur
             moveNode.setX(startPos[0] + u * (endPos[0] - startPos[0]))
             moveNode.setY(startPos[1] + u * (endPos[1] - startPos[1]))
@@ -363,7 +369,9 @@ class DistributedMoleField(DistributedNodePathEntity, MoleFieldBase.MoleFieldBas
             if node and not node.isEmpty():
                 node.setHpr(hpr)
 
-        flyTrack = Sequence(LerpFunctionInterval(flyFunc, fromData=0.0, toData=flyDur, duration=flyDur, extraArgs=[trajectory]), name=toon.uniqueName('hitBySuit-fly'))
+        flyTrack = Sequence(
+            LerpFunctionInterval(flyFunc, fromData = 0.0, toData = flyDur, duration = flyDur, extraArgs = [trajectory]),
+            name = toon.uniqueName('hitBySuit-fly'))
         if avId != localAvatar.doId:
             cameraTrack = Sequence()
         else:
@@ -380,13 +388,14 @@ class DistributedMoleField(DistributedNodePathEntity, MoleFieldBase.MoleFieldBas
             destCamPos.setZ(zenith * 1.3)
             destCamPos.setY(destCamPos[1] * 0.3)
 
-            def camTask(task, zenith = zenith, flyNode = toon, startCamPos = startCamPos, camOffset = destCamPos - startCamPos):
+            def camTask(task, zenith = zenith, flyNode = toon, startCamPos = startCamPos,
+                        camOffset = destCamPos - startCamPos):
                 u = flyNode.getZ() / zenith
                 camera.lookAt(toon)
                 return Task.cont
 
             camTaskName = 'mazeToonFlyCam-' + repr(avId)
-            taskMgr.add(camTask, camTaskName, priority=20)
+            taskMgr.add(camTask, camTaskName, priority = 20)
 
             def cleanupCamTask(self = self, toon = toon, camTaskName = camTaskName, startCamPos = startCamPos):
                 taskMgr.remove(camTaskName)
@@ -397,7 +406,7 @@ class DistributedMoleField(DistributedNodePathEntity, MoleFieldBase.MoleFieldBas
                 base.localAvatar.startUpdateSmartCamera()
                 self.setUpCamera()
 
-            cameraTrack = Sequence(Wait(flyDur), Func(cleanupCamTask), name='hitBySuit-cameraLerp')
+            cameraTrack = Sequence(Wait(flyDur), Func(cleanupCamTask), name = 'hitBySuit-cameraLerp')
         geomNode = toon.getGeomNode()
         startHpr = geomNode.getHpr()
         destHpr = Point3(startHpr)
@@ -405,7 +414,8 @@ class DistributedMoleField(DistributedNodePathEntity, MoleFieldBase.MoleFieldBas
         if rng.choice([0, 1]):
             hRot = -hRot
         destHpr.setX(destHpr[0] + hRot * 360)
-        spinHTrack = Sequence(LerpHprInterval(geomNode, flyDur, destHpr, startHpr=startHpr), Func(safeSetHpr, geomNode, startHpr), name=toon.uniqueName('hitBySuit-spinH'))
+        spinHTrack = Sequence(LerpHprInterval(geomNode, flyDur, destHpr, startHpr = startHpr),
+                              Func(safeSetHpr, geomNode, startHpr), name = toon.uniqueName('hitBySuit-spinH'))
         parent = geomNode.getParent()
         rotNode = parent.attachNewNode('rotNode')
         geomNode.reparentTo(rotNode)
@@ -418,7 +428,8 @@ class DistributedMoleField(DistributedNodePathEntity, MoleFieldBase.MoleFieldBas
         if rng.choice([0, 1]):
             pRot = -pRot
         destHpr.setY(destHpr[1] + pRot * 360)
-        spinPTrack = Sequence(LerpHprInterval(rotNode, flyDur, destHpr, startHpr=startHpr), Func(safeSetHpr, rotNode, startHpr), name=toon.uniqueName('hitBySuit-spinP'))
+        spinPTrack = Sequence(LerpHprInterval(rotNode, flyDur, destHpr, startHpr = startHpr),
+                              Func(safeSetHpr, rotNode, startHpr), name = toon.uniqueName('hitBySuit-spinP'))
         soundTrack = Sequence()
 
         def preFunc(self = self, avId = avId, toon = toon, dropShadow = dropShadow):
@@ -433,7 +444,8 @@ class DistributedMoleField(DistributedNodePathEntity, MoleFieldBase.MoleFieldBas
                 toon.setSpeed(forwardSpeed, rotateSpeed)
             toon.dropShadow.hide()
 
-        def postFunc(self = self, avId = avId, oldGeomNodeZ = oldGeomNodeZ, dropShadow = dropShadow, parentNode = parentNode):
+        def postFunc(self = self, avId = avId, oldGeomNodeZ = oldGeomNodeZ, dropShadow = dropShadow,
+                     parentNode = parentNode):
             if avId == localAvatar.doId:
                 base.localAvatar.setPos(endPos)
                 if hasattr(self, 'orthoWalk'):
@@ -462,7 +474,9 @@ class DistributedMoleField(DistributedNodePathEntity, MoleFieldBase.MoleFieldBas
                 toon.startSmooth()
 
         preFunc()
-        hitTrack = Sequence(Func(toon.setPos, Point3(0.0, 0.0, 0.0)), Wait(0.25), Parallel(flyTrack, cameraTrack, self.soundIUpDown, spinHTrack, spinPTrack, soundTrack), Func(postFunc), name=toon.uniqueName('hitBySuit'))
+        hitTrack = Sequence(Func(toon.setPos, Point3(0.0, 0.0, 0.0)), Wait(0.25),
+                            Parallel(flyTrack, cameraTrack, self.soundIUpDown, spinHTrack, spinPTrack, soundTrack),
+                            Func(postFunc), name = toon.uniqueName('hitBySuit'))
         self.toonHitTracks[avId] = hitTrack
         hitTrack.start()
         posM = moleHill.getPos(render)

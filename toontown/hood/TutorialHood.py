@@ -4,6 +4,7 @@ from toontown.town import TutorialTownLoader
 from toontown.toonbase.ToontownGlobals import *
 from . import SkyUtil
 
+
 class TutorialHood(ToonHood.ToonHood):
 
     def __init__(self, parentFSM, doneEvent, dnaStore, hoodId):

@@ -8,7 +8,9 @@ import random
 import time
 import string
 import copy
+
 BATTLE_TRICK_HP_MULTIPLIER = 10.0
+
 
 class DistributedPetProxyAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPetProxyAI')
@@ -315,7 +317,7 @@ class DistributedPetProxyAI(DistributedObjectAI.DistributedObjectAI):
         return self.trickAptitudes
 
     def b_setTrickAptitudes(self, aptitudes):
-        self.setTrickAptitudes(aptitudes, local=1)
+        self.setTrickAptitudes(aptitudes, local = 1)
         self.d_setTrickAptitudes(aptitudes)
 
     def d_setTrickAptitudes(self, aptitudes):
@@ -352,7 +354,7 @@ class DistributedPetProxyAI(DistributedObjectAI.DistributedObjectAI):
             if send:
                 self.b_setTrickAptitudes(aptitudes)
             else:
-                self.setTrickAptitudes(aptitudes, local=1)
+                self.setTrickAptitudes(aptitudes, local = 1)
 
     def generate(self):
         DistributedObjectAI.DistributedObjectAI.generate(self)
@@ -364,15 +366,15 @@ class DistributedPetProxyAI(DistributedObjectAI.DistributedObjectAI):
                 traitName = PetTraits.getTraitNames()[i]
                 traitValue = self.traits.getTraitValue(traitName)
                 DistributedPetProxyAI.notify.info("%s: initializing new trait '%s' to %s, seed=%s" % (self.doId,
-                 traitName,
-                 traitValue,
-                 self.traitSeed))
+                                                                                                      traitName,
+                                                                                                      traitValue,
+                                                                                                      self.traitSeed))
                 setterName = self.getSetterName(traitName, 'b_set')
                 self.__dict__[setterName](traitValue)
 
         self.mood = PetMood.PetMood(self)
         for mood, value in list(self.requiredMoodComponents.items()):
-            self.mood.setComponent(mood, value, announce=0)
+            self.mood.setComponent(mood, value, announce = 0)
 
         self.requiredMoodComponents = {}
         self.accept(self.mood.getMoodChangeEvent(), self.handleMoodChange)
@@ -443,9 +445,11 @@ class DistributedPetProxyAI(DistributedObjectAI.DistributedObjectAI):
         self.d_setDominantMood(self.mood.getDominantMood())
 
     def attemptBattleTrick(self, trickId):
-        self.lerpMoods({'boredom': -.1,
-         'excitement': 0.05,
-         'loneliness': -.05})
+        self.lerpMoods({
+                           'boredom': -.1,
+                           'excitement': 0.05,
+                           'loneliness': -.05
+                       })
         if self._willDoTrick(trickId):
             self._handleDidTrick(trickId)
             self.b_setLastSeenTimestamp(self.getCurEpochTimestamp())

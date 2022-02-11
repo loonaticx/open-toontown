@@ -6,6 +6,7 @@ from direct.task.Task import Task
 from toontown.coghq import DistributedCrushableEntityAI
 import random
 
+
 class DistributedGridGoonAI(DistributedGoonAI.DistributedGoonAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGridGoonAI')
 

@@ -5,6 +5,7 @@ from toontown.suit import Suit
 from toontown.toon import Toon
 from toontown.hood import ZoneUtil
 
+
 class TutorialTownLoader(TTTownLoader.TTTownLoader):
 
     def __init__(self, hood, parentFSM, doneEvent):
@@ -15,7 +16,7 @@ class TutorialTownLoader(TTTownLoader.TTTownLoader):
         TownLoader.TownLoader.load(self, zoneId)
         Suit.loadTutorialSuit()
         dnaFile = 'phase_3.5/dna/tutorial_street.dna'
-        self.createHood(dnaFile, loadStorage=0)
+        self.createHood(dnaFile, loadStorage = 0)
         self.alterDictionaries()
 
     def loadBattleAnims(self):

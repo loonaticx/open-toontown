@@ -8,6 +8,7 @@ from toontown.coghq import StageRoomBase, LevelSuitPlannerAI
 from toontown.coghq import DistributedStageBattleAI
 from toontown.suit import DistributedStageSuitAI
 
+
 class DistributedStageRoomAI(DistributedLevelAI.DistributedLevelAI, StageRoomBase.StageRoomBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStageRoomAI')
 
@@ -21,7 +22,7 @@ class DistributedStageRoomAI(DistributedLevelAI.DistributedLevelAI, StageRoomBas
         self.battleExpAggreg = battleExpAggreg
 
     def createEntityCreator(self):
-        return FactoryEntityCreatorAI.FactoryEntityCreatorAI(level=self)
+        return FactoryEntityCreatorAI.FactoryEntityCreatorAI(level = self)
 
     def getBattleCreditMultiplier(self):
         return ToontownBattleGlobals.getStageCreditMultiplier(self.getFloorNum())
@@ -46,7 +47,12 @@ class DistributedStageRoomAI(DistributedLevelAI.DistributedLevelAI, StageRoomBas
         DistributedLevelAI.DistributedLevelAI.generate(self, roomSpec)
         self.notify.debug('creating cogs')
         cogSpecModule = StageRoomSpecs.getCogSpecModule(self.roomId)
-        self.planner = LevelSuitPlannerAI.LevelSuitPlannerAI(self.air, self, DistributedStageSuitAI.DistributedStageSuitAI, DistributedStageBattleAI.DistributedStageBattleAI, cogSpecModule.CogData, cogSpecModule.ReserveCogData, cogSpecModule.BattleCells, battleExpAggreg=self.battleExpAggreg)
+        self.planner = LevelSuitPlannerAI.LevelSuitPlannerAI(self.air, self,
+                                                             DistributedStageSuitAI.DistributedStageSuitAI,
+                                                             DistributedStageBattleAI.DistributedStageBattleAI,
+                                                             cogSpecModule.CogData, cogSpecModule.ReserveCogData,
+                                                             cogSpecModule.BattleCells,
+                                                             battleExpAggreg = self.battleExpAggreg)
         suitHandles = self.planner.genSuits()
         messenger.send('plannerCreated-' + str(self.doId))
         self.suits = suitHandles['activeSuits']
@@ -68,7 +74,7 @@ class DistributedStageRoomAI(DistributedLevelAI.DistributedLevelAI, StageRoomBas
                 suit.requestDelete()
 
         del self.battleExpAggreg
-        DistributedLevelAI.DistributedLevelAI.delete(self, deAllocZone=False)
+        DistributedLevelAI.DistributedLevelAI.delete(self, deAllocZone = False)
 
     def getStageId(self):
         return self.stageId

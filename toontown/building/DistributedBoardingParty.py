@@ -14,6 +14,7 @@ from toontown.toontowngui import TeaserPanel
 from direct.interval.IntervalGlobal import *
 from . import BoardingGroupShow
 
+
 class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPartyBase.BoardingPartyBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBoardingParty')
     InvitationFailedTimeout = 60.0
@@ -358,7 +359,8 @@ class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPart
             if groupFormed:
                 if leaderId == quitterId:
                     if not localAvatar.doId == leaderId:
-                        localAvatar.setSystemMessage(0, TTLocalizer.BoardingMessageGroupDissolved, WhisperPopup.WTToontownBoardingGroup)
+                        localAvatar.setSystemMessage(0, TTLocalizer.BoardingMessageGroupDissolved,
+                                                     WhisperPopup.WTToontownBoardingGroup)
                 elif not kick:
                     if not localAvatar.doId == quitterId:
                         quitter = base.cr.doId2do.get(quitterId)
@@ -387,7 +389,7 @@ class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPart
                         self.showMe(rejectText)
                         return
                 if self.inviterPanels.isInvitingPanelUp():
-                    self.showMe(TTLocalizer.BoardingPendingInvite, pos=(0, 0, 0))
+                    self.showMe(TTLocalizer.BoardingPendingInvite, pos = (0, 0, 0))
                 elif len(self.getGroupMemberList(localAvatar.doId)) >= self.maxSize:
                     self.showMe(TTLocalizer.BoardingInviteGroupFull)
                 else:
@@ -399,7 +401,7 @@ class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPart
                 place = base.cr.playGame.getPlace()
                 if place:
                     place.fsm.request('stopped')
-                self.teaserDialog = TeaserPanel.TeaserPanel(pageName='cogHQ', doneFunc=self.handleOkTeaser)
+                self.teaserDialog = TeaserPanel.TeaserPanel(pageName = 'cogHQ', doneFunc = self.handleOkTeaser)
 
     def handleOkTeaser(self):
         self.teaserDialog.destroy()

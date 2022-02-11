@@ -7,6 +7,7 @@ from direct.fsm.FSM import FSM
 from toontown.ai.ToonBarrier import *
 from toontown.golf import GolfGlobals
 import functools
+
 INITIAL = 0
 EXITED = 1
 EXPECTED = 2
@@ -19,11 +20,22 @@ READY_TIMEOUT = 30
 EXIT_TIMEOUT = 30
 REWARD_TIMEOUT = 30
 
+
 class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
     notify = directNotify.newCategory('DistributedGolfCourseAI')
-    defaultTransitions = {'Off': ['WaitJoin'], 'WaitJoin': ['WaitReadyCourse', 'Cleanup'], 'WaitReadyCourse': ['WaitReadyHole', 'Cleanup'], 'WaitReadyHole': ['PlayHole', 'Cleanup', 'WaitLeaveHole', 'WaitReward'], 'PlayHole': ['PlayHole', 'WaitLeaveHole', 'Cleanup', 'WaitReward'], 'WaitLeaveHole': ['WaitReadyHole', 'WaitLeaveCourse', 'Cleanup', 'WaitReward'], 'WaitReward': ['WaitLeaveCourse', 'Cleanup', 'WaitLeaveHole'], 'WaitLeaveCourse': ['Cleanup'], 'Cleanup': ['Off']}
+    defaultTransitions = {
+        'Off': ['WaitJoin'],
+        'WaitJoin': ['WaitReadyCourse', 'Cleanup'],
+        'WaitReadyCourse': ['WaitReadyHole', 'Cleanup'],
+        'WaitReadyHole': ['PlayHole', 'Cleanup', 'WaitLeaveHole', 'WaitReward'],
+        'PlayHole': ['PlayHole', 'WaitLeaveHole', 'Cleanup', 'WaitReward'],
+        'WaitLeaveHole': ['WaitReadyHole', 'WaitLeaveCourse', 'Cleanup', 'WaitReward'],
+        'WaitReward': ['WaitLeaveCourse', 'Cleanup', 'WaitLeaveHole'],
+        'WaitLeaveCourse': ['Cleanup'],
+        'Cleanup': ['Off']
+    }
 
-    def __init__(self, zoneId, avIds, courseId, preferredHoleId=None):
+    def __init__(self, zoneId, avIds, courseId, preferredHoleId = None):
         FSM.__init__(self, 'GolfCourse_%s_FSM' % zoneId)
         DistributedObjectAI.DistributedObjectAI.__init__(self, simbase.air)
         self.notify.debug('GOLF COURSE: init')
@@ -195,7 +207,7 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
     def startNextHole(self):
         self.notify.debugStateCall(self)
         holeId = self.holeIds[self.numHolesPlayed]
-        self.currentHole = DistributedGolfHoleAI.DistributedGolfHoleAI(self.zoneId, golfCourse=self, holeId=holeId)
+        self.currentHole = DistributedGolfHoleAI.DistributedGolfHoleAI(self.zoneId, golfCourse = self, holeId = holeId)
         self.currentHole.generateWithRequired(self.zoneId)
         self.d_setCurHoleDoId(self.currentHole.doId)
         self.safeDemand('WaitReadyHole')
@@ -223,13 +235,13 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
         self.notify.debug('GOLF COURSE: enterWaitJoin')
         for avId in self.avIdList:
             self.avStateDict[avId] = EXPECTED
-            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.handleExitedAvatar, extraArgs=[avId])
+            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.handleExitedAvatar, extraArgs = [avId])
 
-        def allAvatarsJoined(self=self):
+        def allAvatarsJoined(self = self):
             self.notify.debug('GOLF COURSE: all avatars joined')
             self.load()
 
-        def handleTimeout(avIds, self=self):
+        def handleTimeout(avIds, self = self):
             self.notify.debug('GOLF COURSE: timed out waiting for clients %s to join' % avIds)
             for avId in self.avStateDict:
                 if not self.avStateDict[avId] == JOINED:
@@ -240,7 +252,8 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
             else:
                 self.load()
 
-        self.__barrier = ToonBarrier('waitClientsJoin', self.uniqueName('waitClientsJoin'), self.avIdList, JOIN_TIMEOUT, allAvatarsJoined, handleTimeout)
+        self.__barrier = ToonBarrier('waitClientsJoin', self.uniqueName('waitClientsJoin'), self.avIdList, JOIN_TIMEOUT,
+                                     allAvatarsJoined, handleTimeout)
 
     def exitWaitJoin(self):
         self.notify.debugStateCall(self)
@@ -265,25 +278,26 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
     def enterWaitReadyCourse(self):
         self.notify.debug('GOLF COURSE: enterWaitReadyCourse')
 
-        def allAvatarsInCourse(self=self):
+        def allAvatarsInCourse(self = self):
             self.notify.debug('GOLF COURSE: all avatars ready course')
             for avId in self.avIdList:
                 blankScoreList = [
-                 0] * self.numHoles
+                                     0] * self.numHoles
                 self.scores[avId] = blankScoreList
                 self.aimTimes[avId] = 0
 
             self.notify.debug('self.scores = %s' % self.scores)
             self.startNextHole()
 
-        def handleTimeout(avIds, self=self):
+        def handleTimeout(avIds, self = self):
             self.notify.debug("GOLF COURSE: Course timed out waiting for clients %s to report 'ready'" % avIds)
             if self.haveAllGolfersExited():
                 self.setCourseAbort()
             else:
                 allAvatarsInCourse()
 
-        self.__barrier = ToonBarrier('WaitReadyCourse', self.uniqueName('WaitReadyCourse'), self.avIdList, READY_TIMEOUT, allAvatarsInCourse, handleTimeout)
+        self.__barrier = ToonBarrier('WaitReadyCourse', self.uniqueName('WaitReadyCourse'), self.avIdList,
+                                     READY_TIMEOUT, allAvatarsInCourse, handleTimeout)
         for avId in list(self.avStateDict.keys()):
             if self.avStateDict[avId] == READY:
                 self.__barrier.clear(avId)
@@ -305,12 +319,12 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
     def enterWaitReadyHole(self):
         self.notify.debug('GOLF COURSE: enterWaitReadyHole')
 
-        def allAvatarsInHole(self=self):
+        def allAvatarsInHole(self = self):
             self.notify.debug('GOLF COURSE: all avatars ready hole')
             if self.safeDemand('PlayHole'):
                 self.d_setPlayHole()
 
-        def handleTimeout(avIds, self=self):
+        def handleTimeout(avIds, self = self):
             self.notify.debug("GOLF COURSE: Hole timed out waiting for clients %s to report 'ready'" % avIds)
             if self.haveAllGolfersExited():
                 self.setCourseAbort()
@@ -319,7 +333,8 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
                     self.d_setPlayHole()
 
         stillPlaying = self.getStillPlayingAvIds()
-        self.__barrier = ToonBarrier('WaitReadyHole', self.uniqueName('WaitReadyHole'), stillPlaying, READY_TIMEOUT, allAvatarsInHole, handleTimeout)
+        self.__barrier = ToonBarrier('WaitReadyHole', self.uniqueName('WaitReadyHole'), stillPlaying, READY_TIMEOUT,
+                                     allAvatarsInHole, handleTimeout)
         for avId in list(self.avStateDict.keys()):
             if self.avStateDict[avId] == ONHOLE:
                 self.__barrier.clear(avId)
@@ -432,7 +447,7 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
 
         REWARD_TIMEOUT = (self.trophyListLen + self.holeBestListLen + self.courseBestListLen + self.cupListLen) * 5 + 19
         aimTimesList = [
-         0] * 4
+                           0] * 4
         aimIndex = 0
         stillPlaying = self.getStillPlayingAvIds()
         for avId in self.avIdList:
@@ -443,18 +458,21 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
                 aimTimesList[aimIndex] = aimTime
             aimIndex += 1
 
-        self.sendUpdate('setReward', [trophiesList, self.rankings, holeBestList, courseBestList, cupList, self.winnerByTieBreak, aimTimesList[0], aimTimesList[1], aimTimesList[2], aimTimesList[3]])
+        self.sendUpdate('setReward',
+                        [trophiesList, self.rankings, holeBestList, courseBestList, cupList, self.winnerByTieBreak,
+                         aimTimesList[0], aimTimesList[1], aimTimesList[2], aimTimesList[3]])
 
-        def allAvatarsRewarded(self=self):
+        def allAvatarsRewarded(self = self):
             self.notify.debug('GOLF COURSE: all avatars rewarded')
             self.rewardDone()
 
-        def handleRewardTimeout(avIds, self=self):
+        def handleRewardTimeout(avIds, self = self):
             self.notify.debug('GOLF COURSE: timed out waiting for clients %s to finish reward' % avIds)
             self.rewardDone()
 
         stillPlaying = self.getStillPlayingAvIds()
-        self.rewardBarrier = ToonBarrier('waitReward', self.uniqueName('waitReward'), stillPlaying, REWARD_TIMEOUT, allAvatarsRewarded, handleRewardTimeout)
+        self.rewardBarrier = ToonBarrier('waitReward', self.uniqueName('waitReward'), stillPlaying, REWARD_TIMEOUT,
+                                         allAvatarsRewarded, handleRewardTimeout)
 
     def exitWaitReward(self):
         pass
@@ -557,7 +575,7 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
         holeDoId = self.currentHole.doId
         self.currentHole.finishHole()
         return (
-         holeId, holeDoId)
+            holeId, holeDoId)
 
     def calcHolesToUse(self):
         retval = []
@@ -645,7 +663,8 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
                         self.incrementEndingHistory(avId, GolfGlobals.CourseTwoWins)
                     else:
                         self.notify.warning('unhandled case, self.courseId=%s' % self.courseId)
-            if totalScore < self.endingCourseBest[avId][self.courseId] or self.endingCourseBest[avId][self.courseId] == 0:
+            if totalScore < self.endingCourseBest[avId][self.courseId] or self.endingCourseBest[avId][
+                self.courseId] == 0:
                 self.endingCourseBest[avId][self.courseId] = totalScore
 
     def calcRankings(self):
@@ -683,9 +702,9 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
                 return -1
 
         if GolfGlobals.TIME_TIE_BREAKER:
-            totalScores.sort(key=functools.cmp_to_key(scoreCompareWithTime))
+            totalScores.sort(key = functools.cmp_to_key(scoreCompareWithTime))
         else:
-            totalScores.sort(key=functools.cmp_to_key(scoreCompareNoTime))
+            totalScores.sort(key = functools.cmp_to_key(scoreCompareNoTime))
         curRank = 0
         oldScore = 0
         oldTime = 0
@@ -939,7 +958,8 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
                 curHolesChosen = set()
             possibleHoles = uniqueHoles - curHolesChosen
             choicesList = self.createChoicesList(courseId, possibleHoles)
-            if not self.preferredHoleId == None and self.preferredHoleId in choicesList and self.preferredHoleId not in curHolesChosen:
+            if not self.preferredHoleId == None and self.preferredHoleId in choicesList and self.preferredHoleId not \
+                    in curHolesChosen:
                 holeChosen = self.preferredHoleId
             else:
                 holeChosen = random.choice(choicesList)

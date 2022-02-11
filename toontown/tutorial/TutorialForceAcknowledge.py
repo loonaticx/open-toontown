@@ -2,6 +2,7 @@ from pandac.PandaModules import *
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
 
+
 class TutorialForceAcknowledge:
 
     def __init__(self, doneEvent):
@@ -11,9 +12,11 @@ class TutorialForceAcknowledge:
 
     def enter(self):
         base.localAvatar.loop('neutral')
-        self.doneStatus = {'mode': 'incomplete'}
+        self.doneStatus = {
+            'mode': 'incomplete'
+        }
         msg = TTLocalizer.TutorialForceAcknowledgeMessage
-        self.dialog = TTDialog.TTDialog(text=msg, command=self.handleOk, style=TTDialog.Acknowledge)
+        self.dialog = TTDialog.TTDialog(text = msg, command = self.handleOk, style = TTDialog.Acknowledge)
 
     def exit(self):
         if self.dialog:

@@ -4,6 +4,7 @@ from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import *
 from . import VineGameGlobals
 
+
 class VineSpider(NodePath, DirectObject):
     RADIUS = 1.7
 

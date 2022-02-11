@@ -4,16 +4,19 @@ from toontown.parties.DistributedPartyCatchActivity import DistributedPartyCatch
 from toontown.parties import PartyGlobals
 from toontown.parties import WinterPartyCatchActivityToonSD
 
+
 class DistributedPartyWinterCatchActivity(DistributedPartyCatchActivity):
 
     def __init__(self, cr):
         DistributedPartyCatchActivity.__init__(self, cr)
 
     def getInstructions(self):
-        return TTLocalizer.WinterPartyCatchActivityInstructions % {'badThing': self.DropObjectPlurals['anvil']}
+        return TTLocalizer.WinterPartyCatchActivityInstructions % {
+            'badThing': self.DropObjectPlurals['anvil']
+        }
 
     def load(self):
-        DistributedPartyCatchActivity.load(self, loadModels=0, arenaModel='tt_m_ara_pty_partyCatchTreeWinter')
+        DistributedPartyCatchActivity.load(self, loadModels = 0, arenaModel = 'tt_m_ara_pty_partyCatchTreeWinter')
         self.__loadDropModels()
 
     def __loadDropModels(self):

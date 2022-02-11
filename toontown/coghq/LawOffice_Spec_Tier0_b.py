@@ -1,4 +1,5 @@
 from toontown.coghq.SpecImports import *
+
 GlobalEntities = {
     1000: {
         'type': 'levelMgr',
@@ -8,7 +9,8 @@ GlobalEntities = {
         'cogLevel': 0,
         'farPlaneDistance': 1500,
         'modelFilename': 'phase_10/models/lawbotHQ/LawbotCourtroom3',
-        'wantDoors': 1},
+        'wantDoors': 1
+    },
     1001: {
         'type': 'editMgr',
         'name': 'EditMgr',
@@ -16,7 +18,8 @@ GlobalEntities = {
         'insertEntity': None,
         'removeEntity': None,
         'requestNewEntity': None,
-        'requestSave': None},
+        'requestSave': None
+    },
     0: {
         'type': 'zone',
         'name': 'UberZone',
@@ -24,7 +27,8 @@ GlobalEntities = {
         'parentEntId': 0,
         'scale': 1,
         'description': '',
-        'visibility': []},
+        'visibility': []
+    },
     100000: {
         'type': 'stomper',
         'name': '<unnamed>',
@@ -52,9 +56,12 @@ GlobalEntities = {
         'switchId': 0,
         'wantShadow': 1,
         'wantSmoke': 1,
-        'zOffset': 0}}
+        'zOffset': 0
+    }
+}
 Scenario0 = {}
 levelSpec = {
     'globalEntities': GlobalEntities,
     'scenarios': [
-        Scenario0]}
+        Scenario0]
+}

@@ -13,11 +13,16 @@ from toontown.toonbase import ToontownTimer
 from direct.task import Task
 from direct.gui.DirectGui import DGG, DirectFrame, DirectLabel
 
+
 class DistributedMaze(DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMaze')
     ScheduleTaskName = 'mazeScheduler'
-    RemoveBlocksDict = {2: ('HedgeBlock_0_1',),
-     4: (('HedgeBlock_0_1', 'HedgeBlock_1_3', 'HedgeBlock_2_3'), ('HedgeBlock_0_2', 'HedgeBlock_2_3', 'HedgeBlock_1_3'), ('HedgeBlock_0_1', 'HedgeBlock_0_2', 'HedgeBlock_1_3', 'HedgeBlock_2_3'))}
+    RemoveBlocksDict = {
+        2: ('HedgeBlock_0_1',),
+        4: (
+        ('HedgeBlock_0_1', 'HedgeBlock_1_3', 'HedgeBlock_2_3'), ('HedgeBlock_0_2', 'HedgeBlock_2_3', 'HedgeBlock_1_3'),
+        ('HedgeBlock_0_1', 'HedgeBlock_0_2', 'HedgeBlock_1_3', 'HedgeBlock_2_3'))
+    }
 
     def __init__(self, cr):
         DistributedNodePathEntity.__init__(self, cr)
@@ -54,20 +59,21 @@ class DistributedMaze(DistributedNodePathEntity):
         if room:
             self.gotRoom([room])
         else:
-            self.roomRequest = self.cr.relatedObjectMgr.requestObjects([roomDoId], allCallback=self.gotRoom, timeout=5)
+            self.roomRequest = self.cr.relatedObjectMgr.requestObjects([roomDoId], allCallback = self.gotRoom,
+                                                                       timeout = 5)
 
     def gotRoom(self, rooms):
         self.roomRequest = None
         room = rooms[0]
         self.roomHold = room
         rotations = [0,
-         0,
-         90,
-         90,
-         180,
-         180,
-         270,
-         270]
+                     0,
+                     90,
+                     90,
+                     180,
+                     180,
+                     270,
+                     270]
         self.getRng().shuffle(rotations)
         self.numSections = 0
         for i in range(0, 4):
@@ -131,7 +137,7 @@ class DistributedMaze(DistributedNodePathEntity):
         defLookAt = Point3(0.0, 1.5, camHeight)
         cameraPoint = Point3(0.0, -22.0 * heightScaleFactor, camHeight + 54.0)
         base.localAvatar.stopUpdateSmartCamera()
-        base.localAvatar.startUpdateSmartCamera(push=0)
+        base.localAvatar.startUpdateSmartCamera(push = 0)
         base.localAvatar.setIdealCameraPos(cameraPoint)
 
     def __handleToonExitHint(self, collEntry):
@@ -210,12 +216,15 @@ class DistributedMaze(DistributedNodePathEntity):
         self.unloadGui()
 
     def loadGui(self):
-        self.frame2D = DirectFrame(scale=1.0, pos=(0.0, 0, 0.9), relief=DGG.FLAT, parent=aspect2d, frameSize=(-0.3,
-         0.3,
-         -0.05,
-         0.05), frameColor=(0.737, 0.573, 0.345, 0.3))
+        self.frame2D = DirectFrame(scale = 1.0, pos = (0.0, 0, 0.9), relief = DGG.FLAT, parent = aspect2d,
+                                   frameSize = (-0.3,
+                                                0.3,
+                                                -0.05,
+                                                0.05), frameColor = (0.737, 0.573, 0.345, 0.3))
         self.frame2D.hide()
-        self.gameLabel = DirectLabel(parent=self.frame2D, relief=None, pos=(0, 0, 0), scale=1.0, text=TTLocalizer.mazeLabel, text_font=ToontownGlobals.getSignFont(), text0_fg=(1, 1, 1, 1), text_scale=0.075, text_pos=(0, -0.02))
+        self.gameLabel = DirectLabel(parent = self.frame2D, relief = None, pos = (0, 0, 0), scale = 1.0,
+                                     text = TTLocalizer.mazeLabel, text_font = ToontownGlobals.getSignFont(),
+                                     text0_fg = (1, 1, 1, 1), text_scale = 0.075, text_pos = (0, -0.02))
         return
 
     def unloadGui(self):
@@ -230,6 +239,7 @@ class DistributedMaze(DistributedNodePathEntity):
     def toonFinished(self, avId, place, lastToon):
         toon = base.cr.doId2do.get(avId)
         if toon and not self.timedOut:
-            self.level.countryClub.showInfoText(self.toonFinishedText % (toon.getName(), TTLocalizer.hedgeMazePlaces[place]))
+            self.level.countryClub.showInfoText(
+                self.toonFinishedText % (toon.getName(), TTLocalizer.hedgeMazePlaces[place]))
         if lastToon:
             self.setGameOver()

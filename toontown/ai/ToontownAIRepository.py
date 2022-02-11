@@ -56,7 +56,7 @@ class ToontownAIRepository(ToontownInternalRepository):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownAIRepository')
 
     def __init__(self, baseChannel, serverId, districtName):
-        ToontownInternalRepository.__init__(self, baseChannel, serverId, dcSuffix='AI')
+        ToontownInternalRepository.__init__(self, baseChannel, serverId, dcSuffix = 'AI')
         self.districtName = districtName
         self.doLiveUpdates = config.GetBool('want-live-updates', True)
         self.wantCogdominiums = config.GetBool('want-cogdominiums', True)
@@ -374,7 +374,7 @@ class ToontownAIRepository(ToontownInternalRepository):
     def findPartyHats(self, dnaData, zoneId):
         return []  # TODO
 
-    def findRacingPads(self, dnaData, zoneId, area, type='racing_pad', overrideDNAZone=False):
+    def findRacingPads(self, dnaData, zoneId, area, type = 'racing_pad', overrideDNAZone = False):
         kartPads, kartPadGroups = [], []
         if type in dnaData.getName():
             if type == 'racing_pad':
@@ -453,7 +453,7 @@ class ToontownAIRepository(ToontownInternalRepository):
     def decrementPopulation(self):
         self.districtStats.b_setAvatarCount(self.districtStats.getAvatarCount() - 1)
 
-    def allocateZone(self, owner=None):
+    def allocateZone(self, owner = None):
         zoneId = self.zoneAllocator.allocate()
         if owner:
             self.zoneId2owner[zoneId] = owner

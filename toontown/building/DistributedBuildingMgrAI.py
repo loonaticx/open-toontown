@@ -9,6 +9,7 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.hood import ZoneUtil
 import time, random
 
+
 class DistributedBuildingMgrAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBuildingMgrAI')
 
@@ -119,7 +120,7 @@ class DistributedBuildingMgrAI:
                 blocks.append(blockNumber)
 
         return (
-         blocks, hqBlocks, gagshopBlocks, petshopBlocks, kartshopBlocks, animBldgBlocks)
+            blocks, hqBlocks, gagshopBlocks, petshopBlocks, kartshopBlocks, animBldgBlocks)
 
     def findAllLandmarkBuildings(self):
         buildings = self.load()
@@ -146,7 +147,7 @@ class DistributedBuildingMgrAI:
 
         return
 
-    def newBuilding(self, blockNumber, blockData=None):
+    def newBuilding(self, blockNumber, blockData = None):
         building = DistributedBuildingAI.DistributedBuildingAI(self.air, blockNumber, self.branchID, self.trophyMgr)
         building.generateWithRequired(self.branchID)
         if blockData:
@@ -172,8 +173,9 @@ class DistributedBuildingMgrAI:
         self.__buildings[blockNumber] = building
         return building
 
-    def newAnimBuilding(self, blockNumber, blockData=None):
-        building = DistributedAnimBuildingAI.DistributedAnimBuildingAI(self.air, blockNumber, self.branchID, self.trophyMgr)
+    def newAnimBuilding(self, blockNumber, blockData = None):
+        building = DistributedAnimBuildingAI.DistributedAnimBuildingAI(self.air, blockNumber, self.branchID,
+                                                                       self.trophyMgr)
         building.generateWithRequired(self.branchID)
         if blockData:
             building.track = blockData.get('track', 'c')
@@ -241,7 +243,7 @@ class DistributedBuildingMgrAI:
             buildingData = i.getBuildingData()
             buildings[buildingData['block']] = buildingData
 
-        json.dump(buildings, file, indent=2)
+        json.dump(buildings, file, indent = 2)
 
     def save(self):
         try:

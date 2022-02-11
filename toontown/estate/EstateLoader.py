@@ -13,17 +13,19 @@ import math
 from toontown.coghq import MovingPlatform
 from direct.directnotify import DirectNotifyGlobal
 
+
 class EstateLoader(SafeZoneLoader.SafeZoneLoader):
     notify = DirectNotifyGlobal.directNotify.newCategory('EstateLoader')
 
     def __init__(self, hood, parentFSM, doneEvent):
         SafeZoneLoader.SafeZoneLoader.__init__(self, hood, parentFSM, doneEvent)
         del self.fsm
-        self.fsm = ClassicFSM.ClassicFSM('EstateLoader', [State.State('start', self.enterStart, self.exitStart, ['quietZone', 'estate', 'house']),
-         State.State('estate', self.enterEstate, self.exitEstate, ['quietZone']),
-         State.State('house', self.enterHouse, self.exitHouse, ['quietZone']),
-         State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['house', 'estate']),
-         State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
+        self.fsm = ClassicFSM.ClassicFSM('EstateLoader', [
+            State.State('start', self.enterStart, self.exitStart, ['quietZone', 'estate', 'house']),
+            State.State('estate', self.enterEstate, self.exitEstate, ['quietZone']),
+            State.State('house', self.enterHouse, self.exitHouse, ['quietZone']),
+            State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['house', 'estate']),
+            State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
         self.musicFile = 'phase_4/audio/bgm/TC_nbrhood.ogg'
         self.activityMusicFile = 'phase_3.5/audio/bgm/TC_SZ_activity.ogg'
         self.dnaFile = 'phase_5.5/dna/estate_1.dna'
@@ -51,8 +53,12 @@ class EstateLoader(SafeZoneLoader.SafeZoneLoader):
         self.underwaterSound = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.ogg')
         self.swimSound = base.loader.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.ogg')
         self.submergeSound = base.loader.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.ogg')
-        self.birdSound = list(map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg']))
-        self.cricketSound = list(map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg']))
+        self.birdSound = list(map(base.loader.loadSfx,
+                                  ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg',
+                                   'phase_4/audio/sfx/SZ_TC_bird3.ogg']))
+        self.cricketSound = list(map(base.loader.loadSfx,
+                                     ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg',
+                                      'phase_4/audio/sfx/SZ_TC_bird3.ogg']))
         if base.goonsEnabled:
             invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
             self.invModels = []
@@ -162,7 +168,8 @@ class EstateLoader(SafeZoneLoader.SafeZoneLoader):
         zoneId = requestStatus['zoneId']
         self.notify.debug('enterEstate, ownerId = %s, zoneId = %s' % (self.estateOwnerId, zoneId))
         self.accept(self.estateDoneEvent, self.handleEstateDone)
-        self.place = Estate.Estate(self, self.estateOwnerId, zoneId, self.fsm.getStateNamed('estate'), self.estateDoneEvent)
+        self.place = Estate.Estate(self, self.estateOwnerId, zoneId, self.fsm.getStateNamed('estate'),
+                                   self.estateDoneEvent)
         base.cr.playGame.setPlace(self.place)
         self.place.load()
         self.place.enter(requestStatus)
@@ -194,9 +201,9 @@ class EstateLoader(SafeZoneLoader.SafeZoneLoader):
             messenger.send(self.doneEvent)
             return
         if how in ['tunnelIn',
-         'teleportIn',
-         'doorIn',
-         'elevatorIn']:
+                   'teleportIn',
+                   'doorIn',
+                   'elevatorIn']:
             self.notify.debug('staying in estateloader')
             self.fsm.request('quietZone', [doneStatus])
         else:
@@ -232,9 +239,9 @@ class EstateLoader(SafeZoneLoader.SafeZoneLoader):
             return
         how = doneStatus['how']
         if how in ['tunnelIn',
-         'teleportIn',
-         'doorIn',
-         'elevatorIn']:
+                   'teleportIn',
+                   'doorIn',
+                   'elevatorIn']:
             self.fsm.request('quietZone', [doneStatus])
         else:
             self.notify.error('Exited hood with unexpected mode %s' % how)
@@ -281,7 +288,8 @@ class EstateLoader(SafeZoneLoader.SafeZoneLoader):
             pos = cloud[0].getPos(render)
             newPos = pos + axis * 30
             reversePos = pos - axis * 30
-            track.append(Sequence(LerpPosInterval(cloud[0], 10, newPos), LerpPosInterval(cloud[0], 20, reversePos), LerpPosInterval(cloud[0], 10, pos)))
+            track.append(Sequence(LerpPosInterval(cloud[0], 10, newPos), LerpPosInterval(cloud[0], 20, reversePos),
+                                  LerpPosInterval(cloud[0], 10, pos)))
 
         return track
 
@@ -306,7 +314,8 @@ class EstateLoader(SafeZoneLoader.SafeZoneLoader):
         dTheta = 2.0 * math.pi / self.numClouds
         cloud.reparentTo(self.cloudOrigin)
         axes = [Vec3(1, 0, 0), Vec3(0, 1, 0), Vec3(0, 0, 1)]
-        cloud.setPos(radius * math.cos(version * dTheta), radius * math.sin(version * dTheta), 4 * random.random() + zOffset)
+        cloud.setPos(radius * math.cos(version * dTheta), radius * math.sin(version * dTheta),
+                     4 * random.random() + zOffset)
         cloud.setScale(4.0)
         self.clouds.append([cloud, random.choice(axes)])
 

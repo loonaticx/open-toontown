@@ -4,9 +4,11 @@ from direct.distributed import DistributedObject
 from direct.task import Task
 from direct.distributed import DoInterestManager
 from otp.distributed.OtpDoGlobals import *
+
 _ToonTownDistrictStatInterest = None
 _ToonTownDistrictStatInterestComplete = 0
 _trashObject = DirectObject.DirectObject()
+
 
 def EventName():
     return 'ShardPopulationSet'
@@ -35,7 +37,8 @@ def open(event = None):
             return
 
         _trashObject.acceptOnce(EventName(), _CompleteProc)
-        _ToonTownDistrictStatInterest = base.cr.addInterest(OTP_DO_ID_TOONTOWN, OTP_ZONE_ID_DISTRICTS_STATS, EventName(), EventName())
+        _ToonTownDistrictStatInterest = base.cr.addInterest(OTP_DO_ID_TOONTOWN, OTP_ZONE_ID_DISTRICTS_STATS,
+                                                            EventName(), EventName())
     elif isComplete():
         messenger.send(EventName())
 
@@ -58,7 +61,8 @@ def refresh(event = None):
             return
 
         _trashObject.acceptOnce(EventName(), _CompleteProc, [event])
-        _ToonTownDistrictStatInterest = base.cr.addInterest(OTP_DO_ID_TOONTOWN, OTP_ZONE_ID_DISTRICTS_STATS, EventName(), EventName())
+        _ToonTownDistrictStatInterest = base.cr.addInterest(OTP_DO_ID_TOONTOWN, OTP_ZONE_ID_DISTRICTS_STATS,
+                                                            EventName(), EventName())
 
 
 def close():

@@ -8,6 +8,7 @@ from direct.fsm import State
 from . import LiftConstants
 from . import MovingPlatform
 
+
 class DistributedLift(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLift')
 
@@ -18,7 +19,11 @@ class DistributedLift(BasicEntities.DistributedNodePathEntity):
         self.notify.debug('generateInit')
         BasicEntities.DistributedNodePathEntity.generateInit(self)
         self.moveSnd = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_elevator_up_down.ogg')
-        self.fsm = ClassicFSM.ClassicFSM('DistributedLift', [State.State('off', self.enterOff, self.exitOff, ['moving']), State.State('moving', self.enterMoving, self.exitMoving, ['waiting']), State.State('waiting', self.enterWaiting, self.exitWaiting, ['moving'])], 'off', 'off')
+        self.fsm = ClassicFSM.ClassicFSM('DistributedLift',
+                                         [State.State('off', self.enterOff, self.exitOff, ['moving']),
+                                          State.State('moving', self.enterMoving, self.exitMoving, ['waiting']),
+                                          State.State('waiting', self.enterWaiting, self.exitWaiting, ['moving'])],
+                                         'off', 'off')
         self.fsm.enterInitialState()
 
     def generate(self):
@@ -78,10 +83,12 @@ class DistributedLift(BasicEntities.DistributedNodePathEntity):
             self.startGuard = zoneNp.find('**/%s' % self.startGuardName)
         if len(self.endGuardName):
             self.endGuard = zoneNp.find('**/%s' % self.endGuardName)
-        side2srch = {'front': '**/wall_front',
-         'back': '**/wall_back',
-         'left': '**/wall_left',
-         'right': '**/wall_right'}
+        side2srch = {
+            'front': '**/wall_front',
+            'back': '**/wall_back',
+            'left': '**/wall_left',
+            'right': '**/wall_right'
+        }
         for side in list(side2srch.values()):
             np = self.platformModel.find(side)
             if not np.isEmpty():
@@ -169,7 +176,7 @@ class DistributedLift(BasicEntities.DistributedNodePathEntity):
             if guard is not None and not guard.isEmpty():
                 guard.unstash()
             boardColl.unstash()
-            self.soundIval = SoundInterval(self.moveSnd, node=self.platform)
+            self.soundIval = SoundInterval(self.moveSnd, node = self.platform)
             self.soundIval.loop()
             return
 
@@ -184,8 +191,11 @@ class DistributedLift(BasicEntities.DistributedNodePathEntity):
             self.fsm.request('waiting')
             return
 
-        self.moveIval = Sequence(Func(startMoving), LerpPosInterval(self.platform, self.duration, endPos, startPos=startPos, blendType='easeInOut', name='lift-%s-move' % self.entId, fluid=1), Func(doneMoving))
-        ivalStartT = globalClockDelta.networkToLocalTime(arrivalTimestamp, bits=32) - self.moveIval.getDuration()
+        self.moveIval = Sequence(Func(startMoving),
+                                 LerpPosInterval(self.platform, self.duration, endPos, startPos = startPos,
+                                                 blendType = 'easeInOut', name = 'lift-%s-move' % self.entId,
+                                                 fluid = 1), Func(doneMoving))
+        ivalStartT = globalClockDelta.networkToLocalTime(arrivalTimestamp, bits = 32) - self.moveIval.getDuration()
         self.moveIval.start(globalClock.getFrameTime() - ivalStartT)
 
     def exitMoving(self):

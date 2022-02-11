@@ -7,6 +7,7 @@ from otp.avatar import ShadowCaster
 from toontown.racing.KartDNA import *
 from toontown.toonbase import TTLocalizer
 
+
 class Kart(NodePath, ShadowCaster.ShadowCaster):
     notify = DirectNotifyGlobal.directNotify.newCategory('Kart')
     index = 0
@@ -15,10 +16,18 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
     LFWHEEL = 1
     RRWHEEL = 2
     LRWHEEL = 3
-    wheelData = [{'node': 'wheel*Node2'},
-     {'node': 'wheel*Node1'},
-     {'node': 'wheel*Node3'},
-     {'node': 'wheel*Node4'}]
+    wheelData = [{
+                     'node': 'wheel*Node2'
+                 },
+                 {
+                     'node': 'wheel*Node1'
+                 },
+                 {
+                     'node': 'wheel*Node3'
+                 },
+                 {
+                     'node': 'wheel*Node4'
+                 }]
     ShadowScale = 2.5
     SFX_BaseDir = 'phase_6/audio/sfx/'
     SFX_KartStart = SFX_BaseDir + 'KART_Engine_start_%d.ogg'
@@ -34,10 +43,12 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
         Kart.index += 1
         self.updateFields = []
         self.kartDNA = [-1] * getNumFields()
-        self.kartAccessories = {KartDNA.ebType: None,
-         KartDNA.spType: None,
-         KartDNA.fwwType: (None, None),
-         KartDNA.bwwType: (None, None)}
+        self.kartAccessories = {
+            KartDNA.ebType: None,
+            KartDNA.spType: None,
+            KartDNA.fwwType: (None, None),
+            KartDNA.bwwType: (None, None)
+        }
         self.texCount = 1
         return
 
@@ -60,8 +71,10 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
         self.pitchNode = {}
         self.toonNode = {}
         self.rotateNode = self.attachNewNode('rotate')
-        levelIn = [base.config.GetInt('lod1-in', 30), base.config.GetInt('lod2-in', 80), base.config.GetInt('lod2-in', 200)]
-        levelOut = [base.config.GetInt('lod1-out', 0), base.config.GetInt('lod2-out', 30), base.config.GetInt('lod2-out', 80)]
+        levelIn = [base.config.GetInt('lod1-in', 30), base.config.GetInt('lod2-in', 80),
+                   base.config.GetInt('lod2-in', 200)]
+        levelOut = [base.config.GetInt('lod1-out', 0), base.config.GetInt('lod2-out', 30),
+                    base.config.GetInt('lod2-out', 80)]
         lodRequired = 3
         if forGui:
             lodRequired = 1
@@ -529,9 +542,12 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
         def printVol():
             print(self.kartLoopSfx.getVolume())
 
-        track = Parallel(SoundInterval(self.kartStartSfx), Func(self.kartLoopSfx.play), LerpFunctionInterval(self.kartLoopSfx.setVolume, fromData=0, toData=0.4, duration=length))
+        track = Parallel(SoundInterval(self.kartStartSfx), Func(self.kartLoopSfx.play),
+                         LerpFunctionInterval(self.kartLoopSfx.setVolume, fromData = 0, toData = 0.4,
+                                              duration = length))
         return Sequence(track, Func(printVol))
 
     def generateEngineStopTrack(self, duration = 0):
-        track = Parallel(LerpFunctionInterval(self.kartLoopSfx.setVolume, fromData=0.4, toData=0, duration=duration))
+        track = Parallel(
+            LerpFunctionInterval(self.kartLoopSfx.setVolume, fromData = 0.4, toData = 0, duration = duration))
         return track

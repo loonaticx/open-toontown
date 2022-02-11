@@ -1,5 +1,6 @@
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
+
 GREETING = 0
 COMMENT = 1
 GOODBYE = 2
@@ -12,6 +13,7 @@ GoofySpeedwayChatter = TTLocalizer.GoofySpeedwayChatter
 DonaldChatter = TTLocalizer.DonaldChatter
 ChipChatter = TTLocalizer.ChipChatter
 DaleChatter = TTLocalizer.DaleChatter
+
 
 def getExtendedChat(chatset, extendedChat):
     newChat = []
@@ -128,7 +130,9 @@ def getChatter(charName, chatterType):
             return TTLocalizer.CLGoofySpeedwayChatter
         elif chatterType == ToontownGlobals.CIRCUIT_RACING_EVENT:
             return TTLocalizer.GPGoofySpeedwayChatter
-        elif chatterType == ToontownGlobals.WINTER_DECORATIONS or chatterType == ToontownGlobals.WINTER_CAROLING or chatterType == ToontownGlobals.WACKY_WINTER_DECORATIONS or chatterType == ToontownGlobals.WACKY_WINTER_CAROLING:
+        elif chatterType == ToontownGlobals.WINTER_DECORATIONS or chatterType == ToontownGlobals.WINTER_CAROLING or \
+                chatterType == ToontownGlobals.WACKY_WINTER_DECORATIONS or chatterType == \
+                ToontownGlobals.WACKY_WINTER_CAROLING:
             return TTLocalizer.WinterGoofyChatter
         elif chatterType == ToontownGlobals.VALENTINES_DAY:
             return TTLocalizer.ValentinesGoofyChatter
@@ -220,7 +224,9 @@ def getChatter(charName, chatterType):
             return TTLocalizer.HalloweenChipChatter
         elif chatterType == ToontownGlobals.SPOOKY_COSTUMES:
             return TTLocalizer.HalloweenChipChatter
-        elif chatterType == ToontownGlobals.WINTER_DECORATIONS or chatterType == ToontownGlobals.WINTER_CAROLING or chatterType == ToontownGlobals.WACKY_WINTER_DECORATIONS or chatterType == ToontownGlobals.WACKY_WINTER_CAROLING:
+        elif chatterType == ToontownGlobals.WINTER_DECORATIONS or chatterType == ToontownGlobals.WINTER_CAROLING or \
+                chatterType == ToontownGlobals.WACKY_WINTER_DECORATIONS or chatterType == \
+                ToontownGlobals.WACKY_WINTER_CAROLING:
             return TTLocalizer.WinterChipChatter
         elif chatterType == ToontownGlobals.VALENTINES_DAY:
             return TTLocalizer.ValentinesChipChatter
@@ -245,7 +251,9 @@ def getChatter(charName, chatterType):
             return TTLocalizer.HalloweenDaleChatter
         elif chatterType == ToontownGlobals.SPOOKY_COSTUMES:
             return TTLocalizer.HalloweenDaleChatter
-        elif chatterType == ToontownGlobals.WINTER_DECORATIONS or chatterType == ToontownGlobals.WINTER_CAROLING or chatterType == ToontownGlobals.WACKY_WINTER_DECORATIONS or chatterType == ToontownGlobals.WACKY_WINTER_CAROLING:
+        elif chatterType == ToontownGlobals.WINTER_DECORATIONS or chatterType == ToontownGlobals.WINTER_CAROLING or \
+                chatterType == ToontownGlobals.WACKY_WINTER_DECORATIONS or chatterType == \
+                ToontownGlobals.WACKY_WINTER_CAROLING:
             return TTLocalizer.WinterDaleChatter
         elif chatterType == ToontownGlobals.VALENTINES_DAY:
             return TTLocalizer.ValentinesDaleChatter

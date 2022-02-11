@@ -12,19 +12,25 @@ from toontown.coghq import BossbotOfficeExterior
 from toontown.coghq import CountryClubInterior
 from pandac.PandaModules import DecalEffect, TextEncoder
 import random
+
 aspectSF = 0.7227
+
 
 class BossbotCogHQLoader(CogHQLoader.CogHQLoader):
     notify = DirectNotifyGlobal.directNotify.newCategory('BossbotCogHQLoader')
 
     def __init__(self, hood, parentFSMState, doneEvent):
         CogHQLoader.CogHQLoader.__init__(self, hood, parentFSMState, doneEvent)
-        self.fsm.addState(State.State('countryClubInterior', self.enterCountryClubInterior, self.exitCountryClubInterior, ['quietZone', 'cogHQExterior']))
+        self.fsm.addState(
+            State.State('countryClubInterior', self.enterCountryClubInterior, self.exitCountryClubInterior,
+                        ['quietZone', 'cogHQExterior']))
         for stateName in ['start', 'cogHQExterior', 'quietZone']:
             state = self.fsm.getStateNamed(stateName)
             state.addTransition('countryClubInterior')
 
-        self.musicFile = random.choice(['phase_12/audio/bgm/Bossbot_Entry_v1.ogg', 'phase_12/audio/bgm/Bossbot_Entry_v2.ogg', 'phase_12/audio/bgm/Bossbot_Entry_v3.ogg'])
+        self.musicFile = random.choice(
+            ['phase_12/audio/bgm/Bossbot_Entry_v1.ogg', 'phase_12/audio/bgm/Bossbot_Entry_v2.ogg',
+             'phase_12/audio/bgm/Bossbot_Entry_v3.ogg'])
         self.cogHQExteriorModelPath = 'phase_12/models/bossbotHQ/CogGolfHub'
         self.factoryExteriorModelPath = 'phase_11/models/lawbotHQ/LB_DA_Lobby'
         self.cogHQLobbyModelPath = 'phase_12/models/bossbotHQ/CogGolfCourtyard'
@@ -69,7 +75,9 @@ class BossbotCogHQLoader(CogHQLoader.CogHQLoader):
             top = self.geom.find('**/' + topStr)
             sign = top.find('**/' + signStr)
             locator = top.find('**/sign_origin')
-            signText = DirectGui.OnscreenText(text=TextEncoder.upper(TTLocalizer.GlobalStreetNames[textId][-1]), font=ToontownGlobals.getSuitFont(), scale=TTLocalizer.BCHQLsignText, fg=(0, 0, 0, 1), parent=sign)
+            signText = DirectGui.OnscreenText(text = TextEncoder.upper(TTLocalizer.GlobalStreetNames[textId][-1]),
+                                              font = ToontownGlobals.getSuitFont(), scale = TTLocalizer.BCHQLsignText,
+                                              fg = (0, 0, 0, 1), parent = sign)
             signText.setPosHpr(locator, 0, -0.1, -0.25, 0, 0, 0)
             signText.setDepthWrite(0)
 

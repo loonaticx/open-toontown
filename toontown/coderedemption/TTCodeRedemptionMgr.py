@@ -1,6 +1,7 @@
 from direct.distributed.DistributedObject import DistributedObject
 from direct.directnotify.DirectNotifyGlobal import directNotify
 
+
 class TTCodeRedemptionMgr(DistributedObject):
     neverDisable = 1
     notify = directNotify.newCategory('TTCodeRedemptionMgr')

@@ -31,6 +31,7 @@ from toontown.battle import MovieUtil
 import time
 from toontown.toonbase import ToontownTimer
 
+
 class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGolfGreenGame')
 
@@ -53,9 +54,9 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         self.attackPattern = None
         self.tooLowFlag = 0
         self.toonPoints = (Point3(3.0, 13.0, 0.0),
-         Point3(6.0, 13.0, 0.0),
-         Point3(-3.0, 13.0, 0.0),
-         Point3(-6.0, 13.0, 0.0))
+                           Point3(6.0, 13.0, 0.0),
+                           Point3(-3.0, 13.0, 0.0),
+                           Point3(-6.0, 13.0, 0.0))
         self.joinedToons = []
         self.everJoinedToons = []
         self.flagNextLevel = 0
@@ -120,7 +121,8 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
             return
         x = self.spriteNode.getX()
         y = self.spriteNode.getY()
-        self.rollTrack = Sequence(LerpPosInterval(self.spriteNode, 0.5, Point3(x, y, -self.spriteNotchPos * self.cellSizeZ)))
+        self.rollTrack = Sequence(
+            LerpPosInterval(self.spriteNode, 0.5, Point3(x, y, -self.spriteNotchPos * self.cellSizeZ)))
         if self.controlSprite:
             if not self.controlSprite.isActive:
                 pass
@@ -172,11 +174,11 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
                 if countZ % 2 == 0:
                     offset = self.cellSizeX * 0.5
                 newCell = [None,
-                 countX * self.cellSizeX + self.minX + offset + margin,
-                 countZ * self.cellSizeZ + self.minZ,
-                 countX,
-                 countZ,
-                 None]
+                           countX * self.cellSizeX + self.minX + offset + margin,
+                           countZ * self.cellSizeZ + self.minZ,
+                           countX,
+                           countZ,
+                           None]
                 groundCircle = loader.loadModel('phase_12/models/bossbotHQ/bust_a_cog_hole')
                 groundCircle.reparentTo(self.spriteNode)
                 if groundCircle == None:
@@ -193,24 +195,24 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
 
             self.grid.append(newRow)
 
-        self.cogSprite = self.addUnSprite(self.block, posX=0.25, posZ=0.5)
+        self.cogSprite = self.addUnSprite(self.block, posX = 0.25, posZ = 0.5)
         self.cogSprite.setColor(self.colorShadow)
         self.cogSprite.nodeObj.hide()
-        self.standbySprite = self.addUnSprite(self.block, posX=0.0, posZ=-3.0)
+        self.standbySprite = self.addUnSprite(self.block, posX = 0.0, posZ = -3.0)
         self.standbySprite.setColor(self.colorShadow)
         self.standbySprite.spriteBase.reparentTo(self.frame)
         self.standbySprite.spriteBase.setY(self.radiusBall)
         self.standbySprite.nodeObj.hide()
         self.boardData = [((1, 0, 0),
-          (4, 0, 1),
-          (6, 0, 2),
-          (1, 1, 0)), ((1, 0, 1),
-          (4, 0, 1),
-          (6, 0, 1),
-          (1, 1, 1)), ((1, 0, 2),
-          (4, 0, 2),
-          (6, 0, 2),
-          (1, 1, 2))]
+                           (4, 0, 1),
+                           (6, 0, 2),
+                           (1, 1, 0)), ((1, 0, 1),
+                                        (4, 0, 1),
+                                        (6, 0, 1),
+                                        (1, 1, 1)), ((1, 0, 2),
+                                                     (4, 0, 2),
+                                                     (6, 0, 2),
+                                                     (1, 1, 2))]
         self.attackPatterns = [(0, 1, 2), (0, 0, 1, 1, 2, 2), (0, 1, 0, 2)]
         self.winCounter = 0
         self.matchList = []
@@ -252,9 +254,9 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         count = 0
         for sprite in self.sprites:
             print('count %s X %s Z %s Color %s' % (count,
-             sprite.gridPosX,
-             sprite.gridPosZ,
-             sprite.colorType))
+                                                   sprite.gridPosX,
+                                                   sprite.gridPosZ,
+                                                   sprite.colorType))
             count += 1
 
     def pickLevelPattern(self):
@@ -264,7 +266,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         self.attackCounter = 0
         self.spriteNotchPos = 0
         for ball in self.board:
-            newSprite = self.addSprite(self.block, found=1, color=ball[2])
+            newSprite = self.addSprite(self.block, found = 1, color = ball[2])
             self.placeIntoGrid(newSprite, ball[0], self.gridDimZ - 1 - ball[1])
 
         self.colorGridFlag = 1
@@ -288,33 +290,67 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         background = model.find('**/bg')
         itemBoard = model.find('**/item_board')
         self.focusPoint = self.baseNode.attachNewNode('GolfGreenGameFrame')
-        self.frame2D = DirectFrame(scale=1.1, relief=DGG.FLAT, frameSize=(-0.1,
-         0.1,
-         -0.1,
-         -0.1), frameColor=(0.737, 0.573, 0.345, 0.3))
+        self.frame2D = DirectFrame(scale = 1.1, relief = DGG.FLAT, frameSize = (-0.1,
+                                                                                0.1,
+                                                                                -0.1,
+                                                                                -0.1),
+                                   frameColor = (0.737, 0.573, 0.345, 0.3))
         gui2 = loader.loadModel('phase_3/models/gui/quit_button')
-        self.quitButton = DirectButton(parent=self.frame2D, relief=None, image=(gui2.find('**/QuitBtn_UP'), gui2.find('**/QuitBtn_DN'), gui2.find('**/QuitBtn_RLVR')), pos=(0.95, 1.3, -0.69), image_scale=(0.9, 1.0, 1.0), text=TTLocalizer.BustACogExit, text_font=ToontownGlobals.getSignFont(), text0_fg=(1, 1, 1, 1), text0_shadow=(0, 0, 0, 1), text1_fg=(1, 1, 1, 1), text2_fg=(1, 1, 1, 1), text_scale=TTLocalizer.DGGGquitButton, text_pos=(0, -0.01), command=self.__leaveGame)
+        self.quitButton = DirectButton(parent = self.frame2D, relief = None, image = (
+        gui2.find('**/QuitBtn_UP'), gui2.find('**/QuitBtn_DN'), gui2.find('**/QuitBtn_RLVR')), pos = (0.95, 1.3, -0.69),
+                                       image_scale = (0.9, 1.0, 1.0), text = TTLocalizer.BustACogExit,
+                                       text_font = ToontownGlobals.getSignFont(), text0_fg = (1, 1, 1, 1),
+                                       text0_shadow = (0, 0, 0, 1), text1_fg = (1, 1, 1, 1), text2_fg = (1, 1, 1, 1),
+                                       text_scale = TTLocalizer.DGGGquitButton, text_pos = (0, -0.01),
+                                       command = self.__leaveGame)
         self.quitButton.hide()
-        self.instructions = DirectFrame(parent=self.frame2D, relief=None, image=DGG.getDefaultDialogGeom(), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.2, 1.0, 1.0), text=TTLocalizer.GolfGreenGameDirections, text_font=ToontownGlobals.getSignFont(), text_align=TextNode.ALeft, text_wordwrap=16, text_scale=0.06, text_pos=(-0.5, 0.3), pos=(0.0, 0, -0.0))
+        self.instructions = DirectFrame(parent = self.frame2D, relief = None, image = DGG.getDefaultDialogGeom(),
+                                        image_color = ToontownGlobals.GlobalDialogColor, image_scale = (1.2, 1.0, 1.0),
+                                        text = TTLocalizer.GolfGreenGameDirections,
+                                        text_font = ToontownGlobals.getSignFont(), text_align = TextNode.ALeft,
+                                        text_wordwrap = 16, text_scale = 0.06, text_pos = (-0.5, 0.3),
+                                        pos = (0.0, 0, -0.0))
         self.instructions.hide()
         imageCogBall = loader.loadModel('phase_12/models/bossbotHQ/bust_a_cog_ball_cog')
         imageCogBall.setHpr(0, 90, 0)
-        self.instCogBall = DirectFrame(parent=self.instructions, relief=None, image=imageCogBall, image_color=ToontownGlobals.GlobalDialogColor, image_scale=(0.12, 0.12, 0.12), pos=(0.0, 0, -0.2))
+        self.instCogBall = DirectFrame(parent = self.instructions, relief = None, image = imageCogBall,
+                                       image_color = ToontownGlobals.GlobalDialogColor,
+                                       image_scale = (0.12, 0.12, 0.12), pos = (0.0, 0, -0.2))
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
-        cancelImageList = (buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr'))
-        self.doneButton = DirectButton(parent=self.instructions, relief=None, image=cancelImageList, command=self.instructions.hide, pos=(0, 0, -0.4))
-        self.howToButton = DirectButton(parent=self.frame2D, relief=None, image=(gui2.find('**/QuitBtn_UP'), gui2.find('**/QuitBtn_DN'), gui2.find('**/QuitBtn_RLVR')), pos=(0.95, 1.3, -0.82), image_scale=(0.9, 1.0, 1.0), text=TTLocalizer.BustACogHowto, text_font=ToontownGlobals.getSignFont(), text0_fg=(1, 1, 1, 1), text0_shadow=(0, 0, 0, 1), text1_fg=(1, 1, 1, 1), text2_fg=(1, 1, 1, 1), text_scale=TTLocalizer.DGGGhowToButton, text_pos=(0, -0.01), command=self.instructions.show)
+        cancelImageList = (
+        buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr'))
+        self.doneButton = DirectButton(parent = self.instructions, relief = None, image = cancelImageList,
+                                       command = self.instructions.hide, pos = (0, 0, -0.4))
+        self.howToButton = DirectButton(parent = self.frame2D, relief = None, image = (
+        gui2.find('**/QuitBtn_UP'), gui2.find('**/QuitBtn_DN'), gui2.find('**/QuitBtn_RLVR')), pos = (0.95, 1.3, -0.82),
+                                        image_scale = (0.9, 1.0, 1.0), text = TTLocalizer.BustACogHowto,
+                                        text_font = ToontownGlobals.getSignFont(), text0_fg = (1, 1, 1, 1),
+                                        text0_shadow = (0, 0, 0, 1), text1_fg = (1, 1, 1, 1), text2_fg = (1, 1, 1, 1),
+                                        text_scale = TTLocalizer.DGGGhowToButton, text_pos = (0, -0.01),
+                                        command = self.instructions.show)
         self.howToButton.hide()
-        self.timerLabel = DirectLabel(parent=self.frame2D, relief=None, image=gui2.find('**/QuitBtn_UP'), pos=(0.9, 1.3, -0.42), image_scale=(0.5, 1.0, 1.0), text='Timer', text_font=ToontownGlobals.getSignFont(), text0_fg=(1, 1, 1, 1), text_scale=0.045, text_pos=(0, -0.01))
+        self.timerLabel = DirectLabel(parent = self.frame2D, relief = None, image = gui2.find('**/QuitBtn_UP'),
+                                      pos = (0.9, 1.3, -0.42), image_scale = (0.5, 1.0, 1.0), text = 'Timer',
+                                      text_font = ToontownGlobals.getSignFont(), text0_fg = (1, 1, 1, 1),
+                                      text_scale = 0.045, text_pos = (0, -0.01))
         self.timerLabel.hide()
         self.headPanel = loader.loadModel('phase_6/models/golf/headPanel')
-        self.scoreBoard = DirectFrame(scale=1.0, pos=(0.0, 0, 0.9), relief=DGG.FLAT, parent=aspect2d, frameSize=(-0.35,
-         0.35,
-         -0.05,
-         0.05), frameColor=(0.737, 0.573, 0.345, 0.3))
-        self.scoreLabel = DirectLabel(parent=self.scoreBoard, relief=None, pos=(0, 0, 0), scale=1.0, text='', text_font=ToontownGlobals.getSignFont(), text0_fg=(1, 1, 1, 1), text0_shadow=(0.0, 0.0, 0.0, 1), text_scale=TTLocalizer.DGGGscoreLabel, text_pos=(0, -0.02))
+        self.scoreBoard = DirectFrame(scale = 1.0, pos = (0.0, 0, 0.9), relief = DGG.FLAT, parent = aspect2d,
+                                      frameSize = (-0.35,
+                                                   0.35,
+                                                   -0.05,
+                                                   0.05), frameColor = (0.737, 0.573, 0.345, 0.3))
+        self.scoreLabel = DirectLabel(parent = self.scoreBoard, relief = None, pos = (0, 0, 0), scale = 1.0, text = '',
+                                      text_font = ToontownGlobals.getSignFont(), text0_fg = (1, 1, 1, 1),
+                                      text0_shadow = (0.0, 0.0, 0.0, 1), text_scale = TTLocalizer.DGGGscoreLabel,
+                                      text_pos = (0, -0.02))
         self.scoreBoard.hide()
-        self.bonusBoard = DirectFrame(parent=self.frame2D, relief=None, image_pos=(0, 0, 0.0), image_scale=(0.4, 1, 0.4), image_color=(1, 1, 1, 1), pos=(0.0, 1.5, 0.67), scale=1.0, text='You gotsa bonus fool!', text_font=ToontownGlobals.getSignFont(), text0_fg=(1, 1, 1, 1), text0_shadow=(0.0, 0.0, 0.0, 1), text_scale=0.055, text_pos=(0, -0.1), textMayChange=1)
+        self.bonusBoard = DirectFrame(parent = self.frame2D, relief = None, image_pos = (0, 0, 0.0),
+                                      image_scale = (0.4, 1, 0.4), image_color = (1, 1, 1, 1), pos = (0.0, 1.5, 0.67),
+                                      scale = 1.0, text = 'You gotsa bonus fool!',
+                                      text_font = ToontownGlobals.getSignFont(), text0_fg = (1, 1, 1, 1),
+                                      text0_shadow = (0.0, 0.0, 0.0, 1), text_scale = 0.055, text_pos = (0, -0.1),
+                                      textMayChange = 1)
         self.bonusBoard.hide()
         self.backBoard = loader.loadModel('phase_12/models/bossbotHQ/bust_a_cog_background')
         self.backBoard.setCollideMask(BitMask32.allOff())
@@ -442,7 +478,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         self.countDown = self.countTime
         self.tooLowFlag = 0
         for ball in self.board:
-            newSprite = self.addSprite(self.block, found=1, color=ball[2])
+            newSprite = self.addSprite(self.block, found = 1, color = ball[2])
             self.placeIntoGrid(newSprite, ball[0], self.gridDimZ - 1 - ball[1])
 
         self.colorGridFlag = 1
@@ -576,8 +612,10 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         currentDist = 10000000
         for countX in range(self.gridDimX):
             for countZ in range(self.gridDimZ):
-                testDist = self.testPointDistanceSquare(x, z, self.grid[countX][countZ][1], self.grid[countX][countZ][2])
-                if self.grid[countX][countZ][0] == None and testDist < currentDist and (force or self.hasNeighbor(countX, countZ) != None):
+                testDist = self.testPointDistanceSquare(x, z, self.grid[countX][countZ][1],
+                                                        self.grid[countX][countZ][2])
+                if self.grid[countX][countZ][0] == None and testDist < currentDist and (
+                        force or self.hasNeighbor(countX, countZ) != None):
                     currentClosest = self.grid[countX][countZ]
                     self.closestX = countX
                     self.closestZ = countZ
@@ -918,7 +956,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         return
 
     def questionSprite(self, sprite):
-        newSprite = self.addSprite(self.block, found=0, color=1)
+        newSprite = self.addSprite(self.block, found = 0, color = 1)
         newSprite.setX(sprite.getX())
         newSprite.setZ(sprite.getZ())
         newSprite.wildEffect()
@@ -1009,7 +1047,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         return newSprite
 
     def addControlSprite(self, x = 0.0, z = 0.0, color = None):
-        newSprite = self.addSprite(self.block, posX=x, posZ=z, color=color, found=1)
+        newSprite = self.addSprite(self.block, posX = x, posZ = z, color = color, found = 1)
         newSprite.spriteBase.reparentTo(self.frame)
         newSprite.spriteBase.setPos(0.0, 0.7, -1.54)
         self.controlSprite = newSprite
@@ -1076,10 +1114,12 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         while self.controlSprite == None and self.attackPattern:
             if self.attackCounter > len(self.attackPattern) - 1:
                 self.attackCounter = 0
-            print('Pattern %s Place %s Type %s' % (self.attackPattern, self.attackCounter, self.attackPattern[self.attackCounter]))
+            print('Pattern %s Place %s Type %s' % (
+            self.attackPattern, self.attackCounter, self.attackPattern[self.attackCounter]))
             if self.standbySprite.holdType != None:
                 color = self.standbySprite.holdType
-                sprite = self.addControlSprite(self.newBallX, self.newBallZ + self.spriteNotchPos * self.cellSizeZ, color)
+                sprite = self.addControlSprite(self.newBallX, self.newBallZ + self.spriteNotchPos * self.cellSizeZ,
+                                               color)
             self.ballLoaded = 1
             self.updateSpritePos()
             newColor = self.predictAttackPattern(0)
@@ -1267,7 +1307,8 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         self.groundFlag.setScale(0.5)
         self.groundFlag.setH(-45)
         self.groundFlag.setPos(3.0, 4.0, 0.0)
-        groundSquare = BuildGeometry.addSquareGeom(self.squareNode, self.sizeX, self.sizeZ, color=Vec4(0.4, 0.4, 0.4, 0.5))
+        groundSquare = BuildGeometry.addSquareGeom(self.squareNode, self.sizeX, self.sizeZ,
+                                                   color = Vec4(0.4, 0.4, 0.4, 0.5))
         self.centerZ = (self.minZ + self.maxZ) * 0.5
         self.squareNode.setZ((self.minZ + self.maxZ) * 0.5)
         self.squareNode.setP(-90)
@@ -1338,7 +1379,9 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
                 self.joinedToons.append(avId)
                 index = self.everJoinedToons.index(avId)
                 if index > 3:
-                    print('ERROR! green game has had more than 4 players, we are about to crash\n %s' % self.everJoinedToons)
+                    print(
+                        'ERROR! green game has had more than 4 players, we are about to crash\n %s' %
+                        self.everJoinedToons)
                     print('Joining Toon is %s index is %s' % (avId, index))
                 toon = base.cr.doId2do.get(avId)
                 selfPos = self.getPos(render)
@@ -1351,7 +1394,9 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
                     self.addToonHeadPanel(toon)
                     toon.setAnimState('run', 1.0)
                     animFunc = Func(toon.setAnimState, 'neutral', 1.0)
-                    track = Sequence(LerpPosInterval(toon, 0.75, standPoint), LerpHprInterval(toon, 0.25, Point3(180, 0, 0)), animFunc, Func(self.clearToonTrack, avId), name=toon.uniqueName('gggEnter'), autoPause=1)
+                    track = Sequence(LerpPosInterval(toon, 0.75, standPoint),
+                                     LerpHprInterval(toon, 0.25, Point3(180, 0, 0)), animFunc,
+                                     Func(self.clearToonTrack, avId), name = toon.uniqueName('gggEnter'), autoPause = 1)
                     track.delayDelete = DelayDelete.DelayDelete(toon, 'GolfGreenGame.acceptJoin')
                     self.storeToonTrack(avId, track)
                     track.start()
@@ -1424,7 +1469,8 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
 
     def informGag(self, track, level):
         self.bonusBoard.show()
-        self.bonusBoard['text'] = TTLocalizer.GolfGreenGameBonusGag % TTLocalizer.BattleGlobalAvPropStringsSingular[track][level]
+        self.bonusBoard['text'] = TTLocalizer.GolfGreenGameBonusGag % \
+                                  TTLocalizer.BattleGlobalAvPropStringsSingular[track][level]
         iconName = ToontownBattleGlobals.AvPropsNew[track][level]
         icon = self.invModel.find('**/%s' % iconName)
         self.bonusBoard['image'] = icon

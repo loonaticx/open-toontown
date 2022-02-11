@@ -8,6 +8,7 @@ from toontown.minigame import IceGameGlobals
 from toontown.ai.ToonBarrier import ToonBarrier
 import functools
 
+
 class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
     notify = directNotify.newCategory('DistributedIceGameAI')
 
@@ -17,23 +18,29 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
         except:
             self.DistributedIceGameAI_initialized = 1
             DistributedMinigameAI.DistributedMinigameAI.__init__(self, air, minigameId)
-            self.gameFSM = ClassicFSM.ClassicFSM('DistributedIceGameAI', [State.State('off', self.enterOff, self.exitOff, ['waitClientsChoices']),
-             State.State('waitClientsChoices', self.enterWaitClientsChoices, self.exitWaitClientsChoices, ['cleanup', 'processChoices']),
-             State.State('processChoices', self.enterProcessChoices, self.exitProcessChoices, ['waitEndingPositions', 'cleanup']),
-             State.State('waitEndingPositions', self.enterWaitEndingPositions, self.exitWaitEndingPositions, ['processEndingPositions', 'cleanup']),
-             State.State('processEndingPositions', self.enterProcessEndingPositions, self.exitProcessEndingPositions, ['waitClientsChoices', 'scoreMatch', 'cleanup']),
-             State.State('scoreMatch', self.enterScoreMatch, self.exitScoreMatch, ['waitClientsChoices', 'finalResults', 'cleanup']),
-             State.State('finalResults', self.enterFinalResults, self.exitFinalResults, ['cleanup']),
-             State.State('cleanup', self.enterCleanup, self.exitCleanup, ['off'])], 'off', 'off')
+            self.gameFSM = ClassicFSM.ClassicFSM('DistributedIceGameAI', [
+                State.State('off', self.enterOff, self.exitOff, ['waitClientsChoices']),
+                State.State('waitClientsChoices', self.enterWaitClientsChoices, self.exitWaitClientsChoices,
+                            ['cleanup', 'processChoices']),
+                State.State('processChoices', self.enterProcessChoices, self.exitProcessChoices,
+                            ['waitEndingPositions', 'cleanup']),
+                State.State('waitEndingPositions', self.enterWaitEndingPositions, self.exitWaitEndingPositions,
+                            ['processEndingPositions', 'cleanup']),
+                State.State('processEndingPositions', self.enterProcessEndingPositions, self.exitProcessEndingPositions,
+                            ['waitClientsChoices', 'scoreMatch', 'cleanup']),
+                State.State('scoreMatch', self.enterScoreMatch, self.exitScoreMatch,
+                            ['waitClientsChoices', 'finalResults', 'cleanup']),
+                State.State('finalResults', self.enterFinalResults, self.exitFinalResults, ['cleanup']),
+                State.State('cleanup', self.enterCleanup, self.exitCleanup, ['off'])], 'off', 'off')
             self.addChildGameFSM(self.gameFSM)
             self.avatarChoices = {}
             self.avatarEndingPositions = {}
             self.curRound = 0
             self.curMatch = 0
             self.finalEndingPositions = [Point3(IceGameGlobals.StartingPositions[0]),
-             Point3(IceGameGlobals.StartingPositions[1]),
-             Point3(IceGameGlobals.StartingPositions[2]),
-             Point3(IceGameGlobals.StartingPositions[3])]
+                                         Point3(IceGameGlobals.StartingPositions[1]),
+                                         Point3(IceGameGlobals.StartingPositions[2]),
+                                         Point3(IceGameGlobals.StartingPositions[3])]
 
     def generate(self):
         self.notify.debug('generate')
@@ -90,7 +97,8 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
         self.resetChoices()
         self.sendUpdate('setMatchAndRound', [self.curMatch, self.curRound])
         self.sendUpdate('setNewState', ['inputChoice'])
-        taskMgr.doMethodLater(IceGameGlobals.InputTimeout, self.waitClientsChoicesTimeout, self.taskName('wait-choices-timeout'))
+        taskMgr.doMethodLater(IceGameGlobals.InputTimeout, self.waitClientsChoicesTimeout,
+                              self.taskName('wait-choices-timeout'))
         self.sendUpdate('setTimerStartTime', [globalClockDelta.getFrameNetworkTime()])
 
     def exitWaitClientsChoices(self):
@@ -115,7 +123,8 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
         if self.curRound == 0:
             self.takenTreasuresTable = [0] * self.numTreasures
             self.takenPenaltiesTable = [0] * self.numPenalties
-        taskMgr.doMethodLater(IceGameGlobals.InputTimeout, self.waitClientsChoicesTimeout, self.taskName('endingPositionsTimeout'))
+        taskMgr.doMethodLater(IceGameGlobals.InputTimeout, self.waitClientsChoicesTimeout,
+                              self.taskName('endingPositionsTimeout'))
         self.avatarEndingPositions = {}
 
     def exitWaitEndingPositions(self):
@@ -123,9 +132,9 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
 
     def enterProcessEndingPositions(self):
         averagePos = [Point3(0, 0, 0),
-         Point3(0, 0, 0),
-         Point3(0, 0, 0),
-         Point3(0, 0, 0)]
+                      Point3(0, 0, 0),
+                      Point3(0, 0, 0),
+                      Point3(0, 0, 0)]
         divisor = 0
         for avId in list(self.avatarEndingPositions.keys()):
             divisor += 1
@@ -175,14 +184,15 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
             else:
                 return 0
 
-        sortedByDistance.sort(key=functools.cmp_to_key(compareDistance))
+        sortedByDistance.sort(key = functools.cmp_to_key(compareDistance))
         self.scoresAsList = []
         totalPointsAdded = 0
         for index in range(len(self.avIdList)):
             pos = Point3(*self.finalEndingPositions[index])
             pos.setZ(0)
             length = pos.length()
-            points = length / IceGameGlobals.FarthestLength * (IceGameGlobals.PointsInCorner - IceGameGlobals.PointsDeadCenter[self.numPlayers])
+            points = length / IceGameGlobals.FarthestLength * (
+                        IceGameGlobals.PointsInCorner - IceGameGlobals.PointsDeadCenter[self.numPlayers])
             points += IceGameGlobals.PointsDeadCenter[self.numPlayers]
             self.notify.debug('length = %s points=%s avId=%d' % (length, points, avId))
             avId = self.avIdList[index]
@@ -218,7 +228,9 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
 
         scoreMovieDuration = IceGameGlobals.FarthestLength * IceGameGlobals.ExpandFeetPerSec
         scoreMovieDuration += totalPointsAdded * IceGameGlobals.ScoreCountUpRate
-        self.scoringMovieDoneBarrier = ToonBarrier('waitScoringMovieDone', self.uniqueName('waitScoringMovieDone'), self.avIdList, scoreMovieDuration + MinigameGlobals.latencyTolerance, allToonsScoringMovieDone, handleTimeout)
+        self.scoringMovieDoneBarrier = ToonBarrier('waitScoringMovieDone', self.uniqueName('waitScoringMovieDone'),
+                                                   self.avIdList, scoreMovieDuration + MinigameGlobals.latencyTolerance,
+                                                   allToonsScoringMovieDone, handleTimeout)
 
     def exitScoreMatch(self):
         self.scoringMovieDoneBarrier.cleanup()
@@ -228,7 +240,8 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
     def enterFinalResults(self):
         self.checkScores()
         self.sendUpdate('setNewState', ['finalResults'])
-        taskMgr.doMethodLater(IceGameGlobals.ShowScoresDuration, self.__doneShowingScores, self.taskName('waitShowScores'))
+        taskMgr.doMethodLater(IceGameGlobals.ShowScoresDuration, self.__doneShowingScores,
+                              self.taskName('waitShowScores'))
 
     def exitFinalResults(self):
         taskMgr.remove(self.taskName('waitShowScores'))
@@ -253,7 +266,8 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
 
     def setAvatarChoice(self, force, direction):
         avatarId = self.air.getAvatarIdFromSender()
-        self.notify.debug('setAvatarChoice: avatar: ' + str(avatarId) + ' votes: ' + str(force) + ' direction: ' + str(direction))
+        self.notify.debug(
+            'setAvatarChoice: avatar: ' + str(avatarId) + ' votes: ' + str(force) + ' direction: ' + str(direction))
         self.avatarChoices[avatarId] = self.checkChoice(avatarId, force, direction)
         if self.allAvatarsChosen():
             self.notify.debug('setAvatarChoice: all avatars have chosen')
@@ -279,7 +293,8 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
         return True
 
     def endingPositions(self, positions):
-        if not self.gameFSM or not self.gameFSM.getCurrentState() or self.gameFSM.getCurrentState().getName() != 'waitEndingPositions':
+        if not self.gameFSM or not self.gameFSM.getCurrentState() or self.gameFSM.getCurrentState().getName() != \
+                'waitEndingPositions':
             return
         self.notify.debug('got endingPositions from client %s' % positions)
         avId = self.air.getAvatarIdFromSender()
@@ -298,21 +313,25 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
         return Task.done
 
     def reportScoringMovieDone(self):
-        if not self.gameFSM or not self.gameFSM.getCurrentState() or self.gameFSM.getCurrentState().getName() != 'scoreMatch':
+        if not self.gameFSM or not self.gameFSM.getCurrentState() or self.gameFSM.getCurrentState().getName() != \
+                'scoreMatch':
             return
         avId = self.air.getAvatarIdFromSender()
         self.notify.debug('reportScoringMovieDone: avatar %s is done' % avId)
         self.scoringMovieDoneBarrier.clear(avId)
 
     def claimTreasure(self, treasureNum):
-        if not self.gameFSM or not self.gameFSM.getCurrentState() or self.gameFSM.getCurrentState().getName() != 'waitEndingPositions':
+        if not self.gameFSM or not self.gameFSM.getCurrentState() or self.gameFSM.getCurrentState().getName() != \
+                'waitEndingPositions':
             return
         avId = self.air.getAvatarIdFromSender()
         if avId not in self.scoreDict:
-            self.notify.warning('PROBLEM: avatar %s called claimTreasure(%s) but he is not in the scoreDict: %s. avIdList is: %s' % (avId,
-             treasureNum,
-             self.scoreDict,
-             self.avIdList))
+            self.notify.warning(
+                'PROBLEM: avatar %s called claimTreasure(%s) but he is not in the scoreDict: %s. avIdList is: %s' % (
+                avId,
+                treasureNum,
+                self.scoreDict,
+                self.avIdList))
             return
         if treasureNum < 0 or treasureNum >= self.numTreasures:
             self.air.writeServerEvent('warning', treasureNum, 'MazeGameAI.claimTreasure treasureNum out of range')
@@ -326,14 +345,17 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
         self.numTreasuresTaken += 1
 
     def claimPenalty(self, penaltyNum):
-        if not self.gameFSM or not self.gameFSM.getCurrentState() or self.gameFSM.getCurrentState().getName() != 'waitEndingPositions':
+        if not self.gameFSM or not self.gameFSM.getCurrentState() or self.gameFSM.getCurrentState().getName() != \
+                'waitEndingPositions':
             return
         avId = self.air.getAvatarIdFromSender()
         if avId not in self.scoreDict:
-            self.notify.warning('PROBLEM: avatar %s called claimPenalty(%s) but he is not in the scoreDict: %s. avIdList is: %s' % (avId,
-             penaltyNum,
-             self.scoreDict,
-             self.avIdList))
+            self.notify.warning(
+                'PROBLEM: avatar %s called claimPenalty(%s) but he is not in the scoreDict: %s. avIdList is: %s' % (
+                avId,
+                penaltyNum,
+                self.scoreDict,
+                self.avIdList))
             return
         if penaltyNum < 0 or penaltyNum >= self.numPenalties:
             self.air.writeServerEvent('warning', penaltyNum, 'IceGameAI.claimPenalty penaltyNum out of range')

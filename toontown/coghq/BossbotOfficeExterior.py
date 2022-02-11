@@ -6,6 +6,7 @@ from toontown.building import Elevator
 from pandac.PandaModules import *
 from . import FactoryExterior
 
+
 class BossbotOfficeExterior(FactoryExterior.FactoryExterior):
     notify = DirectNotifyGlobal.directNotify.newCategory('LawbotOfficeExterior')
 

@@ -10,10 +10,12 @@ from toontown.building import FADoorCodes
 from toontown.building import DoorTypes
 from toontown.toonbase import ToontownAccessAI
 
+
 class DistributedCogHQDoorAI(DistributedDoorAI.DistributedDoorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogHQDoorAI')
 
-    def __init__(self, air, blockNumber, doorType, destinationZone, doorIndex=0, lockValue=FADoorCodes.SB_DISGUISE_INCOMPLETE, swing=3):
+    def __init__(self, air, blockNumber, doorType, destinationZone, doorIndex = 0,
+                 lockValue = FADoorCodes.SB_DISGUISE_INCOMPLETE, swing = 3):
         DistributedDoorAI.DistributedDoorAI.__init__(self, air, blockNumber, doorType, doorIndex, lockValue, swing)
         self.destinationZone = destinationZone
 

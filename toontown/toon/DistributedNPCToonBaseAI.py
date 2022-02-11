@@ -9,6 +9,7 @@ from . import NPCToons
 from direct.task import Task
 from toontown.quest import Quests
 
+
 class DistributedNPCToonBaseAI(DistributedToonAI.DistributedToonAI):
 
     def __init__(self, air, npcId, questCallback = None):

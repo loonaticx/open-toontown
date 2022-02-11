@@ -4,6 +4,7 @@ from pandac.PandaModules import NodePath, Point3, Vec4
 from .CogdoFlyingObjects import CogdoFlyingPlatform
 from . import CogdoFlyingGameGlobals as Globals
 
+
 class CogdoFlyingLevelQuadrant:
     notify = directNotify.newCategory('CogdoFlyingLevelQuadrant')
 
@@ -60,7 +61,7 @@ class CogdoFlyingLevelQuadrant:
     def _initPlatforms(self, parent):
         platformModels = self._model.findAllMatches('**/%s' % Globals.Level.PlatformName)
         for platformModel in platformModels:
-            platform = CogdoFlyingPlatform(platformModel, parent=parent)
+            platform = CogdoFlyingPlatform(platformModel, parent = parent)
             self.platforms[platform.getName()] = platform
 
     def _destroyPlatforms(self):
@@ -70,9 +71,9 @@ class CogdoFlyingLevelQuadrant:
         del self.platforms
 
     def _initGatherables(self, parent):
-        self.generateGatherables(self._model, parent=parent)
+        self.generateGatherables(self._model, parent = parent)
         if Globals.Level.SpawnLaffPowerupsInNests:
-            self.generateNestPowerups(self._model, parent=parent)
+            self.generateNestPowerups(self._model, parent = parent)
 
     def generateNestPowerups(self, gatherableModel, parent):
         nests = gatherableModel.findAllMatches('**/%s;+s' % Globals.Level.LegalEagleNestName)
@@ -90,7 +91,7 @@ class CogdoFlyingLevelQuadrant:
 
     def generateGatherables(self, gatherableModel, parent = None, spread = Globals.Level.GatherablesDefaultSpread):
         parent = parent or self._root
-        mopath = Mopath.Mopath(name='gatherables')
+        mopath = Mopath.Mopath(name = 'gatherables')
 
         def generateMemos():
             gatherPaths = gatherableModel.findAllMatches('**/%s' % Globals.Level.GatherablesPathName)
@@ -146,7 +147,8 @@ class CogdoFlyingLevelQuadrant:
                     pickup.reparentTo(parent)
                     pickup.setPos(parent, gatherable.getPos(parent))
                     if Globals.Level.AddSparkleToPowerups:
-                        sparkles = self._level.gatherableFactory.createSparkles(Vec4(1, 1, 1, 1), Vec4(1, 1, 0, 1), 10.0)
+                        sparkles = self._level.gatherableFactory.createSparkles(Vec4(1, 1, 1, 1), Vec4(1, 1, 0, 1),
+                                                                                10.0)
                         sparkles.reparentTo(pickup)
                         sparkles.setPos(0, 0, 1)
                         sparkles.start()
@@ -165,7 +167,7 @@ class CogdoFlyingLevelQuadrant:
                 motionPath = self._model.find('**/%s%s' % (obstacleLoc.getName(), Globals.Level.WhirlwindPathName))
                 if motionPath.isEmpty():
                     motionPath = None
-                obstacle = self._level.obstacleFactory.createWhirlwind(motionPath=motionPath)
+                obstacle = self._level.obstacleFactory.createWhirlwind(motionPath = motionPath)
                 obstacle.model.reparentTo(parent)
                 obstacle.model.setPos(parent, obstacleLoc.getPos(parent))
                 self.obstacles.append(obstacle)
@@ -183,7 +185,8 @@ class CogdoFlyingLevelQuadrant:
                 obstacle.model.setScale(parent, obstacleLoc.getScale(parent))
                 obstacle.setBlowDirection()
                 if Globals.Level.AddParticlesToStreamers:
-                    particles = self._level.obstacleFactory.createStreamerParticles(Vec4(1, 1, 1, 1), Vec4(1, 1, 1, 1), 10.0)
+                    particles = self._level.obstacleFactory.createStreamerParticles(Vec4(1, 1, 1, 1), Vec4(1, 1, 1, 1),
+                                                                                    10.0)
                     particles.reparentTo(obstacle.model)
                     particles.start()
                 self.obstacles.append(obstacle)
@@ -192,7 +195,7 @@ class CogdoFlyingLevelQuadrant:
         def initWalkingMinions():
             motionPaths = self._model.findAllMatches('**/%s' % Globals.Level.MinionWalkingPathName)
             for motionPath in motionPaths:
-                obstacle = self._level.obstacleFactory.createWalkingMinion(motionPath=motionPath)
+                obstacle = self._level.obstacleFactory.createWalkingMinion(motionPath = motionPath)
                 obstacle.model.reparentTo(parent)
                 obstacle.model.setPos(parent, motionPath.getPos(parent))
                 self.obstacles.append(obstacle)
@@ -200,7 +203,7 @@ class CogdoFlyingLevelQuadrant:
         def initFlyingMinions():
             motionPaths = self._model.findAllMatches('**/%s' % Globals.Level.MinionFlyingPathName)
             for motionPath in motionPaths:
-                obstacle = self._level.obstacleFactory.createFlyingMinion(motionPath=motionPath)
+                obstacle = self._level.obstacleFactory.createFlyingMinion(motionPath = motionPath)
                 obstacle.model.reparentTo(parent)
                 obstacle.model.setPos(parent, motionPath.getPos(parent))
                 self.obstacles.append(obstacle)

@@ -8,6 +8,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task.Task import Task
 
+
 class CogThiefGameToonSD(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogThiefGameToonSD')
     FallBackAnim = 'slip-backward'
@@ -17,11 +18,11 @@ class CogThiefGameToonSD(StateData.StateData):
     ThrowNeutralAnim = 'throw'
     ThrowRunAnim = 'throw'
     animList = [FallBackAnim,
-     FallFwdAnim,
-     NeutralAnim,
-     RunAnim,
-     ThrowNeutralAnim,
-     ThrowRunAnim]
+                FallFwdAnim,
+                NeutralAnim,
+                RunAnim,
+                ThrowNeutralAnim,
+                ThrowRunAnim]
 
     def __init__(self, avId, game):
         self.avId = avId
@@ -29,15 +30,19 @@ class CogThiefGameToonSD(StateData.StateData):
         self.isLocal = avId == base.localAvatar.doId
         self.toon = self.game.getAvatar(self.avId)
         self.unexpectedExit = False
-        self.fsm = ClassicFSM.ClassicFSM('CogThiefGameAnimFSM-%s' % self.avId, [State.State('init', self.enterInit, self.exitInit, ['normal']),
-         State.State('normal', self.enterNormal, self.exitNormal, ['throwPie', 'fallBack', 'fallForward']),
-         State.State('throwPie', self.enterThrowPie, self.exitThrowPie, ['normal',
-          'fallBack',
-          'fallForward',
-          'throwPie']),
-         State.State('fallBack', self.enterFallBack, self.exitFallBack, ['normal']),
-         State.State('fallForward', self.enterFallForward, self.exitFallForward, ['normal']),
-         State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'init', 'cleanup')
+        self.fsm = ClassicFSM.ClassicFSM('CogThiefGameAnimFSM-%s' % self.avId,
+                                         [State.State('init', self.enterInit, self.exitInit, ['normal']),
+                                          State.State('normal', self.enterNormal, self.exitNormal,
+                                                      ['throwPie', 'fallBack', 'fallForward']),
+                                          State.State('throwPie', self.enterThrowPie, self.exitThrowPie, ['normal',
+                                                                                                          'fallBack',
+                                                                                                          'fallForward',
+                                                                                                          'throwPie']),
+                                          State.State('fallBack', self.enterFallBack, self.exitFallBack, ['normal']),
+                                          State.State('fallForward', self.enterFallForward, self.exitFallForward,
+                                                      ['normal']),
+                                          State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'init',
+                                         'cleanup')
         self.exitAlreadyCalled = False
 
     def load(self):
@@ -84,14 +89,14 @@ class CogThiefGameToonSD(StateData.StateData):
         self.setAnimState('CogThiefRunning', 1.0)
         if self.isLocal:
             self.game.startGameWalk()
-        self.toon.lerpLookAt(Vec3.forward() + Vec3.up(), time=0.2, blink=0)
+        self.toon.lerpLookAt(Vec3.forward() + Vec3.up(), time = 0.2, blink = 0)
 
     def exitNormal(self):
         self.notify.debug('exitNormal')
         self.setAnimState('off', 1.0)
         if self.isLocal:
             self.game.stopGameWalk()
-        self.toon.lerpLookAt(Vec3.forward(), time=0.2, blink=0)
+        self.toon.lerpLookAt(Vec3.forward(), time = 0.2, blink = 0)
 
     def throwPie(self, pieModel, handNode):
         if self.fsm.getCurrentState().getName() == 'throwPie':
@@ -113,7 +118,9 @@ class CogThiefGameToonSD(StateData.StateData):
             return Task.done
 
         duration = self.toon.getDuration('catch-eatneutral')
-        self.eatIval = Sequence(Parallel(WaitInterval(duration), Sequence(LerpScaleInterval(pieModel, duration / 2.0, pieModel.getScale() * 0.5, blendType='easeInOut'), Func(pieModel.hide))), Func(finishedEating), name=self.toon.uniqueName('eatingIval'))
+        self.eatIval = Sequence(Parallel(WaitInterval(duration), Sequence(
+            LerpScaleInterval(pieModel, duration / 2.0, pieModel.getScale() * 0.5, blendType = 'easeInOut'),
+            Func(pieModel.hide))), Func(finishedEating), name = self.toon.uniqueName('eatingIval'))
         self.eatIval.start()
 
     def exitThrowPie(self):
@@ -142,7 +149,9 @@ class CogThiefGameToonSD(StateData.StateData):
         def resume(self = self):
             self.fsm.request('normal')
 
-        self.fallBackIval = Sequence(ActorInterval(self.toon, animName, startTime=startFrame / newRate, endTime=totalFrames / newRate, playRate=playRate), FunctionInterval(resume))
+        self.fallBackIval = Sequence(
+            ActorInterval(self.toon, animName, startTime = startFrame / newRate, endTime = totalFrames / newRate,
+                          playRate = playRate), FunctionInterval(resume))
         self.fallBackIval.start()
 
     def exitFallBack(self):
@@ -165,7 +174,9 @@ class CogThiefGameToonSD(StateData.StateData):
         def resume(self = self):
             self.fsm.request('normal')
 
-        self.fallFwdIval = Sequence(ActorInterval(self.toon, animName, startTime=startFrame / newRate, endTime=totalFrames / newRate, playRate=playRate), FunctionInterval(resume))
+        self.fallFwdIval = Sequence(
+            ActorInterval(self.toon, animName, startTime = startFrame / newRate, endTime = totalFrames / newRate,
+                          playRate = playRate), FunctionInterval(resume))
         self.fallFwdIval.start()
 
     def exitFallForward(self):

@@ -13,6 +13,7 @@ from toontown.parties.ServerTimeGui import ServerTimeGui
 from toontown.parties.PublicPartyGui import PublicPartyGui
 from toontown.parties import PartyGlobals
 
+
 class DistributedPartyGate(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyGate')
 
@@ -48,7 +49,7 @@ class DistributedPartyGate(DistributedObject.DistributedObject):
         self.partyGateSphere.addSolid(collSphere)
         self.partyGateCollNodePath = partyGate.find('**/partyGate_stepsLocator').attachNewNode(self.partyGateSphere)
         self.__enableCollisions()
-        self.toontownTimeGui = ServerTimeGui(partyGate, hourCallback=self.hourChange)
+        self.toontownTimeGui = ServerTimeGui(partyGate, hourCallback = self.hourChange)
         self.toontownTimeGui.setPos(partyGate.find('**/clockText_locator').getPos() + Point3(0.0, 0.0, -0.2))
         self.toontownTimeGui.setHpr(partyGate.find('**/clockText_locator').getHpr())
         self.toontownTimeGui.setScale(12.0, 1.0, 26.0)
@@ -67,9 +68,15 @@ class DistributedPartyGate(DistributedObject.DistributedObject):
         leftSign = partyGate.find('**/signTextL_locatorBack')
         signScale = 0.35
         wordWrap = 8
-        leftText = DirectLabel.DirectLabel(parent=leftSign, pos=(0, 0.0, 0.0), relief=None, text=TTLocalizer.PartyGateLeftSign, text_align=TextNode.ACenter, text_font=gateFont, text_wordwrap=wordWrap, text_fg=Vec4(0.7, 0.3, 0.3, 1.0), scale=signScale)
+        leftText = DirectLabel.DirectLabel(parent = leftSign, pos = (0, 0.0, 0.0), relief = None,
+                                           text = TTLocalizer.PartyGateLeftSign, text_align = TextNode.ACenter,
+                                           text_font = gateFont, text_wordwrap = wordWrap,
+                                           text_fg = Vec4(0.7, 0.3, 0.3, 1.0), scale = signScale)
         rightSign = partyGate.find('**/signTextR_locatorFront')
-        rightText = DirectLabel.DirectLabel(parent=rightSign, pos=(0, 0.0, 0.0), relief=None, text=TTLocalizer.PartyGateRightSign, text_align=TextNode.ACenter, text_font=gateFont, text_wordwrap=wordWrap, text_fg=Vec4(0.7, 0.3, 0.3, 1.0), scale=signScale)
+        rightText = DirectLabel.DirectLabel(parent = rightSign, pos = (0, 0.0, 0.0), relief = None,
+                                            text = TTLocalizer.PartyGateRightSign, text_align = TextNode.ACenter,
+                                            text_font = gateFont, text_wordwrap = wordWrap,
+                                            text_fg = Vec4(0.7, 0.3, 0.3, 1.0), scale = signScale)
         return
 
     def announceGenerate(self):
@@ -111,7 +118,8 @@ class DistributedPartyGate(DistributedObject.DistributedObject):
     def showMessage(self, message):
         self.messageDoneEvent = self.uniqueName('messageDoneEvent')
         self.acceptOnce(self.messageDoneEvent, self.__handleMessageDone)
-        self.messageGui = TTDialog.TTGlobalDialog(doneEvent=self.messageDoneEvent, message=message, style=TTDialog.Acknowledge)
+        self.messageGui = TTDialog.TTGlobalDialog(doneEvent = self.messageDoneEvent, message = message,
+                                                  style = TTDialog.Acknowledge)
 
     def __handleMessageDone(self):
         self.ignore(self.messageDoneEvent)
@@ -132,7 +140,8 @@ class DistributedPartyGate(DistributedObject.DistributedObject):
         return
 
     def partyRequestDenied(self, reason):
-        DistributedPartyGate.notify.debug('partyRequestDenied( reason=%s )' % PartyGlobals.PartyGateDenialReasons.getString(reason))
+        DistributedPartyGate.notify.debug(
+            'partyRequestDenied( reason=%s )' % PartyGlobals.PartyGateDenialReasons.getString(reason))
         if reason == PartyGlobals.PartyGateDenialReasons.Unavailable:
             self.showMessage(TTLocalizer.PartyGatePartyUnavailable)
         elif reason == PartyGlobals.PartyGateDenialReasons.Full:
@@ -147,13 +156,15 @@ class DistributedPartyGate(DistributedObject.DistributedObject):
         shardId, zoneId, numberOfGuests, hostName, activityIds, lane = partyInfoTuple
         if base.localAvatar.defaultShard == shardId:
             shardId = None
-        base.cr.playGame.getPlace().requestLeave({'loader': 'safeZoneLoader',
-         'where': 'party',
-         'how': 'teleportIn',
-         'hoodId': ToontownGlobals.PartyHood,
-         'zoneId': zoneId,
-         'shardId': shardId,
-         'avId': -1})
+        base.cr.playGame.getPlace().requestLeave({
+                                                     'loader': 'safeZoneLoader',
+                                                     'where': 'party',
+                                                     'how': 'teleportIn',
+                                                     'hoodId': ToontownGlobals.PartyHood,
+                                                     'zoneId': zoneId,
+                                                     'shardId': shardId,
+                                                     'avId': -1
+                                                 })
         return
 
     def freeAvatar(self):
@@ -173,10 +184,13 @@ class DistributedPartyGate(DistributedObject.DistributedObject):
         timeForEachDeformation = seq1.getDuration() / currentHour
         seq2 = Sequence()
         for i in range(currentHour):
-            seq2.append(self.clockFlat.scaleInterval(timeForEachDeformation / 2.0, Vec3(0.9, 1.0, 1.2), blendType='easeInOut'))
-            seq2.append(self.clockFlat.scaleInterval(timeForEachDeformation / 2.0, Vec3(1.2, 1.0, 0.9), blendType='easeInOut'))
+            seq2.append(self.clockFlat.scaleInterval(timeForEachDeformation / 2.0, Vec3(0.9, 1.0, 1.2),
+                                                     blendType = 'easeInOut'))
+            seq2.append(self.clockFlat.scaleInterval(timeForEachDeformation / 2.0, Vec3(1.2, 1.0, 0.9),
+                                                     blendType = 'easeInOut'))
 
-        seq2.append(self.clockFlat.scaleInterval(timeForEachDeformation / 2.0, Vec3(1.0, 1.0, 1.0), blendType='easeInOut'))
+        seq2.append(
+            self.clockFlat.scaleInterval(timeForEachDeformation / 2.0, Vec3(1.0, 1.0, 1.0), blendType = 'easeInOut'))
         self.hourSoundInterval.append(seq1)
         self.hourSoundInterval.append(seq2)
         self.hourSoundInterval.start()

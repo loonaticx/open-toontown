@@ -4,6 +4,7 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.suit import GoonPathData
 from otp.level import BasicEntities
 
+
 class RenderingEntity(BasicEntities.NodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('PathMasterEntity')
 

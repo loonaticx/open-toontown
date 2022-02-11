@@ -15,6 +15,7 @@ from toontown.toontowngui import TTDialog
 from toontown.parties.JellybeanRewardGui import JellybeanRewardGui
 from toontown.parties.PartyUtils import getPartyActivityIcon, getCenterPosFromGridSize
 
+
 class DistributedPartyActivity(DistributedObject.DistributedObject):
 
     def __init__(self, cr, activityId, activityType, wantLever = False, wantRewardGui = False):
@@ -29,7 +30,8 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         self.toonIds = []
         self._toonId2ror = {}
         childName = '%s' % self
-        childName = childName[childName.rfind('.DistributedParty') + len('.DistributedParty'):childName.rfind('Activity instance')]
+        childName = childName[childName.rfind('.DistributedParty') + len('.DistributedParty'):childName.rfind(
+            'Activity instance')]
         if not hasattr(base, 'partyActivityDict'):
             base.partyActivityDict = {}
         base.partyActivityDict[childName] = self
@@ -91,7 +93,8 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
 
     def _processExitedToons(self, exitedToons):
         for toonId in exitedToons:
-            if toonId != base.localAvatar.doId or toonId == base.localAvatar.doId and self.isLocalToonRequestStatus(PartyGlobals.ActivityRequestStatus.Exiting):
+            if toonId != base.localAvatar.doId or toonId == base.localAvatar.doId and self.isLocalToonRequestStatus(
+                    PartyGlobals.ActivityRequestStatus.Exiting):
                 toon = self.getAvatar(toonId)
                 if toon is not None:
                     self.ignore(toon.uniqueName('disable'))
@@ -106,9 +109,10 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
 
     def _processJoinedToons(self, joinedToons):
         for toonId in joinedToons:
-            if toonId != base.localAvatar.doId or toonId == base.localAvatar.doId and self.isLocalToonRequestStatus(PartyGlobals.ActivityRequestStatus.Joining):
+            if toonId != base.localAvatar.doId or toonId == base.localAvatar.doId and self.isLocalToonRequestStatus(
+                    PartyGlobals.ActivityRequestStatus.Joining):
                 if toonId not in self._toonId2ror:
-                    request = self.cr.relatedObjectMgr.requestObjects([toonId], allCallback=self._handlePlayerPresent)
+                    request = self.cr.relatedObjectMgr.requestObjects([toonId], allCallback = self._handlePlayerPresent)
                     if toonId in self._toonId2ror:
                         del self._toonId2ror[toonId]
                     else:
@@ -132,7 +136,8 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         if toon is not None:
             self.acceptOnce(toon.uniqueName('disable'), self.handleToonDisabled, [toonId])
         else:
-            self.notify.warning('BASE: unable to get handle to toon with toonId:%d. Hook for handleToonDisabled not set.' % toonId)
+            self.notify.warning(
+                'BASE: unable to get handle to toon with toonId:%d. Hook for handleToonDisabled not set.' % toonId)
         return
 
     def isLocalToonRequestStatus(self, requestStatus):
@@ -158,7 +163,10 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         return TTLocalizer.DefaultPartyActivityInstructions
 
     def getParentNodePath(self):
-        if hasattr(base.cr.playGame, 'hood') and base.cr.playGame.hood and hasattr(base.cr.playGame.hood, 'loader') and base.cr.playGame.hood.loader and hasattr(base.cr.playGame.hood.loader, 'geom') and base.cr.playGame.hood.loader.geom:
+        if hasattr(base.cr.playGame, 'hood') and base.cr.playGame.hood and hasattr(base.cr.playGame.hood,
+                                                                                   'loader') and \
+                base.cr.playGame.hood.loader and hasattr(
+                base.cr.playGame.hood.loader, 'geom') and base.cr.playGame.hood.loader.geom:
             return base.cr.playGame.hood.loader.geom
         else:
             self.notify.warning('Hood or loader not created, defaulting to render')
@@ -183,7 +191,9 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.announceGenerate(self)
         self.notify.debug('BASE: announceGenerate %s' % self.activityName)
         self.root.setName(self.activityName + 'Root')
-        centeredX, centeredY = getCenterPosFromGridSize(self.x, self.y, PartyGlobals.ActivityInformationDict[self.activityId]['gridsize'])
+        centeredX, centeredY = getCenterPosFromGridSize(self.x, self.y,
+                                                        PartyGlobals.ActivityInformationDict[self.activityId][
+                                                            'gridsize'])
         self.root.setPos(centeredX, centeredY, 0.0)
         self.root.setH(self.h)
         self.normalExit = True
@@ -289,7 +299,8 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         self.leverTube = self.leverModel.attachNewNode(cn)
         host = base.cr.doId2do.get(self.party.partyInfo.hostId)
         if host is None:
-            self.notify.debug('%s loadLever : Host has left the game before lever could be created.' % self.activityName)
+            self.notify.debug(
+                '%s loadLever : Host has left the game before lever could be created.' % self.activityName)
             return
         scale = host.getGeomNode().getChild(0).getSz(render)
         self.leverModel.setScale(scale)
@@ -339,29 +350,36 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
 
     def _leverPulled(self, collEntry):
         self.notify.debug('_leverPulled : Someone pulled the lever!!! ')
-        if self.activityType == PartyGlobals.ActivityTypes.HostInitiated and base.localAvatar.doId != self.party.partyInfo.hostId:
+        if self.activityType == PartyGlobals.ActivityTypes.HostInitiated and base.localAvatar.doId != \
+                self.party.partyInfo.hostId:
             return False
         return True
 
     def getToonPullingLeverInterval(self, toon):
         walkTime = 0.2
-        reach = ActorInterval(toon, 'leverReach', playRate=2.0)
-        pull = ActorInterval(toon, 'leverPull', startFrame=6)
+        reach = ActorInterval(toon, 'leverReach', playRate = 2.0)
+        pull = ActorInterval(toon, 'leverPull', startFrame = 6)
         origPos = toon.getPos(render)
         origHpr = toon.getHpr(render)
         newPos = self.lever.getPos(render)
         newHpr = self.lever.getHpr(render)
         origHpr.setX(PythonUtil.fitSrcAngle2Dest(origHpr[0], newHpr[0]))
         toon.setPosHpr(origPos, origHpr)
-        reachAndPull = Sequence(ActorInterval(toon, 'walk', loop=True, duration=walkTime - reach.getDuration()), reach, pull)
-        leverSeq = Sequence(Wait(walkTime + reach.getDuration() - 0.1), self.stick.hprInterval(0.55, Point3(0.0, 25.0, 0.0), Point3(0.0, 0.0, 0.0)), Wait(0.3), self.stick.hprInterval(0.4, Point3(0.0, 0.0, 0.0), Point3(0.0, 25.0, 0.0)))
-        returnSeq = Sequence(Parallel(toon.posInterval(walkTime, newPos, origPos), toon.hprInterval(walkTime, newHpr, origHpr), leverSeq, reachAndPull))
+        reachAndPull = Sequence(ActorInterval(toon, 'walk', loop = True, duration = walkTime - reach.getDuration()),
+                                reach, pull)
+        leverSeq = Sequence(Wait(walkTime + reach.getDuration() - 0.1),
+                            self.stick.hprInterval(0.55, Point3(0.0, 25.0, 0.0), Point3(0.0, 0.0, 0.0)), Wait(0.3),
+                            self.stick.hprInterval(0.4, Point3(0.0, 0.0, 0.0), Point3(0.0, 25.0, 0.0)))
+        returnSeq = Sequence(
+            Parallel(toon.posInterval(walkTime, newPos, origPos), toon.hprInterval(walkTime, newHpr, origHpr), leverSeq,
+                     reachAndPull))
         return returnSeq
 
     def showMessage(self, message, endState = 'walk'):
         base.cr.playGame.getPlace().fsm.request('activity')
         self.acceptOnce(self.messageDoneEvent, self.__handleMessageDone)
-        self.messageGui = TTDialog.TTGlobalDialog(doneEvent=self.messageDoneEvent, message=message, style=TTDialog.Acknowledge)
+        self.messageGui = TTDialog.TTGlobalDialog(doneEvent = self.messageDoneEvent, message = message,
+                                                  style = TTDialog.Acknowledge)
         self.messageGui.endState = endState
 
     def __handleMessageDone(self):
@@ -491,7 +509,8 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
     def startRules(self, timeout = PartyGlobals.DefaultRulesTimeout):
         self.notify.debug('BASE: startRules')
         self.accept(self.rulesDoneEvent, self.handleRulesDone)
-        self.rulesPanel = MinigameRulesPanel('PartyRulesPanel', self.getTitle(), self.getInstructions(), self.rulesDoneEvent, timeout)
+        self.rulesPanel = MinigameRulesPanel('PartyRulesPanel', self.getTitle(), self.getInstructions(),
+                                             self.rulesDoneEvent, timeout)
         base.setCellsAvailable(base.bottomCells + [base.leftCells[0], base.rightCells[1]], False)
         self.rulesPanel.load()
         self.rulesPanel.enter()

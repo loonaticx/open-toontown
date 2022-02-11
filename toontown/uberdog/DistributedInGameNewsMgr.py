@@ -6,6 +6,7 @@ from direct.distributed.DistributedObject import DistributedObject
 from toontown.toonbase import ToontownGlobals
 from toontown.uberdog import InGameNewsResponses
 
+
 class DistributedInGameNewsMgr(DistributedObject):
     notify = directNotify.newCategory('InGameNewsMgr')
     neverDisable = 1

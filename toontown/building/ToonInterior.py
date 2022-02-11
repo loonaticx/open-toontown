@@ -14,6 +14,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toon import NPCForceAcknowledge
 from toontown.toon import HealthForceAcknowledge
 
+
 class ToonInterior(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonInterior')
 
@@ -24,53 +25,54 @@ class ToonInterior(Place.Place):
         self.tfaDoneEvent = 'tfaDoneEvent'
         self.hfaDoneEvent = 'hfaDoneEvent'
         self.npcfaDoneEvent = 'npcfaDoneEvent'
-        self.fsm = ClassicFSM.ClassicFSM('ToonInterior', [State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn', 'tutorial']),
-         State.State('walk', self.enterWalk, self.exitWalk, ['sit',
-          'stickerBook',
-          'doorOut',
-          'DFA',
-          'trialerFA',
-          'teleportOut',
-          'quest',
-          'purchase',
-          'phone',
-          'stopped',
-          'pet']),
-         State.State('sit', self.enterSit, self.exitSit, ['walk']),
-         State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
-          'DFA',
-          'trialerFA',
-          'sit',
-          'doorOut',
-          'teleportOut',
-          'quest',
-          'purchase',
-          'phone',
-          'stopped',
-          'pet']),
-         State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
-         State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject',
-          'HFA',
-          'NPCFA',
-          'teleportOut',
-          'doorOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
-         State.State('NPCFA', self.enterNPCFA, self.exitNPCFA, ['NPCFAReject', 'HFA', 'teleportOut']),
-         State.State('NPCFAReject', self.enterNPCFAReject, self.exitNPCFAReject, ['walk']),
-         State.State('HFA', self.enterHFA, self.exitHFA, ['HFAReject', 'teleportOut', 'tunnelOut']),
-         State.State('HFAReject', self.enterHFAReject, self.exitHFAReject, ['walk']),
-         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
-         State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
-         State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
-         State.State('quest', self.enterQuest, self.exitQuest, ['walk', 'doorOut']),
-         State.State('tutorial', self.enterTutorial, self.exitTutorial, ['walk', 'quest']),
-         State.State('purchase', self.enterPurchase, self.exitPurchase, ['walk', 'doorOut']),
-         State.State('pet', self.enterPet, self.exitPet, ['walk']),
-         State.State('phone', self.enterPhone, self.exitPhone, ['walk', 'doorOut']),
-         State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'doorOut']),
-         State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
+        self.fsm = ClassicFSM.ClassicFSM('ToonInterior', [
+            State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn', 'tutorial']),
+            State.State('walk', self.enterWalk, self.exitWalk, ['sit',
+                                                                'stickerBook',
+                                                                'doorOut',
+                                                                'DFA',
+                                                                'trialerFA',
+                                                                'teleportOut',
+                                                                'quest',
+                                                                'purchase',
+                                                                'phone',
+                                                                'stopped',
+                                                                'pet']),
+            State.State('sit', self.enterSit, self.exitSit, ['walk']),
+            State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
+                                                                                     'DFA',
+                                                                                     'trialerFA',
+                                                                                     'sit',
+                                                                                     'doorOut',
+                                                                                     'teleportOut',
+                                                                                     'quest',
+                                                                                     'purchase',
+                                                                                     'phone',
+                                                                                     'stopped',
+                                                                                     'pet']),
+            State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
+            State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
+            State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject',
+                                                             'HFA',
+                                                             'NPCFA',
+                                                             'teleportOut',
+                                                             'doorOut']),
+            State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
+            State.State('NPCFA', self.enterNPCFA, self.exitNPCFA, ['NPCFAReject', 'HFA', 'teleportOut']),
+            State.State('NPCFAReject', self.enterNPCFAReject, self.exitNPCFAReject, ['walk']),
+            State.State('HFA', self.enterHFA, self.exitHFA, ['HFAReject', 'teleportOut', 'tunnelOut']),
+            State.State('HFAReject', self.enterHFAReject, self.exitHFAReject, ['walk']),
+            State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
+            State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
+            State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
+            State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
+            State.State('quest', self.enterQuest, self.exitQuest, ['walk', 'doorOut']),
+            State.State('tutorial', self.enterTutorial, self.exitTutorial, ['walk', 'quest']),
+            State.State('purchase', self.enterPurchase, self.exitPurchase, ['walk', 'doorOut']),
+            State.State('pet', self.enterPet, self.exitPet, ['walk']),
+            State.State('phone', self.enterPhone, self.exitPhone, ['walk', 'doorOut']),
+            State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'doorOut']),
+            State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
         self.parentFSMState = parentFSMState
 
     def load(self):
@@ -92,7 +94,7 @@ class ToonInterior(Place.Place):
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
         volume = requestStatus.get('musicVolume', 0.7)
-        base.playMusic(self.loader.activityMusic, looping=1, volume=volume)
+        base.playMusic(self.loader.activityMusic, looping = 1, volume = volume)
         self._telemLimiter = TLGatherAllAvs('ToonInterior', RotationLimitToH)
         NametagGlobals.setMasterArrowsOn(1)
         self.fsm.request(requestStatus['how'], [requestStatus])
@@ -144,9 +146,11 @@ class ToonInterior(Place.Place):
         self.npcfa.exit()
         del self.npcfa
         if doneStatus['mode'] == 'complete':
-            outHow = {'teleportIn': 'teleportOut',
-             'tunnelIn': 'tunnelOut',
-             'doorIn': 'doorOut'}
+            outHow = {
+                'teleportIn': 'teleportOut',
+                'tunnelIn': 'tunnelOut',
+                'doorIn': 'doorOut'
+            }
             self.fsm.request(outHow[requestStatus['how']], [requestStatus])
         elif doneStatus['mode'] == 'incomplete':
             self.fsm.request('NPCFAReject')
@@ -171,9 +175,11 @@ class ToonInterior(Place.Place):
         self.hfa.exit()
         del self.hfa
         if doneStatus['mode'] == 'complete':
-            outHow = {'teleportIn': 'teleportOut',
-             'tunnelIn': 'tunnelOut',
-             'doorIn': 'doorOut'}
+            outHow = {
+                'teleportIn': 'teleportOut',
+                'tunnelIn': 'tunnelOut',
+                'doorIn': 'doorOut'
+            }
             self.fsm.request(outHow[requestStatus['how']], [requestStatus])
         elif doneStatus['mode'] == 'incomplete':
             self.fsm.request('HFAReject')

@@ -80,7 +80,7 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
         # Same thing with the Toontorial. Magic Words are strictly forbidden here
         # Tell the user they can't use it because they're in the Toontorial
         if hasattr(self.air, 'tutorialManager') and avId in list(self.air.tutorialManager.avId2fsm.keys()):
-            self.generateResponse(avId=avId, responseType="Tutorial")
+            self.generateResponse(avId = avId, responseType = "Tutorial")
             return
 
         # Our Magic Word affectRange is either SELF (the invoker) or BOTH (invoker and a target)
@@ -99,7 +99,7 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
                 if lastClickedToon:
                     targetIds.append(lastClickedAvId)
             else:
-                self.generateResponse(avId=avId, responseType="NoTarget")
+                self.generateResponse(avId = avId, responseType = "NoTarget")
                 return
 
         # The affectType is ZONE (zone the invoker is in), SERVER (the entire server), or RANK (specified access level)
@@ -123,7 +123,7 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
 
             # There were no Toons we could perform this Magic Word on, so let the invoker know that
             if not toonIds and not targetIds:
-                self.generateResponse(avId=avId, responseType="NoTarget")
+                self.generateResponse(avId = avId, responseType = "NoTarget")
                 return
 
             # Add the found Toons to the targetId list
@@ -131,7 +131,7 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
 
         # If, at this point, we still don't have any targets somehow, then let the invoker know that
         if not targetIds:
-            self.generateResponse(avId=avId, responseType="NoTarget")
+            self.generateResponse(avId = avId, responseType = "NoTarget")
             return
 
         # Access level of the invoker
@@ -175,10 +175,10 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
                 # Create a nice little message to tell the invoker the difference between the Access Levels
                 returnValue = MAGIC_WORD_RESPONSES.get("NoAccessSingleTarget")
                 returnValue = returnValue.format(lastClickedToon.getName(), parsedTargetAccess, parsedInvokerAccess)
-                self.generateResponse(avId=avId, responseType="Success", returnValue=returnValue)
+                self.generateResponse(avId = avId, responseType = "Success", returnValue = returnValue)
             # Otherwise, just let the invoker know that everyone who was targeted was not allowed to be
             else:
-                self.generateResponse(avId=avId, responseType="NoAccessToTarget")
+                self.generateResponse(avId = avId, responseType = "NoAccessToTarget")
             return
 
         # We're finally done determining everything related to the targets. Finally, let's get into the word itself
@@ -194,20 +194,20 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
         # Make sure the invoker has a high enough Access Level to use this Magic Word in the first place
         # If they don't, them let them know about it
         if toon.getAccessLevel() < OTPGlobals.AccessLevelName2Int.get(magicWordInfo['access']):
-            self.generateResponse(avId=avId, responseType="NoAccess")
+            self.generateResponse(avId = avId, responseType = "NoAccess")
             return
 
         # If a config option disables cheaty Magic Words and ours is deemed cheaty, let the invoker know
         if hasattr(self.air, 'nonCheaty') and self.air.nonCheaty:
             if not magicWordInfo['administrative']:
-                self.generateResponse(avId=avId, responseType="NonCheaty")
+                self.generateResponse(avId = avId, responseType = "NonCheaty")
                 return
 
         # If the affectRange circumstance made by the invoker is not allowed, let them know about it
         # This kind of thing is good to make sure that words that shouldn't really have a particular target don't end
         # up getting used in mass. For example, you don't want to use a word intended to kill a Cog Boss on other Toons
         if affectRange not in magicWordInfo['affectRange']:
-            self.generateResponse(avId=avId, responseType="RestrictionOther")
+            self.generateResponse(avId = avId, responseType = "RestrictionOther")
             return
 
         # Get the arguments the Magic Word will accept
@@ -216,7 +216,7 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
         # Determine the max and min amount of arguments the word will accept
         maxArgs = len(commandArgs)
         minArgs = 0
-        argList = args.split(None, maxArgs-1)
+        argList = args.split(None, maxArgs - 1)
         for argSet in commandArgs:
             isRequired = argSet[ARGUMENT_REQUIRED]
             if isRequired:
@@ -226,12 +226,12 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
         messageData = "{} argument{}"
         if len(argList) < minArgs:
             messageData = messageData.format(minArgs, "s" if minArgs != 1 else '')
-            self.generateResponse(avId=avId, responseType="NotEnoughArgs", extraMessageData=messageData)
+            self.generateResponse(avId = avId, responseType = "NotEnoughArgs", extraMessageData = messageData)
             return
         # On the other hand, if we have more than what we need, tell them that instead
         elif len(argList) > maxArgs:
             messageData = messageData.format(maxArgs, "s" if maxArgs != 1 else '')
-            self.generateResponse(avId=avId, responseType="TooManyArgs", extraMessageData=messageData)
+            self.generateResponse(avId = avId, responseType = "TooManyArgs", extraMessageData = messageData)
             return
 
         # If we have less arguments provided than the max, use the defaults of the ones not provided
@@ -249,7 +249,7 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
             try:
                 parsedArg = argType(arg)
             except:
-                self.generateResponse(avId=avId, responseType="BadArgs")
+                self.generateResponse(avId = avId, responseType = "BadArgs")
                 return
 
             parsedArgList.append(parsedArg)
@@ -258,11 +258,12 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
         if magicWordInfo['execLocation'] == EXEC_LOC_CLIENT:
             # We are only allowed to target ourselves with client-sided Magic Words
             if len(targetIds) == 1 and avId in targetIds:
-                self.sendClientCommand(avId, magicWord, magicWordInfo['classname'], targetIds=targetIds,
-                                       parsedArgList=parsedArgList, affectRange=affectRange, affectType=affectType,
-                                       affectExtra=affectExtra, lastClickedAvId=lastClickedAvId)
+                self.sendClientCommand(avId, magicWord, magicWordInfo['classname'], targetIds = targetIds,
+                                       parsedArgList = parsedArgList, affectRange = affectRange,
+                                       affectType = affectType,
+                                       affectExtra = affectExtra, lastClickedAvId = lastClickedAvId)
             else:
-                self.generateResponse(avId=avId, responseType="CannotTarget")
+                self.generateResponse(avId = avId, responseType = "CannotTarget")
                 return
         # But if it's a server-sided one, execute it on the server
         else:
@@ -273,15 +274,15 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
             returnValue = command.executeWord()
             # If we have a return value, pass it over to the invoker
             if returnValue:
-                self.generateResponse(avId=avId, responseType="Success", returnValue=returnValue)
+                self.generateResponse(avId = avId, responseType = "Success", returnValue = returnValue)
             # Otherwise just throw a default response to them
             else:
-                self.generateResponse(avId=avId, responseType="SuccessNoResp", magicWord=magicWord,
-                                      parsedArgList=parsedArgList, affectRange=affectRange, affectType=affectType,
-                                      affectExtra=affectExtra, lastClickedAvId=lastClickedAvId)
+                self.generateResponse(avId = avId, responseType = "SuccessNoResp", magicWord = magicWord,
+                                      parsedArgList = parsedArgList, affectRange = affectRange, affectType = affectType,
+                                      affectExtra = affectExtra, lastClickedAvId = lastClickedAvId)
 
-    def generateResponse(self, avId, responseType="BadWord", magicWord='', parsedArgList=(), returnValue='',
-                         affectRange=0, affectType=0, affectExtra=0, lastClickedAvId=0, extraMessageData=''):
+    def generateResponse(self, avId, responseType = "BadWord", magicWord = '', parsedArgList = (), returnValue = '',
+                         affectRange = 0, affectType = 0, affectExtra = 0, lastClickedAvId = 0, extraMessageData = ''):
         # Pack up the arg list so it's ready to ship to the client
         parsedArgList = json.dumps(parsedArgList)
         # Send the invoker a response to their use of the word
@@ -289,8 +290,9 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
                                   [responseType, magicWord, parsedArgList, returnValue, affectRange, affectType,
                                    affectExtra, lastClickedAvId, extraMessageData])
 
-    def sendClientCommand(self, avId, word, commandName, targetIds=(), parsedArgList=(), affectRange=0, affectType=0,
-                          affectExtra=0, lastClickedAvId=0):
+    def sendClientCommand(self, avId, word, commandName, targetIds = (), parsedArgList = (), affectRange = 0,
+                          affectType = 0,
+                          affectExtra = 0, lastClickedAvId = 0):
         # Pack up the arg list so it's ready to ship to the client
         parsedArgList = json.dumps(parsedArgList)
         # Execute the Magic Word on the client, because it's a client-sided Magic Word

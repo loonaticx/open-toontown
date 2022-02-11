@@ -4,6 +4,7 @@ from direct.showbase.DirectObject import DirectObject
 from toontown.minigame import ToonBlitzGlobals
 from toontown.toonbase import ToontownGlobals
 
+
 class TwoDSpawnPointMgr(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDSpawnPointMgr')
 
@@ -77,7 +78,8 @@ class TwoDSpawnPointMgr(DirectObject):
             point = self.loadPoints[self.lastSavePoint]
             return Point3(point[0], point[1], point[2])
         else:
-            return Point3(ToonBlitzGlobals.ToonStartingPosition[0], ToonBlitzGlobals.ToonStartingPosition[1], ToonBlitzGlobals.ToonStartingPosition[2])
+            return Point3(ToonBlitzGlobals.ToonStartingPosition[0], ToonBlitzGlobals.ToonStartingPosition[1],
+                          ToonBlitzGlobals.ToonStartingPosition[2])
 
     def setupLastSavePointHandle(self):
         if len(self.collNPList) > 0:

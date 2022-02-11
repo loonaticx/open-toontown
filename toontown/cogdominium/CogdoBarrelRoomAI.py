@@ -8,6 +8,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.cogdominium import CogdoBarrelRoomConsts
 from toontown.cogdominium import DistributedCogdoBarrelAI
 
+
 class CogdoBarrelRoomAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBarrelRoomAI')
 
@@ -44,7 +45,8 @@ class CogdoBarrelRoomAI:
         self.spawnedBarrels = []
 
         def spawnBarrel(index):
-            barrel = DistributedCogdoBarrelAI.DistributedCogdoBarrelAI(self.cogdoInteriorAI.air, index, self.barrelCollected)
+            barrel = DistributedCogdoBarrelAI.DistributedCogdoBarrelAI(self.cogdoInteriorAI.air, index,
+                                                                       self.barrelCollected)
             barrel.generateWithRequired(self.cogdoInteriorAI.zoneId)
             self.spawnedBarrels.append(barrel)
 
@@ -65,7 +67,8 @@ class CogdoBarrelRoomAI:
             barrel.interactive = True
 
         taskMgr.remove(self.allBarrelsCollectedTask)
-        taskMgr.doMethodLater(CogdoBarrelRoomConsts.AllBarrelsCollectedTime, self.__checkAllBarrelsCollected, self.allBarrelsCollectedTask)
+        taskMgr.doMethodLater(CogdoBarrelRoomConsts.AllBarrelsCollectedTime, self.__checkAllBarrelsCollected,
+                              self.allBarrelsCollectedTask)
 
     def __endCollectionPhase(self):
         messenger.send(self.collectionDoneEvent)

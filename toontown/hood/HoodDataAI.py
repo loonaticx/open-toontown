@@ -8,6 +8,7 @@ from pandac.PandaModules import *
 from panda3d.toontown import *
 from toontown.toon import NPCToons
 
+
 class HoodDataAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('HoodDataAI')
 

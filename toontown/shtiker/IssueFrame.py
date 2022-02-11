@@ -8,6 +8,7 @@ from direct.gui.DirectGui import DirectFrame, DirectButton, DGG, DirectLabel
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
+
 WEB_WIDTH_PIXELS = 784
 WEB_HEIGHT_PIXELS = 451
 WEB_WIDTH = 1024
@@ -16,23 +17,25 @@ WEB_HALF_WIDTH = WEB_WIDTH / 2
 WIN_WIDTH = 800
 WIN_HEIGHT = 600
 
+
 class IssueFrame(DirectFrame):
     NewsBaseDir = config.GetString('news-base-dir', '/httpNews')
     FrameDimensions = (-1.30666637421,
-     1.30666637421,
-     -0.751666665077,
-     0.751666665077)
+                       1.30666637421,
+                       -0.751666665077,
+                       0.751666665077)
     notify = DirectNotifyGlobal.directNotify.newCategory('IssueFrame')
     ContentPattern = 'tt_i_art_%s_%s%d.png'
     SectionIdents = ['hom',
-     'new',
-     'evt',
-     'tot',
-     'att',
-     'tnr']
+                     'new',
+                     'evt',
+                     'tot',
+                     'att',
+                     'tnr']
 
     def __init__(self, parent, newsDir, dateStr, myIssueIndex, numIssues, strFilenames):
-        DirectFrame.__init__(self, frameColor=(1, 1, 1, 0), frameSize=self.FrameDimensions, relief=DGG.FLAT, parent=parent)
+        DirectFrame.__init__(self, frameColor = (1, 1, 1, 0), frameSize = self.FrameDimensions, relief = DGG.FLAT,
+                             parent = parent)
         self.hide()
         self.accept('newsSnapshot', self.doSnapshot)
         self._parent = parent
@@ -65,7 +68,7 @@ class IssueFrame(DirectFrame):
                     else:
                         endSearch = True
                 else:
-                    theFile = vfs.getFile(Filename(fullName), status_only=1)
+                    theFile = vfs.getFile(Filename(fullName), status_only = 1)
                     if theFile:
                         subSectionList.append(fullName)
                         self.flatSubsectionList.append((section, curSubSection))
@@ -115,7 +118,9 @@ class IssueFrame(DirectFrame):
         upsellBackground = loader.loadModel('phase_3.5/models/gui/tt_m_gui_ign_newsStatusBackground')
         imageScaleX = self.FrameDimensions[1] - self.FrameDimensions[0]
         imageScaleY = self.FrameDimensions[3] - self.FrameDimensions[2]
-        pageFrame = DirectFrame(frameColor=(1, 1, 1, 0), frameSize=self.FrameDimensions, image=upsellBackground, image_scale=(imageScaleX, 1, imageScaleY), relief=DGG.FLAT, parent=self, text='', text_scale=0.06, text_pos=(0, -0.4))
+        pageFrame = DirectFrame(frameColor = (1, 1, 1, 0), frameSize = self.FrameDimensions, image = upsellBackground,
+                                image_scale = (imageScaleX, 1, imageScaleY), relief = DGG.FLAT, parent = self,
+                                text = '', text_scale = 0.06, text_pos = (0, -0.4))
         if 'error_' in str(fullFilename):
             pageFrame['text'] = TTLocalizer.NewsPageErrorDownloadingFileCanStillRead % fullFilename[len('error_'):]
         else:
@@ -142,10 +147,12 @@ class IssueFrame(DirectFrame):
         if nextTarget:
             image = self.gui.find('**/tt_i_art_btn_ArrowRight')
             rollover = self.gui.find('**/tt_i_art_btn_ArrowRightRo')
-            rightArrow = DirectButton(relief=None, parent=pageFrame, command=self.gotoPage, extraArgs=(nextTarget[0], nextTarget[1]), image=(image,
-             image,
-             rollover,
-             image), pos=position, image_scale=imageScale)
+            rightArrow = DirectButton(relief = None, parent = pageFrame, command = self.gotoPage,
+                                      extraArgs = (nextTarget[0], nextTarget[1]), image = (image,
+                                                                                           image,
+                                                                                           rollover,
+                                                                                           image), pos = position,
+                                      image_scale = imageScale)
         return
 
     def loadLeftArrow(self, section, subsection, pageFrame):
@@ -157,30 +164,32 @@ class IssueFrame(DirectFrame):
         if prevTarget:
             image = self.gui.find('**/tt_i_art_btn_ArrowLeft')
             rollover = self.gui.find('**/tt_i_art_btn_ArrowLeftRo')
-            rightArrow = DirectButton(relief=None, parent=pageFrame, command=self.gotoPage, extraArgs=(prevTarget[0], prevTarget[1]), image=(image,
-             image,
-             rollover,
-             image), pos=position, image_scale=imageScale)
+            rightArrow = DirectButton(relief = None, parent = pageFrame, command = self.gotoPage,
+                                      extraArgs = (prevTarget[0], prevTarget[1]), image = (image,
+                                                                                           image,
+                                                                                           rollover,
+                                                                                           image), pos = position,
+                                      image_scale = imageScale)
         return
 
     def loadHomePageButtons(self, section, subsection, pageFrame):
         buttonNames = ['',
-         'tt_i_art_btn_HomNew',
-         'tt_i_art_btn_HomEvt',
-         'tt_i_art_btn_HomTot',
-         'tt_i_art_btn_HomAsk',
-         'tt_i_art_btn_HomTnr']
+                       'tt_i_art_btn_HomNew',
+                       'tt_i_art_btn_HomEvt',
+                       'tt_i_art_btn_HomTot',
+                       'tt_i_art_btn_HomAsk',
+                       'tt_i_art_btn_HomTnr']
         rolloverButtonNames = []
         for name in buttonNames:
             ro = name + 'Ro'
             rolloverButtonNames.append(ro)
 
         positions = [(0, 0.0),
-         (-1.05333, 0, 0.29333),
-         (-1.05333, 0, 0.0666667),
-         (-1.05333, 0, -0.156667),
-         (-1.05333, 0, -0.383333),
-         (-1.05333, 0, -0.606667)]
+                     (-1.05333, 0, 0.29333),
+                     (-1.05333, 0, 0.0666667),
+                     (-1.05333, 0, -0.156667),
+                     (-1.05333, 0, -0.383333),
+                     (-1.05333, 0, -0.606667)]
         xSize = 136
         desiredXSize = 69
         image_scale = float(desiredXSize) / xSize
@@ -191,10 +200,12 @@ class IssueFrame(DirectFrame):
             rolloverImage = self.gui.find('**/%s' % rolloverButtonNames[section])
             if image.isEmpty():
                 self.notify.error('cant find %s' % buttonNames[section])
-            sectionBtn = DirectButton(relief=None, parent=pageFrame, image=(image,
-             image,
-             rolloverImage,
-             image), image_scale=image_scale, command=self.gotoPage, extraArgs=(section, 0), enableEdit=1, pos=positions[section])
+            sectionBtn = DirectButton(relief = None, parent = pageFrame, image = (image,
+                                                                                  image,
+                                                                                  rolloverImage,
+                                                                                  image), image_scale = image_scale,
+                                      command = self.gotoPage, extraArgs = (section, 0), enableEdit = 1,
+                                      pos = positions[section])
 
         readMorePos = (0.906666, 0, -0.19)
         readImage = self.gui.find('**/tt_i_art_btn_ReadMore')
@@ -202,10 +213,11 @@ class IssueFrame(DirectFrame):
         xSize = 228.0
         desiredXSize = 113.0
         imageScale = desiredXSize / xSize
-        readMoreBtn = DirectButton(relief=None, parent=pageFrame, image=(readImage,
-         readImage,
-         readRollover,
-         readImage), image_scale=imageScale, command=self.gotoPage, extraArgs=(1, 0), enableEdit=1, pos=readMorePos)
+        readMoreBtn = DirectButton(relief = None, parent = pageFrame, image = (readImage,
+                                                                               readImage,
+                                                                               readRollover,
+                                                                               readImage), image_scale = imageScale,
+                                   command = self.gotoPage, extraArgs = (1, 0), enableEdit = 1, pos = readMorePos)
         self.loadWeekNavButtons(pageFrame)
         return
 
@@ -225,10 +237,12 @@ class IssueFrame(DirectFrame):
         actualY1 = 78.0
         desiredY1 = 42.0
         y1Scale = desiredY1 / actualY1
-        prevWeekBtn = DirectButton(relief=None, parent=pageFrame, image=[prevImage,
-         prevImage,
-         prevImageRo,
-         prevImageDisabled], image_scale=y1Scale, command=self.changeWeek, extraArgs=(self.myIssueIndex - 1,), pos=(0.806666, 0, 0.62))
+        prevWeekBtn = DirectButton(relief = None, parent = pageFrame, image = [prevImage,
+                                                                               prevImage,
+                                                                               prevImageRo,
+                                                                               prevImageDisabled],
+                                   image_scale = y1Scale, command = self.changeWeek,
+                                   extraArgs = (self.myIssueIndex - 1,), pos = (0.806666, 0, 0.62))
         if self.myIssueIndex == 0:
             prevWeekBtn['state'] = DGG.DISABLED
         nextImage = self.gui.find('**/tt_i_art_btn_ArchiveArrwRightNormal')
@@ -237,10 +251,12 @@ class IssueFrame(DirectFrame):
         actualY2Scale = 63.0
         desiredY2Scale = 34.0
         y2Scale = desiredY2Scale / actualY2Scale
-        nextWeekBtn = DirectButton(relief=None, parent=pageFrame, image=[nextImage,
-         nextImage,
-         nextImageRo,
-         nextImageDisabled], image_scale=y2Scale, command=self.changeWeek, extraArgs=(self.myIssueIndex + 1,), pos=(1.16, 0, 0.623333))
+        nextWeekBtn = DirectButton(relief = None, parent = pageFrame, image = [nextImage,
+                                                                               nextImage,
+                                                                               nextImageRo,
+                                                                               nextImageDisabled],
+                                   image_scale = y2Scale, command = self.changeWeek,
+                                   extraArgs = (self.myIssueIndex + 1,), pos = (1.16, 0, 0.623333))
         if self.myIssueIndex == self.numIssues - 1:
             nextWeekBtn['state'] = DGG.DISABLED
         actualX = 176.0
@@ -248,19 +264,21 @@ class IssueFrame(DirectFrame):
         imageScale = desiredX / actualX
         midImage = self.gui.find('**/tt_i_art_btn_ArchiveMiddle')
         weekColor = (0.0 / 255.0,
-         23.0 / 255.0,
-         140.0 / 255.0,
-         1.0)
-        weekLabel = DirectLabel(relief=None, image=midImage, image_scale=imageScale, parent=pageFrame, text=weekStr, text_font=ToontownGlobals.InterfaceFont, text_fg=weekColor, text_scale=0.043, text_pos=(0, -0.01, 0), pos=(0.983333, 0, 0.62))
+                     23.0 / 255.0,
+                     140.0 / 255.0,
+                     1.0)
+        weekLabel = DirectLabel(relief = None, image = midImage, image_scale = imageScale, parent = pageFrame,
+                                text = weekStr, text_font = ToontownGlobals.InterfaceFont, text_fg = weekColor,
+                                text_scale = 0.043, text_pos = (0, -0.01, 0), pos = (0.983333, 0, 0.62))
         return
 
     def loadNavButtons(self, pageFrame):
         buttonNames = ['tt_i_art_btn_NavHom',
-         'tt_i_art_btn_NavNew',
-         'tt_i_art_btn_NavEvt',
-         'tt_i_art_btn_NavTot',
-         'tt_i_art_btn_NavAtt',
-         'tt_i_art_btn_NavTnr']
+                       'tt_i_art_btn_NavNew',
+                       'tt_i_art_btn_NavEvt',
+                       'tt_i_art_btn_NavTot',
+                       'tt_i_art_btn_NavAtt',
+                       'tt_i_art_btn_NavTnr']
         rolloverButtonNames = []
         for name in buttonNames:
             ro = name + 'Ro'
@@ -268,11 +286,11 @@ class IssueFrame(DirectFrame):
 
         xPos = 1.24667
         positions = [(xPos, 0, 0.623333),
-         (xPos, 0, 0.536663),
-         (xPos, 0, 0.45),
-         (xPos, 0, 0.36333),
-         (xPos, 0, 0.276667),
-         (xPos, 0, 0.19)]
+                     (xPos, 0, 0.536663),
+                     (xPos, 0, 0.45),
+                     (xPos, 0, 0.36333),
+                     (xPos, 0, 0.276667),
+                     (xPos, 0, 0.19)]
         xSize1 = 177
         desiredXSize1 = 90
         image_scale1 = float(desiredXSize1) / xSize1
@@ -282,43 +300,45 @@ class IssueFrame(DirectFrame):
         image_scale2 = float(desiredXSize2) / xSize2
         image_scale2 *= 30.0 / 30.0
         rolloverPositions = [(1.15, 0, 0.623333),
-         (1.15, 0, 0.533333),
-         (1.15, 0, 0.443333),
-         (1.045, 0, 0.353333),
-         (1.045, 0, 0.263334),
-         (1.045, 0, 0.173333)]
+                             (1.15, 0, 0.533333),
+                             (1.15, 0, 0.443333),
+                             (1.045, 0, 0.353333),
+                             (1.045, 0, 0.263334),
+                             (1.045, 0, 0.173333)]
         imageScales = [image_scale1,
-         image_scale1,
-         image_scale1,
-         image_scale2,
-         image_scale2,
-         image_scale2]
+                       image_scale1,
+                       image_scale1,
+                       image_scale2,
+                       image_scale2,
+                       image_scale2]
         frameSizeAdj1 = 0.1
         frameSize1 = (-0.04 + frameSizeAdj1,
-         0.04 + frameSizeAdj1,
-         -0.04,
-         0.04)
+                      0.04 + frameSizeAdj1,
+                      -0.04,
+                      0.04)
         frameSizeAdj2 = 0.21
         frameSize2 = (-0.04 + frameSizeAdj2,
-         0.04 + frameSizeAdj2,
-         -0.04,
-         0.04)
+                      0.04 + frameSizeAdj2,
+                      -0.04,
+                      0.04)
         frameSizes = (frameSize1,
-         frameSize1,
-         frameSize1,
-         frameSize2,
-         frameSize2,
-         frameSize2)
+                      frameSize1,
+                      frameSize1,
+                      frameSize2,
+                      frameSize2,
+                      frameSize2)
         self.sectionBtns = []
         for section in range(0, len(self.SectionIdents)):
             image = self.guiNav.find('**/%s' % buttonNames[section])
             rolloverImage = self.guiNav.find('**/%s' % rolloverButtonNames[section])
             if image.isEmpty():
                 self.notify.error('cant find %s' % buttonNames[section])
-            sectionBtn = DirectButton(relief=None, parent=pageFrame, frameSize=frameSizes[section], image=(image,
-             rolloverImage,
-             rolloverImage,
-             image), image_scale=imageScales[section], command=self.gotoPage, extraArgs=(section, 0), enableEdit=1, pos=rolloverPositions[section])
+            sectionBtn = DirectButton(relief = None, parent = pageFrame, frameSize = frameSizes[section],
+                                      image = (image,
+                                               rolloverImage,
+                                               rolloverImage,
+                                               image), image_scale = imageScales[section], command = self.gotoPage,
+                                      extraArgs = (section, 0), enableEdit = 1, pos = rolloverPositions[section])
 
         return
 
@@ -367,11 +387,12 @@ class IssueFrame(DirectFrame):
         return result
 
     def loadBackground(self):
-        self.backFrame = DirectFrame(parent=self, frameColor=(1, 1, 1, 1), frameSize=self.FrameDimensions, pos=(0, 0, 0), relief=None)
+        self.backFrame = DirectFrame(parent = self, frameColor = (1, 1, 1, 1), frameSize = self.FrameDimensions,
+                                     pos = (0, 0, 0), relief = None)
         return
 
     def loadMainPage(self):
-        self.mainFrame = DirectFrame(parent=self, frameSize=self.FrameDimensions, frameColor=(1, 0, 0, 1))
+        self.mainFrame = DirectFrame(parent = self, frameSize = self.FrameDimensions, frameColor = (1, 0, 0, 1))
 
     def activate(self):
         pass

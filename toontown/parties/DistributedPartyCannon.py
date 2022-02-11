@@ -7,6 +7,7 @@ from toontown.parties.Cannon import Cannon
 from toontown.parties.CannonGui import CannonGui
 from toontown.parties import PartyGlobals
 from toontown.parties.DistributedPartyCannonActivity import DistributedPartyCannonActivity
+
 LAND_TIME = 2
 WORLD_SCALE = 2.0
 GROUND_SCALE = 1.4 * WORLD_SCALE
@@ -36,13 +37,14 @@ TOWER_X_RANGE = int(TOWER_Y_RANGE / 2.0)
 INITIAL_VELOCITY = 80.0
 WHISTLE_SPEED = INITIAL_VELOCITY * 0.35
 
+
 class DistributedPartyCannon(DistributedObject, Cannon):
     notify = directNotify.newCategory('DistributedPartyCannon')
     LOCAL_CANNON_MOVE_TASK = 'localCannonMoveTask'
 
     def __init__(self, cr):
         DistributedObject.__init__(self, cr)
-        Cannon.__init__(self, parent=self.getParentNodePath())
+        Cannon.__init__(self, parent = self.getParentNodePath())
         self.localCannonMoving = False
         self.active = False
         self.activityDoId = 0
@@ -95,7 +97,10 @@ class DistributedPartyCannon(DistributedObject, Cannon):
         return
 
     def getParentNodePath(self):
-        if hasattr(base.cr.playGame, 'hood') and base.cr.playGame.hood and hasattr(base.cr.playGame.hood, 'loader') and base.cr.playGame.hood.loader and hasattr(base.cr.playGame.hood.loader, 'geom') and base.cr.playGame.hood.loader.geom:
+        if hasattr(base.cr.playGame, 'hood') and base.cr.playGame.hood and hasattr(base.cr.playGame.hood,
+                                                                                   'loader') and \
+                base.cr.playGame.hood.loader and hasattr(
+                base.cr.playGame.hood.loader, 'geom') and base.cr.playGame.hood.loader.geom:
             return base.cr.playGame.hood.loader.geom
         else:
             self.notify.warning('Hood or loader not created, defaulting to render')
@@ -190,7 +195,7 @@ class DistributedPartyCannon(DistributedObject, Cannon):
             self.notify.debug('enterCannon self.toonInsideAvId=%d' % self.toonInsideAvId)
             toon = base.cr.doId2do[avId]
             if toon:
-                self.acceptOnce(toon.uniqueName('disable'), self.__avatarGone, extraArgs=[avId])
+                self.acceptOnce(toon.uniqueName('disable'), self.__avatarGone, extraArgs = [avId])
                 toon.stopSmooth()
                 toon.dropShadow.hide()
                 self.placeToonInside(toon)
@@ -351,7 +356,7 @@ class DistributedPartyCannon(DistributedObject, Cannon):
         if not self.gui:
             self.gui = self.activity.gui
         self.gui.load()
-        self.gui.enable(timer=PartyGlobals.CANNON_TIMEOUT)
+        self.gui.enable(timer = PartyGlobals.CANNON_TIMEOUT)
         self.d_setTimeout()
         self.accept(CannonGui.FIRE_PRESSED, self.__handleFirePressed)
         self.__startLocalCannonMoveTask()

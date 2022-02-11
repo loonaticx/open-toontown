@@ -4,6 +4,7 @@ import pytz
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import TTLocalizer
 
+
 class ToontownTimeManager:
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownTimeManager')
     ClockFormat = '%I:%M:%S %p'
@@ -27,24 +28,24 @@ class ToontownTimeManager:
         self.clientTimeUponLogin = clientTimeUponLogin
         self.globalClockRealTimeUponLogin = globalClockRealTimeUponLogin
         naiveTime = datetime.utcfromtimestamp(self.serverTimeUponLogin)
-        self.utcServerDateTime = naiveTime.replace(tzinfo=pytz.utc)
+        self.utcServerDateTime = naiveTime.replace(tzinfo = pytz.utc)
         self.serverDateTime = datetime.fromtimestamp(self.serverTimeUponLogin, self.serverTimeZone)
 
     def getCurServerDateTime(self):
         secondsPassed = globalClock.getRealTime() - self.globalClockRealTimeUponLogin + self.debugSecondsAdded
-        curDateTime = self.serverTimeZone.normalize(self.serverDateTime + timedelta(seconds=secondsPassed))
+        curDateTime = self.serverTimeZone.normalize(self.serverDateTime + timedelta(seconds = secondsPassed))
         return curDateTime
 
     def getRelativeServerDateTime(self, timeOffset):
         secondsPassed = globalClock.getRealTime() - self.globalClockRealTimeUponLogin + self.debugSecondsAdded
         secondsPassed += timeOffset
-        curDateTime = self.serverTimeZone.normalize(self.serverDateTime + timedelta(seconds=secondsPassed))
+        curDateTime = self.serverTimeZone.normalize(self.serverDateTime + timedelta(seconds = secondsPassed))
         return curDateTime
 
     def getCurServerDateTimeForComparison(self):
         secondsPassed = globalClock.getRealTime() - self.globalClockRealTimeUponLogin + self.debugSecondsAdded
-        curDateTime = self.serverDateTime + timedelta(seconds=secondsPassed)
-        curDateTime = curDateTime.replace(tzinfo=self.serverTimeZone)
+        curDateTime = self.serverDateTime + timedelta(seconds = secondsPassed)
+        curDateTime = curDateTime.replace(tzinfo = self.serverTimeZone)
         return curDateTime
 
     def getCurServerTimeStr(self):
@@ -60,13 +61,13 @@ class ToontownTimeManager:
     def debugTest(self):
         startTime = datetime.today()
         serverTzInfo = self.serverTimeZone
-        startTime = startTime.replace(tzinfo=serverTzInfo)
+        startTime = startTime.replace(tzinfo = serverTzInfo)
         self.notify.info('startTime = %s' % startTime)
         serverTime = self.getCurServerDateTime()
         self.notify.info('serverTime = %s' % serverTime)
         result = startTime <= serverTime
         self.notify.info('start < serverTime %s' % result)
-        startTime1MinAgo = startTime + timedelta(minutes=-1)
+        startTime1MinAgo = startTime + timedelta(minutes = -1)
         self.notify.info('startTime1MinAgo = %s' % startTime1MinAgo)
         result2 = startTime1MinAgo <= serverTime
         self.notify.info('startTime1MinAgo < serverTime %s' % result2)
@@ -78,7 +79,8 @@ class ToontownTimeManager:
     def convertStrToToontownTime(self, dateStr):
         curDateTime = self.getCurServerDateTime()
         try:
-            curDateTime = datetime.fromtimestamp(time.mktime(time.strptime(dateStr, self.formatStr)), self.serverTimeZone)
+            curDateTime = datetime.fromtimestamp(time.mktime(time.strptime(dateStr, self.formatStr)),
+                                                 self.serverTimeZone)
             curDateTime = self.serverTimeZone.normalize(curDateTime)
         except:
             self.notify.warning('error parsing date string=%s' % dateStr)
@@ -90,7 +92,8 @@ class ToontownTimeManager:
         curDateTime = self.getCurServerDateTime()
         try:
             timeTuple = time.strptime(dateStr, self.formatStr)
-            utcDateTime = datetime(timeTuple[0], timeTuple[1], timeTuple[2], timeTuple[3], timeTuple[4], timeTuple[5], timeTuple[6], pytz.utc)
+            utcDateTime = datetime(timeTuple[0], timeTuple[1], timeTuple[2], timeTuple[3], timeTuple[4], timeTuple[5],
+                                   timeTuple[6], pytz.utc)
             curDateTime = utcDateTime.astimezone(self.serverTimeZone)
             curDateTime = self.serverTimeZone.normalize(curDateTime)
         except:

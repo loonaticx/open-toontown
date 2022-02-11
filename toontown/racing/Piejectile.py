@@ -11,6 +11,7 @@ from otp.otpbase import OTPGlobals
 from toontown.racing.FlyingGag import FlyingGag
 from toontown.battle import MovieUtil
 
+
 class Piejectile(DirectObject, FlyingGag):
     physicsCalculationsPerSecond = 60
     maxPhysicsDt = 1.0
@@ -130,7 +131,7 @@ class Piejectile(DirectObject, FlyingGag):
         lookPoint = render.getRelativePoint(self.ownerKart, Point3(0, 10, 0))
         self.lookAt(lookPoint)
         self.taskName = 'updatePhysics%s' % self.name
-        taskMgr.add(self.__updatePhysics, self.taskName, priority=25)
+        taskMgr.add(self.__updatePhysics, self.taskName, priority = 25)
 
     def checkTargetDistance(self):
         if self.hasTarget:
@@ -141,12 +142,12 @@ class Piejectile(DirectObject, FlyingGag):
     def splatTarget(self):
         if self.targetId == base.localAvatar.getDoId() and base.race.localKart:
             base.race.localKart.splatPie()
-        self.race.effectManager.addSplatEffect(spawner=self.targetKart, parent=self.targetKart)
+        self.race.effectManager.addSplatEffect(spawner = self.targetKart, parent = self.targetKart)
         taskMgr.remove(self.splatTaskName)
         self.remove()
 
     def splat(self, optional = None):
-        self.race.effectManager.addSplatEffect(spawner=self)
+        self.race.effectManager.addSplatEffect(spawner = self)
         taskMgr.remove(self.splatTaskName)
         self.remove()
 
@@ -166,7 +167,9 @@ class Piejectile(DirectObject, FlyingGag):
                 targetDistance = distMax
             targetVel = self.targetKart.getVelocity()
             targetPos = self.targetKart.getPos()
-            targetAim = Point3(targetPos[0] + targetVel[0] * (targetDistance / distMax), targetPos[1] + targetVel[1] * (targetDistance / distMax), targetPos[2] + targetVel[2] * (targetDistance / distMax))
+            targetAim = Point3(targetPos[0] + targetVel[0] * (targetDistance / distMax),
+                               targetPos[1] + targetVel[1] * (targetDistance / distMax),
+                               targetPos[2] + targetVel[2] * (targetDistance / distMax))
             self.lookAt(targetPos)
         if self.d2t < 7 and self.hasTarget:
             self.splatTarget()
@@ -180,9 +183,11 @@ class Piejectile(DirectObject, FlyingGag):
             targetVel = self.targetKart.getVelocity()
             targetSpeed = targetVel.length()
             if self.d2t - 10 * self.physicsDt > self.lastD2t:
-                self.engine.setVector(Vec3(0, 150 + 150 * self.timeRatio + targetSpeed * (1.0 + 1.0 * self.timeRatio) + self.d2t * (1.0 + 1.0 * self.timeRatio), 12))
+                self.engine.setVector(Vec3(0, 150 + 150 * self.timeRatio + targetSpeed * (
+                            1.0 + 1.0 * self.timeRatio) + self.d2t * (1.0 + 1.0 * self.timeRatio), 12))
             else:
-                self.engine.setVector(Vec3(0, 10 + 10 * self.timeRatio + targetSpeed * (0.5 + 0.5 * self.timeRatio) + self.d2t * (0.5 + 0.5 * self.timeRatio), 12))
+                self.engine.setVector(Vec3(0, 10 + 10 * self.timeRatio + targetSpeed * (
+                            0.5 + 0.5 * self.timeRatio) + self.d2t * (0.5 + 0.5 * self.timeRatio), 12))
         else:
             self.engine.setVector(Vec3(0, 100, 3))
         for i in range(numFrames):

@@ -5,6 +5,7 @@ from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
 from otp.otpbase import OTPLocalizer
 from toontown.pets import PetTricks
 
+
 class TTSCPetTrickMenu(SCMenu):
     notify = DirectNotifyGlobal.directNotify.newCategory('TTSCPetTrickMenu')
 

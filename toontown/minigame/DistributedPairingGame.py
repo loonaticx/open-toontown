@@ -11,8 +11,10 @@ from toontown.minigame import PlayingCardDeck
 from toontown.minigame import PairingGameGlobals
 from .OrthoWalk import OrthoWalk
 from .OrthoDrive import OrthoDrive
-from direct.interval.IntervalGlobal import Sequence, Parallel, Func, LerpColorScaleInterval, LerpScaleInterval, LerpFunctionInterval, Wait, SoundInterval
+from direct.interval.IntervalGlobal import Sequence, Parallel, Func, LerpColorScaleInterval, LerpScaleInterval, \
+    LerpFunctionInterval, Wait, SoundInterval
 from toontown.toonbase.ToontownGlobals import GlobalDialogColor
+
 
 class DistributedPairingGame(DistributedMinigame):
     TOON_SPEED = 11
@@ -27,7 +29,11 @@ class DistributedPairingGame(DistributedMinigame):
 
     def __init__(self, cr):
         DistributedMinigame.__init__(self, cr)
-        self.gameFSM = ClassicFSM.ClassicFSM('DistributedPairingGame', [State.State('off', self.enterOff, self.exitOff, ['play']), State.State('play', self.enterPlay, self.exitPlay, ['cleanup']), State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off', 'cleanup')
+        self.gameFSM = ClassicFSM.ClassicFSM('DistributedPairingGame',
+                                             [State.State('off', self.enterOff, self.exitOff, ['play']),
+                                              State.State('play', self.enterPlay, self.exitPlay, ['cleanup']),
+                                              State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off',
+                                             'cleanup')
         self.addChildGameFSM(self.gameFSM)
         self.cameraTopView = (17.6, 6.18756, 43.9956, 0, -89, 0)
         self.cameraThreeQuarterView = (14.0, -8.93352, 33.4497, 0, -62.89, 0)
@@ -41,18 +47,18 @@ class DistributedPairingGame(DistributedMinigame):
         self.matches = 0
         self.yCardInc = 4
         self.startingPositions = [(0, 0, 0, -45),
-         ((self.cardsPerRow - 1) * self.xCardInc,
-          (self.cardsPerCol - 1) * self.yCardInc,
-          0,
-          135),
-         ((self.cardsPerRow - 1) * self.xCardInc,
-          0,
-          0,
-          45),
-         (0,
-          (self.cardsPerCol - 1) * self.yCardInc,
-          0,
-          -135)]
+                                  ((self.cardsPerRow - 1) * self.xCardInc,
+                                   (self.cardsPerCol - 1) * self.yCardInc,
+                                   0,
+                                   135),
+                                  ((self.cardsPerRow - 1) * self.xCardInc,
+                                   0,
+                                   0,
+                                   45),
+                                  (0,
+                                   (self.cardsPerCol - 1) * self.yCardInc,
+                                   0,
+                                   -135)]
         self.stageMin = Point2(0, 0)
         self.stageMax = Point2((self.cardsPerRow - 1) * self.xCardInc, (self.cardsPerCol - 1) * self.yCardInc)
         self.gameDuration = PairingGameGlobals.EasiestGameDuration
@@ -98,7 +104,7 @@ class DistributedPairingGame(DistributedMinigame):
             self.notify.debug('suit %s rank %s value %s' % (oneCard.suit, oneCard.rank, oneCard.value))
             self.accept('entercardCollision-%d' % oneCard.value, self.enterCard)
             self.accept('exitcardCollision-%d' % oneCard.value, self.exitCard)
-            oneCard.turnDown(doInterval=False)
+            oneCard.turnDown(doInterval = False)
             self.cards.append(oneCard)
 
         self.bonusTraversal = list(range(len(self.cards)))
@@ -110,10 +116,20 @@ class DistributedPairingGame(DistributedMinigame):
         sign.setPos(0, 0, 0.05)
         sign.reparentTo(self.bonusGlow)
         self.bonusGlow.setScale(2.5)
-        self.pointsFrame = DirectFrame(relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=GlobalDialogColor, geom_scale=(4, 1, 1), pos=(-0.33, 0, 0.9), scale=0.1, text=TTLocalizer.PairingGamePoints, text_align=TextNode.ALeft, text_scale=TTLocalizer.DPGpointsFrame, text_pos=(-1.94, -0.1, 0.0))
-        self.pointsLabel = DirectLabel(parent=self.pointsFrame, relief=None, text='0', text_fg=VBase4(0, 0.5, 0, 1), text_align=TextNode.ARight, text_scale=0.7, pos=(1.82, 0, -0.15))
-        self.flipsFrame = DirectFrame(relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=GlobalDialogColor, geom_scale=(4, 1, 1), pos=(0.33, 0, 0.9), scale=0.1, text=TTLocalizer.PairingGameFlips, text_align=TextNode.ALeft, text_scale=TTLocalizer.DPGflipsFrame, text_pos=(-1.94, -0.1, 0.0))
-        self.flipsLabel = DirectLabel(parent=self.flipsFrame, relief=None, text='0', text_fg=VBase4(0, 1.0, 0, 1), text_align=TextNode.ARight, text_scale=0.7, pos=(1.82, 0, -0.15))
+        self.pointsFrame = DirectFrame(relief = None, geom = DGG.getDefaultDialogGeom(), geom_color = GlobalDialogColor,
+                                       geom_scale = (4, 1, 1), pos = (-0.33, 0, 0.9), scale = 0.1,
+                                       text = TTLocalizer.PairingGamePoints, text_align = TextNode.ALeft,
+                                       text_scale = TTLocalizer.DPGpointsFrame, text_pos = (-1.94, -0.1, 0.0))
+        self.pointsLabel = DirectLabel(parent = self.pointsFrame, relief = None, text = '0',
+                                       text_fg = VBase4(0, 0.5, 0, 1), text_align = TextNode.ARight, text_scale = 0.7,
+                                       pos = (1.82, 0, -0.15))
+        self.flipsFrame = DirectFrame(relief = None, geom = DGG.getDefaultDialogGeom(), geom_color = GlobalDialogColor,
+                                      geom_scale = (4, 1, 1), pos = (0.33, 0, 0.9), scale = 0.1,
+                                      text = TTLocalizer.PairingGameFlips, text_align = TextNode.ALeft,
+                                      text_scale = TTLocalizer.DPGflipsFrame, text_pos = (-1.94, -0.1, 0.0))
+        self.flipsLabel = DirectLabel(parent = self.flipsFrame, relief = None, text = '0',
+                                      text_fg = VBase4(0, 1.0, 0, 1), text_align = TextNode.ARight, text_scale = 0.7,
+                                      pos = (1.82, 0, -0.15))
         self.__textGen = TextNode('ringGame')
         self.__textGen.setFont(ToontownGlobals.getSignFont())
         self.__textGen.setAlign(TextNode.ACenter)
@@ -229,9 +245,10 @@ class DistributedPairingGame(DistributedMinigame):
 
     def enterPlay(self):
         self.notify.debug('enterPlay')
-        base.playMusic(self.music, looping=1, volume=0.9)
-        orthoDrive = OrthoDrive(self.TOON_SPEED, maxFrameMove=self.MAX_FRAME_MOVE, customCollisionCallback=self.__doPairingGameCollisions)
-        self.orthoWalk = OrthoWalk(orthoDrive, broadcast=not self.isSinglePlayer())
+        base.playMusic(self.music, looping = 1, volume = 0.9)
+        orthoDrive = OrthoDrive(self.TOON_SPEED, maxFrameMove = self.MAX_FRAME_MOVE,
+                                customCollisionCallback = self.__doPairingGameCollisions)
+        self.orthoWalk = OrthoWalk(orthoDrive, broadcast = not self.isSinglePlayer())
         self.orthoWalk.start()
         self.accept('insert', self.__flipKeyPressed)
         self.accept('delete', self.__flipKeyPressed)
@@ -341,13 +358,18 @@ class DistributedPairingGame(DistributedMinigame):
         matchIval = Parallel()
         for card in [cardA, cardB]:
             self.cards[card].setTransparency(1)
-            cardSeq = Sequence(LerpColorScaleInterval(self.cards[card], duration=1, colorScale=Vec4(1.0, 1.0, 1.0, 0.0)), Func(self.cards[card].hide))
+            cardSeq = Sequence(
+                LerpColorScaleInterval(self.cards[card], duration = 1, colorScale = Vec4(1.0, 1.0, 1.0, 0.0)),
+                Func(self.cards[card].hide))
             matchIval.append(cardSeq)
 
         if withBonus:
-            matchIval.append(SoundInterval(self.matchWithBonusSfx, node=self.cards[card], listenerNode=base.localAvatar, cutOff=240))
+            matchIval.append(
+                SoundInterval(self.matchWithBonusSfx, node = self.cards[card], listenerNode = base.localAvatar,
+                              cutOff = 240))
         else:
-            matchIval.append(SoundInterval(self.matchSfx, node=self.cards[card], listenerNode=base.localAvatar, cutOff=240))
+            matchIval.append(
+                SoundInterval(self.matchSfx, node = self.cards[card], listenerNode = base.localAvatar, cutOff = 240))
         matchIval.start()
         if len(self.inactiveList) == len(self.cards):
             self.sendUpdate('reportDone')
@@ -389,7 +411,7 @@ class DistributedPairingGame(DistributedMinigame):
             self.bonusGlowCard = self.bonusTraversal[self.bonusGlowIndex]
             card = self.cards[self.bonusGlowCard]
             self.bonusGlow.setPos(card.getPos())
-            base.playSfx(self.bonusMovesSfx, node=card, volume=0.25)
+            base.playSfx(self.bonusMovesSfx, node = card, volume = 0.25)
         return Task.cont
 
     def timerExpired(self):
@@ -464,7 +486,13 @@ class DistributedPairingGame(DistributedMinigame):
             def destroyText(text = perfectText):
                 text.removeNode()
 
-            textTrack = Sequence(Func(perfectText.reparentTo, aspect2d), Parallel(LerpScaleInterval(perfectText, duration=0.5, scale=0.3, startScale=0.0), LerpFunctionInterval(fadeFunc, fromData=0.0, toData=1.0, duration=0.5)), Wait(2.0), Parallel(LerpScaleInterval(perfectText, duration=0.5, scale=1.0), LerpFunctionInterval(fadeFunc, fromData=1.0, toData=0.0, duration=0.5, blendType='easeIn')), Func(destroyText), WaitInterval(0.5), Func(endGame, None))
+            textTrack = Sequence(Func(perfectText.reparentTo, aspect2d),
+                                 Parallel(LerpScaleInterval(perfectText, duration = 0.5, scale = 0.3, startScale = 0.0),
+                                          LerpFunctionInterval(fadeFunc, fromData = 0.0, toData = 1.0, duration = 0.5)),
+                                 Wait(2.0), Parallel(LerpScaleInterval(perfectText, duration = 0.5, scale = 1.0),
+                                                     LerpFunctionInterval(fadeFunc, fromData = 1.0, toData = 0.0,
+                                                                          duration = 0.5, blendType = 'easeIn')),
+                                 Func(destroyText), WaitInterval(0.5), Func(endGame, None))
             soundTrack = SoundInterval(self.sndPerfect)
             self.perfectIval = Parallel(textTrack, soundTrack)
             self.perfectIval.start()
@@ -486,7 +514,7 @@ class DistributedPairingGame(DistributedMinigame):
         avIndex = self.avIdList.index(avId)
         av = base.cr.doId2do.get(avId)
         if av and avIndex >= 0 and hasattr(self, 'signalSfx') and self.signalSfx:
-            base.playSfx(self.signalSfx[avIndex], node=av)
+            base.playSfx(self.signalSfx[avIndex], node = av)
 
     def __beginSignal(self, mouseParam):
         self.notify.debug('beginSignal')

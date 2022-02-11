@@ -6,6 +6,7 @@ from direct.actor import Actor
 import random
 from . import DivingGameGlobals
 
+
 class DivingFishSpawn(DirectObject):
     RADIUS = 0.7
 
@@ -27,22 +28,34 @@ class DivingFishSpawn(DirectObject):
     def createFish(self, fishcode):
         loadBase = 'phase_4/models/char/'
         if fishcode == 0:
-            fish = Actor.Actor('phase_4/models/char/clownFish-zero.bam', {'anim': loadBase + 'clownFish-swim.bam'})
+            fish = Actor.Actor('phase_4/models/char/clownFish-zero.bam', {
+                'anim': loadBase + 'clownFish-swim.bam'
+            })
             fish.name = 'clown'
         elif fishcode == 1:
-            fish = Actor.Actor('phase_4/models/char/PBJfish-zero.bam', {'anim': 'phase_4/models/char/PBJfish-swim.bam'})
+            fish = Actor.Actor('phase_4/models/char/PBJfish-zero.bam', {
+                'anim': 'phase_4/models/char/PBJfish-swim.bam'
+            })
             fish.name = 'pbj'
         elif fishcode == 2:
-            fish = Actor.Actor('phase_4/models/char/BearAcuda-zero.bam', {'anim': 'phase_4/models/char/BearAcuda-swim.bam'})
+            fish = Actor.Actor('phase_4/models/char/BearAcuda-zero.bam', {
+                'anim': 'phase_4/models/char/BearAcuda-swim.bam'
+            })
             fish.name = 'bear'
         elif fishcode == 3:
-            fish = Actor.Actor(loadBase + 'balloonFish-zero.bam', {'anim': loadBase + 'balloonFish-swim.bam'})
+            fish = Actor.Actor(loadBase + 'balloonFish-zero.bam', {
+                'anim': loadBase + 'balloonFish-swim.bam'
+            })
             fish.name = 'balloon'
         elif fishcode == 4:
-            fish = Actor.Actor(loadBase + 'nurseShark-zero.bam', {'anim': loadBase + 'nurseShark-swim.bam'})
+            fish = Actor.Actor(loadBase + 'nurseShark-zero.bam', {
+                'anim': loadBase + 'nurseShark-swim.bam'
+            })
             fish.name = 'nurse'
         elif fishcode == 5:
-            fish = Actor.Actor(loadBase + 'pianoTuna-zero.bam', {'anim': loadBase + 'pianoTuna-swim.bam'})
+            fish = Actor.Actor(loadBase + 'pianoTuna-zero.bam', {
+                'anim': loadBase + 'pianoTuna-swim.bam'
+            })
             fish.name = 'piano'
         else:
             return
@@ -64,7 +77,7 @@ class DivingFishSpawn(DirectObject):
             cSphere = CollisionSphere(0.0, 0.0, 0.0, 1)
         elif fish.name == 'balloon':
             fish.setH(0)
-            fish.loop('anim', fromFrame=0, toFrame=94)
+            fish.loop('anim', fromFrame = 0, toFrame = 94)
             fish.setScale(2)
             cSphere = CollisionSphere(0.0, 0.0, 0.0, 0.2)
         elif fish.name == 'bear':
@@ -80,7 +93,7 @@ class DivingFishSpawn(DirectObject):
         elif fish.name == 'mackerel':
             fish.setH(90 * self.direction)
             cSphere = CollisionSphere(0.0, 0.0, 0.0, 1.5)
-            fish.loop('anim', fromFrame=36, toFrame=80)
+            fish.loop('anim', fromFrame = 36, toFrame = 80)
         elif fish.name == 'piano':
             fish.loop('anim')
             fish.setScale(1.4)
@@ -98,7 +111,8 @@ class DivingFishSpawn(DirectObject):
         cSphereNode.setIntoCollideMask(DivingGameGlobals.CollideMask)
         cSphereNodePath = fish.attachNewNode(cSphereNode)
         self.accept('into-' + 'fc' + str(fish.code), self.__handleFishCollide)
-        fish.moveloop = Sequence(Wait(4), LerpScaleInterval(fish, startScale=1, scale=3, duration=1), Wait(1.5), LerpScaleInterval(fish, startScale=3, scale=1, duration=0.5))
+        fish.moveloop = Sequence(Wait(4), LerpScaleInterval(fish, startScale = 1, scale = 3, duration = 1), Wait(1.5),
+                                 LerpScaleInterval(fish, startScale = 3, scale = 1, duration = 0.5))
         return fish
 
     def destroy(self):

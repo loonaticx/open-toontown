@@ -3,7 +3,9 @@ from . import CatalogItem
 from toontown.toonbase import ToontownGlobals
 from otp.otpbase import OTPLocalizer
 from toontown.toonbase import TTLocalizer
+
 bannedPhrases = [11009]
+
 
 class CatalogChatItem(CatalogItem.CatalogItem):
 
@@ -15,7 +17,8 @@ class CatalogChatItem(CatalogItem.CatalogItem):
         return 1
 
     def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
+        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in \
+                avatar.awardMailboxContents or self in avatar.onAwardOrder:
             return 1
         return avatar.customMessages.count(self.customIndex) != 0
 

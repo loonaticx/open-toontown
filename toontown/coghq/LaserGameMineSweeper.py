@@ -3,6 +3,7 @@ from direct.distributed import ClockDelta
 from direct.task import Task
 import random
 
+
 class LaserGameMineSweeper(LaserGameBase.LaserGameBase):
 
     def __init__(self, funcSuccess, funcFail, funcSendGrid, funcSetGrid):
@@ -29,7 +30,7 @@ class LaserGameMineSweeper(LaserGameBase.LaserGameBase):
         self.hiddenData = []
         for i in range(0, self.gridNumX):
             self.hiddenData.append([
-                0] * self.gridNumY)
+                                       0] * self.gridNumY)
 
         numBombs = int(self.gridNumX * self.gridNumY / 8)
         numBombs += 1
@@ -40,7 +41,8 @@ class LaserGameMineSweeper(LaserGameBase.LaserGameBase):
                 sanity -= 1
                 column = random.randint(0, self.gridNumX - 1)
                 row = random.randint(1, self.gridNumY - 1)
-                if self.hiddenData[column][row] != 12 and self.neighborSum(column, row) < 2 and self.rowSum(row) < numBombs / 3:
+                if self.hiddenData[column][row] != 12 and self.neighborSum(column, row) < 2 and self.rowSum(
+                        row) < numBombs / 3:
                     self.hiddenData[column][row] = 12
                     bomb += 1
 

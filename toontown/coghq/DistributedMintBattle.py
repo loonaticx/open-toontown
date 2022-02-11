@@ -13,6 +13,7 @@ from direct.fsm import State
 from direct.fsm import ClassicFSM, State
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedMintBattle(DistributedLevelBattle.DistributedLevelBattle):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMintBattle')
 
@@ -43,6 +44,6 @@ class DistributedMintBattle(DistributedLevelBattle.DistributedLevelBattle):
 
     def exitMintReward(self):
         self.notify.debug('exitMintReward()')
-        self.movie.resetReward(finish=1)
+        self.movie.resetReward(finish = 1)
         self._removeMembersKeep()
         NametagGlobals.setMasterArrowsOn(1)

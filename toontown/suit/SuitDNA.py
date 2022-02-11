@@ -6,97 +6,103 @@ import random
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 from otp.avatar import AvatarDNA
+
 notify = directNotify.newCategory('SuitDNA')
 suitHeadTypes = ['f',
- 'p',
- 'ym',
- 'mm',
- 'ds',
- 'hh',
- 'cr',
- 'tbc',
- 'bf',
- 'b',
- 'dt',
- 'ac',
- 'bs',
- 'sd',
- 'le',
- 'bw',
- 'sc',
- 'pp',
- 'tw',
- 'bc',
- 'nc',
- 'mb',
- 'ls',
- 'rb',
- 'cc',
- 'tm',
- 'nd',
- 'gh',
- 'ms',
- 'tf',
- 'm',
- 'mh']
+                 'p',
+                 'ym',
+                 'mm',
+                 'ds',
+                 'hh',
+                 'cr',
+                 'tbc',
+                 'bf',
+                 'b',
+                 'dt',
+                 'ac',
+                 'bs',
+                 'sd',
+                 'le',
+                 'bw',
+                 'sc',
+                 'pp',
+                 'tw',
+                 'bc',
+                 'nc',
+                 'mb',
+                 'ls',
+                 'rb',
+                 'cc',
+                 'tm',
+                 'nd',
+                 'gh',
+                 'ms',
+                 'tf',
+                 'm',
+                 'mh']
 suitATypes = ['ym',
- 'hh',
- 'tbc',
- 'dt',
- 'bs',
- 'le',
- 'bw',
- 'pp',
- 'nc',
- 'rb',
- 'nd',
- 'tf',
- 'm',
- 'mh']
+              'hh',
+              'tbc',
+              'dt',
+              'bs',
+              'le',
+              'bw',
+              'pp',
+              'nc',
+              'rb',
+              'nd',
+              'tf',
+              'm',
+              'mh']
 suitBTypes = ['p',
- 'ds',
- 'b',
- 'ac',
- 'sd',
- 'bc',
- 'ls',
- 'tm',
- 'ms']
+              'ds',
+              'b',
+              'ac',
+              'sd',
+              'bc',
+              'ls',
+              'tm',
+              'ms']
 suitCTypes = ['f',
- 'mm',
- 'cr',
- 'bf',
- 'sc',
- 'tw',
- 'mb',
- 'cc',
- 'gh']
+              'mm',
+              'cr',
+              'bf',
+              'sc',
+              'tw',
+              'mb',
+              'cc',
+              'gh']
 suitDepts = ['c',
- 'l',
- 'm',
- 's']
-suitDeptFullnames = {'c': TTLocalizer.Bossbot,
- 'l': TTLocalizer.Lawbot,
- 'm': TTLocalizer.Cashbot,
- 's': TTLocalizer.Sellbot}
-suitDeptFullnamesP = {'c': TTLocalizer.BossbotP,
- 'l': TTLocalizer.LawbotP,
- 'm': TTLocalizer.CashbotP,
- 's': TTLocalizer.SellbotP}
+             'l',
+             'm',
+             's']
+suitDeptFullnames = {
+    'c': TTLocalizer.Bossbot,
+    'l': TTLocalizer.Lawbot,
+    'm': TTLocalizer.Cashbot,
+    's': TTLocalizer.Sellbot
+}
+suitDeptFullnamesP = {
+    'c': TTLocalizer.BossbotP,
+    'l': TTLocalizer.LawbotP,
+    'm': TTLocalizer.CashbotP,
+    's': TTLocalizer.SellbotP
+}
 corpPolyColor = VBase4(0.95, 0.75, 0.75, 1.0)
 legalPolyColor = VBase4(0.75, 0.75, 0.95, 1.0)
 moneyPolyColor = VBase4(0.65, 0.95, 0.85, 1.0)
 salesPolyColor = VBase4(0.95, 0.75, 0.95, 1.0)
 suitsPerLevel = [1,
- 1,
- 1,
- 1,
- 1,
- 1,
- 1,
- 1]
+                 1,
+                 1,
+                 1,
+                 1,
+                 1,
+                 1,
+                 1]
 suitsPerDept = 8
 goonTypes = ['pg', 'sg']
+
 
 def getSuitBodyType(name):
     if name in suitATypes:
@@ -166,9 +172,9 @@ class SuitDNA(AvatarDNA.AvatarDNA):
     def __str__(self):
         if self.type == 's':
             return 'type = %s\nbody = %s, dept = %s, name = %s' % ('suit',
-             self.body,
-             self.dept,
-             self.name)
+                                                                   self.body,
+                                                                   self.dept,
+                                                                   self.name)
         elif self.type == 'b':
             return 'type = boss cog\ndept = %s' % self.dept
         else:

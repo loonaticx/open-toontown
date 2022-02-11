@@ -6,10 +6,12 @@ from toontown.coghq import LevelBattleManagerAI
 import random
 import functools
 
+
 class LevelSuitPlannerAI(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('LevelSuitPlannerAI')
 
-    def __init__(self, air, level, cogCtor, battleCtor, cogSpecs, reserveCogSpecs, battleCellSpecs, battleExpAggreg=None):
+    def __init__(self, air, level, cogCtor, battleCtor, cogSpecs, reserveCogSpecs, battleCellSpecs,
+                 battleExpAggreg = None):
         self.air = air
         self.level = level
         self.cogCtor = cogCtor
@@ -40,14 +42,14 @@ class LevelSuitPlannerAI(DirectObject.DirectObject):
         for currChance in range(num):
             joinChances.append(random.randint(1, 100))
 
-        joinChances.sort(key=functools.cmp_to_key(cmp))
+        joinChances.sort(key = functools.cmp_to_key(cmp))
         return joinChances
 
     def __genSuitInfos(self, level, track):
         if __dev__:
             pass
 
-        def getSuitDict(spec, cogId, level=level, track=track):
+        def getSuitDict(spec, cogId, level = level, track = track):
             suitDict = {}
             suitDict['track'] = track
             suitDict.update(spec)
@@ -74,7 +76,7 @@ class LevelSuitPlannerAI(DirectObject.DirectObject):
     def __genSuitObject(self, suitDict, reserve):
         suit = self.cogCtor(simbase.air, self)
         dna = SuitDNA.SuitDNA()
-        dna.newSuitRandom(level=SuitDNA.getRandomSuitType(suitDict['level']), dept=suitDict['track'])
+        dna.newSuitRandom(level = SuitDNA.getRandomSuitType(suitDict['level']), dept = suitDict['track'])
         suit.dna = dna
         suit.setLevel(suitDict['level'])
         suit.setSkeleRevives(suitDict.get('revives'))
@@ -116,7 +118,8 @@ class LevelSuitPlannerAI(DirectObject.DirectObject):
         pos = cellSpec['pos']
         zone = self.level.getZoneId(self.level.getEntityZoneEntId(cellSpec['parentEntId']))
         maxSuits = 4
-        self.battleMgr.newBattle(cellIndex, zone, pos, suit, toonId, self.__handleRoundFinished, self.__handleBattleFinished, maxSuits)
+        self.battleMgr.newBattle(cellIndex, zone, pos, suit, toonId, self.__handleRoundFinished,
+                                 self.__handleBattleFinished, maxSuits)
         for otherSuit in self.battleCellId2suits[cellIndex]:
             if otherSuit is not suit:
                 if self.__suitCanJoinBattle(cellIndex):
@@ -124,9 +127,11 @@ class LevelSuitPlannerAI(DirectObject.DirectObject):
                 else:
                     battle = self.battleMgr.getBattle(cellIndex)
                     if battle:
-                        self.notify.warning('battle not joinable: numSuits=%s, joinable=%s, fsm=%s, toonId=%s' % (len(battle.suits), battle.isJoinable(), battle.fsm.getCurrentState().getName(), toonId))
+                        self.notify.warning('battle not joinable: numSuits=%s, joinable=%s, fsm=%s, toonId=%s' % (
+                        len(battle.suits), battle.isJoinable(), battle.fsm.getCurrentState().getName(), toonId))
                     else:
-                        self.notify.warning('battle not joinable: no battle for cell %s, toonId=%s' % (cellIndex, toonId))
+                        self.notify.warning(
+                            'battle not joinable: no battle for cell %s, toonId=%s' % (cellIndex, toonId))
                     return 0
 
         return 1
@@ -197,14 +202,17 @@ class LevelSuitPlannerAI(DirectObject.DirectObject):
             if oldCell in self.battleCellId2suits:
                 self.battleCellId2suits[oldCell].remove(suit)
             else:
-                self.notify.warning('FIXME crash bandaid suitBattleCellChange suit.doId =%s, oldCell=%s not in battleCellId2Suits.keys %s' % (suit.doId, oldCell, list(self.battleCellId2suits.keys())))
+                self.notify.warning(
+                    'FIXME crash bandaid suitBattleCellChange suit.doId =%s, oldCell=%s not in '
+                    'battleCellId2Suits.keys %s' % (
+                    suit.doId, oldCell, list(self.battleCellId2suits.keys())))
             blocker = self.battleMgr.battleBlockers.get(oldCell)
             if blocker:
                 blocker.removeSuit(suit)
         if newCell is not None:
             self.battleCellId2suits[newCell].append(suit)
 
-            def addSuitToBlocker(self=self):
+            def addSuitToBlocker(self = self):
                 blocker = self.battleMgr.battleBlockers.get(newCell)
                 if blocker:
                     blocker.addSuit(suit)

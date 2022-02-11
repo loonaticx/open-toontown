@@ -6,6 +6,7 @@ from direct.distributed import DistributedObject
 from otp.chat.WhiteList import WhiteList
 from toontown.toonbase import TTLocalizer
 
+
 class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
     RedownloadTaskName = 'RedownloadWhitelistTask'
     WhitelistBaseDir = config.GetString('whitelist-base-dir', '')
@@ -101,7 +102,8 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
 
     def loadingTextTask(self, task):
         timeIndex = int(globalClock.getFrameTime() - task.startTime) % 3
-        timeStrs = (TTLocalizer.NewsPageDownloadingNews0, TTLocalizer.NewsPageDownloadingNews1, TTLocalizer.NewsPageDownloadingNews2)
+        timeStrs = (TTLocalizer.NewsPageDownloadingNews0, TTLocalizer.NewsPageDownloadingNews1,
+                    TTLocalizer.NewsPageDownloadingNews2)
         textToDisplay = timeStrs[timeIndex] % int(self.percentDownloaded * 100)
         return task.again
 

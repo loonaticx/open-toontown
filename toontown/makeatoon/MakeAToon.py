@@ -25,6 +25,7 @@ from . import MakeClothesGUI
 from . import NameShop
 import random
 
+
 class MakeAToon(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('MakeAToon')
 
@@ -33,9 +34,9 @@ class MakeAToon(StateData.StateData):
         StateData.StateData.__init__(self, doneEvent)
         self.phase = 3
         self.names = ['',
-         '',
-         '',
-         '']
+                      '',
+                      '',
+                      '']
         self.dnastring = None
         self.dna = None
         self.progressing = 0
@@ -53,13 +54,14 @@ class MakeAToon(StateData.StateData):
                 self.namelessPotAv = av
             self.nameList.append(av.name)
 
-        self.fsm = ClassicFSM.ClassicFSM('MakeAToon', [State.State('Init', self.enterInit, self.exitInit, ['GenderShop', 'NameShop']),
-         State.State('GenderShop', self.enterGenderShop, self.exitGenderShop, ['BodyShop']),
-         State.State('BodyShop', self.enterBodyShop, self.exitBodyShop, ['GenderShop', 'ColorShop']),
-         State.State('ColorShop', self.enterColorShop, self.exitColorShop, ['BodyShop', 'ClothesShop']),
-         State.State('ClothesShop', self.enterClothesShop, self.exitClothesShop, ['ColorShop', 'NameShop']),
-         State.State('NameShop', self.enterNameShop, self.exitNameShop, ['ClothesShop']),
-         State.State('Done', self.enterDone, self.exitDone, [])], 'Init', 'Done')
+        self.fsm = ClassicFSM.ClassicFSM('MakeAToon', [
+            State.State('Init', self.enterInit, self.exitInit, ['GenderShop', 'NameShop']),
+            State.State('GenderShop', self.enterGenderShop, self.exitGenderShop, ['BodyShop']),
+            State.State('BodyShop', self.enterBodyShop, self.exitBodyShop, ['GenderShop', 'ColorShop']),
+            State.State('ColorShop', self.enterColorShop, self.exitColorShop, ['BodyShop', 'ClothesShop']),
+            State.State('ClothesShop', self.enterClothesShop, self.exitClothesShop, ['ColorShop', 'NameShop']),
+            State.State('NameShop', self.enterNameShop, self.exitNameShop, ['ClothesShop']),
+            State.State('Done', self.enterDone, self.exitDone, [])], 'Init', 'Done')
         self.parentFSM = parentFSM
         self.parentFSM.getStateNamed('createAvatar').addChild(self.fsm)
         self.gs = GenderShop.GenderShop(self, 'GenderShop-done')
@@ -71,9 +73,9 @@ class MakeAToon(StateData.StateData):
         self.shopsVisited = []
         if self.warp:
             self.shopsVisited = [GENDERSHOP,
-             BODYSHOP,
-             COLORSHOP,
-             CLOTHESSHOP]
+                                 BODYSHOP,
+                                 COLORSHOP,
+                                 CLOTHESSHOP]
         self.music = None
         self.soundBack = None
         self.fsm.enterInitialState()
@@ -95,7 +97,7 @@ class MakeAToon(StateData.StateData):
             self.notify.info('QA-REGRESSION: MAKEATOON: Starting Make A Toon')
         base.cr.centralLogger.writeClientEvent('MAT - startingMakeAToon')
         base.camLens.setFov(ToontownGlobals.MakeAToonCameraFov)
-        base.playMusic(self.music, looping=1, volume=self.musicVolume)
+        base.playMusic(self.music, looping = 1, volume = self.musicVolume)
         camera.setPosHpr(-5.7, -12.3501, 2.15, -24.8499, 2.73, 0)
         if self.warp:
             if self.toon.style.torso[1] == 's':
@@ -136,73 +138,113 @@ class MakeAToon(StateData.StateData):
         skipTutorialDown = gui.find('**/tt_t_gui_mat_skipDown')
         rotateUp = gui.find('**/tt_t_gui_mat_arrowRotateUp')
         rotateDown = gui.find('**/tt_t_gui_mat_arrowRotateDown')
-        self.guiTopBar = DirectFrame(relief=None, text=TTLocalizer.CreateYourToon, text_font=ToontownGlobals.getSignFont(), text_fg=(0.0, 0.65, 0.35, 1), text_scale=0.18, text_pos=(0, -0.03), pos=(0, 0, 0.86))
+        self.guiTopBar = DirectFrame(relief = None, text = TTLocalizer.CreateYourToon,
+                                     text_font = ToontownGlobals.getSignFont(), text_fg = (0.0, 0.65, 0.35, 1),
+                                     text_scale = 0.18, text_pos = (0, -0.03), pos = (0, 0, 0.86))
         self.guiTopBar.hide()
-        self.guiBottomBar = DirectFrame(relief=None, image_scale=(1.25, 1, 1), pos=(0.01, 0, -0.86))
+        self.guiBottomBar = DirectFrame(relief = None, image_scale = (1.25, 1, 1), pos = (0.01, 0, -0.86))
         self.guiBottomBar.hide()
-        self.guiCheckButton = DirectButton(parent=self.guiBottomBar, relief=None, image=(guiAcceptUp,
-         guiAcceptDown,
-         guiAcceptUp,
-         guiAcceptDown), image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, pos=(1.165, 0, -0.018), command=self.__handleNext, text=('', TTLocalizer.MakeAToonDone, TTLocalizer.MakeAToonDone), text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.08, text_align=TextNode.ARight, text_pos=(0.13, 0.13), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
+        self.guiCheckButton = DirectButton(parent = self.guiBottomBar, relief = None, image = (guiAcceptUp,
+                                                                                               guiAcceptDown,
+                                                                                               guiAcceptUp,
+                                                                                               guiAcceptDown),
+                                           image_scale = halfButtonScale, image1_scale = halfButtonHoverScale,
+                                           image2_scale = halfButtonHoverScale, pos = (1.165, 0, -0.018),
+                                           command = self.__handleNext,
+                                           text = ('', TTLocalizer.MakeAToonDone, TTLocalizer.MakeAToonDone),
+                                           text_font = ToontownGlobals.getInterfaceFont(), text_scale = 0.08,
+                                           text_align = TextNode.ARight, text_pos = (0.13, 0.13),
+                                           text_fg = (1, 1, 1, 1), text_shadow = (0, 0, 0, 1))
         self.guiCheckButton.hide()
-        self.guiCancelButton = DirectButton(parent=self.guiBottomBar, relief=None, image=(guiCancelUp,
-         guiCancelDown,
-         guiCancelUp,
-         guiCancelDown), image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, pos=(-1.179, 0, -0.011), command=self.__handleCancel, text=('', TTLocalizer.MakeAToonCancel, TTLocalizer.MakeAToonCancel), text_font=ToontownGlobals.getInterfaceFont(), text_scale=TTLocalizer.MATguiCancelButton, text_pos=(0, 0.115), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
+        self.guiCancelButton = DirectButton(parent = self.guiBottomBar, relief = None, image = (guiCancelUp,
+                                                                                                guiCancelDown,
+                                                                                                guiCancelUp,
+                                                                                                guiCancelDown),
+                                            image_scale = halfButtonScale, image1_scale = halfButtonHoverScale,
+                                            image2_scale = halfButtonHoverScale, pos = (-1.179, 0, -0.011),
+                                            command = self.__handleCancel,
+                                            text = ('', TTLocalizer.MakeAToonCancel, TTLocalizer.MakeAToonCancel),
+                                            text_font = ToontownGlobals.getInterfaceFont(),
+                                            text_scale = TTLocalizer.MATguiCancelButton, text_pos = (0, 0.115),
+                                            text_fg = (1, 1, 1, 1), text_shadow = (0, 0, 0, 1))
         self.guiCancelButton.hide()
-        self.guiNextButton = DirectButton(parent=self.guiBottomBar, relief=None, image=(guiNextUp,
-         guiNextDown,
-         guiNextUp,
-         guiNextDisabled), image_scale=(0.3, 0.3, 0.3), image1_scale=(0.35, 0.35, 0.35), image2_scale=(0.35, 0.35, 0.35), pos=(1.165, 0, -0.018), command=self.__handleNext, text=('',
-         TTLocalizer.MakeAToonNext,
-         TTLocalizer.MakeAToonNext,
-         ''), text_font=ToontownGlobals.getInterfaceFont(), text_scale=TTLocalizer.MATguiNextButton, text_pos=(0, 0.115), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
+        self.guiNextButton = DirectButton(parent = self.guiBottomBar, relief = None, image = (guiNextUp,
+                                                                                              guiNextDown,
+                                                                                              guiNextUp,
+                                                                                              guiNextDisabled),
+                                          image_scale = (0.3, 0.3, 0.3), image1_scale = (0.35, 0.35, 0.35),
+                                          image2_scale = (0.35, 0.35, 0.35), pos = (1.165, 0, -0.018),
+                                          command = self.__handleNext, text = ('',
+                                                                               TTLocalizer.MakeAToonNext,
+                                                                               TTLocalizer.MakeAToonNext,
+                                                                               ''),
+                                          text_font = ToontownGlobals.getInterfaceFont(),
+                                          text_scale = TTLocalizer.MATguiNextButton, text_pos = (0, 0.115),
+                                          text_fg = (1, 1, 1, 1), text_shadow = (0, 0, 0, 1))
         self.guiNextButton.hide()
-        self.guiLastButton = DirectButton(parent=self.guiBottomBar, relief=None, image=(guiNextUp,
-         guiNextDown,
-         guiNextUp,
-         guiNextDown), image3_color=Vec4(0.5, 0.5, 0.5, 0.75), image_scale=(-0.3, 0.3, 0.3), image1_scale=(-0.35, 0.35, 0.35), image2_scale=(-0.35, 0.35, 0.35), pos=(0.825, 0, -0.018), command=self.__handleLast, text=('',
-         TTLocalizer.MakeAToonLast,
-         TTLocalizer.MakeAToonLast,
-         ''), text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.08, text_pos=(0, 0.115), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
+        self.guiLastButton = DirectButton(parent = self.guiBottomBar, relief = None, image = (guiNextUp,
+                                                                                              guiNextDown,
+                                                                                              guiNextUp,
+                                                                                              guiNextDown),
+                                          image3_color = Vec4(0.5, 0.5, 0.5, 0.75), image_scale = (-0.3, 0.3, 0.3),
+                                          image1_scale = (-0.35, 0.35, 0.35), image2_scale = (-0.35, 0.35, 0.35),
+                                          pos = (0.825, 0, -0.018), command = self.__handleLast, text = ('',
+                                                                                                         TTLocalizer.MakeAToonLast,
+                                                                                                         TTLocalizer.MakeAToonLast,
+                                                                                                         ''),
+                                          text_font = ToontownGlobals.getInterfaceFont(), text_scale = 0.08,
+                                          text_pos = (0, 0.115), text_fg = (1, 1, 1, 1), text_shadow = (0, 0, 0, 1))
         self.guiLastButton.hide()
-        self.rotateLeftButton = DirectButton(parent=self.guiBottomBar, relief=None, image=(rotateUp,
-         rotateDown,
-         rotateUp,
-         rotateDown), image_scale=(-0.4, 0.4, 0.4), image1_scale=(-0.5, 0.5, 0.5), image2_scale=(-0.5, 0.5, 0.5), pos=(-0.329249, 0, 0.202961))
+        self.rotateLeftButton = DirectButton(parent = self.guiBottomBar, relief = None, image = (rotateUp,
+                                                                                                 rotateDown,
+                                                                                                 rotateUp,
+                                                                                                 rotateDown),
+                                             image_scale = (-0.4, 0.4, 0.4), image1_scale = (-0.5, 0.5, 0.5),
+                                             image2_scale = (-0.5, 0.5, 0.5), pos = (-0.329249, 0, 0.202961))
         self.rotateLeftButton.hide()
         self.rotateLeftButton.bind(DGG.B1PRESS, self.rotateToonLeft)
         self.rotateLeftButton.bind(DGG.B1RELEASE, self.stopToonRotateLeftTask)
-        self.rotateRightButton = DirectButton(parent=self.guiBottomBar, relief=None, image=(rotateUp,
-         rotateDown,
-         rotateUp,
-         rotateDown), image_scale=(0.4, 0.4, 0.4), image1_scale=(0.5, 0.5, 0.5), image2_scale=(0.5, 0.5, 0.5), pos=(0.309534, 0, 0.206116))
+        self.rotateRightButton = DirectButton(parent = self.guiBottomBar, relief = None, image = (rotateUp,
+                                                                                                  rotateDown,
+                                                                                                  rotateUp,
+                                                                                                  rotateDown),
+                                              image_scale = (0.4, 0.4, 0.4), image1_scale = (0.5, 0.5, 0.5),
+                                              image2_scale = (0.5, 0.5, 0.5), pos = (0.309534, 0, 0.206116))
         self.rotateRightButton.hide()
         self.rotateRightButton.bind(DGG.B1PRESS, self.rotateToonRight)
         self.rotateRightButton.bind(DGG.B1RELEASE, self.stopToonRotateRightTask)
         gui.removeNode()
         self.roomDropActor = Actor()
         self.roomDropActor.loadModel('phase_3/models/makeatoon/roomAnim_model')
-        self.roomDropActor.loadAnims({'drop': 'phase_3/models/makeatoon/roomAnim_roomDrop'})
+        self.roomDropActor.loadAnims({
+                                         'drop': 'phase_3/models/makeatoon/roomAnim_roomDrop'
+                                     })
         self.roomDropActor.reparentTo(render)
         self.dropJoint = self.roomDropActor.find('**/droppingJoint')
         self.roomSquishActor = Actor()
         self.roomSquishActor.loadModel('phase_3/models/makeatoon/roomAnim_model')
-        self.roomSquishActor.loadAnims({'squish': 'phase_3/models/makeatoon/roomAnim_roomSquish'})
+        self.roomSquishActor.loadAnims({
+                                           'squish': 'phase_3/models/makeatoon/roomAnim_roomSquish'
+                                       })
         self.roomSquishActor.reparentTo(render)
         self.squishJoint = self.roomSquishActor.find('**/scalingJoint')
         self.propSquishActor = Actor()
         self.propSquishActor.loadModel('phase_3/models/makeatoon/roomAnim_model')
-        self.propSquishActor.loadAnims({'propSquish': 'phase_3/models/makeatoon/roomAnim_propSquish'})
+        self.propSquishActor.loadAnims({
+                                           'propSquish': 'phase_3/models/makeatoon/roomAnim_propSquish'
+                                       })
         self.propSquishActor.reparentTo(render)
         self.propSquishActor.pose('propSquish', 0)
         self.propJoint = self.propSquishActor.find('**/propJoint')
         self.spotlightActor = Actor()
         self.spotlightActor.loadModel('phase_3/models/makeatoon/roomAnim_model')
-        self.spotlightActor.loadAnims({'spotlightShake': 'phase_3/models/makeatoon/roomAnim_spotlightShake'})
+        self.spotlightActor.loadAnims({
+                                          'spotlightShake': 'phase_3/models/makeatoon/roomAnim_spotlightShake'
+                                      })
         self.spotlightActor.reparentTo(render)
         self.spotlightJoint = self.spotlightActor.find('**/spotlightJoint')
-        ee = DirectFrame(pos=(-1, 1, 1), frameSize=(-.01, 0.01, -.01, 0.01), frameColor=(0, 0, 0, 0.05), state='normal')
+        ee = DirectFrame(pos = (-1, 1, 1), frameSize = (-.01, 0.01, -.01, 0.01), frameColor = (0, 0, 0, 0.05),
+                         state = 'normal')
         ee.bind(DGG.B1PRESS, lambda x, ee = ee: self.toggleSlide())
         self.eee = ee
         self.room = loader.loadModel('phase_3/models/makeatoon/tt_m_ara_mat_room')
@@ -370,7 +412,7 @@ class MakeAToon(StateData.StateData):
     def __handleCancel(self):
         self.doneStatus = 'cancel'
         self.shopsVisited = []
-        base.transitions.fadeOut(finishIval=EventInterval(self.doneEvent))
+        base.transitions.fadeOut(finishIval = EventInterval(self.doneEvent))
 
     def toggleSlide(self):
         self.slide = 1 - self.slide
@@ -607,10 +649,10 @@ class MakeAToon(StateData.StateData):
             self.goToLastShop()
         elif self.ns.getDoneStatus() == 'paynow':
             self.doneStatus = 'paynow'
-            base.transitions.fadeOut(finishIval=EventInterval(self.doneEvent))
+            base.transitions.fadeOut(finishIval = EventInterval(self.doneEvent))
         else:
             self.doneStatus = 'created'
-            base.transitions.fadeOut(finishIval=EventInterval(self.doneEvent))
+            base.transitions.fadeOut(finishIval = EventInterval(self.doneEvent))
 
     def __handleNext(self):
         messenger.send('next')
@@ -669,7 +711,8 @@ class MakeAToon(StateData.StateData):
             if self.propSquishIval and self.propSquishIval.isPlaying():
                 self.propSquishIval.finish()
             squishDuration = self.propSquishActor.getDuration('propSquish')
-            self.propSquishIval = Sequence(Func(self.propSquishActor.play, 'propSquish'), Wait(squishDuration), Func(prop.hide))
+            self.propSquishIval = Sequence(Func(self.propSquishActor.play, 'propSquish'), Wait(squishDuration),
+                                           Func(prop.hide))
             self.propSquishIval.start()
 
     def dropRoom(self, walls, props):
@@ -686,7 +729,15 @@ class MakeAToon(StateData.StateData):
             props.reparentTo(self.dropJoint)
             props.show()
         dropDuration = self.roomDropActor.getDuration('drop')
-        self.dropIval = Parallel(Sequence(Func(self.roomDropActor.play, 'drop'), Wait(dropDuration), Func(walls.reparentTo, self.squishJoint), Func(propReparentTo, props), Func(self.propSquishActor.pose, 'propSquish', 0), Func(self.roomSquishActor.pose, 'squish', 0)), Sequence(Wait(0.25), Func(self.smoke.show), Func(self.smoke.node().play), LerpColorScaleInterval(self.smoke, 0.5, Vec4(1, 1, 1, 0), startColorScale=Vec4(1, 1, 1, 1)), Func(self.smoke.hide)), Func(self.spotlightActor.play, 'spotlightShake'), Func(self.playRandomCrashSound))
+        self.dropIval = Parallel(Sequence(Func(self.roomDropActor.play, 'drop'), Wait(dropDuration),
+                                          Func(walls.reparentTo, self.squishJoint), Func(propReparentTo, props),
+                                          Func(self.propSquishActor.pose, 'propSquish', 0),
+                                          Func(self.roomSquishActor.pose, 'squish', 0)),
+                                 Sequence(Wait(0.25), Func(self.smoke.show), Func(self.smoke.node().play),
+                                          LerpColorScaleInterval(self.smoke, 0.5, Vec4(1, 1, 1, 0),
+                                                                 startColorScale = Vec4(1, 1, 1, 1)),
+                                          Func(self.smoke.hide)), Func(self.spotlightActor.play, 'spotlightShake'),
+                                 Func(self.playRandomCrashSound))
         self.dropIval.start()
 
     def startFocusOutIval(self):
@@ -736,7 +787,7 @@ class MakeAToon(StateData.StateData):
 
     def playRandomCrashSound(self):
         index = random.randint(0, len(self.crashSounds) - 1)
-        base.playSfx(self.crashSounds[index], volume=self.sfxVolume)
+        base.playSfx(self.crashSounds[index], volume = self.sfxVolume)
 
     def rotateToonLeft(self, event):
         taskMgr.add(self.rotateToonLeftTask, 'rotateToonLeftTask')

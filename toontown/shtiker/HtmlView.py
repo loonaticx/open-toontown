@@ -13,6 +13,7 @@ from pandac.PandaModules import WindowProperties
 from direct.interval.IntervalGlobal import *
 from pandac.PandaModules import AwWebView
 from pandac.PandaModules import AwWebCore
+
 WEB_WIDTH_PIXELS = 784
 WEB_HEIGHT_PIXELS = 451
 WEB_WIDTH = 1024
@@ -21,6 +22,7 @@ WEB_HALF_WIDTH = WEB_WIDTH / 2
 WIN_WIDTH = 800
 WIN_HEIGHT = 600
 GlobalWebcore = None
+
 
 class HtmlView(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('HtmlView')
@@ -139,7 +141,8 @@ class HtmlView(DirectObject):
         self.leftQuad = NodePath(card)
         self.leftQuad.reparentTo(self.parent)
         self.leftGuiTex = Texture('guiTex')
-        self.leftGuiTex.setupTexture(Texture.TT2dTexture, WEB_HALF_WIDTH, WEB_HEIGHT, 1, Texture.TUnsignedByte, Texture.FRgba)
+        self.leftGuiTex.setupTexture(Texture.TT2dTexture, WEB_HALF_WIDTH, WEB_HEIGHT, 1, Texture.TUnsignedByte,
+                                     Texture.FRgba)
         self.leftGuiTex.setKeepRamImage(True)
         self.leftGuiTex.makeRamImage()
         self.leftGuiTex.setWrapU(Texture.WMClamp)
@@ -162,7 +165,8 @@ class HtmlView(DirectObject):
         self.rightQuad = NodePath(card)
         self.rightQuad.reparentTo(self.parent)
         self.rightGuiTex = Texture('guiTex')
-        self.rightGuiTex.setupTexture(Texture.TT2dTexture, WEB_HALF_WIDTH, WEB_HEIGHT, 1, Texture.TUnsignedByte, Texture.FRgba)
+        self.rightGuiTex.setupTexture(Texture.TT2dTexture, WEB_HALF_WIDTH, WEB_HEIGHT, 1, Texture.TUnsignedByte,
+                                      Texture.FRgba)
         self.rightGuiTex.setKeepRamImage(True)
         self.rightGuiTex.makeRamImage()
         self.rightGuiTex.setWrapU(Texture.WMClamp)
@@ -223,7 +227,8 @@ class HtmlView(DirectObject):
 
     def update(self, task):
         if base.mouseWatcherNode.hasMouse():
-            x, y = self._translateRelativeCoordinates(base.mouseWatcherNode.getMouseX(), base.mouseWatcherNode.getMouseY())
+            x, y = self._translateRelativeCoordinates(base.mouseWatcherNode.getMouseX(),
+                                                      base.mouseWatcherNode.getMouseY())
             if self.mx - x != 0 or self.my - y != 0:
                 self.webView.injectMouseMove(x, y)
                 self.mx, self.my = x, y
@@ -235,7 +240,8 @@ class HtmlView(DirectObject):
                 if self.useHalfTexture:
                     self.guiTex.store(self.fullPnmImage)
                     self.leftPnmImage.copySubImage(self.fullPnmImage, 0, 0, 0, 0, WEB_HALF_WIDTH, WEB_HEIGHT)
-                    self.rightPnmImage.copySubImage(self.fullPnmImage, 0, 0, WEB_HALF_WIDTH, 0, WEB_HALF_WIDTH, WEB_HEIGHT)
+                    self.rightPnmImage.copySubImage(self.fullPnmImage, 0, 0, WEB_HALF_WIDTH, 0, WEB_HALF_WIDTH,
+                                                    WEB_HEIGHT)
                     self.leftGuiTex.load(self.leftPnmImage)
                     self.rightGuiTex.load(self.rightPnmImage)
                     self.quad.hide()

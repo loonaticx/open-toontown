@@ -7,6 +7,7 @@ from toontown.toonbase import TTLocalizer
 from direct.distributed import DistributedObject
 from toontown.quest import QuestParser
 
+
 class DistributedNPCBlocker(DistributedNPCToonBase):
 
     def __init__(self, cr):

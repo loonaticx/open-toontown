@@ -3,6 +3,7 @@ from direct.particles import ParticleEffect
 from direct.directnotify import DirectNotifyGlobal
 import os
 
+
 class Drift(NodePath):
 
     def __init__(self, parent, renderParent):

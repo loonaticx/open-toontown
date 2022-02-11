@@ -8,45 +8,55 @@ from direct.interval.IntervalGlobal import *
 from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
 from direct.directnotify import DirectNotifyGlobal
+
 if not base.config.GetBool('want-new-anims', 1):
-    HeadDict = {'dls': '/models/char/dogMM_Shorts-head-',
-     'dss': '/models/char/dogMM_Skirt-head-',
-     'dsl': '/models/char/dogSS_Shorts-head-',
-     'dll': '/models/char/dogLL_Shorts-head-',
-     'c': '/models/char/cat-heads-',
-     'h': '/models/char/horse-heads-',
-     'm': '/models/char/mouse-heads-',
-     'r': '/models/char/rabbit-heads-',
-     'f': '/models/char/duck-heads-',
-     'p': '/models/char/monkey-heads-',
-     'b': '/models/char/bear-heads-',
-     's': '/models/char/pig-heads-'}
+    HeadDict = {
+        'dls': '/models/char/dogMM_Shorts-head-',
+        'dss': '/models/char/dogMM_Skirt-head-',
+        'dsl': '/models/char/dogSS_Shorts-head-',
+        'dll': '/models/char/dogLL_Shorts-head-',
+        'c': '/models/char/cat-heads-',
+        'h': '/models/char/horse-heads-',
+        'm': '/models/char/mouse-heads-',
+        'r': '/models/char/rabbit-heads-',
+        'f': '/models/char/duck-heads-',
+        'p': '/models/char/monkey-heads-',
+        'b': '/models/char/bear-heads-',
+        's': '/models/char/pig-heads-'
+    }
 else:
-    HeadDict = {'dls': '/models/char/tt_a_chr_dgm_shorts_head_',
-     'dss': '/models/char/tt_a_chr_dgm_skirt_head_',
-     'dsl': '/models/char/tt_a_chr_dgs_shorts_head_',
-     'dll': '/models/char/tt_a_chr_dgl_shorts_head_',
-     'c': '/models/char/cat-heads-',
-     'h': '/models/char/horse-heads-',
-     'm': '/models/char/mouse-heads-',
-     'r': '/models/char/rabbit-heads-',
-     'f': '/models/char/duck-heads-',
-     'p': '/models/char/monkey-heads-',
-     'b': '/models/char/bear-heads-',
-     's': '/models/char/pig-heads-'}
-EyelashDict = {'d': '/models/char/dog-lashes',
- 'c': '/models/char/cat-lashes',
- 'h': '/models/char/horse-lashes',
- 'm': '/models/char/mouse-lashes',
- 'r': '/models/char/rabbit-lashes',
- 'f': '/models/char/duck-lashes',
- 'p': '/models/char/monkey-lashes',
- 'b': '/models/char/bear-lashes',
- 's': '/models/char/pig-lashes'}
-DogMuzzleDict = {'dls': '/models/char/dogMM_Shorts-headMuzzles-',
- 'dss': '/models/char/dogMM_Skirt-headMuzzles-',
- 'dsl': '/models/char/dogSS_Shorts-headMuzzles-',
- 'dll': '/models/char/dogLL_Shorts-headMuzzles-'}
+    HeadDict = {
+        'dls': '/models/char/tt_a_chr_dgm_shorts_head_',
+        'dss': '/models/char/tt_a_chr_dgm_skirt_head_',
+        'dsl': '/models/char/tt_a_chr_dgs_shorts_head_',
+        'dll': '/models/char/tt_a_chr_dgl_shorts_head_',
+        'c': '/models/char/cat-heads-',
+        'h': '/models/char/horse-heads-',
+        'm': '/models/char/mouse-heads-',
+        'r': '/models/char/rabbit-heads-',
+        'f': '/models/char/duck-heads-',
+        'p': '/models/char/monkey-heads-',
+        'b': '/models/char/bear-heads-',
+        's': '/models/char/pig-heads-'
+    }
+EyelashDict = {
+    'd': '/models/char/dog-lashes',
+    'c': '/models/char/cat-lashes',
+    'h': '/models/char/horse-lashes',
+    'm': '/models/char/mouse-lashes',
+    'r': '/models/char/rabbit-lashes',
+    'f': '/models/char/duck-lashes',
+    'p': '/models/char/monkey-lashes',
+    'b': '/models/char/bear-lashes',
+    's': '/models/char/pig-lashes'
+}
+DogMuzzleDict = {
+    'dls': '/models/char/dogMM_Shorts-headMuzzles-',
+    'dss': '/models/char/dogMM_Skirt-headMuzzles-',
+    'dsl': '/models/char/dogSS_Shorts-headMuzzles-',
+    'dll': '/models/char/dogLL_Shorts-headMuzzles-'
+}
+
 
 class ToonHead(Actor.Actor):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonHead')
@@ -119,10 +129,12 @@ class ToonHead(Actor.Actor):
             self.__eyelashesHiddenByGlasses = False
             self.randGen = random.Random()
             self.randGen.seed(random.random())
-            self.eyelids = ClassicFSM('eyelids', [State('off', self.enterEyelidsOff, self.exitEyelidsOff, ['open', 'closed', 'surprised']),
-             State('open', self.enterEyelidsOpen, self.exitEyelidsOpen, ['closed', 'surprised', 'off']),
-             State('surprised', self.enterEyelidsSurprised, self.exitEyelidsSurprised, ['open', 'closed', 'off']),
-             State('closed', self.enterEyelidsClosed, self.exitEyelidsClosed, ['open', 'surprised', 'off'])], 'off', 'off')
+            self.eyelids = ClassicFSM('eyelids', [
+                State('off', self.enterEyelidsOff, self.exitEyelidsOff, ['open', 'closed', 'surprised']),
+                State('open', self.enterEyelidsOpen, self.exitEyelidsOpen, ['closed', 'surprised', 'off']),
+                State('surprised', self.enterEyelidsSurprised, self.exitEyelidsSurprised, ['open', 'closed', 'off']),
+                State('closed', self.enterEyelidsClosed, self.exitEyelidsClosed, ['open', 'surprised', 'off'])], 'off',
+                                      'off')
             self.eyelids.enterInitialState()
             self.emote = None
             self.__stareAtNode = NodePath()
@@ -168,7 +180,8 @@ class ToonHead(Actor.Actor):
         animalStyle = dna.getAnimal()
         bodyScale = ToontownGlobals.toonBodyScales[animalStyle]
         headScale = ToontownGlobals.toonHeadScales[animalStyle]
-        self.getGeomNode().setScale(headScale[0] * bodyScale * 1.3, headScale[1] * bodyScale * 1.3, headScale[2] * bodyScale * 1.3)
+        self.getGeomNode().setScale(headScale[0] * bodyScale * 1.3, headScale[1] * bodyScale * 1.3,
+                                    headScale[2] * bodyScale * 1.3)
         if forGui:
             self.getGeomNode().setDepthWrite(1)
             self.getGeomNode().setDepthTest(1)
@@ -200,26 +213,27 @@ class ToonHead(Actor.Actor):
 
     def getRandomForwardLookAtPoint(self):
         x = self.randGen.choice((-0.8,
-         -0.5,
-         0,
-         0.5,
-         0.8))
+                                 -0.5,
+                                 0,
+                                 0.5,
+                                 0.8))
         z = self.randGen.choice((-0.5,
-         0,
-         0.5,
-         0.8))
+                                 0,
+                                 0.5,
+                                 0.8))
         return Point3(x, 1.5, z)
 
     def findSomethingToLookAt(self):
         if self.lookAtPositionCallbackArgs != None:
-            pnt = self.lookAtPositionCallbackArgs[0].getLookAtPosition(self.lookAtPositionCallbackArgs[1], self.lookAtPositionCallbackArgs[2])
+            pnt = self.lookAtPositionCallbackArgs[0].getLookAtPosition(self.lookAtPositionCallbackArgs[1],
+                                                                       self.lookAtPositionCallbackArgs[2])
             self.startStareAt(self, pnt)
             return
         if self.randGen.random() < 0.33:
             lookAtPnt = self.getRandomForwardLookAtPoint()
         else:
             lookAtPnt = self.__defaultStarePoint
-        self.lerpLookAt(lookAtPnt, blink=1)
+        self.lerpLookAt(lookAtPnt, blink = 1)
         return
 
     def generateToonHead(self, copy, style, lods, forGui = 0):
@@ -486,9 +500,9 @@ class ToonHead(Actor.Actor):
 
             if hasattr(self, 'pumpkins'):
                 for x in ['__lods',
-                 '__style',
-                 '__headStyle',
-                 '__copy']:
+                          '__style',
+                          '__headStyle',
+                          '__copy']:
                     if hasattr(self, '_ToonHead' + x):
                         delattr(self, '_ToonHead' + x)
 
@@ -556,7 +570,8 @@ class ToonHead(Actor.Actor):
         parts = self.findAllMatches('**/head*')
         parts.setColor(style.getHeadColor())
         animalType = style.getAnimal()
-        if animalType == 'cat' or animalType == 'rabbit' or animalType == 'bear' or animalType == 'mouse' or animalType == 'pig':
+        if animalType == 'cat' or animalType == 'rabbit' or animalType == 'bear' or animalType == 'mouse' or \
+                animalType == 'pig':
             parts = self.findAllMatches('**/ear?-*')
             parts.setColor(style.getHeadColor())
 
@@ -566,14 +581,14 @@ class ToonHead(Actor.Actor):
             mode = -2
         if self.hasLOD():
             for lodName in self.getLODNames():
-                self.drawInFront('eyes*', 'head-front*', mode, lodName=lodName)
+                self.drawInFront('eyes*', 'head-front*', mode, lodName = lodName)
                 if base.config.GetBool('want-new-anims', 1):
                     if not self.find('**/joint_pupil*').isEmpty():
-                        self.drawInFront('joint_pupil*', 'eyes*', -1, lodName=lodName)
+                        self.drawInFront('joint_pupil*', 'eyes*', -1, lodName = lodName)
                     else:
-                        self.drawInFront('def_*_pupil', 'eyes*', -1, lodName=lodName)
+                        self.drawInFront('def_*_pupil', 'eyes*', -1, lodName = lodName)
                 else:
-                    self.drawInFront('joint_pupil*', 'eyes*', -1, lodName=lodName)
+                    self.drawInFront('joint_pupil*', 'eyes*', -1, lodName = lodName)
 
             self.__eyes = self.getLOD(1000).find('**/eyes*')
             self.__lod500Eyes = self.getLOD(500).find('**/eyes*')
@@ -642,9 +657,11 @@ class ToonHead(Actor.Actor):
             else:
                 leye = self.__eyes.attachNewNode('leye')
                 reye = self.__eyes.attachNewNode('reye')
-                lmat = Mat4(0.802174, 0.59709, 0, 0, -0.586191, 0.787531, 0.190197, 0, 0.113565, -0.152571, 0.981746, 0, -0.233634, 0.418062, 0.0196875, 1)
+                lmat = Mat4(0.802174, 0.59709, 0, 0, -0.586191, 0.787531, 0.190197, 0, 0.113565, -0.152571, 0.981746, 0,
+                            -0.233634, 0.418062, 0.0196875, 1)
                 leye.setMat(lmat)
-                rmat = Mat4(0.786788, -0.617224, 0, 0, 0.602836, 0.768447, 0.214658, 0, -0.132492, -0.16889, 0.976689, 0, 0.233634, 0.418062, 0.0196875, 1)
+                rmat = Mat4(0.786788, -0.617224, 0, 0, 0.602836, 0.768447, 0.214658, 0, -0.132492, -0.16889, 0.976689,
+                            0, 0.233634, 0.418062, 0.0196875, 1)
                 reye.setMat(rmat)
                 self.__lpupil = leye.attachNewNode('lpupil')
                 self.__rpupil = reye.attachNewNode('rpupil')
@@ -1002,7 +1019,7 @@ class ToonHead(Actor.Actor):
         startHpr = head.getHpr()
         startLpupil = self.__lpupil.getPos()
         startRpupil = self.__rpupil.getPos()
-        self.__lookHeadAt(None, point, lod=lodName)
+        self.__lookHeadAt(None, point, lod = lodName)
         self.__lookPupilsAt(None, point)
         endHpr = head.getHpr()
         endLpupil = self.__lpupil.getPos() * 0.5
@@ -1019,10 +1036,15 @@ class ToonHead(Actor.Actor):
         returnToEyeCenterTime = time - lookToTgtTime - 0.5
         origin = Point3(0, 0, 0)
         blendType = 'easeOut'
-        self.lookAtTrack = Parallel(Sequence(LerpPosInterval(self.__lpupil, lookToTgtTime, endLpupil, blendType=blendType), Wait(0.5), LerpPosInterval(self.__lpupil, returnToEyeCenterTime, origin, blendType=blendType)), Sequence(LerpPosInterval(self.__rpupil, lookToTgtTime, endRpupil, blendType=blendType), Wait(0.5), LerpPosInterval(self.__rpupil, returnToEyeCenterTime, origin, blendType=blendType)), name=self.__stareAtName)
+        self.lookAtTrack = Parallel(
+            Sequence(LerpPosInterval(self.__lpupil, lookToTgtTime, endLpupil, blendType = blendType), Wait(0.5),
+                     LerpPosInterval(self.__lpupil, returnToEyeCenterTime, origin, blendType = blendType)),
+            Sequence(LerpPosInterval(self.__rpupil, lookToTgtTime, endRpupil, blendType = blendType), Wait(0.5),
+                     LerpPosInterval(self.__rpupil, returnToEyeCenterTime, origin, blendType = blendType)),
+            name = self.__stareAtName)
         for lodName in self.getLODNames():
             head = self.getPart('head', lodName)
-            self.lookAtTrack.append(LerpHprInterval(head, time, endHpr, blendType='easeInOut'))
+            self.lookAtTrack.append(LerpHprInterval(head, time, endHpr, blendType = 'easeInOut'))
 
         self.lookAtTrack.start()
         return 1
@@ -1317,6 +1339,7 @@ class ToonHead(Actor.Actor):
 
     def isIgnoreCheesyEffect(self):
         if hasattr(self, 'savedCheesyEffect'):
-            if self.savedCheesyEffect == 10 or self.savedCheesyEffect == 11 or self.savedCheesyEffect == 12 or self.savedCheesyEffect == 13 or self.savedCheesyEffect == 14:
+            if self.savedCheesyEffect == 10 or self.savedCheesyEffect == 11 or self.savedCheesyEffect == 12 or \
+                    self.savedCheesyEffect == 13 or self.savedCheesyEffect == 14:
                 return True
         return False

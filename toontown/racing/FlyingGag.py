@@ -4,6 +4,7 @@ from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from otp.avatar.ShadowCaster import ShadowCaster
 
+
 class FlyingGag(NodePath, ShadowCaster):
 
     def __init__(self, name, geom = None):

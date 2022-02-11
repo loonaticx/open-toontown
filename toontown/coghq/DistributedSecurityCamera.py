@@ -14,6 +14,7 @@ from toontown.coghq import BattleBlocker
 import random
 from math import *
 
+
 def circleX(angle, radius, centerX, centerY):
     x = radius * cos(angle) + centerX
     return x
@@ -67,9 +68,9 @@ class DistributedSecurityCamera(BasicEntities.DistributedNodePathEntity):
         self.targetY = self.trackY
         self.target = 0
         self.trackTargetList = [None,
-         None,
-         None,
-         None]
+                                None,
+                                None,
+                                None]
         self.lastTime = 0.0
         self.currentTime = 0.0
         self.delta = 0.0
@@ -85,14 +86,15 @@ class DistributedSecurityCamera(BasicEntities.DistributedNodePathEntity):
         self.Alert['Alpha'] = 1.0
         self.attackSound = loader.loadSfx('phase_9/audio/sfx/CHQ_GOON_tractor_beam_alarmed.ogg')
         self.onSound = loader.loadSfx('phase_11/audio/sfx/LB_camera_shutter_2.ogg')
-        self.attackTrack = Parallel(SoundInterval(self.attackSound, node=self, volume=0.8), SoundInterval(self.onSound, node=self, volume=0.8))
+        self.attackTrack = Parallel(SoundInterval(self.attackSound, node = self, volume = 0.8),
+                                    SoundInterval(self.onSound, node = self, volume = 0.8))
         self.moveStartSound = loader.loadSfx('phase_11/audio/sfx/LB_laser_beam_on_2.ogg')
-        self.moveStartTrack = Parallel(SoundInterval(self.moveStartSound, node=self, volume=0.4))
+        self.moveStartTrack = Parallel(SoundInterval(self.moveStartSound, node = self, volume = 0.4))
         self.moveLoopSound = loader.loadSfx('phase_11/audio/sfx/LB_laser_beam_hum_2.ogg')
         self.moveLoopSound.setLoop()
-        self.moveLoopTrack = Parallel(SoundInterval(self.moveLoopSound, node=self, volume=0.4))
+        self.moveLoopTrack = Parallel(SoundInterval(self.moveLoopSound, node = self, volume = 0.4))
         self.moveStopSound = loader.loadSfx('phase_11/audio/sfx/LB_laser_beam_off_2.ogg')
-        self.moveStopTrack = Parallel(SoundInterval(self.moveStopSound, node=self, volume=0.4))
+        self.moveStopTrack = Parallel(SoundInterval(self.moveStopSound, node = self, volume = 0.4))
         self.taskName = None
         return
 
@@ -179,7 +181,8 @@ class DistributedSecurityCamera(BasicEntities.DistributedNodePathEntity):
         if self.gridScaleY > self.gridScaleX:
             greaterDim = self.gridScaleY
         if distance < greaterDim * 1.6:
-            if localAvatar.getPos(self)[0] > 0 and localAvatar.getPos(self)[0] < self.gridScaleX and localAvatar.getPos(self)[1] > 0 and localAvatar.getPos(self)[1] < self.gridScaleY:
+            if localAvatar.getPos(self)[0] > 0 and localAvatar.getPos(self)[0] < self.gridScaleX and \
+                    localAvatar.getPos(self)[1] > 0 and localAvatar.getPos(self)[1] < self.gridScaleY:
                 self.__toonHit()
             else:
                 if self.isToonIn:
@@ -234,7 +237,7 @@ class DistributedSecurityCamera(BasicEntities.DistributedNodePathEntity):
         self.model.reparentTo(self.rotateNode)
         self.model.setPos(0, 1, 0)
         self.taskName = 'securityCameraupdate %s' % self.doId
-        taskMgr.add(self.__updateTrack, self.taskName, priority=25)
+        taskMgr.add(self.__updateTrack, self.taskName, priority = 25)
 
     def unloadModel(self):
         if self.model:

@@ -24,7 +24,6 @@ import json
 import random
 import string
 
-
 MagicWordIndex = magicWordIndex.copy()
 
 
@@ -90,19 +89,19 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
 
         # We don't even have access to be using Magic Words in the first place
         if base.localAvatar.getAccessLevel() < OTPGlobals.AccessLevelName2Int.get('MODERATOR'):
-            self.generateResponse(responseType="NoAccess")
+            self.generateResponse(responseType = "NoAccess")
             return
 
         # Using Magic Words while teleporting or going through tunnels is scary
         if base.localAvatar.getTransitioning():
-            self.generateResponse(responseType="Teleporting")
+            self.generateResponse(responseType = "Teleporting")
             return
 
         # We're allowed to use the Magic Word then, so let's proceed
         self.handleMagicWord(magicWord)
 
-    def generateResponse(self, responseType, magicWord='', args=None, returnValue=None, affectRange=None,
-                         affectType=None, affectExtra=None, lastClickedAvId=None, extraMessageData = None):
+    def generateResponse(self, responseType, magicWord = '', args = None, returnValue = None, affectRange = None,
+                         affectType = None, affectExtra = None, lastClickedAvId = None, extraMessageData = None):
         # Generate and send the response to the use of our Magic Word
         response = self.generateMagicWordResponse(responseType, magicWord, args, returnValue, affectRange, affectType,
                                                   affectExtra, lastClickedAvId, extraMessageData)
@@ -151,7 +150,7 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
 
         # If so some reason our affectRange is still none, we can't go any further
         if affectRange == AFFECT_NONE:
-            self.generateResponse(responseType="NoEffect")
+            self.generateResponse(responseType = "NoEffect")
             return
         # Our affectRange is other, meaning we want to target someone- let's make sure we're allowed to
         elif affectRange == AFFECT_OTHER:
@@ -162,7 +161,7 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
 
             # Like earlier, Magic Words are no good if used while moving between zones
             if toon.getTransitioning():
-                self.generateResponse(responseType="OtherTeleporting")
+                self.generateResponse(responseType = "OtherTeleporting")
                 return
 
         # Get how many activators were used in this Magic Word execution
@@ -189,7 +188,7 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
                     # It typically works fine for me but I will keep it here just in-case
                     try:
                         int(magicWordNoPrefix[len(str(level)):][:1])
-                        self.generateResponse(responseType="BadTarget")
+                        self.generateResponse(responseType = "BadTarget")
                         return
                     except:
                         pass
@@ -203,7 +202,7 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
 
             # The invoker wanted to target an Access Level but provided an invalid integer, so let them know
             if affectExtra == -1:
-                self.generateResponse(responseType="BadTarget")
+                self.generateResponse(responseType = "BadTarget")
                 return
 
         # Finally, we can get the name of the Magic Word used
@@ -215,10 +214,10 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
             for magicWord in list(MagicWordIndex.keys()):
                 # If it is close, suggest to the invoker that they made a typo
                 if word in magicWord:
-                    self.generateResponse(responseType="CloseWord", extraMessageData=magicWord)
+                    self.generateResponse(responseType = "CloseWord", extraMessageData = magicWord)
                     return
             # Couldn't find any Magic Word close to what was provided, so let them know the word doesn't exist
-            self.generateResponse(responseType="BadWord")
+            self.generateResponse(responseType = "BadWord")
             return
 
         # Grab the Magic Word info based off of it's name
@@ -232,13 +231,14 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
             self.sendUpdate('requestExecuteMagicWord', [affectRange, affectType, affectExtra, self.lastClickedAvId,
                                                         magicWordNoPrefix])
 
-    def executeMagicWord(self, word, commandName, targetIds, args, affectRange, affectType, affectExtra, lastClickedAvId):
+    def executeMagicWord(self, word, commandName, targetIds, args, affectRange, affectType, affectExtra,
+                         lastClickedAvId):
         # We have have a target avId and the affectRange isn't ourself, we want to execute this Magic Word on the target
         # This is alright, but we should only execute it on the target if they are visible on our client
         if self.lastClickedAvId and affectRange != AFFECT_SELF:
             toon = base.cr.doId2do.get(self.lastClickedAvId)
             if not toon:
-                self.generateResponse(responseType="NoTarget")
+                self.generateResponse(responseType = "NoTarget")
                 return
 
         # Get the Magic Word info based off of it's name
@@ -254,8 +254,9 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
 
         # If we have a return value, route it through
         if returnValue:
-            self.generateResponse(responseType="Success", returnValue=returnValue)
+            self.generateResponse(responseType = "Success", returnValue = returnValue)
         # If not just route a generic response through
         else:
-            self.generateResponse(responseType="SuccessNoResp", magicWord=word, args=args, affectRange=affectRange,
-                                  affectType=affectType, affectExtra=affectExtra, lastClickedAvId=lastClickedAvId)
+            self.generateResponse(responseType = "SuccessNoResp", magicWord = word, args = args,
+                                  affectRange = affectRange,
+                                  affectType = affectType, affectExtra = affectExtra, lastClickedAvId = lastClickedAvId)

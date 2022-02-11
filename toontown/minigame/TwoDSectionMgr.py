@@ -9,6 +9,7 @@ from direct.gui import DirectGui
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 
+
 class TwoDSectionMgr(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDSectionMgr')
 
@@ -85,14 +86,15 @@ class TwoDSectionMgr(DirectObject):
         sdSign = cogSign.copyTo(sideDoor)
         sdSign.setPosHprScale(0, 1.9, 15, 0, 0, 0, elevatorSignSF, elevatorSignSF, elevatorSignSF * aspectSF)
         sdSign.node().setEffect(DecalEffect.make())
-        sdText = DirectGui.OnscreenText(text=TTLocalizer.TwoDGameElevatorExit, font=ToontownGlobals.getSuitFont(), pos=(0, -0.34), scale=0.15, mayChange=False, parent=sdSign)
+        sdText = DirectGui.OnscreenText(text = TTLocalizer.TwoDGameElevatorExit, font = ToontownGlobals.getSuitFont(),
+                                        pos = (0, -0.34), scale = 0.15, mayChange = False, parent = sdSign)
         sdText.setDepthWrite(0)
         self.sectionNPList.append(self.endSectionNP)
         endSectionInfo = ('end',
-         [],
-         [],
-         [0],
-         [])
+                          [],
+                          [],
+                          [0],
+                          [])
         endSection = TwoDSection.TwoDSection(index, endSectionInfo, self.endSectionNP, self)
         self.sections.append(endSection)
         self.incrementX += endSection.length

@@ -16,6 +16,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from functools import reduce
 
+
 class DistributedRingGame(DistributedMinigame):
     UPDATE_ENVIRON_TASK = 'RingGameUpdateEnvironTask'
     UPDATE_LOCALTOON_TASK = 'RingGameUpdateLocalToonTask'
@@ -32,7 +33,11 @@ class DistributedRingGame(DistributedMinigame):
 
     def __init__(self, cr):
         DistributedMinigame.__init__(self, cr)
-        self.gameFSM = ClassicFSM.ClassicFSM('DistributedRingGame', [State.State('off', self.enterOff, self.exitOff, ['swim']), State.State('swim', self.enterSwim, self.exitSwim, ['cleanup']), State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off', 'cleanup')
+        self.gameFSM = ClassicFSM.ClassicFSM('DistributedRingGame',
+                                             [State.State('off', self.enterOff, self.exitOff, ['swim']),
+                                              State.State('swim', self.enterSwim, self.exitSwim, ['cleanup']),
+                                              State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off',
+                                             'cleanup')
         self.addChildGameFSM(self.gameFSM)
 
     def getTitle(self):
@@ -47,7 +52,8 @@ class DistributedRingGame(DistributedMinigame):
         return text % RingGameGlobals.ringColors[self.colorIndices[p]][0]
 
     def getMaxDuration(self):
-        return RingGameGlobals.NUM_RING_GROUPS * self.ringGroupArrivalPeriod + self.T_FIRST_RING_GROUP_ARRIVES + self.GAME_END_DELAY
+        return RingGameGlobals.NUM_RING_GROUPS * self.ringGroupArrivalPeriod + self.T_FIRST_RING_GROUP_ARRIVES + \
+               self.GAME_END_DELAY
 
     def defineConstants(self):
         self.CAMERA_Y = -15
@@ -164,8 +170,10 @@ class DistributedRingGame(DistributedMinigame):
                 self.environBlocks.append(instance)
 
         self.ringNode = render.attachNewNode('ringNode')
-        self.sndTable = {'gotRing': [None] * self.numPlayers,
-         'missedRing': [None] * self.numPlayers}
+        self.sndTable = {
+            'gotRing': [None] * self.numPlayers,
+            'missedRing': [None] * self.numPlayers
+        }
         for i in range(0, self.numPlayers):
             self.sndTable['gotRing'][i] = base.loader.loadSfx('phase_4/audio/sfx/ring_get.ogg')
             self.sndTable['missedRing'][i] = base.loader.loadSfx('phase_4/audio/sfx/ring_miss.ogg')
@@ -174,9 +182,9 @@ class DistributedRingGame(DistributedMinigame):
         self.__spawnUpdateEnvironTask()
         self.__spawnUpdateShadowsTask()
         self.__spawnUpdateLocalToonTask()
-        base.playMusic(self.music, looping=0, volume=0.8)
+        base.playMusic(self.music, looping = 0, volume = 0.8)
         if None != self.sndAmbience:
-            base.playSfx(self.sndAmbience, looping=1, volume=0.8)
+            base.playSfx(self.sndAmbience, looping = 1, volume = 0.8)
         return
 
     def offstage(self):
@@ -331,9 +339,9 @@ class DistributedRingGame(DistributedMinigame):
     def __createTallyMarker(self, index, result):
         chars = '-OOX'
         colors = (Point4(0.8, 0.8, 0.8, 1),
-         Point4(0, 1, 0, 1),
-         Point4(1, 1, 0, 1),
-         Point4(1, 0, 0, 1))
+                  Point4(0, 1, 0, 1),
+                  Point4(1, 1, 0, 1),
+                  Point4(1, 0, 0, 1))
         self.__deleteTallyMarker(index)
         self.__tallyTextNode.setText(chars[result])
         node = self.__tallyTextNode.generate()
@@ -359,163 +367,168 @@ class DistributedRingGame(DistributedMinigame):
 
     def __generateRings(self):
         self.ringGroups = []
-        difficultyDistributions = {ToontownGlobals.ToontownCentral: [14, 2, 0],
-         ToontownGlobals.DonaldsDock: [10, 6, 0],
-         ToontownGlobals.DaisyGardens: [4, 12, 0],
-         ToontownGlobals.MinniesMelodyland: [4, 8, 4],
-         ToontownGlobals.TheBrrrgh: [4, 6, 6],
-         ToontownGlobals.DonaldsDreamland: [2, 6, 8]}
+        difficultyDistributions = {
+            ToontownGlobals.ToontownCentral: [14, 2, 0],
+            ToontownGlobals.DonaldsDock: [10, 6, 0],
+            ToontownGlobals.DaisyGardens: [4, 12, 0],
+            ToontownGlobals.MinniesMelodyland: [4, 8, 4],
+            ToontownGlobals.TheBrrrgh: [4, 6, 6],
+            ToontownGlobals.DonaldsDreamland: [2, 6, 8]
+        }
         for distr in list(difficultyDistributions.values()):
             sum = reduce(lambda x, y: x + y, distr)
 
-        difficultyPatterns = {ToontownGlobals.ToontownCentral: [[0] * 14 + [1] * 2 + [2] * 0, [0,
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                            1] * 2, [0,
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                            1,
-                                            0,
-                                            0,
-                                            0,
-                                            1]],
-         ToontownGlobals.DonaldsDock: [[0] * 10 + [1] * 6 + [2] * 0, [0,
-                                        0,
-                                        0,
-                                        0,
-                                        0,
-                                        1,
-                                        1,
-                                        1] * 2, [0,
-                                        0,
-                                        0,
-                                        1,
-                                        0,
-                                        0,
-                                        1,
-                                        1] * 2],
-         ToontownGlobals.DaisyGardens: [[0] * 4 + [1] * 12 + [2] * 0, [0,
+        difficultyPatterns = {
+            ToontownGlobals.ToontownCentral: [[0] * 14 + [1] * 2 + [2] * 0, [0,
+                                                                             0,
+                                                                             0,
+                                                                             0,
+                                                                             0,
+                                                                             0,
+                                                                             0,
+                                                                             1] * 2, [0,
+                                                                                      0,
+                                                                                      0,
+                                                                                      0,
+                                                                                      0,
+                                                                                      0,
+                                                                                      0,
+                                                                                      0,
+                                                                                      0,
+                                                                                      0,
+                                                                                      0,
+                                                                                      1,
+                                                                                      0,
+                                                                                      0,
+                                                                                      0,
+                                                                                      1]],
+            ToontownGlobals.DonaldsDock: [[0] * 10 + [1] * 6 + [2] * 0, [0,
+                                                                         0,
+                                                                         0,
+                                                                         0,
+                                                                         0,
+                                                                         1,
+                                                                         1,
+                                                                         1] * 2, [0,
+                                                                                  0,
+                                                                                  0,
+                                                                                  1,
+                                                                                  0,
+                                                                                  0,
+                                                                                  1,
+                                                                                  1] * 2],
+            ToontownGlobals.DaisyGardens: [[0] * 4 + [1] * 12 + [2] * 0, [0,
+                                                                          0,
+                                                                          1,
+                                                                          1,
+                                                                          1,
+                                                                          1,
+                                                                          1,
+                                                                          1] * 2, [0,
+                                                                                   1,
+                                                                                   1,
+                                                                                   1,
+                                                                                   0,
+                                                                                   1,
+                                                                                   1,
+                                                                                   1] * 2],
+            ToontownGlobals.MinniesMelodyland: [[0] * 4 + [1] * 8 + [2] * 4,
+                                                [0,
+                                                 0,
+                                                 1,
+                                                 1,
+                                                 1,
+                                                 1,
+                                                 2,
+                                                 2] * 2,
+                                                [0,
+                                                 1,
+                                                 1,
+                                                 1,
+                                                 1,
+                                                 0,
+                                                 2,
+                                                 2] * 2,
+                                                [0,
+                                                 1,
+                                                 1,
+                                                 2,
+                                                 0,
+                                                 1,
+                                                 1,
+                                                 2] * 2,
+                                                [0,
+                                                 1,
+                                                 2,
+                                                 1,
+                                                 0,
+                                                 1,
+                                                 2,
+                                                 1] * 2],
+            ToontownGlobals.TheBrrrgh: [[0] * 4 + [1] * 6 + [2] * 6,
+                                        [0,
                                          0,
                                          1,
                                          1,
                                          1,
-                                         1,
-                                         1,
-                                         1] * 2, [0,
+                                         2,
+                                         2,
+                                         2] * 2,
+                                        [0,
                                          1,
                                          1,
                                          1,
                                          0,
+                                         2,
+                                         2,
+                                         2] * 2,
+                                        [0,
                                          1,
                                          1,
-                                         1] * 2],
-         ToontownGlobals.MinniesMelodyland: [[0] * 4 + [1] * 8 + [2] * 4,
-                                             [0,
-                                              0,
-                                              1,
-                                              1,
-                                              1,
-                                              1,
-                                              2,
-                                              2] * 2,
-                                             [0,
-                                              1,
-                                              1,
-                                              1,
-                                              1,
-                                              0,
-                                              2,
-                                              2] * 2,
-                                             [0,
-                                              1,
-                                              1,
-                                              2,
-                                              0,
-                                              1,
-                                              1,
-                                              2] * 2,
-                                             [0,
-                                              1,
-                                              2,
-                                              1,
-                                              0,
-                                              1,
-                                              2,
-                                              1] * 2],
-         ToontownGlobals.TheBrrrgh: [[0] * 4 + [1] * 6 + [2] * 6,
-                                     [0,
-                                      0,
-                                      1,
-                                      1,
-                                      1,
-                                      2,
-                                      2,
-                                      2] * 2,
-                                     [0,
-                                      1,
-                                      1,
-                                      1,
-                                      0,
-                                      2,
-                                      2,
-                                      2] * 2,
-                                     [0,
-                                      1,
-                                      1,
-                                      2,
-                                      0,
-                                      1,
-                                      2,
-                                      2] * 2,
-                                     [0,
-                                      1,
-                                      2,
-                                      1,
-                                      0,
-                                      1,
-                                      2,
-                                      2] * 2],
-         ToontownGlobals.DonaldsDreamland: [[0] * 2 + [1] * 6 + [2] * 8,
-                                            [0,
-                                             1,
-                                             1,
-                                             1,
-                                             2,
-                                             2,
-                                             2,
-                                             2] * 2,
-                                            [0,
-                                             1,
-                                             1,
-                                             2,
-                                             2,
-                                             1,
-                                             2,
-                                             2] * 2,
-                                            [0,
-                                             1,
-                                             2,
-                                             1,
-                                             2,
-                                             1,
-                                             2,
-                                             2] * 2]}
+                                         2,
+                                         0,
+                                         1,
+                                         2,
+                                         2] * 2,
+                                        [0,
+                                         1,
+                                         2,
+                                         1,
+                                         0,
+                                         1,
+                                         2,
+                                         2] * 2],
+            ToontownGlobals.DonaldsDreamland: [[0] * 2 + [1] * 6 + [2] * 8,
+                                               [0,
+                                                1,
+                                                1,
+                                                1,
+                                                2,
+                                                2,
+                                                2,
+                                                2] * 2,
+                                               [0,
+                                                1,
+                                                1,
+                                                2,
+                                                2,
+                                                1,
+                                                2,
+                                                2] * 2,
+                                               [0,
+                                                1,
+                                                2,
+                                                1,
+                                                2,
+                                                1,
+                                                2,
+                                                2] * 2]
+        }
         safezone = self.getSafezoneId()
         numGroupsPerDifficulty = difficultyDistributions[safezone]
 
-        def patternsAreValid(difficultyPatterns = difficultyPatterns, difficultyDistributions = difficultyDistributions):
+        def patternsAreValid(difficultyPatterns = difficultyPatterns,
+                             difficultyDistributions = difficultyDistributions):
             for sz in list(difficultyPatterns.keys()):
                 for pattern in difficultyPatterns[sz]:
                     for difficulty in [0, 1, 2]:
@@ -524,7 +537,8 @@ class DistributedRingGame(DistributedMinigame):
                             print('safezone:', sz)
                             print('pattern:', pattern)
                             print('difficulty:', difficulty)
-                            print('expected %s %ss, found %s' % (numGroupsPerDifficulty[difficulty], difficulty, pattern.count(difficulty)))
+                            print('expected %s %ss, found %s' % (
+                            numGroupsPerDifficulty[difficulty], difficulty, pattern.count(difficulty)))
                             return 0
 
             return 1
@@ -675,7 +689,7 @@ class DistributedRingGame(DistributedMinigame):
 
     def __spawnUpdateShadowsTask(self):
         taskMgr.remove(self.UPDATE_SHADOWS_TASK)
-        taskMgr.add(self.__updateShadowsTask, self.UPDATE_SHADOWS_TASK, priority=self.UPDATE_SHADOWS_PRIORITY)
+        taskMgr.add(self.__updateShadowsTask, self.UPDATE_SHADOWS_TASK, priority = self.UPDATE_SHADOWS_PRIORITY)
 
     def __killUpdateShadowsTask(self):
         taskMgr.remove(self.UPDATE_SHADOWS_TASK)
@@ -730,7 +744,8 @@ class DistributedRingGame(DistributedMinigame):
     def __spawnCollisionDetectionTask(self):
         self.__ringGroupsPassed = 0
         taskMgr.remove(self.COLLISION_DETECTION_TASK)
-        taskMgr.add(self.__collisionDetectionTask, self.COLLISION_DETECTION_TASK, priority=self.COLLISION_DETECTION_PRIORITY)
+        taskMgr.add(self.__collisionDetectionTask, self.COLLISION_DETECTION_TASK,
+                    priority = self.COLLISION_DETECTION_PRIORITY)
 
     def __killCollisionDetectionTask(self):
         taskMgr.remove(self.COLLISION_DETECTION_TASK)
@@ -749,8 +764,15 @@ class DistributedRingGame(DistributedMinigame):
         def fadeFunc(t, ring = ring):
             ring.setColorScale(1, 1, 1, 1.0 - t)
 
-        fadeAwayTrack = Parallel(Sequence(LerpFunctionInterval(colorChangeFunc, fromData=0.0, toData=1.0, duration=dColorChange), LerpFunctionInterval(fadeFunc, fromData=0.0, toData=1.0, duration=dFade)), LerpScaleInterval(ring, duration, targetScale))
-        successTrack = Sequence(Wait(self.RING_RESPONSE_DELAY), Parallel(SoundInterval(self.sndTable['gotRing'][ringIndex]), Sequence(Func(ring.wrtReparentTo, render), fadeAwayTrack, Func(self.__removeRingDropShadow, ring), Func(ring.reparentTo, hidden))))
+        fadeAwayTrack = Parallel(
+            Sequence(LerpFunctionInterval(colorChangeFunc, fromData = 0.0, toData = 1.0, duration = dColorChange),
+                     LerpFunctionInterval(fadeFunc, fromData = 0.0, toData = 1.0, duration = dFade)),
+            LerpScaleInterval(ring, duration, targetScale))
+        successTrack = Sequence(Wait(self.RING_RESPONSE_DELAY),
+                                Parallel(SoundInterval(self.sndTable['gotRing'][ringIndex]),
+                                         Sequence(Func(ring.wrtReparentTo, render), fadeAwayTrack,
+                                                  Func(self.__removeRingDropShadow, ring),
+                                                  Func(ring.reparentTo, hidden))))
         return successTrack
 
     def __makeRingFailureFadeTrack(self, ring, duration, ringIndex):
@@ -770,7 +792,12 @@ class DistributedRingGame(DistributedMinigame):
             missedText = None
             return
 
-        failureTrack = Sequence(Wait(self.RING_RESPONSE_DELAY), Parallel(SoundInterval(self.sndTable['missedRing'][ringIndex]), Sequence(Func(ring.wrtReparentTo, render), Func(addMissedText), LerpScaleInterval(ring, duration, targetScale, blendType='easeIn'), Func(removeMissedText), Func(self.__removeRingDropShadow, ring), Func(ring.reparentTo, hidden))))
+        failureTrack = Sequence(Wait(self.RING_RESPONSE_DELAY),
+                                Parallel(SoundInterval(self.sndTable['missedRing'][ringIndex]),
+                                         Sequence(Func(ring.wrtReparentTo, render), Func(addMissedText),
+                                                  LerpScaleInterval(ring, duration, targetScale, blendType = 'easeIn'),
+                                                  Func(removeMissedText), Func(self.__removeRingDropShadow, ring),
+                                                  Func(ring.reparentTo, hidden))))
         return failureTrack
 
     def __makeRingFadeAway(self, ring, success, ringIndex):
@@ -822,9 +849,9 @@ class DistributedRingGame(DistributedMinigame):
         if not self.hasLocalToon:
             return
         self.colorIndices = [a,
-         b,
-         c,
-         d]
+                             b,
+                             c,
+                             d]
 
     def __getSuccessTrack(self, groupIndex):
 
@@ -841,7 +868,10 @@ class DistributedRingGame(DistributedMinigame):
                 text = None
                 return
 
-            track = Sequence(Func(successText.reparentTo, aspect2d), Wait(holdDuration), LerpFunctionInterval(fadeFunc, extraArgs=[successText], fromData=0.0, toData=1.0, duration=fadeDuration, blendType='easeIn'), Func(destroyText, successText))
+            track = Sequence(Func(successText.reparentTo, aspect2d), Wait(holdDuration),
+                             LerpFunctionInterval(fadeFunc, extraArgs = [successText], fromData = 0.0, toData = 1.0,
+                                                  duration = fadeDuration, blendType = 'easeIn'),
+                             Func(destroyText, successText))
             if perfect:
                 track = Parallel(track, SoundInterval(self.sndPerfect))
             return track
@@ -856,13 +886,13 @@ class DistributedRingGame(DistributedMinigame):
         if groupIndex >= self.__numRingGroups - 1:
             if not self.isSinglePlayer():
                 if isPerfect(self.resultTable, [self.RT_GROUPSUCCESS]):
-                    return makeSuccessTrack(TTLocalizer.RingGameGroupPerfect, 1.5, perfect=1)
+                    return makeSuccessTrack(TTLocalizer.RingGameGroupPerfect, 1.5, perfect = 1)
             if isPerfect(self.resultTable, [self.RT_SUCCESS, self.RT_GROUPSUCCESS]):
-                return makeSuccessTrack(TTLocalizer.RingGamePerfect, 1.5, perfect=1)
+                return makeSuccessTrack(TTLocalizer.RingGamePerfect, 1.5, perfect = 1)
             return Wait(1.0)
         if not self.isSinglePlayer():
             if self.resultTable[groupIndex] == self.RT_GROUPSUCCESS:
-                return makeSuccessTrack(TTLocalizer.RingGameGroupBonus, 0.0, fadeDuration=0.4)
+                return makeSuccessTrack(TTLocalizer.RingGameGroupBonus, 0.0, fadeDuration = 0.4)
         return None
 
     def __processRingGroupResults(self, results):

@@ -5,6 +5,7 @@ from . import SuitDNA
 from toontown.toonbase import ToontownGlobals
 import random
 
+
 class RoguesGallery(StateData.StateData):
 
     def __init__(self, rognamestr = None):
@@ -36,7 +37,9 @@ class RoguesGallery(StateData.StateData):
                 self.ySpaceBetweenSuits = 0.0
             self.ySuitInc = (self.height + self.ySpaceBetweenSuits) / self.numSuitDepts
             self.ySuitMaxAllowed = self.ySuitInc - self.ySpaceBetweenSuits
-            self.xRowSpace = self.width - (self.numSuitTypes - 1) * self.xSpaceBetweenDifferentSuits - self.numSuitTypes * self.xSpaceBetweenSameSuits
+            self.xRowSpace = self.width - (
+                        self.numSuitTypes - 1) * self.xSpaceBetweenDifferentSuits - self.numSuitTypes * \
+                             self.xSpaceBetweenSameSuits
             self.__makeGallery()
         return
 
@@ -147,10 +150,10 @@ class RoguesGallery(StateData.StateData):
         profile.reparentTo(self.gallery)
         profile.setHpr(90.0, 0.0, 0.0)
         self.suitRow.append((type,
-         suitWidth,
-         suit,
-         suitDepth,
-         profile))
+                             suitWidth,
+                             suit,
+                             suitDepth,
+                             profile))
         self.actors.append(suit)
         self.actors.append(profile)
         return

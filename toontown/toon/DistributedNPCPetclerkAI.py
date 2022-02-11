@@ -6,6 +6,7 @@ from direct.task import Task
 from toontown.fishing import FishGlobals
 from toontown.pets import PetUtil, PetDNA, PetConstants
 
+
 class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
 
     def __init__(self, air, npcId):
@@ -34,7 +35,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         self.transactionType = ''
         av = self.air.doId2do[avId]
         self.busy = avId
-        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
+        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs = [avId])
         flag = NPCToons.SELL_MOVIE_START
         self.d_setMovie(avId, flag)
         taskMgr.doMethodLater(PetConstants.PETCLERK_TIMER, self.sendTimeoutMovie, self.uniqueName('clearMovie'))
@@ -45,10 +46,10 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
 
     def d_setMovie(self, avId, flag, extraArgs = []):
         self.sendUpdate('setMovie', [flag,
-         self.npcId,
-         avId,
-         extraArgs,
-         ClockDelta.globalClockDelta.getRealNetworkTime()])
+                                     self.npcId,
+                                     avId,
+                                     extraArgs,
+                                     ClockDelta.globalClockDelta.getRealNetworkTime()])
 
     def sendTimeoutMovie(self, task):
         self.d_setMovie(self.busy, NPCToons.SELL_MOVIE_TIMEOUT)
@@ -98,17 +99,21 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
                 return
             cost = PetUtil.getPetCostFromSeed(self.petSeeds[petNum], zoneId)
             if cost > av.getTotalMoney():
-                self.air.writeServerEvent('suspicious', avId, "DistributedNPCPetshopAI.petAdopted and toon doesn't have enough money!")
+                self.air.writeServerEvent('suspicious', avId,
+                                          "DistributedNPCPetshopAI.petAdopted and toon doesn't have enough money!")
                 self.notify.warning("somebody called petAdopted and didn't have enough money to adopt! avId: %s" % avId)
                 return
             if av.petId != 0:
                 simbase.air.petMgr.deleteToonsPet(avId)
             gender = petNum % len(PetDNA.PetGenders)
             if nameIndex not in list(range(0, TTLocalizer.PetNameIndexMAX)):
-                self.air.writeServerEvent('avoid_crash', avId, "DistributedNPCPetclerkAI.petAdopted and didn't have valid nameIndex!")
-                self.notify.warning("somebody called petAdopted and didn't have valid nameIndex to adopt! avId: %s" % avId)
+                self.air.writeServerEvent('avoid_crash', avId,
+                                          "DistributedNPCPetclerkAI.petAdopted and didn't have valid nameIndex!")
+                self.notify.warning(
+                    "somebody called petAdopted and didn't have valid nameIndex to adopt! avId: %s" % avId)
                 return
-            simbase.air.petMgr.createNewPetFromSeed(avId, self.petSeeds[petNum], nameIndex=nameIndex, gender=gender, safeZoneId=zoneId)
+            simbase.air.petMgr.createNewPetFromSeed(avId, self.petSeeds[petNum], nameIndex = nameIndex, gender = gender,
+                                                    safeZoneId = zoneId)
             self.transactionType = 'adopt'
             bankPrice = min(av.getBankMoney(), cost)
             walletPrice = cost - bankPrice
@@ -118,7 +123,8 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
     def petReturned(self):
         avId = self.air.getAvatarIdFromSender()
         if self.busy != avId:
-            self.air.writeServerEvent('suspicious', avId, 'DistributedNPCPetshopAI.petReturned busy with %s' % self.busy)
+            self.air.writeServerEvent('suspicious', avId,
+                                      'DistributedNPCPetshopAI.petReturned busy with %s' % self.busy)
             self.notify.warning('somebody called petReturned that I was not busy with! avId: %s' % avId)
             return
         av = simbase.air.doId2do.get(avId)
@@ -129,7 +135,8 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
     def transactionDone(self):
         avId = self.air.getAvatarIdFromSender()
         if self.busy != avId:
-            self.air.writeServerEvent('suspicious', avId, 'DistributedNPCPetshopAI.transactionDone busy with %s' % self.busy)
+            self.air.writeServerEvent('suspicious', avId,
+                                      'DistributedNPCPetshopAI.transactionDone busy with %s' % self.busy)
             self.notify.warning('somebody called transactionDone that I was not busy with! avId: %s' % avId)
             return
         av = simbase.air.doId2do.get(avId)

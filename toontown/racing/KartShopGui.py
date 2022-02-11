@@ -13,9 +13,12 @@ from toontown.racing.Kart import Kart
 from toontown.shtiker.KartPage import KartViewer
 from .KartDNA import *
 from toontown.toontowngui.TeaserPanel import TeaserPanel
+
 if (__debug__):
     import pdb
-MENUS = PythonUtil.Enum('MainMenu, BuyKart, BuyAccessory, ReturnKart, ConfirmBuyAccessory, ConfirmBuyKart, BoughtKart, BoughtAccessory, TeaserPanel')
+MENUS = PythonUtil.Enum(
+    'MainMenu, BuyKart, BuyAccessory, ReturnKart, ConfirmBuyAccessory, ConfirmBuyKart, BoughtKart, BoughtAccessory, '
+    'TeaserPanel')
 MM_OPTIONS = PythonUtil.Enum('Cancel, BuyAccessory, BuyKart', -1)
 BK_OPTIONS = PythonUtil.Enum('Cancel, BuyKart', -1)
 BA_OPTIONS = PythonUtil.Enum('Cancel, BuyAccessory', -1)
@@ -27,6 +30,7 @@ BTA_OPTIONS = PythonUtil.Enum('Ok', -1)
 KS_TEXT_SIZE_BIG = TTLocalizer.KSGtextSizeBig
 KS_TEXT_SIZE_SMALL = TTLocalizer.KSGtextSizeSmall
 
+
 class KartShopGuiMgr(DirectObject.DirectObject, object):
     notify = DirectNotifyGlobal.directNotify.newCategory('KartShopGuiMgr')
 
@@ -36,39 +40,43 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
         def __init__(self, doneEvent):
             model = loader.loadModel('phase_6/models/gui/Kart_MainMenuPanel')
             self.modelScale = 0.75
-            DirectFrame.__init__(self, relief=None, state='normal', geom=model, text_scale=0.1, geom_scale=self.modelScale, pos=(0, 0, -.01), frameSize=(-1, 1, -1, 1))
+            DirectFrame.__init__(self, relief = None, state = 'normal', geom = model, text_scale = 0.1,
+                                 geom_scale = self.modelScale, pos = (0, 0, -.01), frameSize = (-1, 1, -1, 1))
             self.initialiseoptions(KartShopGuiMgr.MainMenuDlg)
             self.cancelButton = DirectButton(
-                parent=self,
-                relief=None,
-                geom=model.find('**/CancelIcon'),
-                image=(model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'), model.find('**/CancelButtonRollover')),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=lambda : messenger.send(doneEvent, [MM_OPTIONS.Cancel]))
+                parent = self,
+                relief = None,
+                geom = model.find('**/CancelIcon'),
+                image = (model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'),
+                         model.find('**/CancelButtonRollover')),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = lambda: messenger.send(doneEvent, [MM_OPTIONS.Cancel]))
             self.buyKartButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/BuyKartButtonUp'), model.find('**/BuyKartButtonDown'), model.find('**/BuyKartButtonRollover'), model.find('**/BuyKartButtonDisabled')),
-                scale=self.modelScale,
-                geom=model.find('**/BuyKartIcon'),
-                text=TTLocalizer.KartShop_BuyKart,
-                text_scale=KS_TEXT_SIZE_BIG,
-                text_pos=(-0.2, 0.34),
-                pressEffect=False,
-                command=lambda : messenger.send(doneEvent, [MM_OPTIONS.BuyKart]))
+                parent = self,
+                relief = None,
+                image = (model.find('**/BuyKartButtonUp'), model.find('**/BuyKartButtonDown'),
+                         model.find('**/BuyKartButtonRollover'), model.find('**/BuyKartButtonDisabled')),
+                scale = self.modelScale,
+                geom = model.find('**/BuyKartIcon'),
+                text = TTLocalizer.KartShop_BuyKart,
+                text_scale = KS_TEXT_SIZE_BIG,
+                text_pos = (-0.2, 0.34),
+                pressEffect = False,
+                command = lambda: messenger.send(doneEvent, [MM_OPTIONS.BuyKart]))
             self.buyAccessoryButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/BuyAccessoryButtonUp'), model.find('**/BuyAccessoryButtonDown'), model.find('**/BuyAccessoryButtonRollover'), model.find('**/BuyAccessoryButtonDisabled')),
-                geom=model.find('**/BuyAccessoryIcon'),
-                image3_color=Vec4(0.6, 0.6, 0.6, 1),
-                scale=self.modelScale,
-                text=TTLocalizer.KartShop_BuyAccessories,
-                text_scale=KS_TEXT_SIZE_BIG,
-                text_pos=(-0.1, 0.036),
-                pressEffect=False,
-                command=lambda : messenger.send(doneEvent, [MM_OPTIONS.BuyAccessory]))
+                parent = self,
+                relief = None,
+                image = (model.find('**/BuyAccessoryButtonUp'), model.find('**/BuyAccessoryButtonDown'),
+                         model.find('**/BuyAccessoryButtonRollover'), model.find('**/BuyAccessoryButtonDisabled')),
+                geom = model.find('**/BuyAccessoryIcon'),
+                image3_color = Vec4(0.6, 0.6, 0.6, 1),
+                scale = self.modelScale,
+                text = TTLocalizer.KartShop_BuyAccessories,
+                text_scale = KS_TEXT_SIZE_BIG,
+                text_pos = (-0.1, 0.036),
+                pressEffect = False,
+                command = lambda: messenger.send(doneEvent, [MM_OPTIONS.BuyAccessory]))
             self.updateButtons()
             return
 
@@ -97,70 +105,74 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             self.curKart = 0
             DirectFrame.__init__(
                 self,
-                relief=None,
-                state='normal',
-                geom=model,
-                geom_scale=self.modelScale,
-                frameSize=(-1, 1, -1, 1),
-                pos=(0, 0, -0.01),
-                text_wordwrap=26,
-                text_scale=KS_TEXT_SIZE_BIG,
-                text_pos=(0, 0))
+                relief = None,
+                state = 'normal',
+                geom = model,
+                geom_scale = self.modelScale,
+                frameSize = (-1, 1, -1, 1),
+                pos = (0, 0, -0.01),
+                text_wordwrap = 26,
+                text_scale = KS_TEXT_SIZE_BIG,
+                text_pos = (0, 0))
             self.initialiseoptions(KartShopGuiMgr.BuyKartDlg)
             self.ticketDisplay = DirectLabel(
-                parent=self,
-                relief=None,
-                text=str(base.localAvatar.getTickets()),
-                text_scale=KS_TEXT_SIZE_SMALL,
-                text_fg=(0.95, 0.95, 0.0, 1.0),
-                text_shadow=(0, 0, 0, 1),
-                text_pos=(0.44, -0.55),
-                text_font=ToontownGlobals.getSignFont())
+                parent = self,
+                relief = None,
+                text = str(base.localAvatar.getTickets()),
+                text_scale = KS_TEXT_SIZE_SMALL,
+                text_fg = (0.95, 0.95, 0.0, 1.0),
+                text_shadow = (0, 0, 0, 1),
+                text_pos = (0.44, -0.55),
+                text_font = ToontownGlobals.getSignFont())
             self.buyKartButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/BuyKartButtonUp'), model.find('**/BuyKartButtonDown'), model.find('**/BuyKartButtonRollover'), model.find('**/BuyKartButtonDisabled')),
-                scale=self.modelScale,
-                text=TTLocalizer.KartShop_BuyKart,
-                text_scale=KS_TEXT_SIZE_BIG,
-                text_pos=(0, -.534),
-                pressEffect=False,
-                command=lambda : messenger.send(doneEvent, [self.unownedKartList[self.curKart]]))
+                parent = self,
+                relief = None,
+                image = (model.find('**/BuyKartButtonUp'), model.find('**/BuyKartButtonDown'),
+                         model.find('**/BuyKartButtonRollover'), model.find('**/BuyKartButtonDisabled')),
+                scale = self.modelScale,
+                text = TTLocalizer.KartShop_BuyKart,
+                text_scale = KS_TEXT_SIZE_BIG,
+                text_pos = (0, -.534),
+                pressEffect = False,
+                command = lambda: messenger.send(doneEvent, [self.unownedKartList[self.curKart]]))
             self.cancelButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'), model.find('**/CancelButtonRollover')),
-                geom=model.find('**/CancelIcon'),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=lambda : messenger.send(doneEvent, [BK_OPTIONS.Cancel]))
+                parent = self,
+                relief = None,
+                image = (model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'),
+                         model.find('**/CancelButtonRollover')),
+                geom = model.find('**/CancelIcon'),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = lambda: messenger.send(doneEvent, [BK_OPTIONS.Cancel]))
             self.arrowLeftButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/ArrowLeftButtonUp'), model.find('**/ArrowLeftButtonDown'), model.find('**/ArrowLeftButtonRollover'), model.find('**/ArrowLeftButtonInactive')),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=self.__handleKartChange,
-                extraArgs=[-1])
+                parent = self,
+                relief = None,
+                image = (model.find('**/ArrowLeftButtonUp'), model.find('**/ArrowLeftButtonDown'),
+                         model.find('**/ArrowLeftButtonRollover'), model.find('**/ArrowLeftButtonInactive')),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = self.__handleKartChange,
+                extraArgs = [-1])
             self.arrowRightButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/ArrowRightButtonUp'), model.find('**/ArrowRightButtonDown'), model.find('**/ArrowRightButtonRollover'), model.find('**/ArrowRightButtonInactive')),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=self.__handleKartChange,
-                extraArgs=[1])
-            self.kartView = KartViewer([self.curKart, -1, -1, -1, -1, -1, -1, -1, -1], parent=self)
+                parent = self,
+                relief = None,
+                image = (model.find('**/ArrowRightButtonUp'), model.find('**/ArrowRightButtonDown'),
+                         model.find('**/ArrowRightButtonRollover'), model.find('**/ArrowRightButtonInactive')),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = self.__handleKartChange,
+                extraArgs = [1])
+            self.kartView = KartViewer([self.curKart, -1, -1, -1, -1, -1, -1, -1, -1], parent = self)
             self.kartView.setPos(model.find('**/KartViewerFrame').getPos())
             self.kartView.load(model, 'KartViewerFrame', ['rotate_right_up',
-             'rotate_right_down',
-             'rotate_right_roll',
-             'rotate_right_down',
-             (0.255, -.054)], ['rotate_left_up',
-             'rotate_left_down',
-             'rotate_left_roll',
-             'rotate_left_down',
-             (-.24, -.054)], (0, -.055))
+                                                          'rotate_right_down',
+                                                          'rotate_right_roll',
+                                                          'rotate_right_down',
+                                                          (0.255, -.054)], ['rotate_left_up',
+                                                                            'rotate_left_down',
+                                                                            'rotate_left_roll',
+                                                                            'rotate_left_down',
+                                                                            (-.24, -.054)], (0, -.055))
             self.kartView.setBounds(-0.38, 0.38, 0.0035, 0.53)
             self.kartView.setBgColor(1.0, 1.0, 0.8, 1.0)
             self.showKart()
@@ -169,30 +181,30 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             return
 
         def showKart(self):
-            self.buyKartButton.configure(text=TTLocalizer.KartShop_BuyKart)
-            self.buyKartButton.configure(text_scale=KS_TEXT_SIZE_BIG)
+            self.buyKartButton.configure(text = TTLocalizer.KartShop_BuyKart)
+            self.buyKartButton.configure(text_scale = KS_TEXT_SIZE_BIG)
             if self.numKarts > 0:
                 info = getKartTypeInfo(self.unownedKartList[self.curKart])
                 description = info[KartInfo.name]
                 cost = TTLocalizer.KartShop_Cost % info[KartInfo.cost]
                 self.kartDescription = DirectButton(
-                    parent=self,
-                    relief=None,
-                    scale=self.modelScale,
-                    text=description,
-                    text_pos=(0, -.29),
-                    text_scale=KS_TEXT_SIZE_SMALL,
-                    pressEffect=False,
-                    textMayChange=True)
+                    parent = self,
+                    relief = None,
+                    scale = self.modelScale,
+                    text = description,
+                    text_pos = (0, -.29),
+                    text_scale = KS_TEXT_SIZE_SMALL,
+                    pressEffect = False,
+                    textMayChange = True)
                 self.kartCost = DirectButton(
-                    parent=self,
-                    relief=None,
-                    scale=self.modelScale,
-                    text=cost,
-                    text_pos=(0, -.365),
-                    text_scale=KS_TEXT_SIZE_SMALL,
-                    pressEffect=False,
-                    textMayChange=True)
+                    parent = self,
+                    relief = None,
+                    scale = self.modelScale,
+                    text = cost,
+                    text_pos = (0, -.365),
+                    text_scale = KS_TEXT_SIZE_SMALL,
+                    pressEffect = False,
+                    textMayChange = True)
                 self.buyKartButton['state'] = DGG.NORMAL
                 self.arrowRightButton['state'] = DGG.DISABLED
                 self.arrowLeftButton['state'] = DGG.DISABLED
@@ -202,9 +214,9 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
                     self.arrowLeftButton['state'] = DGG.NORMAL
                 if info[KartInfo.cost] > base.localAvatar.getTickets():
                     self.buyKartButton['state'] = DGG.DISABLED
-                    self.buyKartButton.configure(text_scale=KS_TEXT_SIZE_SMALL * 0.75)
-                    self.buyKartButton.configure(text=TTLocalizer.KartShop_NotEnoughTickets)
-                    self.kartCost.configure(text_fg=(0.95, 0, 0.0, 1.0))
+                    self.buyKartButton.configure(text_scale = KS_TEXT_SIZE_SMALL * 0.75)
+                    self.buyKartButton.configure(text = TTLocalizer.KartShop_NotEnoughTickets)
+                    self.kartCost.configure(text_fg = (0.95, 0, 0.0, 1.0))
                 self.kartView.refresh([self.unownedKartList[self.curKart], -1, -1, -1, -1, -1, -1, -1, -1])
                 self.kartView.show()
             return
@@ -228,33 +240,35 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             model = loader.loadModel('phase_6/models/gui/ReturnKartPanel')
             DirectFrame.__init__(
                 self,
-                relief=None,
-                state='normal',
-                geom=model,
-                geom_scale=self.modelScale,
-                frameSize=(-1, 1, -1, 1),
-                pos=(0, 0, -0.01),
-                text=TTLocalizer.KartShop_ConfirmReturnKart,
-                text_wordwrap=11,
-                text_scale=KS_TEXT_SIZE_SMALL * 0.9,
-                text_pos=(0, -0.26))
+                relief = None,
+                state = 'normal',
+                geom = model,
+                geom_scale = self.modelScale,
+                frameSize = (-1, 1, -1, 1),
+                pos = (0, 0, -0.01),
+                text = TTLocalizer.KartShop_ConfirmReturnKart,
+                text_wordwrap = 11,
+                text_scale = KS_TEXT_SIZE_SMALL * 0.9,
+                text_pos = (0, -0.26))
             self.initialiseoptions(KartShopGuiMgr.ReturnKartDlg)
             self.cancelButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'), model.find('**/CancelButtonRollover')),
-                geom=model.find('**/CancelIcon'),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=lambda : messenger.send(doneEvent, [RK_OPTIONS.Cancel]))
+                parent = self,
+                relief = None,
+                image = (model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'),
+                         model.find('**/CancelButtonRollover')),
+                geom = model.find('**/CancelIcon'),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = lambda: messenger.send(doneEvent, [RK_OPTIONS.Cancel]))
             self.okButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/CheckButtonUp'), model.find('**/CheckButtonDown'), model.find('**/CheckButtonRollover')),
-                geom=model.find('**/CheckIcon'),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=lambda : messenger.send(doneEvent, [RK_OPTIONS.ReturnKart]))
+                parent = self,
+                relief = None,
+                image = (
+                model.find('**/CheckButtonUp'), model.find('**/CheckButtonDown'), model.find('**/CheckButtonRollover')),
+                geom = model.find('**/CheckIcon'),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = lambda: messenger.send(doneEvent, [RK_OPTIONS.ReturnKart]))
             oldDNA = list(base.localAvatar.getKartDNA())
             for d in range(len(oldDNA)):
                 if d == KartDNA.bodyType:
@@ -262,7 +276,7 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
                 else:
                     oldDNA[d] = InvalidEntry
 
-            self.kartView = KartViewer(oldDNA, parent=self)
+            self.kartView = KartViewer(oldDNA, parent = self)
             self.kartView.setPos(model.find('**/KartViewerFrame').getPos())
             self.kartView.load(model, 'KartViewerFrame', [], [], None)
             self.kartView.setBounds(-0.38, 0.38, -.04, 0.49)
@@ -287,35 +301,36 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             name = kartInfo[KartInfo.name]
             DirectFrame.__init__(
                 self,
-                relief=None,
-                state='normal',
-                geom=model,
-                geom_scale=self.modelScale,
-                frameSize=(-1, 1, -1, 1),
-                pos=(0, 0, -0.01),
-                text=TTLocalizer.KartShop_ConfirmBoughtTitle,
-                text_wordwrap=26,
-                text_scale=KS_TEXT_SIZE_SMALL,
-                text_pos=(0, -0.26))
+                relief = None,
+                state = 'normal',
+                geom = model,
+                geom_scale = self.modelScale,
+                frameSize = (-1, 1, -1, 1),
+                pos = (0, 0, -0.01),
+                text = TTLocalizer.KartShop_ConfirmBoughtTitle,
+                text_wordwrap = 26,
+                text_scale = KS_TEXT_SIZE_SMALL,
+                text_pos = (0, -0.26))
             self.initialiseoptions(KartShopGuiMgr.BoughtKartDlg)
             self.ticketDisplay = DirectLabel(
-                parent=self,
-                relief=None,
-                text=str(base.localAvatar.getTickets()),
-                text_scale=KS_TEXT_SIZE_SMALL,
-                text_fg=(0.95, 0.95, 0.0, 1.0),
-                text_shadow=(0, 0, 0, 1),
-                text_pos=(0.43, -0.5),
-                text_font=ToontownGlobals.getSignFont())
+                parent = self,
+                relief = None,
+                text = str(base.localAvatar.getTickets()),
+                text_scale = KS_TEXT_SIZE_SMALL,
+                text_fg = (0.95, 0.95, 0.0, 1.0),
+                text_shadow = (0, 0, 0, 1),
+                text_pos = (0.43, -0.5),
+                text_font = ToontownGlobals.getSignFont())
             self.okButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/CheckButtonUp'), model.find('**/CheckButtonDown'), model.find('**/CheckButtonRollover')),
-                geom=model.find('**/CheckIcon'),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=lambda : messenger.send(doneEvent, [BTK_OPTIONS.Ok]))
-            self.kartView = KartViewer([kartID, -1, -1, -1, -1, -1, -1, -1, -1], parent=self)
+                parent = self,
+                relief = None,
+                image = (
+                model.find('**/CheckButtonUp'), model.find('**/CheckButtonDown'), model.find('**/CheckButtonRollover')),
+                geom = model.find('**/CheckIcon'),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = lambda: messenger.send(doneEvent, [BTK_OPTIONS.Ok]))
+            self.kartView = KartViewer([kartID, -1, -1, -1, -1, -1, -1, -1, -1], parent = self)
             self.kartView.setPos(model.find('**/KartViewerFrame').getPos())
             self.kartView.load(model, 'KartViewerFrame', [], [])
             self.kartView.setBounds(-0.38, 0.38, -.0425, 0.49)
@@ -342,43 +357,45 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             cost = kartInfo[KartInfo.cost]
             DirectFrame.__init__(
                 self,
-                relief=None,
-                state='normal',
-                geom=model,
-                geom_scale=self.modelScale,
-                frameSize=(-1, 1, -1, 1),
-                pos=(0, 0, -0.01),
-                text=TTLocalizer.KartShop_ConfirmBuy % (name, cost),
-                text_wordwrap=11,
-                text_scale=KS_TEXT_SIZE_SMALL,
-                text_pos=(0, -0.26))
+                relief = None,
+                state = 'normal',
+                geom = model,
+                geom_scale = self.modelScale,
+                frameSize = (-1, 1, -1, 1),
+                pos = (0, 0, -0.01),
+                text = TTLocalizer.KartShop_ConfirmBuy % (name, cost),
+                text_wordwrap = 11,
+                text_scale = KS_TEXT_SIZE_SMALL,
+                text_pos = (0, -0.26))
             self.initialiseoptions(KartShopGuiMgr.ConfirmBuyKartDlg)
             self.ticketDisplay = DirectLabel(
-                parent=self,
-                relief=None,
-                text=str(base.localAvatar.getTickets()),
-                text_scale=KS_TEXT_SIZE_SMALL,
-                text_fg=(0.95, 0.95, 0.0, 1.0),
-                text_shadow=(0, 0, 0, 1),
-                text_pos=(0.43, -0.5),
-                text_font=ToontownGlobals.getSignFont())
+                parent = self,
+                relief = None,
+                text = str(base.localAvatar.getTickets()),
+                text_scale = KS_TEXT_SIZE_SMALL,
+                text_fg = (0.95, 0.95, 0.0, 1.0),
+                text_shadow = (0, 0, 0, 1),
+                text_pos = (0.43, -0.5),
+                text_font = ToontownGlobals.getSignFont())
             self.cancelButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'), model.find('**/CancelButtonRollover')),
-                geom=model.find('**/CancelIcon'),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=lambda : messenger.send(doneEvent, [CBK_OPTIONS.Cancel]))
+                parent = self,
+                relief = None,
+                image = (model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'),
+                         model.find('**/CancelButtonRollover')),
+                geom = model.find('**/CancelIcon'),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = lambda: messenger.send(doneEvent, [CBK_OPTIONS.Cancel]))
             self.okButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/CheckButtonUp'), model.find('**/CheckButtonDown'), model.find('**/CheckButtonRollover')),
-                geom=model.find('**/CheckIcon'),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=lambda : messenger.send(doneEvent, [CBK_OPTIONS.BuyKart]))
-            self.kartView = KartViewer([self.kartNum, -1, -1, -1, -1, -1, -1, -1, -1], parent=self)
+                parent = self,
+                relief = None,
+                image = (
+                model.find('**/CheckButtonUp'), model.find('**/CheckButtonDown'), model.find('**/CheckButtonRollover')),
+                geom = model.find('**/CheckIcon'),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = lambda: messenger.send(doneEvent, [CBK_OPTIONS.BuyKart]))
+            self.kartView = KartViewer([self.kartNum, -1, -1, -1, -1, -1, -1, -1, -1], parent = self)
             self.kartView.setPos(model.find('**/KartViewerFrame').getPos())
             self.kartView.load(model, 'KartViewerFrame', [], [], None)
             self.kartView.setBounds(-0.38, 0.38, -.0425, 0.49)
@@ -400,103 +417,120 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             self.modelScale = 1
             model = loader.loadModel('phase_6/models/gui/BuyAccessoryPanel')
             self.doneEvent = doneEvent
-            DirectFrame.__init__(self, relief=None, state='normal', geom=model, geom_scale=self.modelScale, frameSize=(-1, 1, -1, 1), pos=(0, 0, -0.01), text_wordwrap=26, text_scale=0.1, text_fg=Vec4(0.36, 0.94, 0.93, 1.0), text_pos=(0, 0))
+            DirectFrame.__init__(self, relief = None, state = 'normal', geom = model, geom_scale = self.modelScale,
+                                 frameSize = (-1, 1, -1, 1), pos = (0, 0, -0.01), text_wordwrap = 26, text_scale = 0.1,
+                                 text_fg = Vec4(0.36, 0.94, 0.93, 1.0), text_pos = (0, 0))
             self.initialiseoptions(KartShopGuiMgr.BuyAccessoryDlg)
             self.ticketDisplay = DirectLabel(
-                parent=self,
-                relief=None,
-                text=str(base.localAvatar.getTickets()),
-                text_scale=KS_TEXT_SIZE_SMALL,
-                text_fg=(0.95, 0.95, 0.0, 1.0),
-                text_shadow=(0, 0, 0, 1),
-                text_pos=(0.42, -0.6),
-                text_font=ToontownGlobals.getSignFont())
+                parent = self,
+                relief = None,
+                text = str(base.localAvatar.getTickets()),
+                text_scale = KS_TEXT_SIZE_SMALL,
+                text_fg = (0.95, 0.95, 0.0, 1.0),
+                text_shadow = (0, 0, 0, 1),
+                text_pos = (0.42, -0.6),
+                text_font = ToontownGlobals.getSignFont())
             self.arrowLeftButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/ArrowLeftButtonUp'), model.find('**/ArrowLeftButtonDown'), model.find('**/ArrowLeftButtonRollover'), model.find('**/ArrowLeftButtonInactive')),
-                scale=self.modelScale,
-                text_pos=(0, 0),
-                text_scale=0.1,
-                pressEffect=False,
-                command=self.__handleAccessoryChange,
-                extraArgs=[-1])
+                parent = self,
+                relief = None,
+                image = (model.find('**/ArrowLeftButtonUp'), model.find('**/ArrowLeftButtonDown'),
+                         model.find('**/ArrowLeftButtonRollover'), model.find('**/ArrowLeftButtonInactive')),
+                scale = self.modelScale,
+                text_pos = (0, 0),
+                text_scale = 0.1,
+                pressEffect = False,
+                command = self.__handleAccessoryChange,
+                extraArgs = [-1])
             self.arrowRightButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/ArrowRightButtonUp'), model.find('**/ArrowRightButtonDown'), model.find('**/ArrowRightButtonRollover'), model.find('**/ArrowRightButtonInactive')),
-                scale=self.modelScale,
-                text_pos=(0, 0),
-                text_scale=0.1,
-                pressEffect=False,
-                command=self.__handleAccessoryChange,
-                extraArgs=[1])
+                parent = self,
+                relief = None,
+                image = (model.find('**/ArrowRightButtonUp'), model.find('**/ArrowRightButtonDown'),
+                         model.find('**/ArrowRightButtonRollover'), model.find('**/ArrowRightButtonInactive')),
+                scale = self.modelScale,
+                text_pos = (0, 0),
+                text_scale = 0.1,
+                pressEffect = False,
+                command = self.__handleAccessoryChange,
+                extraArgs = [1])
             self.cancelButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'), model.find('**/CancelButtonRollover')),
-                geom=model.find('**/CancelIcon'),
-                scale=self.modelScale,
-                command=lambda : messenger.send(doneEvent, [BA_OPTIONS.Cancel]),
-                pressEffect=False)
+                parent = self,
+                relief = None,
+                image = (model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'),
+                         model.find('**/CancelButtonRollover')),
+                geom = model.find('**/CancelIcon'),
+                scale = self.modelScale,
+                command = lambda: messenger.send(doneEvent, [BA_OPTIONS.Cancel]),
+                pressEffect = False)
             self.decalAccButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/DecalButtonUp'), model.find('**/DecalButtonDown'), model.find('**/DecalButtonRollover'), model.find('**/DecalButtonDown')),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=self.__handleAccessoryTypeChange,
-                extraArgs=[KartDNA.decalType])
+                parent = self,
+                relief = None,
+                image = (
+                model.find('**/DecalButtonUp'), model.find('**/DecalButtonDown'), model.find('**/DecalButtonRollover'),
+                model.find('**/DecalButtonDown')),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = self.__handleAccessoryTypeChange,
+                extraArgs = [KartDNA.decalType])
             self.spoilerAccButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/SpoilerButtonUp'), model.find('**/SpoilerButtonDown'), model.find('**/SpoilerButtonRollover'), model.find('**/SpoilerButtonDown')),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=self.__handleAccessoryTypeChange,
-                extraArgs=[KartDNA.spType])
+                parent = self,
+                relief = None,
+                image = (model.find('**/SpoilerButtonUp'), model.find('**/SpoilerButtonDown'),
+                         model.find('**/SpoilerButtonRollover'), model.find('**/SpoilerButtonDown')),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = self.__handleAccessoryTypeChange,
+                extraArgs = [KartDNA.spType])
             self.eBlockAccButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/EBlockButtonUp'), model.find('**/EBlockButtonDown'), model.find('**/EBlockButtonRollover'), model.find('**/EBlockButtonDown')),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=self.__handleAccessoryTypeChange,
-                extraArgs=[KartDNA.ebType])
+                parent = self,
+                relief = None,
+                image = (model.find('**/EBlockButtonUp'), model.find('**/EBlockButtonDown'),
+                         model.find('**/EBlockButtonRollover'), model.find('**/EBlockButtonDown')),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = self.__handleAccessoryTypeChange,
+                extraArgs = [KartDNA.ebType])
             self.rearAccButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/RearButtonUp'), model.find('**/RearButtonDown'), model.find('**/RearButtonRollover'), model.find('**/RearButtonDown')),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=self.__handleAccessoryTypeChange,
-                extraArgs=[KartDNA.bwwType])
+                parent = self,
+                relief = None,
+                image = (
+                model.find('**/RearButtonUp'), model.find('**/RearButtonDown'), model.find('**/RearButtonRollover'),
+                model.find('**/RearButtonDown')),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = self.__handleAccessoryTypeChange,
+                extraArgs = [KartDNA.bwwType])
             self.frontAccButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/FrontButtonUp'), model.find('**/FrontButtonDown'), model.find('**/FrontButtonRollover'), model.find('**/FrontButtonDown')),
-                scale=self.modelScale,
-                text_pos=(0, 0),
-                text_scale=0.1,
-                pressEffect=False,
-                command=self.__handleAccessoryTypeChange,
-                extraArgs=[KartDNA.fwwType])
+                parent = self,
+                relief = None,
+                image = (
+                model.find('**/FrontButtonUp'), model.find('**/FrontButtonDown'), model.find('**/FrontButtonRollover'),
+                model.find('**/FrontButtonDown')),
+                scale = self.modelScale,
+                text_pos = (0, 0),
+                text_scale = 0.1,
+                pressEffect = False,
+                command = self.__handleAccessoryTypeChange,
+                extraArgs = [KartDNA.fwwType])
             self.rimAccButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/RimButtonUp'), model.find('**/RimButtonDown'), model.find('**/RimButtonRollover'), model.find('**/RimButtonDown')),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=self.__handleAccessoryTypeChange,
-                extraArgs=[KartDNA.rimsType])
+                parent = self,
+                relief = None,
+                image = (
+                model.find('**/RimButtonUp'), model.find('**/RimButtonDown'), model.find('**/RimButtonRollover'),
+                model.find('**/RimButtonDown')),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = self.__handleAccessoryTypeChange,
+                extraArgs = [KartDNA.rimsType])
             self.paintAccButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/PaintButtonUp'), model.find('**/PaintButtonDown'), model.find('**/PaintButtonRollover'), model.find('**/PaintButtonDown')),
-                scale=self.modelScale,
-                pressEffect=False,
-                command=self.__handleAccessoryTypeChange,
-                extraArgs=[KartDNA.bodyColor])
+                parent = self,
+                relief = None,
+                image = (
+                model.find('**/PaintButtonUp'), model.find('**/PaintButtonDown'), model.find('**/PaintButtonRollover'),
+                model.find('**/PaintButtonDown')),
+                scale = self.modelScale,
+                pressEffect = False,
+                command = self.__handleAccessoryTypeChange,
+                extraArgs = [KartDNA.bodyColor])
             self.accButtonsDict = {
                 KartDNA.ebType: self.eBlockAccButton,
                 KartDNA.spType: self.spoilerAccButton,
@@ -504,21 +538,23 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
                 KartDNA.bwwType: self.rearAccButton,
                 KartDNA.rimsType: self.rimAccButton,
                 KartDNA.decalType: self.decalAccButton,
-                KartDNA.bodyColor: self.paintAccButton}
+                KartDNA.bodyColor: self.paintAccButton
+            }
             self.buyAccessoryButton = DirectButton(
-                parent=self,
-                relief=None,
-                image=(model.find('**/BuyAccessoryButtonUp'), model.find('**/BuyAccessoryButtonDown'), model.find('**/BuyAccessoryButtonRollover'), model.find('**/BuyAccessoryButtonDisabled')),
-                scale=self.modelScale,
-                text=TTLocalizer.KartShop_BuyAccessory,
-                text_pos=(0, -.57),
-                text_scale=KS_TEXT_SIZE_SMALL,
-                pressEffect=False,
-                command=self.__handleBuyAccessory)
+                parent = self,
+                relief = None,
+                image = (model.find('**/BuyAccessoryButtonUp'), model.find('**/BuyAccessoryButtonDown'),
+                         model.find('**/BuyAccessoryButtonRollover'), model.find('**/BuyAccessoryButtonDisabled')),
+                scale = self.modelScale,
+                text = TTLocalizer.KartShop_BuyAccessory,
+                text_pos = (0, -.57),
+                text_scale = KS_TEXT_SIZE_SMALL,
+                pressEffect = False,
+                command = self.__handleBuyAccessory)
             if not base.cr.isPaid():
 
                 def showTeaserPanel():
-                    TeaserPanel(pageName='kartingAccessories')
+                    TeaserPanel(pageName = 'kartingAccessories')
 
                 self.buyAccessoryButton['command'] = showTeaserPanel
             self.ownedAccList = base.localAvatar.getKartAccessoriesOwned()
@@ -531,17 +567,17 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             for type in self.unownedAccDict:
                 self.curAccIndex[type] = 0
 
-            self.kartView = KartViewer(list(base.localAvatar.getKartDNA()), parent=self)
+            self.kartView = KartViewer(list(base.localAvatar.getKartDNA()), parent = self)
             self.kartView.setPos(model.find('**/KartViewerFrame').getPos())
             self.kartView.load(model, 'KartViewerFrame', ['rotate_right_up',
-             'rotate_right_down',
-             'rotate_right_roll',
-             'rotate_right_down',
-             (0.255, 0)], ['rotate_left_up',
-             'rotate_left_down',
-             'rotate_left_roll',
-             'rotate_left_down',
-             (-.24, 0)], (0, 0))
+                                                          'rotate_right_down',
+                                                          'rotate_right_roll',
+                                                          'rotate_right_down',
+                                                          (0.255, 0)], ['rotate_left_up',
+                                                                        'rotate_left_down',
+                                                                        'rotate_left_roll',
+                                                                        'rotate_left_down',
+                                                                        (-.24, 0)], (0, 0))
             self.kartView.setBounds(-0.38, 0.38, 0.044, 0.58)
             self.kartView.setBgColor(1.0, 1.0, 0.87, 1.0)
             self.initialize = True
@@ -560,7 +596,8 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             if len(self.unownedAccDict[self.curAccType]) < 1:
                 self.curAccIndex[self.curAccType] = -1
             else:
-                self.curAccIndex[self.curAccType] = (self.curAccIndex[self.curAccType] + nDir) % len(self.unownedAccDict[self.curAccType])
+                self.curAccIndex[self.curAccType] = (self.curAccIndex[self.curAccType] + nDir) % len(
+                    self.unownedAccDict[self.curAccType])
             if hasattr(self, 'accDescription'):
                 self.accDescription.destroy()
                 self.accCost.destroy()
@@ -585,23 +622,23 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             self.arrowLeftButton['state'] = DGG.DISABLED
             self.buyAccessoryButton['state'] = DGG.DISABLED
             self.accDescription = DirectButton(
-                parent=self,
-                relief=None,
-                scale=self.modelScale,
-                text='',
-                text_pos=(0, -.33),
-                text_scale=KS_TEXT_SIZE_SMALL,
-                pressEffect=False,
-                text_wordwrap=TTLocalizer.KSGaccDescriptionWordwrap,
-                textMayChange=True)
-            self.buyAccessoryButton.configure(text_fg=(0, 0, 0.0, 1.0))
-            self.buyAccessoryButton.configure(text=TTLocalizer.KartShop_BuyAccessory)
-            self.buyAccessoryButton.configure(text_scale=KS_TEXT_SIZE_SMALL)
+                parent = self,
+                relief = None,
+                scale = self.modelScale,
+                text = '',
+                text_pos = (0, -.33),
+                text_scale = KS_TEXT_SIZE_SMALL,
+                pressEffect = False,
+                text_wordwrap = TTLocalizer.KSGaccDescriptionWordwrap,
+                textMayChange = True)
+            self.buyAccessoryButton.configure(text_fg = (0, 0, 0.0, 1.0))
+            self.buyAccessoryButton.configure(text = TTLocalizer.KartShop_BuyAccessory)
+            self.buyAccessoryButton.configure(text_scale = KS_TEXT_SIZE_SMALL)
             self.buyAccessoryButton['state'] = DGG.NORMAL
             if len(self.unownedAccDict[self.curAccType]) < 1:
                 self.kartView.setDNA(None)
                 self.kartView.hide()
-                self.accDescription.configure(text=TTLocalizer.KartShop_NoAvailableAcc)
+                self.accDescription.configure(text = TTLocalizer.KartShop_NoAvailableAcc)
                 self.buyAccessoryButton['state'] = DGG.DISABLED
             else:
                 if self.curAccIndex[self.curAccType] + 1 < len(self.unownedAccDict[self.curAccType]):
@@ -619,28 +656,28 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
                 curAcc = self.unownedAccDict[self.curAccType][self.curAccIndex[self.curAccType]]
                 curDNA[self.curAccType] = curAcc
                 self.kartView.refresh(curDNA)
-                self.accDescription.configure(text=AccessoryDict[curAcc][KartInfo.name])
+                self.accDescription.configure(text = AccessoryDict[curAcc][KartInfo.name])
                 cost = TTLocalizer.KartShop_Cost % AccessoryDict[curAcc][KartInfo.cost]
                 self.accCost = DirectButton(
-                    parent=self,
-                    relief=None,
-                    scale=self.modelScale,
-                    text=cost,
-                    text_pos=(0, -.4),
-                    text_scale=KS_TEXT_SIZE_SMALL,
-                    text_fg=(0, 0, 0.0, 1.0),
-                    pressEffect=False,
-                    textMayChange=True)
+                    parent = self,
+                    relief = None,
+                    scale = self.modelScale,
+                    text = cost,
+                    text_pos = (0, -.4),
+                    text_scale = KS_TEXT_SIZE_SMALL,
+                    text_fg = (0, 0, 0.0, 1.0),
+                    pressEffect = False,
+                    textMayChange = True)
                 if AccessoryDict[curAcc][KartInfo.cost] > base.localAvatar.getTickets():
                     self.buyAccessoryButton['state'] = DGG.DISABLED
-                    self.buyAccessoryButton.configure(text_scale=KS_TEXT_SIZE_SMALL * 0.75)
-                    self.buyAccessoryButton.configure(text=TTLocalizer.KartShop_NotEnoughTickets)
-                    self.accCost.configure(text_fg=(0.95, 0, 0.0, 1.0))
+                    self.buyAccessoryButton.configure(text_scale = KS_TEXT_SIZE_SMALL * 0.75)
+                    self.buyAccessoryButton.configure(text = TTLocalizer.KartShop_NotEnoughTickets)
+                    self.accCost.configure(text_fg = (0.95, 0, 0.0, 1.0))
             if len(base.localAvatar.getKartAccessoriesOwned()) >= KartShopGlobals.MAX_KART_ACC:
                 self.buyAccessoryButton['state'] = DGG.DISABLED
-                self.buyAccessoryButton.configure(text_fg=(0.95, 0, 0.0, 1.0))
-                self.buyAccessoryButton.configure(text_scale=KS_TEXT_SIZE_SMALL * 0.8)
-                self.buyAccessoryButton.configure(text=TTLocalizer.KartShop_FullTrunk)
+                self.buyAccessoryButton.configure(text_fg = (0.95, 0, 0.0, 1.0))
+                self.buyAccessoryButton.configure(text_scale = KS_TEXT_SIZE_SMALL * 0.8)
+                self.buyAccessoryButton.configure(text = TTLocalizer.KartShop_FullTrunk)
             self.kartView.show()
             return
 
@@ -666,11 +703,22 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             model = loader.loadModel('phase_6/models/gui/BoughtAccessoryPanel')
             accInfo = getAccessoryInfo(accID)
             name = accInfo[AccInfo.name]
-            DirectFrame.__init__(self, relief=None, state='normal', geom=model, geom_scale=self.modelScale, frameSize=(-1, 1, -1, 1), pos=(0, 0, -0.01), text=TTLocalizer.KartShop_ConfirmBoughtTitle, text_wordwrap=26, text_scale=KS_TEXT_SIZE_SMALL, text_pos=(0, -0.28))
+            DirectFrame.__init__(self, relief = None, state = 'normal', geom = model, geom_scale = self.modelScale,
+                                 frameSize = (-1, 1, -1, 1), pos = (0, 0, -0.01),
+                                 text = TTLocalizer.KartShop_ConfirmBoughtTitle, text_wordwrap = 26,
+                                 text_scale = KS_TEXT_SIZE_SMALL, text_pos = (0, -0.28))
             self.initialiseoptions(KartShopGuiMgr.BoughtAccessoryDlg)
-            self.ticketDisplay = DirectLabel(parent=self, relief=None, text=str(base.localAvatar.getTickets()), text_scale=KS_TEXT_SIZE_SMALL, text_fg=(0.95, 0.95, 0.0, 1.0), text_shadow=(0, 0, 0, 1), text_pos=(0.43, -0.5), text_font=ToontownGlobals.getSignFont())
-            self.okButton = DirectButton(parent=self, relief=None, image=(model.find('**/CheckButtonUp'), model.find('**/CheckButtonDown'), model.find('**/CheckButtonRollover')), geom=model.find('**/CheckIcon'), scale=self.modelScale, pressEffect=False, command=lambda : messenger.send(doneEvent, [BTA_OPTIONS.Ok]))
-            self.kartView = DirectFrame(parent=self, relief=None, geom=model.find('**/KartViewerFrame'), scale=1.0)
+            self.ticketDisplay = DirectLabel(parent = self, relief = None, text = str(base.localAvatar.getTickets()),
+                                             text_scale = KS_TEXT_SIZE_SMALL, text_fg = (0.95, 0.95, 0.0, 1.0),
+                                             text_shadow = (0, 0, 0, 1), text_pos = (0.43, -0.5),
+                                             text_font = ToontownGlobals.getSignFont())
+            self.okButton = DirectButton(parent = self, relief = None, image = (
+            model.find('**/CheckButtonUp'), model.find('**/CheckButtonDown'), model.find('**/CheckButtonRollover')),
+                                         geom = model.find('**/CheckIcon'), scale = self.modelScale,
+                                         pressEffect = False,
+                                         command = lambda: messenger.send(doneEvent, [BTA_OPTIONS.Ok]))
+            self.kartView = DirectFrame(parent = self, relief = None, geom = model.find('**/KartViewerFrame'),
+                                        scale = 1.0)
             bounds = self.kartView.getBounds()
             radius = (bounds[3] - bounds[2]) / 2
             xCenter = self.kartView.getCenter()[0]
@@ -683,9 +731,9 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             texNodePath = None
             tex = None
             if accType in [KartDNA.ebType,
-             KartDNA.spType,
-             KartDNA.fwwType,
-             KartDNA.bwwType]:
+                           KartDNA.spType,
+                           KartDNA.fwwType,
+                           KartDNA.bwwType]:
                 texNodePath = getTexCardNode(accID)
                 tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath)
             elif accType == KartDNA.rimsType:
@@ -725,12 +773,27 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             accInfo = getAccessoryInfo(accID)
             cost = accInfo[AccInfo.cost]
             name = accInfo[AccInfo.name]
-            DirectFrame.__init__(self, relief=None, state='normal', geom=model, geom_scale=self.modelScale, frameSize=(-1, 1, -1, 1), pos=(0, 0, -0.01), text=TTLocalizer.KartShop_ConfirmBuy % (name, cost), text_wordwrap=14, text_scale=KS_TEXT_SIZE_SMALL, text_pos=(0, -0.25))
+            DirectFrame.__init__(self, relief = None, state = 'normal', geom = model, geom_scale = self.modelScale,
+                                 frameSize = (-1, 1, -1, 1), pos = (0, 0, -0.01),
+                                 text = TTLocalizer.KartShop_ConfirmBuy % (name, cost), text_wordwrap = 14,
+                                 text_scale = KS_TEXT_SIZE_SMALL, text_pos = (0, -0.25))
             self.initialiseoptions(KartShopGuiMgr.ConfirmBuyAccessoryDlg)
-            self.ticketDisplay = DirectLabel(parent=self, relief=None, text=str(base.localAvatar.getTickets()), text_scale=KS_TEXT_SIZE_SMALL, text_fg=(0.95, 0.95, 0.0, 1.0), text_shadow=(0, 0, 0, 1), text_pos=(0.43, -0.5), text_font=ToontownGlobals.getSignFont())
-            self.cancelButton = DirectButton(parent=self, relief=None, image=(model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'), model.find('**/CancelButtonRollover')), geom=model.find('**/CancelIcon'), scale=self.modelScale, pressEffect=False, command=lambda : messenger.send(doneEvent, [CBA_OPTIONS.Cancel]))
-            self.okButton = DirectButton(parent=self, relief=None, image=(model.find('**/CheckButtonUp'), model.find('**/CheckButtonDown'), model.find('**/CheckButtonRollover')), geom=model.find('**/CheckIcon'), scale=self.modelScale, pressEffect=False, command=lambda : messenger.send(doneEvent, [CBA_OPTIONS.BuyAccessory]))
-            self.kartView = DirectFrame(parent=self, relief=None, geom=model.find('**/KartViewerFrame'), scale=1.0)
+            self.ticketDisplay = DirectLabel(parent = self, relief = None, text = str(base.localAvatar.getTickets()),
+                                             text_scale = KS_TEXT_SIZE_SMALL, text_fg = (0.95, 0.95, 0.0, 1.0),
+                                             text_shadow = (0, 0, 0, 1), text_pos = (0.43, -0.5),
+                                             text_font = ToontownGlobals.getSignFont())
+            self.cancelButton = DirectButton(parent = self, relief = None, image = (
+            model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'), model.find('**/CancelButtonRollover')),
+                                             geom = model.find('**/CancelIcon'), scale = self.modelScale,
+                                             pressEffect = False,
+                                             command = lambda: messenger.send(doneEvent, [CBA_OPTIONS.Cancel]))
+            self.okButton = DirectButton(parent = self, relief = None, image = (
+            model.find('**/CheckButtonUp'), model.find('**/CheckButtonDown'), model.find('**/CheckButtonRollover')),
+                                         geom = model.find('**/CheckIcon'), scale = self.modelScale,
+                                         pressEffect = False,
+                                         command = lambda: messenger.send(doneEvent, [CBA_OPTIONS.BuyAccessory]))
+            self.kartView = DirectFrame(parent = self, relief = None, geom = model.find('**/KartViewerFrame'),
+                                        scale = 1.0)
             bounds = self.kartView.getBounds()
             radius = (bounds[3] - bounds[2]) / 3
             xCenter, yCenter = self.kartView.getCenter()
@@ -743,9 +806,9 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             texNodePath = None
             tex = None
             if accType in [KartDNA.ebType,
-             KartDNA.spType,
-             KartDNA.fwwType,
-             KartDNA.bwwType]:
+                           KartDNA.spType,
+                           KartDNA.fwwType,
+                           KartDNA.bwwType]:
                 texNodePath = getTexCardNode(accID)
                 tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath)
             elif accType == KartDNA.rimsType:
@@ -779,15 +842,18 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
         self.dialog = None
         self.dialogStack = []
         self.eventDict = eventDict
-        self.dialogEventDict = {MENUS.MainMenu: ('MainMenuGuiDone', self.__handleMainMenuDlg, self.MainMenuDlg),
-         MENUS.BuyKart: ('BuyKartGuiDone', self.__handleBuyKartDlg, self.BuyKartDlg),
-         MENUS.BuyAccessory: ('BuyAccessoryGuiDone', self.__handleBuyAccessoryDlg, self.BuyAccessoryDlg),
-         MENUS.ReturnKart: ('ReturnKartGuiDone', self.__handleReturnKartDlg, self.ReturnKartDlg),
-         MENUS.ConfirmBuyKart: ('ConfirmBuyKartGuiDone', self.__handleConfirmBuyKartDlg, self.ConfirmBuyKartDlg),
-         MENUS.ConfirmBuyAccessory: ('ConfirmBuyAccessoryGuiDone', self.__handleConfirmBuyAccessoryDlg, self.ConfirmBuyAccessoryDlg),
-         MENUS.BoughtKart: ('BoughtKartGuiDone', self.__handleBoughtKartDlg, self.BoughtKartDlg),
-         MENUS.BoughtAccessory: ('BoughtAccessoryGuiDone', self.__handleBoughtAccessoryDlg, self.BoughtAccessoryDlg),
-         MENUS.TeaserPanel: ('UnpaidPurchaseAttempt', self.__handleTeaserPanelDlg, TeaserPanel)}
+        self.dialogEventDict = {
+            MENUS.MainMenu: ('MainMenuGuiDone', self.__handleMainMenuDlg, self.MainMenuDlg),
+            MENUS.BuyKart: ('BuyKartGuiDone', self.__handleBuyKartDlg, self.BuyKartDlg),
+            MENUS.BuyAccessory: ('BuyAccessoryGuiDone', self.__handleBuyAccessoryDlg, self.BuyAccessoryDlg),
+            MENUS.ReturnKart: ('ReturnKartGuiDone', self.__handleReturnKartDlg, self.ReturnKartDlg),
+            MENUS.ConfirmBuyKart: ('ConfirmBuyKartGuiDone', self.__handleConfirmBuyKartDlg, self.ConfirmBuyKartDlg),
+            MENUS.ConfirmBuyAccessory: (
+            'ConfirmBuyAccessoryGuiDone', self.__handleConfirmBuyAccessoryDlg, self.ConfirmBuyAccessoryDlg),
+            MENUS.BoughtKart: ('BoughtKartGuiDone', self.__handleBoughtKartDlg, self.BoughtKartDlg),
+            MENUS.BoughtAccessory: ('BoughtAccessoryGuiDone', self.__handleBoughtAccessoryDlg, self.BoughtAccessoryDlg),
+            MENUS.TeaserPanel: ('UnpaidPurchaseAttempt', self.__handleTeaserPanelDlg, TeaserPanel)
+        }
         self.kartID = -1
         self.accID = -1
         self.timer = ToontownTimer.ToontownTimer()
@@ -877,7 +943,7 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
         elif dialogType == MENUS.BoughtAccessory:
             self.dialog = eventDlg(eventType, self.accID)
         elif dialogType == MENUS.TeaserPanel:
-            self.dialog = eventDlg(pageName='karting', doneFunc=self.__doLastMenu)
+            self.dialog = eventDlg(pageName = 'karting', doneFunc = self.__doLastMenu)
         else:
             self.dialog = eventDlg(eventType)
         if not dialogType == MENUS.TeaserPanel:

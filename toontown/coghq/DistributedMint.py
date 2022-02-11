@@ -8,6 +8,7 @@ from toontown.toonbase.ToontownGlobals import *
 from toontown.toonbase import TTLocalizer
 from toontown.coghq import DistributedMintRoom, MintLayout, MintRoom
 
+
 class DistributedMint(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMint')
     ReadyPost = 'MintReady'
@@ -46,7 +47,9 @@ class DistributedMint(DistributedObject.DistributedObject):
 
     def setRoomDoIds(self, roomDoIds):
         self.roomDoIds = roomDoIds
-        self.roomWatcher = BulletinBoardWatcher.BulletinBoardWatcher('roomWatcher-%s' % self.doId, [ DistributedMintRoom.getMintRoomReadyPostName(doId) for doId in self.roomDoIds ], self.gotAllRooms)
+        self.roomWatcher = BulletinBoardWatcher.BulletinBoardWatcher('roomWatcher-%s' % self.doId,
+                                                                     [DistributedMintRoom.getMintRoomReadyPostName(doId)
+                                                                      for doId in self.roomDoIds], self.gotAllRooms)
 
     def gotAllRooms(self):
         self.notify.debug('mint %s: got all rooms' % self.doId)

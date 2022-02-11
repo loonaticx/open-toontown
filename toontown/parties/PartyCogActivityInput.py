@@ -1,10 +1,12 @@
 from direct.showbase.DirectObject import DirectObject
 from pandac.PandaModules import ModifierButtons
+
 ROTATE_LEFT_KEY = 'arrow_left'
 ROTATE_RIGHT_KEY = 'arrow_right'
 FORWARD_KEY = 'arrow_up'
 BACKWARDS_KEY = 'arrow_down'
 THROW_PIE_KEYS = ['control', 'delete', 'insert']
+
 
 class PartyCogActivityInput(DirectObject):
     notify = directNotify.newCategory('PartyCogActivityInput')

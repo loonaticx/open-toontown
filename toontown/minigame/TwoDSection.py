@@ -8,6 +8,7 @@ from toontown.minigame import TwoDTreasureMgr
 from toontown.minigame import TwoDSpawnPointMgr
 from toontown.minigame import TwoDStomperMgr
 
+
 class TwoDSection(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDSection')
 

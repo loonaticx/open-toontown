@@ -11,6 +11,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
 
+
 class GolfKart(StateData.StateData):
 
     def __init__(self, safeZone, parentFSM, doneEvent, golfCourse):
@@ -62,7 +63,7 @@ class GolfKart(StateData.StateData):
                         self.enterFinal,
                         self.exitFinal, [
                             'start'])],
-            'start', 'final')
+                                         'start', 'final')
         self.parentFSM = parentFSM
         return None
 
@@ -103,7 +104,8 @@ class GolfKart(StateData.StateData):
         return None
 
     def enterTrolleyHFA(self):
-        self.noTrolleyBox = TTDialog.TTGlobalDialog(message=TTLocalizer.TrolleyHFAMessage, doneEvent='noTrolleyAck', style=TTDialog.Acknowledge)
+        self.noTrolleyBox = TTDialog.TTGlobalDialog(message = TTLocalizer.TrolleyHFAMessage, doneEvent = 'noTrolleyAck',
+                                                    style = TTDialog.Acknowledge)
         self.noTrolleyBox.show()
         base.localAvatar.b_setAnimState('neutral', 1)
         self.accept('noTrolleyAck', self.__handleNoTrolleyAck)
@@ -114,7 +116,8 @@ class GolfKart(StateData.StateData):
         del self.noTrolleyBox
 
     def enterTrolleyTFA(self):
-        self.noTrolleyBox = TTDialog.TTGlobalDialog(message=TTLocalizer.TrolleyTFAMessage, doneEvent='noTrolleyAck', style=TTDialog.Acknowledge)
+        self.noTrolleyBox = TTDialog.TTGlobalDialog(message = TTLocalizer.TrolleyTFAMessage, doneEvent = 'noTrolleyAck',
+                                                    style = TTDialog.Acknowledge)
         self.noTrolleyBox.show()
         base.localAvatar.b_setAnimState('neutral', 1)
         self.accept('noTrolleyAck', self.__handleNoTrolleyAck)
@@ -165,7 +168,11 @@ class GolfKart(StateData.StateData):
         return None
 
     def enableExitButton(self):
-        self.exitButton = DirectButton(relief=None, text=TTLocalizer.TrolleyHopOff, text_fg=(1, 1, 0.65, 1), text_pos=(0, -0.23), text_scale=0.8, image=(self.upButton, self.downButton, self.rolloverButton), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(0, 0, 0.8), scale=0.15, command=lambda self = self: self.fsm.request('requestExit'))
+        self.exitButton = DirectButton(relief = None, text = TTLocalizer.TrolleyHopOff, text_fg = (1, 1, 0.65, 1),
+                                       text_pos = (0, -0.23), text_scale = 0.8,
+                                       image = (self.upButton, self.downButton, self.rolloverButton),
+                                       image_color = (1, 0, 0, 1), image_scale = (20, 1, 11), pos = (0, 0, 0.8),
+                                       scale = 0.15, command = lambda self = self: self.fsm.request('requestExit'))
         return
 
     def disableExitButton(self):

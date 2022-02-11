@@ -1,6 +1,7 @@
 from otp.otpbase import OTPGlobals
 from toontown.toonbase import ToontownGlobals
 import copy
+
 BOARDCODE_OKAY = 1
 BOARDCODE_MISSING = 0
 BOARDCODE_MINLAFF = -1
@@ -12,6 +13,7 @@ BOARDCODE_DIFF_GROUP = -6
 BOARDCODE_PENDING_INVITE = -7
 BOARDCODE_IN_ELEVATOR = -8
 INVITE_ACCEPT_FAIL_GROUP_FULL = -1
+
 
 class BoardingPartyBase:
 

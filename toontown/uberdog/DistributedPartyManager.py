@@ -6,6 +6,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toon import ToonDNA
 from toontown.parties import PartyGlobals
 
+
 class DistributedPartyManager(DistributedObject):
     neverDisable = 1
     notify = directNotify.newCategory('DistributedPartyManager')
@@ -52,13 +53,13 @@ class DistributedPartyManager(DistributedObject):
 
     def sendAddParty(self, hostId, startTime, endTime, isPrivate, inviteTheme, activities, decorations, inviteeIds):
         self.sendUpdate('addPartyRequest', [hostId,
-         startTime,
-         endTime,
-         isPrivate,
-         inviteTheme,
-         activities,
-         decorations,
-         inviteeIds])
+                                            startTime,
+                                            endTime,
+                                            isPrivate,
+                                            inviteTheme,
+                                            activities,
+                                            decorations,
+                                            inviteeIds])
 
     def addPartyResponse(self, hostId, errorCode):
         messenger.send('addPartyResponseReceived', [hostId, errorCode])
@@ -66,9 +67,12 @@ class DistributedPartyManager(DistributedObject):
             if base.localAvatar.creatingNewPartyWithMagicWord:
                 base.localAvatar.creatingNewPartyWithMagicWord = False
                 if errorCode == PartyGlobals.AddPartyErrorCode.AllOk:
-                    base.localAvatar.setChatAbsolute('New party entered into database successfully.', CFSpeech | CFTimeout)
+                    base.localAvatar.setChatAbsolute('New party entered into database successfully.',
+                                                     CFSpeech | CFTimeout)
                 else:
-                    base.localAvatar.setChatAbsolute('New party creation failed : %s' % PartyGlobals.AddPartyErrorCode.getString(errorCode), CFSpeech | CFTimeout)
+                    base.localAvatar.setChatAbsolute(
+                        'New party creation failed : %s' % PartyGlobals.AddPartyErrorCode.getString(errorCode),
+                        CFSpeech | CFTimeout)
 
     def requestPartyZone(self, avId, zoneId, callback):
         if zoneId < 0:
@@ -108,15 +112,16 @@ class DistributedPartyManager(DistributedObject):
         self.sendUpdate('changePartyStatusRequest', [partyId, newPartyStatus])
 
     def changePartyStatusResponse(self, partyId, newPartyStatus, errorCode, beansRefunded):
-        self.notify.debug('changePartyStatusResponse : partyId=%s newPartyStatus=%s errorCode=%s' % (partyId, newPartyStatus, errorCode))
+        self.notify.debug('changePartyStatusResponse : partyId=%s newPartyStatus=%s errorCode=%s' % (
+        partyId, newPartyStatus, errorCode))
         for partyInfo in localAvatar.hostedParties:
             if partyInfo.partyId == partyId:
                 partyInfo.status = newPartyStatus
 
         messenger.send(self.PartyStatusChangedEvent, [partyId,
-         newPartyStatus,
-         errorCode,
-         beansRefunded])
+                                                      newPartyStatus,
+                                                      errorCode,
+                                                      beansRefunded])
 
     def setNeverStartedPartyRefunded(self, partyId, newStatus, refund):
         partyInfo = None
@@ -128,9 +133,9 @@ class DistributedPartyManager(DistributedObject):
         if partyInfo:
             partyInfo.status = newStatus
             messenger.send(self.PartyStatusChangedEvent, [partyId,
-             newStatus,
-             0,
-             refund])
+                                                          newStatus,
+                                                          0,
+                                                          refund])
         return
 
     def sendAvToPlayground(self, avId, retCode):
@@ -165,13 +170,15 @@ class DistributedPartyManager(DistributedObject):
         hoodId = ToontownGlobals.PartyHood
         if shardId == base.localAvatar.defaultShard:
             shardId = None
-        base.cr.playGame.getPlace().requestLeave({'loader': 'safeZoneLoader',
-         'where': 'party',
-         'how': 'teleportIn',
-         'hoodId': hoodId,
-         'zoneId': zoneId,
-         'shardId': shardId,
-         'avId': -1})
+        base.cr.playGame.getPlace().requestLeave({
+                                                     'loader': 'safeZoneLoader',
+                                                     'where': 'party',
+                                                     'how': 'teleportIn',
+                                                     'hoodId': hoodId,
+                                                     'zoneId': zoneId,
+                                                     'shardId': shardId,
+                                                     'avId': -1
+                                                 })
         return
 
     def setPartyPlannerStyle(self, dna):

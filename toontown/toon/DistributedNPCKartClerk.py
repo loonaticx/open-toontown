@@ -7,6 +7,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.racing.KartShopGui import *
 from toontown.racing.KartShopGlobals import *
 
+
 class DistributedNPCKartClerk(DistributedNPCToonBase):
 
     def __init__(self, cr):
@@ -103,7 +104,9 @@ class DistributedNPCKartClerk(DistributedNPCToonBase):
             self.setupAvatars(self.av)
             if self.isLocalToon:
                 camera.wrtReparentTo(render)
-                self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-5, 9, base.localAvatar.getHeight() - 0.5), Point3(-150, -2, 0), other=self, blendType='easeOut', name=self.uniqueName('lerpCamera'))
+                self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-5, 9, base.localAvatar.getHeight() - 0.5),
+                                                            Point3(-150, -2, 0), other = self, blendType = 'easeOut',
+                                                            name = self.uniqueName('lerpCamera'))
                 self.lerpCameraSeq.start()
             if self.isLocalToon:
                 taskMgr.doMethodLater(1.0, self.popupKartShopGUI, self.uniqueName('popupKartShopGUI'))

@@ -10,6 +10,7 @@ import math
 from math import *
 import random
 
+
 class RubberBand:
     SomeCounter = 0
 
@@ -42,7 +43,7 @@ class RubberBand:
         self.bandHeight = 1.0
         self.post1Pos = Point3(-width, 0, height)
         self.post2Pos = Point3(width, 0, height)
-        taskMgr.add(self.redraw, 'recreateBand %s' % self.bandNumber, priority=self._taskPriority)
+        taskMgr.add(self.redraw, 'recreateBand %s' % self.bandNumber, priority = self._taskPriority)
         self.colorRelax = {}
         self.colorRelax['Red'] = 1.0
         self.colorRelax['Green'] = 0.3
@@ -130,7 +131,8 @@ class RubberBand:
         bandColorWriter = GeomVertexWriter(bandVertexData, 'color')
         for index in range(len(shapeVertexs)):
             bandVertexWriter.addData3f(shapeVertexs[index][0], shapeVertexs[index][1], shapeVertexs[index][2])
-            bandColorWriter.addData4f(color['Red'] * colorMultList[index], color['Green'] * colorMultList[index], color['Blue'] * colorMultList[index], color['Alpha'] * colorMultList[index])
+            bandColorWriter.addData4f(color['Red'] * colorMultList[index], color['Green'] * colorMultList[index],
+                                      color['Blue'] * colorMultList[index], color['Alpha'] * colorMultList[index])
 
         bandTris = GeomTristrips(Geom.UHStatic)
         for index in range(len(shapeVertexs)):

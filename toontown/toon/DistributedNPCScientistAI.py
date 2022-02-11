@@ -3,6 +3,7 @@ from toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.fsm import ClassicFSM, State
 from direct.task.Task import Task
 
+
 class DistributedNPCScientistAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
 
     def __init__(self, air, npcId, questCallback = None, hq = 0):
@@ -24,40 +25,40 @@ class DistributedNPCScientistAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseA
                         self.exitPhase0, [
                             'Phase1',
                             'Neutral']),
-         State.State('Phase1',
-                     self.enterPhase1,
-                     self.exitPhase1, [
-                         'Phase2',
-                         'Neutral']),
-         State.State('Phase2',
-                     self.enterPhase2,
-                     self.exitPhase2, [
-                         'Phase2_5',
-                         'Neutral']),
-         State.State('Phase2_5',
-                     self.enterPhase2_5,
-                     self.exitPhase2_5, [
-                         'Phase3',
-                         'Neutral']),
-         State.State('Phase3',
-                     self.enterPhase3,
-                     self.exitPhase3, [
-                         'Phase4',
-                         'Neutral']),
-         State.State('Phase4',
-                     self.enterPhase4,
-                     self.exitPhase4, [
-                         'Phase5',
-                         'Neutral']),
-         State.State('Phase5',
-                     self.enterPhase5,
-                     self.exitPhase5, [
-                         'Neutral']),
-         State.State('Off',
-                     self.enterOff,
-                     self.exitOff, [])],
-         'Neutral', 'Off')
-         
+            State.State('Phase1',
+                        self.enterPhase1,
+                        self.exitPhase1, [
+                            'Phase2',
+                            'Neutral']),
+            State.State('Phase2',
+                        self.enterPhase2,
+                        self.exitPhase2, [
+                            'Phase2_5',
+                            'Neutral']),
+            State.State('Phase2_5',
+                        self.enterPhase2_5,
+                        self.exitPhase2_5, [
+                            'Phase3',
+                            'Neutral']),
+            State.State('Phase3',
+                        self.enterPhase3,
+                        self.exitPhase3, [
+                            'Phase4',
+                            'Neutral']),
+            State.State('Phase4',
+                        self.enterPhase4,
+                        self.exitPhase4, [
+                            'Phase5',
+                            'Neutral']),
+            State.State('Phase5',
+                        self.enterPhase5,
+                        self.exitPhase5, [
+                            'Neutral']),
+            State.State('Off',
+                        self.enterOff,
+                        self.exitOff, [])],
+                                                  'Neutral', 'Off')
+
         if self.npcId == 2018 or self.npcId == 2019:
             self.startAnimState = 'ScientistJealous'
         elif self.npcId == 2020:
@@ -99,7 +100,9 @@ class DistributedNPCScientistAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseA
     def getPhaseToRun(self):
         result = -1
         enoughInfoToRun = False
-        if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.SILLYMETER_HOLIDAY) or simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
+        if simbase.air.holidayManager.isHolidayRunning(
+                ToontownGlobals.SILLYMETER_HOLIDAY) or simbase.air.holidayManager.isHolidayRunning(
+                ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
             if hasattr(simbase.air, 'SillyMeterMgr'):
                 enoughInfoToRun = True
             else:
@@ -120,7 +123,7 @@ class DistributedNPCScientistAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseA
 
     def enterPhase0(self):
         if self.npcId == 2020:
-            self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePreTopTopic, endPause=30)
+            self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePreTopTopic, endPause = 30)
         elif self.npcId == 2018 or self.npcId == 2019:
             self.d_setAnimState('ScientistJealous', 1.0)
         self.accept('SillyMeterPhase', self.selectPhase)
@@ -132,7 +135,7 @@ class DistributedNPCScientistAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseA
 
     def enterPhase1(self):
         if self.npcId == 2020:
-            self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePreTopTopic, endPause=30)
+            self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePreTopTopic, endPause = 30)
         elif self.npcId == 2018 or self.npcId == 2019:
             self.d_setAnimState('ScientistJealous', 1.0)
         self.accept('SillyMeterPhase', self.selectPhase)
@@ -144,7 +147,7 @@ class DistributedNPCScientistAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseA
 
     def enterPhase2(self):
         if self.npcId == 2020:
-            self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePreTopTopic, endPause=30)
+            self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePreTopTopic, endPause = 30)
         elif self.npcId == 2018 or self.npcId == 2019:
             self.d_setAnimState('ScientistWork', 1.0)
         self.accept('SillyMeterPhase', self.selectPhase)
@@ -157,9 +160,9 @@ class DistributedNPCScientistAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseA
     def enterPhase2_5(self):
         if self.npcId == 2020:
             if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
-                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsExtPhaseTopTopic, endPause=30)
+                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsExtPhaseTopTopic, endPause = 30)
             else:
-                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhaseTopTopic, endPause=30)
+                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhaseTopTopic, endPause = 30)
         elif self.npcId == 2018 or self.npcId == 2019:
             self.d_setAnimState('ScientistLessWork', 1.0)
         self.accept('SillyMeterPhase', self.selectPhase)
@@ -175,9 +178,9 @@ class DistributedNPCScientistAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseA
     def enterPhase3(self):
         if self.npcId == 2020:
             if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
-                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsExtPhaseTopTopic, endPause=30)
+                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsExtPhaseTopTopic, endPause = 30)
             else:
-                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePostTopTopic, endPause=30)
+                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePostTopTopic, endPause = 30)
         elif self.npcId == 2018 or self.npcId == 2019:
             self.d_setAnimState('ScientistPlay', 1.0)
         self.accept('SillyMeterPhase', self.selectPhase)
@@ -193,9 +196,9 @@ class DistributedNPCScientistAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseA
     def enterPhase4(self):
         if self.npcId == 2020:
             if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
-                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsExtPhaseTopTopic, endPause=30)
+                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsExtPhaseTopTopic, endPause = 30)
             else:
-                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePostTopTopic, endPause=30)
+                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePostTopTopic, endPause = 30)
         elif self.npcId == 2018 or self.npcId == 2019:
             self.d_setAnimState('ScientistPlay', 1.0)
         self.accept('SillyMeterPhase', self.selectPhase)
@@ -211,9 +214,9 @@ class DistributedNPCScientistAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseA
     def enterPhase5(self):
         if self.npcId == 2020:
             if simbase.air.holidayManager.isHolidayRunning(ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
-                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsExtPhaseTopTopic, endPause=30)
+                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsExtPhaseTopTopic, endPause = 30)
             else:
-                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePostTopTopic, endPause=30)
+                self.air.dialogueManager.requestDialogue(self, TTLocalizer.AprilToonsPhasePostTopTopic, endPause = 30)
         elif self.npcId == 2018 or self.npcId == 2019:
             self.d_setAnimState('ScientistPlay', 1.0)
         self.accept('SillyMeterPhase', self.selectPhase)

@@ -9,6 +9,7 @@ from toontown.toonbase.ToontownGlobals import *
 import random
 import pickle
 
+
 class DistributedLeaderBoard(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DisributedLeaderBoard')
 
@@ -158,9 +159,9 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
         placePath.setScale(0.3)
         placePath.setDepthWrite(0)
         return (row,
-         nameText,
-         timeText,
-         placeText)
+                nameText,
+                timeText,
+                placeText)
 
     def delete(self):
         self.notify.debug('delete: deleting local leaderboard')

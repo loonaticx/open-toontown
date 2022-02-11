@@ -12,6 +12,7 @@ from toontown.pets import PetConstants, PetObserve, PetGoal, PetGoalMgr
 from toontown.pets import PetTricks, PetLookerAI
 import random, types
 
+
 class PetBrain(DirectObject.DirectObject, CPetBrain):
     notify = DirectNotifyGlobal.directNotify.newCategory('PetBrain')
 
@@ -296,9 +297,11 @@ class PetBrain(DirectObject.DirectObject, CPetBrain):
         dbg = PetBrain.notify.debug
         if action == OA.ATTENDED_START:
             dbg('avatar %s is looking at me' % avId)
-            self.pet.lerpMoods({'boredom': -.1,
-             'excitement': 0.05,
-             'loneliness': -.05})
+            self.pet.lerpMoods({
+                                   'boredom': -.1,
+                                   'excitement': 0.05,
+                                   'loneliness': -.05
+                               })
             messenger.send(self.getObserveEventAttendedByAvStart(avId))
         elif action == OA.ATTENDED_STOP:
             dbg('avatar %s is no longer looking at me' % avId)
@@ -313,9 +316,9 @@ class PetBrain(DirectObject.DirectObject, CPetBrain):
             if avId != self.pet.doId:
                 oldZoneId, newZoneId = observe.getData()
                 PetBrain.notify.debug('%s.CHANGE_ZONE: %s, %s->%s' % (self.pet.doId,
-                 avId,
-                 oldZoneId,
-                 newZoneId))
+                                                                      avId,
+                                                                      oldZoneId,
+                                                                      newZoneId))
                 myZoneId = self.pet.zoneId
                 if newZoneId != oldZoneId:
                     if newZoneId == myZoneId:
@@ -336,31 +339,35 @@ class PetBrain(DirectObject.DirectObject, CPetBrain):
                 self._handleEstateOwnerLeave()
         elif action == OA.FEED:
             dbg('avatar %s is feeding me' % avId)
-            self.pet.lerpMoods({'affection': 0.35,
-             'anger': -.07,
-             'boredom': -.5,
-             'excitement': 0.5,
-             'fatigue': -.2,
-             'hunger': -.5,
-             'loneliness': -.08,
-             'playfulness': 0.1,
-             'restlessness': -.05,
-             'sadness': -.2})
+            self.pet.lerpMoods({
+                                   'affection': 0.35,
+                                   'anger': -.07,
+                                   'boredom': -.5,
+                                   'excitement': 0.5,
+                                   'fatigue': -.2,
+                                   'hunger': -.5,
+                                   'loneliness': -.08,
+                                   'playfulness': 0.1,
+                                   'restlessness': -.05,
+                                   'sadness': -.2
+                               })
             self.updateLastInteractTime(avId)
             avatar = simbase.air.doId2do.get(avId)
             if avatar is not None:
                 avatar.setHatePets(0)
         elif action == OA.SCRATCH:
             dbg('avatar %s is scratching me' % avId)
-            self.pet.lerpMoods({'affection': 0.45,
-             'anger': -.1,
-             'boredom': -.8,
-             'excitement': 0.5,
-             'fatigue': -.25,
-             'loneliness': -.2,
-             'playfulness': 0.1,
-             'restlessness': -.2,
-             'sadness': -.2})
+            self.pet.lerpMoods({
+                                   'affection': 0.45,
+                                   'anger': -.1,
+                                   'boredom': -.8,
+                                   'excitement': 0.5,
+                                   'fatigue': -.25,
+                                   'loneliness': -.2,
+                                   'playfulness': 0.1,
+                                   'restlessness': -.2,
+                                   'sadness': -.2
+                               })
             self.updateLastInteractTime(avId)
             avatar = simbase.air.doId2do.get(avId)
             if avatar is not None:
@@ -376,14 +383,16 @@ class PetBrain(DirectObject.DirectObject, CPetBrain):
     def _handlePhraseObserve(self, observe):
 
         def _handleGettingFriendlyAttention(avId, self = self):
-            self.pet.lerpMoods({'boredom': -.85,
-             'restlessness': -.1,
-             'playfulness': 0.2,
-             'loneliness': -.4,
-             'sadness': -.1,
-             'fatigue': -.05,
-             'excitement': 0.05,
-             'anger': -.05})
+            self.pet.lerpMoods({
+                                   'boredom': -.85,
+                                   'restlessness': -.1,
+                                   'playfulness': 0.2,
+                                   'loneliness': -.4,
+                                   'sadness': -.1,
+                                   'fatigue': -.05,
+                                   'excitement': 0.05,
+                                   'anger': -.05
+                               })
             self.updateLastInteractTime(avId)
 
         def _handleComeHere(avId, self = self):
@@ -407,13 +416,15 @@ class PetBrain(DirectObject.DirectObject, CPetBrain):
             ownerFactor = 0.5
             if avId == self.pet.ownerId:
                 ownerFactor = 1.0
-            self.pet.lerpMoods({'affection': -.4,
-             'anger': 0.4,
-             'boredom': -.3,
-             'confusion': 0.05,
-             'fatigue': 0.2,
-             'playfulness': -.1,
-             'sadness': 0.5 * ownerFactor})
+            self.pet.lerpMoods({
+                                   'affection': -.4,
+                                   'anger': 0.4,
+                                   'boredom': -.3,
+                                   'confusion': 0.05,
+                                   'fatigue': 0.2,
+                                   'playfulness': -.1,
+                                   'sadness': 0.5 * ownerFactor
+                               })
 
         def _handleGoAway(avId, self = self):
             avatar = simbase.air.doId2do.get(avId)
@@ -437,19 +448,19 @@ class PetBrain(DirectObject.DirectObject, CPetBrain):
         avId = observe.getAvId()
         OP = PetObserve.Phrases
         if phrase in list2dict([OP.COME,
-         OP.FOLLOW_ME,
-         OP.STAY,
-         OP.NEED_LAFF,
-         OP.NEED_GAGS,
-         OP.NEED_JB,
-         OP.HI,
-         OP.SOOTHE,
-         OP.PRAISE,
-         OP.HAPPY,
-         OP.QUESTION,
-         OP.FRIENDLY,
-         OP.LETS_PLAY,
-         OP.DO_TRICK]):
+                                OP.FOLLOW_ME,
+                                OP.STAY,
+                                OP.NEED_LAFF,
+                                OP.NEED_GAGS,
+                                OP.NEED_JB,
+                                OP.HI,
+                                OP.SOOTHE,
+                                OP.PRAISE,
+                                OP.HAPPY,
+                                OP.QUESTION,
+                                OP.FRIENDLY,
+                                OP.LETS_PLAY,
+                                OP.DO_TRICK]):
             _handleGettingFriendlyAttention(avId)
         if phrase == OP.COME:
             _handleComeHere(avId)
@@ -539,8 +550,10 @@ class PetBrain(DirectObject.DirectObject, CPetBrain):
         excitement = 0.3
         if avId == self.pet.ownerId:
             excitement = 0.7
-        self.pet.lerpMoods({'excitement': 0.7,
-         'loneliness': -.4})
+        self.pet.lerpMoods({
+                               'excitement': 0.7,
+                               'loneliness': -.4
+                           })
         self._considerBecomeAwareOf(avId)
         return
 
@@ -550,7 +563,9 @@ class PetBrain(DirectObject.DirectObject, CPetBrain):
             PetBrain.notify.warning('av %s not in self.nearbyAvs' % avId)
             return
         del self.nearbyAvs[avId]
-        self.pet.lerpMoods({'loneliness': 0.1})
+        self.pet.lerpMoods({
+                               'loneliness': 0.1
+                           })
         self._removeAwarenessOf(avId)
 
     def _handleOwnerLeave(self):

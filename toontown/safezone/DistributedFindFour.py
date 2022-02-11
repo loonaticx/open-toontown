@@ -17,6 +17,7 @@ from otp.otpbase import OTPGlobals
 from direct.showbase import PythonUtil
 from random import *
 
+
 class DistributedFindFour(DistributedNode.DistributedNode):
 
     def __init__(self, cr):
@@ -27,47 +28,47 @@ class DistributedFindFour(DistributedNode.DistributedNode):
         self.boardNode = loader.loadModel('phase_6/models/golf/findfour_game.bam')
         self.boardNode.reparentTo(self)
         self.board = [[0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0],
-         [0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0],
-         [0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0],
-         [0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0],
-         [0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0],
-         [0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0]]
+                       0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0],
+                      [0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0],
+                      [0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0],
+                      [0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0],
+                      [0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0],
+                      [0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0]]
         self.exitButton = None
         self.inGame = False
         self.waiting = True
@@ -115,7 +116,11 @@ class DistributedFindFour(DistributedNode.DistributedNode):
         self.moveSound = base.loader.loadSfx('phase_6/audio/sfx/CC_move.ogg')
         self.accept('stoppedAsleep', self.handleSleep)
         from direct.fsm import ClassicFSM, State
-        self.fsm = ClassicFSM.ClassicFSM('ChineseCheckers', [State.State('waitingToBegin', self.enterWaitingToBegin, self.exitWaitingToBegin, ['playing', 'gameOver']), State.State('playing', self.enterPlaying, self.exitPlaying, ['gameOver']), State.State('gameOver', self.enterGameOver, self.exitGameOver, ['waitingToBegin'])], 'waitingToBegin', 'waitingToBegin')
+        self.fsm = ClassicFSM.ClassicFSM('ChineseCheckers', [
+            State.State('waitingToBegin', self.enterWaitingToBegin, self.exitWaitingToBegin, ['playing', 'gameOver']),
+            State.State('playing', self.enterPlaying, self.exitPlaying, ['gameOver']),
+            State.State('gameOver', self.enterGameOver, self.exitGameOver, ['waitingToBegin'])], 'waitingToBegin',
+                                         'waitingToBegin')
         startLoc = self.boardNode.find('**/locators')
         self.locatorList = startLoc.getChildren()
         self.startingPositions = self.locatorList.pop(0)
@@ -242,7 +247,8 @@ class DistributedFindFour(DistributedNode.DistributedNode):
         self.sendUpdate('requestTimer', [])
 
     def setTimer(self, timerEnd):
-        if self.fsm.getCurrentState() != None and self.fsm.getCurrentState().getName() == 'waitingToBegin' and not self.table.fsm.getCurrentState().getName() == 'observing':
+        if self.fsm.getCurrentState() != None and self.fsm.getCurrentState().getName() == 'waitingToBegin' and not \
+                self.table.fsm.getCurrentState().getName() == 'observing':
             self.clockNode.stop()
             time = globalClockDelta.networkToLocalTime(timerEnd)
             timeLeft = int(time - globalClock.getRealTime())
@@ -355,7 +361,11 @@ class DistributedFindFour(DistributedNode.DistributedNode):
         self.clockNode.reset()
 
     def enableExitButton(self):
-        self.exitButton = DirectButton(relief=None, text=TTLocalizer.ChineseCheckersGetUpButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -.23), text_scale=0.8, image=(self.upButton, self.downButton, self.rolloverButton), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(0.92, 0, 0.8), scale=0.15, command=lambda self = self: self.exitButtonPushed())
+        self.exitButton = DirectButton(relief = None, text = TTLocalizer.ChineseCheckersGetUpButton,
+                                       text_fg = (1, 1, 0.65, 1), text_pos = (0, -.23), text_scale = 0.8,
+                                       image = (self.upButton, self.downButton, self.rolloverButton),
+                                       image_color = (1, 0, 0, 1), image_scale = (20, 1, 11), pos = (0.92, 0, 0.8),
+                                       scale = 0.15, command = lambda self = self: self.exitButtonPushed())
         return
 
     def enableScreenText(self):
@@ -369,23 +379,32 @@ class DistributedFindFour(DistributedNode.DistributedNode):
         else:
             message = TTLocalizer.CheckersObserver
             color = Vec4(0, 0, 0, 1)
-        self.screenText = OnscreenText(text=message, pos=defaultPos, scale=0.1, fg=color, align=TextNode.ACenter, mayChange=1)
+        self.screenText = OnscreenText(text = message, pos = defaultPos, scale = 0.1, fg = color,
+                                       align = TextNode.ACenter, mayChange = 1)
 
     def enableStartButton(self):
-        self.startButton = DirectButton(relief=None, text=TTLocalizer.ChineseCheckersStartButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -.23), text_scale=0.6, image=(self.upButton, self.downButton, self.rolloverButton), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(0.92, 0, 0.57), scale=0.15, command=lambda self = self: self.startButtonPushed())
+        self.startButton = DirectButton(relief = None, text = TTLocalizer.ChineseCheckersStartButton,
+                                        text_fg = (1, 1, 0.65, 1), text_pos = (0, -.23), text_scale = 0.6,
+                                        image = (self.upButton, self.downButton, self.rolloverButton),
+                                        image_color = (1, 0, 0, 1), image_scale = (20, 1, 11), pos = (0.92, 0, 0.57),
+                                        scale = 0.15, command = lambda self = self: self.startButtonPushed())
         return
 
     def enableLeaveButton(self):
-        self.leaveButton = DirectButton(relief=None, text=TTLocalizer.ChineseCheckersQuitButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -.13), text_scale=0.5, image=(self.upButton, self.downButton, self.rolloverButton), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(0.92, 0, 0.8), scale=0.15, command=lambda self = self: self.exitButtonPushed())
+        self.leaveButton = DirectButton(relief = None, text = TTLocalizer.ChineseCheckersQuitButton,
+                                        text_fg = (1, 1, 0.65, 1), text_pos = (0, -.13), text_scale = 0.5,
+                                        image = (self.upButton, self.downButton, self.rolloverButton),
+                                        image_color = (1, 0, 0, 1), image_scale = (20, 1, 11), pos = (0.92, 0, 0.8),
+                                        scale = 0.15, command = lambda self = self: self.exitButtonPushed())
         return
 
     def enableTurnScreenText(self, player):
         playerOrder = [1,
-         4,
-         2,
-         5,
-         3,
-         6]
+                       4,
+                       2,
+                       5,
+                       3,
+                       6]
         message1 = TTLocalizer.CheckersIts
         if self.turnText != None:
             self.turnText.destroy()
@@ -398,7 +417,8 @@ class DistributedFindFour(DistributedNode.DistributedNode):
         elif player == 2:
             message2 = "Yellow's Turn"
             color = (1, 1, 0, 1)
-        self.turnText = OnscreenText(text=message1 + message2, pos=(-0.7, -0.39), scale=0.092, fg=color, align=TextNode.ACenter, mayChange=1)
+        self.turnText = OnscreenText(text = message1 + message2, pos = (-0.7, -0.39), scale = 0.092, fg = color,
+                                     align = TextNode.ACenter, mayChange = 1)
         return
 
     def startButtonPushed(self):
@@ -547,14 +567,22 @@ class DistributedFindFour(DistributedNode.DistributedNode):
             y = blinkList[2][1]
             val3 = x * 7 + y
             self.winningSequence = Sequence()
-            downBlinkerParallel = Parallel(LerpColorInterval(self.locatorList[val0], 0.3, Vec4(0.5, 0.5, 0.5, 0.5), Vec4(1, 1, 1, 1)), LerpColorInterval(self.locatorList[val1], 0.3, Vec4(0.5, 0.5, 0.5, 0.5), Vec4(1, 1, 1, 1)), LerpColorInterval(self.locatorList[val2], 0.3, Vec4(0.5, 0.5, 0.5, 0.5), Vec4(1, 1, 1, 1)), LerpColorInterval(self.locatorList[val3], 0.3, Vec4(0.5, 0.5, 0.5, 0.5), Vec4(1, 1, 1, 1)))
-            upBlinkerParallel = Parallel(LerpColorInterval(self.locatorList[val0], 0.3, Vec4(1, 1, 1, 1), Vec4(0.5, 0.5, 0.5, 0.5)), LerpColorInterval(self.locatorList[val1], 0.3, Vec4(1, 1, 1, 1), Vec4(0.5, 0.5, 0.5, 0.5)), LerpColorInterval(self.locatorList[val2], 0.3, Vec4(1, 1, 1, 1), Vec4(0.5, 0.5, 0.5, 0.5)), LerpColorInterval(self.locatorList[val3], 0.3, Vec4(1, 1, 1, 1), Vec4(0.5, 0.5, 0.5, 0.5)))
+            downBlinkerParallel = Parallel(
+                LerpColorInterval(self.locatorList[val0], 0.3, Vec4(0.5, 0.5, 0.5, 0.5), Vec4(1, 1, 1, 1)),
+                LerpColorInterval(self.locatorList[val1], 0.3, Vec4(0.5, 0.5, 0.5, 0.5), Vec4(1, 1, 1, 1)),
+                LerpColorInterval(self.locatorList[val2], 0.3, Vec4(0.5, 0.5, 0.5, 0.5), Vec4(1, 1, 1, 1)),
+                LerpColorInterval(self.locatorList[val3], 0.3, Vec4(0.5, 0.5, 0.5, 0.5), Vec4(1, 1, 1, 1)))
+            upBlinkerParallel = Parallel(
+                LerpColorInterval(self.locatorList[val0], 0.3, Vec4(1, 1, 1, 1), Vec4(0.5, 0.5, 0.5, 0.5)),
+                LerpColorInterval(self.locatorList[val1], 0.3, Vec4(1, 1, 1, 1), Vec4(0.5, 0.5, 0.5, 0.5)),
+                LerpColorInterval(self.locatorList[val2], 0.3, Vec4(1, 1, 1, 1), Vec4(0.5, 0.5, 0.5, 0.5)),
+                LerpColorInterval(self.locatorList[val3], 0.3, Vec4(1, 1, 1, 1), Vec4(0.5, 0.5, 0.5, 0.5)))
             self.winningSequence.append(downBlinkerParallel)
             self.winningSequence.append(upBlinkerParallel)
             self.winningSequence.loop()
 
     def tie(self):
-        self.tieSequence = Sequence(autoFinish=1)
+        self.tieSequence = Sequence(autoFinish = 1)
         self.clockNode.stop()
         self.clockNode.hide()
         self.isMyTurn = False
@@ -562,9 +590,12 @@ class DistributedFindFour(DistributedNode.DistributedNode):
         if self.turnText:
             self.turnText.hide()
         for x in range(41):
-            self.tieSequence.append(Parallel(LerpColorInterval(self.locatorList[x], 0.15, Vec4(0.5, 0.5, 0.5, 0.5), Vec4(1, 1, 1, 1)), LerpColorInterval(self.locatorList[x], 0.15, Vec4(1, 1, 1, 1), Vec4(0.5, 0.5, 0.5, 0.5))))
+            self.tieSequence.append(
+                Parallel(LerpColorInterval(self.locatorList[x], 0.15, Vec4(0.5, 0.5, 0.5, 0.5), Vec4(1, 1, 1, 1)),
+                         LerpColorInterval(self.locatorList[x], 0.15, Vec4(1, 1, 1, 1), Vec4(0.5, 0.5, 0.5, 0.5))))
 
-        whisper = WhisperPopup('This Find Four game has resulted in a Tie!', OTPGlobals.getInterfaceFont(), WhisperPopup.WTNormal)
+        whisper = WhisperPopup('This Find Four game has resulted in a Tie!', OTPGlobals.getInterfaceFont(),
+                               WhisperPopup.WTNormal)
         whisper.manage(base.marginManager)
         self.tieSequence.start()
 
@@ -587,7 +618,8 @@ class DistributedFindFour(DistributedNode.DistributedNode):
         self.moveSequence = Sequence()
         startPos = self.startingPositions[moveCol].getPos()
         arrayLoc = movePos * 7 + moveCol
-        self.moveSequence.append(LerpPosInterval(self.startingPositions[moveCol], 1.5, self.locatorList[arrayLoc].getPos(self), startPos))
+        self.moveSequence.append(
+            LerpPosInterval(self.startingPositions[moveCol], 1.5, self.locatorList[arrayLoc].getPos(self), startPos))
         self.moveSequence.append(Func(peice.hide))
         self.moveSequence.append(Func(self.startingPositions[moveCol].setPos, startPos))
         self.moveSequence.append(Func(self.updateGameState))

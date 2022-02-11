@@ -6,6 +6,7 @@ from otp.otpbase import OTPGlobals
 from direct.fsm import FSM
 import random
 
+
 class DistributedLawbotChairAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotChairAI')
 
@@ -122,7 +123,8 @@ class DistributedLawbotChairAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM)
         if self.changeToCogTask == None:
             if self.startCogFlyTask == None:
                 delayTime = random.randrange(9, 19)
-                self.startCogFlyTask = taskMgr.doMethodLater(delayTime, self.cogFlyAndSit, self.uniqueName('startCogFlyTask'))
+                self.startCogFlyTask = taskMgr.doMethodLater(delayTime, self.cogFlyAndSit,
+                                                             self.uniqueName('startCogFlyTask'))
         return
 
     def requestSuitJuror(self):
@@ -133,10 +135,11 @@ class DistributedLawbotChairAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM)
         delayTime = random.randrange(1, 20)
         self.startCogFlyTask = taskMgr.doMethodLater(delayTime, self.cogFlyAndSit, self.uniqueName('startCogFlyTask'))
 
-    def cogFlyAndSit(self, taskName=None):
+    def cogFlyAndSit(self, taskName = None):
         self.notify.debug('cogFlyAndSit')
         self.sendUpdate('showCogJurorFlying', [])
-        self.changeToCogTask = taskMgr.doMethodLater(ToontownGlobals.LawbotBossCogJurorFlightTime, self.changeToCogJuror, self.uniqueName('changeToCogJuror'))
+        self.changeToCogTask = taskMgr.doMethodLater(ToontownGlobals.LawbotBossCogJurorFlightTime,
+                                                     self.changeToCogJuror, self.uniqueName('changeToCogJuror'))
         if self.startCogFlyTask:
             self.startCogFlyTask = None
         return

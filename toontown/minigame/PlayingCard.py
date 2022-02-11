@@ -4,6 +4,7 @@ from direct.task import Task
 from toontown.toonbase import TTLocalizer
 from . import PlayingCardGlobals
 
+
 class PlayingCardBase:
 
     def __init__(self, value):
@@ -76,7 +77,7 @@ class PlayingCardButton(PlayingCardBase, DirectButton):
     def __init__(self, style, value):
         PlayingCardBase.__init__(self, value)
         self.style = style
-        DirectButton.__init__(self, relief=None)
+        DirectButton.__init__(self, relief = None)
         self.initialiseoptions(PlayingCardButton)
         self.bind(DGG.B1PRESS, self.dragStart)
         self.bind(DGG.B1RELEASE, self.dragStop)
@@ -107,7 +108,7 @@ class PlayingCardButton(PlayingCardBase, DirectButton):
 
     def dragStop(self, event):
         taskMgr.remove(self.taskName('dragTask'))
-        messenger.send('PlayingCardDrop', sentArgs=[self])
+        messenger.send('PlayingCardDrop', sentArgs = [self])
 
     def destroy(self):
         taskMgr.remove(self.taskName('dragTask'))

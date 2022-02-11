@@ -8,6 +8,7 @@ from direct.task import Task
 from toontown.safezone import ButterflyGlobals
 import random
 
+
 class DistributedButterflyAI(DistributedObjectAI.DistributedObjectAI):
 
     def __init__(self, air, playground, area, ownerId):
@@ -16,14 +17,15 @@ class DistributedButterflyAI(DistributedObjectAI.DistributedObjectAI):
         self.area = area
         self.ownerId = ownerId
         self.fsm = ClassicFSM.ClassicFSM('DistributedButterfliesAI', [
-         State.State('off', self.enterOff, self.exitOff, [
-          'Flying', 'Landed']),
-         State.State('Flying', self.enterFlying, self.exitFlying, [
-          'Landed']),
-         State.State('Landed', self.enterLanded, self.exitLanded, [
-          'Flying'])], 'off', 'off')
+            State.State('off', self.enterOff, self.exitOff, [
+                'Flying', 'Landed']),
+            State.State('Flying', self.enterFlying, self.exitFlying, [
+                'Landed']),
+            State.State('Landed', self.enterLanded, self.exitLanded, [
+                'Flying'])], 'off', 'off')
         self.fsm.enterInitialState()
-        self.curPos, self.curIndex, self.destPos, self.destIndex, self.time = ButterflyGlobals.getFirstRoute(self.playground, self.area, self.ownerId)
+        self.curPos, self.curIndex, self.destPos, self.destIndex, self.time = ButterflyGlobals.getFirstRoute(
+            self.playground, self.area, self.ownerId)
         return None
 
     def delete(self):
@@ -42,11 +44,11 @@ class DistributedButterflyAI(DistributedObjectAI.DistributedObjectAI):
 
     def getArea(self):
         return [
-         self.playground, self.area]
+            self.playground, self.area]
 
     def getState(self):
         return [
-         self.stateIndex, self.curIndex, self.destIndex, self.time, globalClockDelta.getRealNetworkTime()]
+            self.stateIndex, self.curIndex, self.destIndex, self.time, globalClockDelta.getRealNetworkTime()]
 
     def start(self):
         self.fsm.request('Flying')
@@ -91,7 +93,8 @@ class DistributedButterflyAI(DistributedObjectAI.DistributedObjectAI):
         taskMgr.remove(self.uniqueName('butter-ready'))
         return None
 
-    def __ready(self, task=None):
-        self.destPos, self.destIndex, self.time = ButterflyGlobals.getNextPos(self.curPos, self.playground, self.area, self.ownerId)
+    def __ready(self, task = None):
+        self.destPos, self.destIndex, self.time = ButterflyGlobals.getNextPos(self.curPos, self.playground, self.area,
+                                                                              self.ownerId)
         self.fsm.request('Flying')
         return Task.done

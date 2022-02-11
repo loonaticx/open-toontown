@@ -3,9 +3,12 @@ from otp.level import BasicEntities
 from . import MovingPlatform
 from pandac.PandaModules import Vec3
 
+
 class GearEntity(BasicEntities.NodePathEntity):
-    ModelPaths = {'factory': 'phase_9/models/cogHQ/FactoryGearB',
-     'mint': 'phase_10/models/cashbotHQ/MintGear'}
+    ModelPaths = {
+        'factory': 'phase_9/models/cogHQ/FactoryGearB',
+        'mint': 'phase_10/models/cashbotHQ/MintGear'
+    }
 
     def __init__(self, level, entId):
         self.modelType = 'factory'
@@ -75,7 +78,8 @@ class GearEntity(BasicEntities.NodePathEntity):
             if ivalDur < 0.0:
                 ivalDur = -ivalDur
                 hOffset = -hOffset
-            self.rotateIval = LerpHprInterval(self.model, ivalDur, Vec3(hOffset, 0, 0), startHpr=Vec3(0, 0, 0), name='gearRot-%s' % self.entId)
+            self.rotateIval = LerpHprInterval(self.model, ivalDur, Vec3(hOffset, 0, 0), startHpr = Vec3(0, 0, 0),
+                                              name = 'gearRot-%s' % self.entId)
             self.rotateIval.loop()
             self.rotateIval.setT(globalClock.getFrameTime() - self.level.startTime + ivalDur * self.phaseShift)
 

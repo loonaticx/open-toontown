@@ -4,11 +4,16 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
 
+
 class DistributedAnimatedProp(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
-        self.fsm = ClassicFSM.ClassicFSM('DistributedAnimatedProp', [State.State('off', self.enterOff, self.exitOff, ['playing', 'attract']), State.State('attract', self.enterAttract, self.exitAttract, ['playing']), State.State('playing', self.enterPlaying, self.exitPlaying, ['attract'])], 'off', 'off')
+        self.fsm = ClassicFSM.ClassicFSM('DistributedAnimatedProp',
+                                         [State.State('off', self.enterOff, self.exitOff, ['playing', 'attract']),
+                                          State.State('attract', self.enterAttract, self.exitAttract, ['playing']),
+                                          State.State('playing', self.enterPlaying, self.exitPlaying, ['attract'])],
+                                         'off', 'off')
         self.fsm.enterInitialState()
 
     def generate(self):

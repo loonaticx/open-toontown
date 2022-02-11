@@ -8,6 +8,7 @@ from toontown.coghq import MintRoomBase, LevelSuitPlannerAI
 from toontown.coghq import DistributedMintBattleAI
 from toontown.suit import DistributedMintSuitAI
 
+
 class DistributedMintRoomAI(DistributedLevelAI.DistributedLevelAI, MintRoomBase.MintRoomBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMintRoomAI')
 
@@ -21,7 +22,7 @@ class DistributedMintRoomAI(DistributedLevelAI.DistributedLevelAI, MintRoomBase.
         self.battleExpAggreg = battleExpAggreg
 
     def createEntityCreator(self):
-        return FactoryEntityCreatorAI.FactoryEntityCreatorAI(level=self)
+        return FactoryEntityCreatorAI.FactoryEntityCreatorAI(level = self)
 
     def getBattleCreditMultiplier(self):
         return ToontownBattleGlobals.getMintCreditMultiplier(self.mintId)
@@ -39,7 +40,12 @@ class DistributedMintRoomAI(DistributedLevelAI.DistributedLevelAI, MintRoomBase.
         DistributedLevelAI.DistributedLevelAI.generate(self, roomSpec)
         self.notify.debug('creating cogs')
         cogSpecModule = MintRoomSpecs.getCogSpecModule(self.roomId)
-        self.planner = LevelSuitPlannerAI.LevelSuitPlannerAI(self.air, self, DistributedMintSuitAI.DistributedMintSuitAI, DistributedMintBattleAI.DistributedMintBattleAI, cogSpecModule.CogData, cogSpecModule.ReserveCogData, cogSpecModule.BattleCells, battleExpAggreg=self.battleExpAggreg)
+        self.planner = LevelSuitPlannerAI.LevelSuitPlannerAI(self.air, self,
+                                                             DistributedMintSuitAI.DistributedMintSuitAI,
+                                                             DistributedMintBattleAI.DistributedMintBattleAI,
+                                                             cogSpecModule.CogData, cogSpecModule.ReserveCogData,
+                                                             cogSpecModule.BattleCells,
+                                                             battleExpAggreg = self.battleExpAggreg)
         suitHandles = self.planner.genSuits()
         messenger.send('plannerCreated-' + str(self.doId))
         self.suits = suitHandles['activeSuits']
@@ -61,7 +67,7 @@ class DistributedMintRoomAI(DistributedLevelAI.DistributedLevelAI, MintRoomBase.
                 suit.requestDelete()
 
         del self.battleExpAggreg
-        DistributedLevelAI.DistributedLevelAI.delete(self, deAllocZone=False)
+        DistributedLevelAI.DistributedLevelAI.delete(self, deAllocZone = False)
 
     def getMintId(self):
         return self.mintId

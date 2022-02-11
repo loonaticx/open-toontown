@@ -20,13 +20,15 @@ from .DistributedPartyActivity import DistributedPartyActivity
 from .activityFSMs import FireworksActivityFSM
 from . import PartyGlobals
 
+
 class DistributedPartyFireworksActivity(DistributedPartyActivity, FireworkShowMixin):
     notify = directNotify.newCategory('DistributedPartyFireworksActivity')
 
     def __init__(self, cr):
         DistributedPartyFireworksActivity.notify.debug('__init__')
-        DistributedPartyActivity.__init__(self, cr, ActivityIds.PartyFireworks, ActivityTypes.HostInitiated, wantLever=True)
-        FireworkShowMixin.__init__(self, restorePlaygroundMusic=True, startDelay=FireworksPostLaunchDelay)
+        DistributedPartyActivity.__init__(self, cr, ActivityIds.PartyFireworks, ActivityTypes.HostInitiated,
+                                          wantLever = True)
+        FireworkShowMixin.__init__(self, restorePlaygroundMusic = True, startDelay = FireworksPostLaunchDelay)
 
     def setEventId(self, eventId):
         DistributedPartyFireworksActivity.notify.debug('setEventId( %s )' % FireworkShows.getString(eventId))
@@ -53,7 +55,9 @@ class DistributedPartyFireworksActivity(DistributedPartyActivity, FireworkShowMi
         self.lever.reparentTo(leverLocator)
         self.toonPullingLeverInterval = None
         self.sign.reparentTo(self.launchPadModel.find('**/launchPad_sign_locator'))
-        self.rocketActor = Actor('phase_13/models/parties/rocket_model', {'launch': 'phase_13/models/parties/rocket_launch'})
+        self.rocketActor = Actor('phase_13/models/parties/rocket_model', {
+            'launch': 'phase_13/models/parties/rocket_launch'
+        })
         rocketLocator = self.launchPadModel.find('**/rocket_locator')
         self.rocketActor.reparentTo(rocketLocator)
         self.rocketActor.node().setBound(OmniBoundingVolume())
@@ -126,12 +130,16 @@ class DistributedPartyFireworksActivity(DistributedPartyActivity, FireworkShowMi
             self.startShow(self.eventId, self.showStyle, showStartTimestamp)
         else:
             self.rocketActor.play('launch')
-            self.rocketParticleSeq = Sequence(Wait(RocketSoundDelay), Func(base.playSfx, self.launchSound), Func(self.rocketExplosionEffect.start), Wait(RocketDirectionDelay), LerpHprInterval(self.rocketActor, 4.0, Vec3(0, 0, -60)), Func(self.rocketExplosionEffect.end), Func(self.rocketActor.hide))
+            self.rocketParticleSeq = Sequence(Wait(RocketSoundDelay), Func(base.playSfx, self.launchSound),
+                                              Func(self.rocketExplosionEffect.start), Wait(RocketDirectionDelay),
+                                              LerpHprInterval(self.rocketActor, 4.0, Vec3(0, 0, -60)),
+                                              Func(self.rocketExplosionEffect.end), Func(self.rocketActor.hide))
             self.rocketParticleSeq.start()
-            taskMgr.doMethodLater(FireworksPostLaunchDelay, self.startShow, self.taskName('delayedStartShow'), extraArgs=[self.eventId,
-             self.showStyle,
-             showStartTimestamp,
-             self.root])
+            taskMgr.doMethodLater(FireworksPostLaunchDelay, self.startShow, self.taskName('delayedStartShow'),
+                                  extraArgs = [self.eventId,
+                                               self.showStyle,
+                                               showStartTimestamp,
+                                               self.root])
 
     def finishActive(self):
         self.rocketParticleSeq = None

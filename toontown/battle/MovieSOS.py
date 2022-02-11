@@ -3,7 +3,9 @@ from . import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import TTLocalizer
 from pandac.PandaModules import *
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieSOS')
+
 
 def doSOSs(calls):
     if len(calls) == 0:

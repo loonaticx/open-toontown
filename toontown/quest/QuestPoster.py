@@ -16,88 +16,123 @@ from toontown.toontowngui.TeaserPanel import TeaserPanel
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toontowngui import TTDialog
 from otp.otpbase import OTPLocalizer
+
 IMAGE_SCALE_LARGE = 0.2
 IMAGE_SCALE_SMALL = 0.15
 POSTER_WIDTH = 0.7
 TEXT_SCALE = TTLocalizer.QPtextScale
 TEXT_WORDWRAP = TTLocalizer.QPtextWordwrap
 
+
 class QuestPoster(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('QuestPoster')
-    colors = {'white': (1,
-               1,
-               1,
-               1),
-     'blue': (0.45,
-              0.45,
-              0.8,
-              1),
-     'lightBlue': (0.42,
-                   0.671,
-                   1.0,
-                   1.0),
-     'green': (0.45,
-               0.8,
-               0.45,
-               1),
-     'lightGreen': (0.784,
-                    1,
-                    0.863,
-                    1),
-     'red': (0.8,
-             0.45,
-             0.45,
-             1),
-     'rewardRed': (0.8,
-                   0.3,
-                   0.3,
-                   1),
-     'brightRed': (1.0,
-                   0.16,
-                   0.16,
-                   1.0),
-     'brown': (0.52,
-               0.42,
-               0.22,
-               1)}
+    colors = {
+        'white': (1,
+                  1,
+                  1,
+                  1),
+        'blue': (0.45,
+                 0.45,
+                 0.8,
+                 1),
+        'lightBlue': (0.42,
+                      0.671,
+                      1.0,
+                      1.0),
+        'green': (0.45,
+                  0.8,
+                  0.45,
+                  1),
+        'lightGreen': (0.784,
+                       1,
+                       0.863,
+                       1),
+        'red': (0.8,
+                0.45,
+                0.45,
+                1),
+        'rewardRed': (0.8,
+                      0.3,
+                      0.3,
+                      1),
+        'brightRed': (1.0,
+                      0.16,
+                      0.16,
+                      1.0),
+        'brown': (0.52,
+                  0.42,
+                  0.22,
+                  1)
+    }
     normalTextColor = (0.3,
-     0.25,
-     0.2,
-     1)
+                       0.25,
+                       0.2,
+                       1)
     confirmDeleteButtonEvent = 'confirmDeleteButtonEvent'
 
     def __init__(self, parent = aspect2d, **kw):
         bookModel = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
         questCard = bookModel.find('**/questCard')
         optiondefs = (('relief', None, None),
-         ('image', questCard, None),
-         ('image_scale', (0.8, 1.0, 0.58), None),
-         ('state', DGG.NORMAL, None))
+                      ('image', questCard, None),
+                      ('image_scale', (0.8, 1.0, 0.58), None),
+                      ('state', DGG.NORMAL, None))
         self.defineoptions(kw, optiondefs)
-        DirectFrame.__init__(self, relief=None)
+        DirectFrame.__init__(self, relief = None)
         self.initialiseoptions(QuestPoster)
         self._deleteCallback = None
-        self.questFrame = DirectFrame(parent=self, relief=None)
-        self.headline = DirectLabel(parent=self.questFrame, relief=None, text='', text_font=ToontownGlobals.getMinnieFont(), text_fg=self.normalTextColor, text_scale=0.05, text_align=TextNode.ACenter, text_wordwrap=12.0, textMayChange=1, pos=(0, 0, 0.23))
-        self.questInfo = DirectLabel(parent=self.questFrame, relief=None, text='', text_fg=self.normalTextColor, text_scale=TEXT_SCALE, text_align=TextNode.ACenter, text_wordwrap=TEXT_WORDWRAP, textMayChange=1, pos=(0, 0, -0.0625))
-        self.rewardText = DirectLabel(parent=self.questFrame, relief=None, text='', text_fg=self.colors['rewardRed'], text_scale=0.0425, text_align=TextNode.ALeft, text_wordwrap=17.0, textMayChange=1, pos=(-0.36, 0, -0.26))
+        self.questFrame = DirectFrame(parent = self, relief = None)
+        self.headline = DirectLabel(parent = self.questFrame, relief = None, text = '',
+                                    text_font = ToontownGlobals.getMinnieFont(), text_fg = self.normalTextColor,
+                                    text_scale = 0.05, text_align = TextNode.ACenter, text_wordwrap = 12.0,
+                                    textMayChange = 1, pos = (0, 0, 0.23))
+        self.questInfo = DirectLabel(parent = self.questFrame, relief = None, text = '', text_fg = self.normalTextColor,
+                                     text_scale = TEXT_SCALE, text_align = TextNode.ACenter,
+                                     text_wordwrap = TEXT_WORDWRAP, textMayChange = 1, pos = (0, 0, -0.0625))
+        self.rewardText = DirectLabel(parent = self.questFrame, relief = None, text = '',
+                                      text_fg = self.colors['rewardRed'], text_scale = 0.0425,
+                                      text_align = TextNode.ALeft, text_wordwrap = 17.0, textMayChange = 1,
+                                      pos = (-0.36, 0, -0.26))
         self.rewardText.hide()
-        self.lPictureFrame = DirectFrame(parent=self.questFrame, relief=None, image=bookModel.find('**/questPictureFrame'), image_scale=IMAGE_SCALE_SMALL, text='', text_pos=(0, -0.11), text_fg=self.normalTextColor, text_scale=TEXT_SCALE, text_align=TextNode.ACenter, text_wordwrap=11.0, textMayChange=1)
+        self.lPictureFrame = DirectFrame(parent = self.questFrame, relief = None,
+                                         image = bookModel.find('**/questPictureFrame'),
+                                         image_scale = IMAGE_SCALE_SMALL, text = '', text_pos = (0, -0.11),
+                                         text_fg = self.normalTextColor, text_scale = TEXT_SCALE,
+                                         text_align = TextNode.ACenter, text_wordwrap = 11.0, textMayChange = 1)
         self.lPictureFrame.hide()
-        self.rPictureFrame = DirectFrame(parent=self.questFrame, relief=None, image=bookModel.find('**/questPictureFrame'), image_scale=IMAGE_SCALE_SMALL, text='', text_pos=(0, -0.11), text_fg=self.normalTextColor, text_scale=TEXT_SCALE, text_align=TextNode.ACenter, text_wordwrap=11.0, textMayChange=1, pos=(0.18, 0, 0.13))
+        self.rPictureFrame = DirectFrame(parent = self.questFrame, relief = None,
+                                         image = bookModel.find('**/questPictureFrame'),
+                                         image_scale = IMAGE_SCALE_SMALL, text = '', text_pos = (0, -0.11),
+                                         text_fg = self.normalTextColor, text_scale = TEXT_SCALE,
+                                         text_align = TextNode.ACenter, text_wordwrap = 11.0, textMayChange = 1,
+                                         pos = (0.18, 0, 0.13))
         self.rPictureFrame.hide()
-        self.lQuestIcon = DirectFrame(parent=self.lPictureFrame, relief=None, text=' ', text_font=ToontownGlobals.getSuitFont(), text_pos=(0, -0.03), text_fg=self.normalTextColor, text_scale=0.13, text_align=TextNode.ACenter, text_wordwrap=13.0, textMayChange=1)
+        self.lQuestIcon = DirectFrame(parent = self.lPictureFrame, relief = None, text = ' ',
+                                      text_font = ToontownGlobals.getSuitFont(), text_pos = (0, -0.03),
+                                      text_fg = self.normalTextColor, text_scale = 0.13, text_align = TextNode.ACenter,
+                                      text_wordwrap = 13.0, textMayChange = 1)
         self.lQuestIcon.setColorOff(-1)
-        self.rQuestIcon = DirectFrame(parent=self.rPictureFrame, relief=None, text=' ', text_font=ToontownGlobals.getSuitFont(), text_pos=(0, -0.03), text_fg=self.normalTextColor, text_scale=0.13, text_align=TextNode.ACenter, text_wordwrap=13.0, textMayChange=1)
+        self.rQuestIcon = DirectFrame(parent = self.rPictureFrame, relief = None, text = ' ',
+                                      text_font = ToontownGlobals.getSuitFont(), text_pos = (0, -0.03),
+                                      text_fg = self.normalTextColor, text_scale = 0.13, text_align = TextNode.ACenter,
+                                      text_wordwrap = 13.0, textMayChange = 1)
         self.rQuestIcon.setColorOff(-1)
-        self.auxText = DirectLabel(parent=self.questFrame, relief=None, text='', text_scale=TTLocalizer.QPauxText, text_fg=self.normalTextColor, text_align=TextNode.ACenter, textMayChange=1)
+        self.auxText = DirectLabel(parent = self.questFrame, relief = None, text = '',
+                                   text_scale = TTLocalizer.QPauxText, text_fg = self.normalTextColor,
+                                   text_align = TextNode.ACenter, textMayChange = 1)
         self.auxText.hide()
-        self.questProgress = DirectWaitBar(parent=self.questFrame, relief=DGG.SUNKEN, frameSize=(-0.95,
-         0.95,
-         -0.1,
-         0.12), borderWidth=(0.025, 0.025), scale=0.2, frameColor=(0.945, 0.875, 0.706, 1.0), barColor=(0.5, 0.7, 0.5, 1), text='0/0', text_scale=0.19, text_fg=(0.05, 0.14, 0.4, 1), text_align=TextNode.ACenter, text_pos=(0, -0.04), pos=(0, 0, -0.195))
+        self.questProgress = DirectWaitBar(parent = self.questFrame, relief = DGG.SUNKEN, frameSize = (-0.95,
+                                                                                                       0.95,
+                                                                                                       -0.1,
+                                                                                                       0.12),
+                                           borderWidth = (0.025, 0.025), scale = 0.2,
+                                           frameColor = (0.945, 0.875, 0.706, 1.0), barColor = (0.5, 0.7, 0.5, 1),
+                                           text = '0/0', text_scale = 0.19, text_fg = (0.05, 0.14, 0.4, 1),
+                                           text_align = TextNode.ACenter, text_pos = (0, -0.04), pos = (0, 0, -0.195))
         self.questProgress.hide()
-        self.funQuest = DirectLabel(parent=self.questFrame, relief=None, text=TTLocalizer.QuestPosterFun, text_fg=(0.0, 0.439, 1.0, 1.0), text_shadow=(0, 0, 0, 1), pos=(-0.2825, 0, 0.2), scale=0.03)
+        self.funQuest = DirectLabel(parent = self.questFrame, relief = None, text = TTLocalizer.QuestPosterFun,
+                                    text_fg = (0.0, 0.439, 1.0, 1.0), text_shadow = (0, 0, 0, 1),
+                                    pos = (-0.2825, 0, 0.2), scale = 0.03)
         self.funQuest.setR(-30)
         self.funQuest.hide()
         bookModel.removeNode()
@@ -137,8 +172,8 @@ class QuestPoster(DirectFrame):
         dna = ToonDNA.ToonDNA()
         dna.newToonFromProperties(*dnaList)
         head = ToonHead.ToonHead()
-        head.setupHead(dna, forGui=1)
-        self.fitGeometry(head, fFlip=1)
+        head.setupHead(dna, forGui = 1)
+        self.fitGeometry(head, fFlip = 1)
         return head
 
     def createLaffMeter(self, hp):
@@ -158,7 +193,7 @@ class QuestPoster(DirectFrame):
             copyPart.setDepthTest(1)
             copyPart.setDepthWrite(1)
 
-        self.fitGeometry(head, fFlip=1)
+        self.fitGeometry(head, fFlip = 1)
         suit.delete()
         suit = None
         return head
@@ -167,10 +202,10 @@ class QuestPoster(DirectFrame):
         elevatorNodePath = hidden.attachNewNode('elevatorNodePath')
         elevatorModel = loader.loadModel('phase_4/models/modules/elevator')
         floorIndicator = [None,
-         None,
-         None,
-         None,
-         None]
+                          None,
+                          None,
+                          None,
+                          None]
         npc = elevatorModel.findAllMatches('**/floor_light_?;+s')
         for i in range(npc.getNumPaths()):
             np = npc.getPath(i)
@@ -237,24 +272,29 @@ class QuestPoster(DirectFrame):
 
     def showChoicePoster(self, questId, fromNpcId, toNpcId, rewardId, callback):
         self.update((questId,
-         fromNpcId,
-         toNpcId,
-         rewardId,
-         0))
+                     fromNpcId,
+                     toNpcId,
+                     rewardId,
+                     0))
         quest = Quests.getQuest(questId)
         self.rewardText.show()
         self.rewardText.setZ(-0.205)
         self.questProgress.hide()
         if not hasattr(self, 'chooseButton'):
             guiButton = loader.loadModel('phase_3/models/gui/quit_button')
-            self.chooseButton = DirectButton(parent=self.questFrame, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=(0.7, 1, 1), text=TTLocalizer.QuestPageChoose, text_scale=0.06, text_pos=(0, -0.02), pos=(0.285, 0, 0.245), scale=0.65)
+            self.chooseButton = DirectButton(parent = self.questFrame, relief = None, image = (
+            guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')),
+                                             image_scale = (0.7, 1, 1), text = TTLocalizer.QuestPageChoose,
+                                             text_scale = 0.06, text_pos = (0, -0.02), pos = (0.285, 0, 0.245),
+                                             scale = 0.65)
             guiButton.removeNode()
         npcZone = NPCToons.getNPCZone(toNpcId)
         hoodId = ZoneUtil.getCanonicalHoodId(npcZone)
-        if not base.cr.isPaid() and (questId == 401 or hasattr(quest, 'getLocation') and quest.getLocation() == 1000 or hoodId == 1000):
+        if not base.cr.isPaid() and (
+                questId == 401 or hasattr(quest, 'getLocation') and quest.getLocation() == 1000 or hoodId == 1000):
 
             def showTeaserPanel():
-                TeaserPanel(pageName='getGags')
+                TeaserPanel(pageName = 'getGags')
 
             self.chooseButton['command'] = showTeaserPanel
         else:
@@ -273,7 +313,7 @@ class QuestPoster(DirectFrame):
             self.notify.warning('Tried to display poster for unknown quest %s' % questId)
             return
         if rewardId == Quests.NA:
-            finalReward = Quests.getFinalRewardId(questId, fAll=1)
+            finalReward = Quests.getFinalRewardId(questId, fAll = 1)
             transformedReward = Quests.transformReward(finalReward, base.localAvatar)
             reward = Quests.getReward(transformedReward)
         else:
@@ -409,9 +449,9 @@ class QuestPoster(DirectFrame):
                 lPos.setX(-0.18)
                 rIconGeom = invModel.find('**/' + AvPropsNew[track2][1])
                 infoText = TTLocalizer.QuestPageNameAndDestination % (toNpcName,
-                 toNpcBuildingName,
-                 toNpcStreetName,
-                 toNpcLocationName)
+                                                                      toNpcBuildingName,
+                                                                      toNpcStreetName,
+                                                                      toNpcLocationName)
                 infoZ = -0.02
             invModel.removeNode()
         elif quest.getType() == Quests.BuildingQuest:
@@ -433,7 +473,7 @@ class QuestPoster(DirectFrame):
             if lIconGeom and track != Quests.Any:
                 self.loadElevator(lIconGeom, numFloors)
                 lIconGeom.setH(180)
-                self.fitGeometry(lIconGeom, fFlip=0)
+                self.fitGeometry(lIconGeom, fFlip = 0)
                 lIconGeomScale = IMAGE_SCALE_SMALL
             else:
                 lIconGeomScale = 0.13
@@ -460,7 +500,7 @@ class QuestPoster(DirectFrame):
             if rIconGeom and track != Quests.Any:
                 self.loadElevator(rIconGeom, numFloors)
                 rIconGeom.setH(180)
-                self.fitGeometry(rIconGeom, fFlip=0)
+                self.fitGeometry(rIconGeom, fFlip = 0)
                 rIconGeomScale = IMAGE_SCALE_SMALL
             else:
                 rIconGeomScale = 0.13
@@ -945,7 +985,13 @@ class QuestPoster(DirectFrame):
     def showDeleteButton(self, questDesc):
         self.hideDeleteButton()
         trashcanGui = loader.loadModel('phase_3/models/gui/trashcan_gui')
-        self.deleteButton = DirectButton(parent=self.questFrame, image=(trashcanGui.find('**/TrashCan_CLSD'), trashcanGui.find('**/TrashCan_OPEN'), trashcanGui.find('**/TrashCan_RLVR')), text=('', TTLocalizer.QuestPosterDeleteBtn, TTLocalizer.QuestPosterDeleteBtn), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=0.18, text_pos=(0, -0.12), relief=None, pos=(0.3, 0, 0.145), scale=0.3, command=self.onPressedDeleteButton, extraArgs=[questDesc])
+        self.deleteButton = DirectButton(parent = self.questFrame, image = (
+        trashcanGui.find('**/TrashCan_CLSD'), trashcanGui.find('**/TrashCan_OPEN'),
+        trashcanGui.find('**/TrashCan_RLVR')), text = (
+        '', TTLocalizer.QuestPosterDeleteBtn, TTLocalizer.QuestPosterDeleteBtn), text_fg = (1, 1, 1, 1),
+                                         text_shadow = (0, 0, 0, 1), text_scale = 0.18, text_pos = (0, -0.12),
+                                         relief = None, pos = (0.3, 0, 0.145), scale = 0.3,
+                                         command = self.onPressedDeleteButton, extraArgs = [questDesc])
         trashcanGui.removeNode()
         return
 
@@ -960,7 +1006,11 @@ class QuestPoster(DirectFrame):
     def onPressedDeleteButton(self, questDesc):
         self.deleteButton['state'] = DGG.DISABLED
         self.accept(self.confirmDeleteButtonEvent, self.confirmedDeleteButton)
-        self.confirmDeleteButton = TTDialog.TTGlobalDialog(doneEvent=self.confirmDeleteButtonEvent, message=TTLocalizer.QuestPosterConfirmDelete, style=TTDialog.YesNo, okButtonText=TTLocalizer.QuestPosterDialogYes, cancelButtonText=TTLocalizer.QuestPosterDialogNo)
+        self.confirmDeleteButton = TTDialog.TTGlobalDialog(doneEvent = self.confirmDeleteButtonEvent,
+                                                           message = TTLocalizer.QuestPosterConfirmDelete,
+                                                           style = TTDialog.YesNo,
+                                                           okButtonText = TTLocalizer.QuestPosterDialogYes,
+                                                           cancelButtonText = TTLocalizer.QuestPosterDialogNo)
         self.confirmDeleteButton.quest = questDesc
         self.confirmDeleteButton.doneStatus = ''
         self.confirmDeleteButton.show()

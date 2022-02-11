@@ -10,6 +10,7 @@ from toontown.toonbase import ToontownGlobals
 from otp.level import LevelConstants
 from toontown.distributed.DelayDeletable import DelayDeletable
 
+
 class DistributedFactorySuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactorySuit')
 
@@ -19,12 +20,18 @@ class DistributedFactorySuit(DistributedSuitBase.DistributedSuitBase, DelayDelet
         except:
             self.DistributedSuit_initialized = 1
             DistributedSuitBase.DistributedSuitBase.__init__(self, cr)
-            self.fsm = ClassicFSM.ClassicFSM('DistributedSuit', [State.State('Off', self.enterOff, self.exitOff, ['Walk', 'Battle']),
-             State.State('Walk', self.enterWalk, self.exitWalk, ['WaitForBattle', 'Battle', 'Chase']),
-             State.State('Chase', self.enterChase, self.exitChase, ['WaitForBattle', 'Battle', 'Return']),
-             State.State('Return', self.enterReturn, self.exitReturn, ['WaitForBattle', 'Battle', 'Walk']),
-             State.State('Battle', self.enterBattle, self.exitBattle, ['Walk', 'Chase', 'Return']),
-             State.State('WaitForBattle', self.enterWaitForBattle, self.exitWaitForBattle, ['Battle'])], 'Off', 'Off')
+            self.fsm = ClassicFSM.ClassicFSM('DistributedSuit',
+                                             [State.State('Off', self.enterOff, self.exitOff, ['Walk', 'Battle']),
+                                              State.State('Walk', self.enterWalk, self.exitWalk,
+                                                          ['WaitForBattle', 'Battle', 'Chase']),
+                                              State.State('Chase', self.enterChase, self.exitChase,
+                                                          ['WaitForBattle', 'Battle', 'Return']),
+                                              State.State('Return', self.enterReturn, self.exitReturn,
+                                                          ['WaitForBattle', 'Battle', 'Walk']),
+                                              State.State('Battle', self.enterBattle, self.exitBattle,
+                                                          ['Walk', 'Chase', 'Return']),
+                                              State.State('WaitForBattle', self.enterWaitForBattle,
+                                                          self.exitWaitForBattle, ['Battle'])], 'Off', 'Off')
             self.path = None
             self.walkTrack = None
             self.chaseTrack = None
@@ -137,13 +144,13 @@ class DistributedFactorySuit(DistributedSuitBase.DistributedSuitBase, DelayDelet
 
     def d_requestBattle(self, pos, hpr):
         self.cr.playGame.getPlace().setState('WaitForBattle')
-        self.factory.lockVisibility(zoneNum=self.factory.getEntityZoneEntId(self.spec['parentEntId']))
+        self.factory.lockVisibility(zoneNum = self.factory.getEntityZoneEntId(self.spec['parentEntId']))
         self.sendUpdate('requestBattle', [pos[0],
-         pos[1],
-         pos[2],
-         hpr[0],
-         hpr[1],
-         hpr[2]])
+                                          pos[1],
+                                          pos[2],
+                                          hpr[0],
+                                          hpr[1],
+                                          hpr[2]])
 
     def handleBattleBlockerCollision(self):
         self.__handleToonCollision(None)
@@ -296,7 +303,7 @@ class DistributedFactorySuit(DistributedSuitBase.DistributedSuitBase, DelayDelet
         track = Sequence(Func(self.headsUp, targetPos[0], targetPos[1], targetPos[2]), Func(self.loop, 'walk', 0))
         chaseSpeed = 4.0
         duration = distance / chaseSpeed
-        track.extend([LerpPosInterval(self, duration=duration, pos=Point3(targetPos), startPos=Point3(suitPos))])
+        track.extend([LerpPosInterval(self, duration = duration, pos = Point3(targetPos), startPos = Point3(suitPos))])
         self.chaseTrack = track
         self.chaseTrack.start()
         self.startChaseTask(1.0)
@@ -348,7 +355,7 @@ class DistributedFactorySuit(DistributedSuitBase.DistributedSuitBase, DelayDelet
         curPos = self.getPos()
         distance = Vec3(curPos - targetPos).length()
         duration = distance / 3.0
-        track.append(LerpPosInterval(self, duration=duration, pos=Point3(targetPos), startPos=Point3(curPos)))
+        track.append(LerpPosInterval(self, duration = duration, pos = Point3(targetPos), startPos = Point3(curPos)))
         track.append(Func(self.returnDone))
         self.returnTrack = track
         self.returnTrack.start()

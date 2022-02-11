@@ -1,7 +1,9 @@
-from pandac.PandaModules import NodePath, BillboardEffect, Vec3, Point3, TextureStage, TransparencyAttrib, DecalEffect, VBase4
+from pandac.PandaModules import NodePath, BillboardEffect, Vec3, Point3, TextureStage, TransparencyAttrib, \
+    DecalEffect, VBase4
 from direct.fsm import FSM
 from direct.gui.DirectGui import DirectFrame, DGG
 from direct.interval.IntervalGlobal import LerpScaleInterval, LerpColorScaleInterval, Parallel, Sequence, Wait
+
 
 class DinerStatusIndicator(NodePath, FSM.FSM):
 
@@ -100,14 +102,16 @@ class DinerStatusIndicator(NodePath, FSM.FSM):
         pass
 
     def createMeterInterval(self, icon, meter, time):
-        ivalDarkness = LerpScaleInterval(meter, time, scale=Vec3(1, 1, 1), startScale=Vec3(1, 0.001, 0.001))
+        ivalDarkness = LerpScaleInterval(meter, time, scale = Vec3(1, 1, 1), startScale = Vec3(1, 0.001, 0.001))
         flashingTrack = Sequence()
         flashDuration = 10
         if time > flashDuration:
             flashingTrack.append(Wait(time - flashDuration))
             for i in range(10):
-                flashingTrack.append(Parallel(LerpColorScaleInterval(icon, 0.5, VBase4(1, 0, 0, 1)), icon.scaleInterval(0.5, 1.25)))
-                flashingTrack.append(Parallel(LerpColorScaleInterval(icon, 0.5, VBase4(1, 1, 1, 1)), icon.scaleInterval(0.5, 1)))
+                flashingTrack.append(
+                    Parallel(LerpColorScaleInterval(icon, 0.5, VBase4(1, 0, 0, 1)), icon.scaleInterval(0.5, 1.25)))
+                flashingTrack.append(
+                    Parallel(LerpColorScaleInterval(icon, 0.5, VBase4(1, 1, 1, 1)), icon.scaleInterval(0.5, 1)))
 
         retIval = Parallel(ivalDarkness, flashingTrack)
         return retIval

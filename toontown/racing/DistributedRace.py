@@ -29,6 +29,7 @@ from toontown.racing import Piejectile
 from toontown.racing import EffectManager
 from toontown.racing import PiejectileManager
 
+
 class DistributedRace(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRace')
     ReadyPost = 'RaceReady'
@@ -46,13 +47,20 @@ class DistributedRace(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.__init__(self, cr)
         self.kartMap = {}
         self.fsm = ClassicFSM.ClassicFSM('Race', [State.State('join', self.enterJoin, self.exitJoin, ['prep', 'leave']),
-         State.State('prep', self.enterPrep, self.exitPrep, ['tutorial', 'leave']),
-         State.State('tutorial', self.enterTutorial, self.exitTutorial, ['start', 'waiting', 'leave']),
-         State.State('waiting', self.enterWaiting, self.exitWaiting, ['start', 'leave']),
-         State.State('start', self.enterStart, self.exitStart, ['racing', 'leave']),
-         State.State('racing', self.enterRacing, self.exitRacing, ['finished', 'leave']),
-         State.State('finished', self.enterFinished, self.exitFinished, ['leave']),
-         State.State('leave', self.enterLeave, self.exitLeave, [])], 'join', 'leave')
+                                                  State.State('prep', self.enterPrep, self.exitPrep,
+                                                              ['tutorial', 'leave']),
+                                                  State.State('tutorial', self.enterTutorial, self.exitTutorial,
+                                                              ['start', 'waiting', 'leave']),
+                                                  State.State('waiting', self.enterWaiting, self.exitWaiting,
+                                                              ['start', 'leave']),
+                                                  State.State('start', self.enterStart, self.exitStart,
+                                                              ['racing', 'leave']),
+                                                  State.State('racing', self.enterRacing, self.exitRacing,
+                                                              ['finished', 'leave']),
+                                                  State.State('finished', self.enterFinished, self.exitFinished,
+                                                              ['leave']),
+                                                  State.State('leave', self.enterLeave, self.exitLeave, [])], 'join',
+                                         'leave')
         self.gui = RaceGUI(self)
         base.race = self
         self.currT = 0
@@ -108,12 +116,12 @@ class DistributedRace(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.announceGenerate(self)
         musicFile = self.BGM_BaseDir + RaceGlobals.TrackDict[self.trackId][7]
         self.raceMusic = base.loader.loadMusic(musicFile)
-        base.playMusic(self.raceMusic, looping=1, volume=0.8)
+        base.playMusic(self.raceMusic, looping = 1, volume = 0.8)
         camera.reparentTo(render)
         if self.trackId in (RaceGlobals.RT_Urban_1,
-         RaceGlobals.RT_Urban_1_rev,
-         RaceGlobals.RT_Urban_2,
-         RaceGlobals.RT_Urban_2_rev):
+                            RaceGlobals.RT_Urban_1_rev,
+                            RaceGlobals.RT_Urban_2,
+                            RaceGlobals.RT_Urban_2_rev):
             self.isUrbanTrack = True
         self.oldFarPlane = base.camLens.getFar()
         base.camLens.setFar(12000)
@@ -129,9 +137,9 @@ class DistributedRace(DistributedObject.DistributedObject):
         self.sky.setScale(20.0)
         self.sky.setFogOff()
         if self.trackId in (RaceGlobals.RT_Urban_1,
-         RaceGlobals.RT_Urban_1_rev,
-         RaceGlobals.RT_Urban_2,
-         RaceGlobals.RT_Urban_2_rev):
+                            RaceGlobals.RT_Urban_1_rev,
+                            RaceGlobals.RT_Urban_2,
+                            RaceGlobals.RT_Urban_2_rev):
             self.loadFog()
         self.setupGeom()
         self.startSky()
@@ -219,7 +227,7 @@ class DistributedRace(DistributedObject.DistributedObject):
             kart = base.cr.doId2do.get(self.kartMap.get(avId, None), None)
             self.avIds.remove(avId)
             del self.kartMap[avId]
-            self.gui.racerLeft(avId, unexpected=True)
+            self.gui.racerLeft(avId, unexpected = True)
             if kart:
                 kart.reparentTo(hidden)
             if toon:
@@ -228,7 +236,8 @@ class DistributedRace(DistributedObject.DistributedObject):
                 self.doneBarrier('waitingForPrep')
         return
 
-    def setPlace(self, avId, totalTime, place, entryFee, qualify, winnings, bonus, trophies, circuitPoints, circuitTime):
+    def setPlace(self, avId, totalTime, place, entryFee, qualify, winnings, bonus, trophies, circuitPoints,
+                 circuitTime):
         if self.fsm.getCurrentState().getName() == 'leaving':
             return
         if avId == localAvatar.doId:
@@ -241,13 +250,14 @@ class DistributedRace(DistributedObject.DistributedObject):
         kart = base.cr.doId2do.get(self.kartMap.get(avId, None), None)
         avatar = base.cr.doId2do.get(avId, None)
         if avatar:
-            self.gui.racerFinished(avId, self.trackId, place, totalTime, entryFee, qualify, winnings, bonus, trophies, circuitPoints, circuitTime)
+            self.gui.racerFinished(avId, self.trackId, place, totalTime, entryFee, qualify, winnings, bonus, trophies,
+                                   circuitPoints, circuitTime)
             taskName = 'hideAv: %s' % avId
-            taskMgr.doMethodLater(6, avatar.reparentTo, taskName, extraArgs=[hidden])
+            taskMgr.doMethodLater(6, avatar.reparentTo, taskName, extraArgs = [hidden])
             self.miscTaskNames.append(taskName)
         if kart:
             taskName = 'hideKart: %s' % self.localKart.doId
-            taskMgr.doMethodLater(6, kart.reparentTo, taskName, extraArgs=[hidden])
+            taskMgr.doMethodLater(6, kart.reparentTo, taskName, extraArgs = [hidden])
             self.miscTaskNames.append(taskName)
         return
 
@@ -313,14 +323,16 @@ class DistributedRace(DistributedObject.DistributedObject):
             self.kartCleanup()
             self.doneBarrier('waitingForExit')
             self.sendUpdate('racerLeft', [localAvatar.doId])
-            out = {'loader': 'safeZoneLoader',
-             'where': 'playground',
-             'how': 'teleportIn',
-             'hoodId': localAvatar.lastHood,
-             'zoneId': localAvatar.lastHood,
-             'shardId': None,
-             'avId': -1,
-             'reason': reason}
+            out = {
+                'loader': 'safeZoneLoader',
+                'where': 'playground',
+                'how': 'teleportIn',
+                'hoodId': localAvatar.lastHood,
+                'zoneId': localAvatar.lastHood,
+                'shardId': None,
+                'avId': -1,
+                'reason': reason
+            }
             base.cr.playGame.fsm.request('quietZone', [out])
         return
 
@@ -343,7 +355,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         return
 
     def heresMyT(self, avId, avNumLaps, avTime, timestamp):
-        self.gui.updateRacerInfo(avId, curvetime=avNumLaps + avTime)
+        self.gui.updateRacerInfo(avId, curvetime = avNumLaps + avTime)
 
     def setZoneId(self, zoneId):
         self.zoneId = zoneId
@@ -400,7 +412,7 @@ class DistributedRace(DistributedObject.DistributedObject):
 
         self.toonsToLink = list(self.avIds)
         for i in avAndKarts:
-            self.cr.relatedObjectMgr.requestObjects(i, allCallback=self.__gotKartAvatarLink)
+            self.cr.relatedObjectMgr.requestObjects(i, allCallback = self.__gotKartAvatarLink)
 
     def __gotKartAvatarLink(self, avAndKart):
         self.notify.debug('got a Link')
@@ -445,7 +457,8 @@ class DistributedRace(DistributedObject.DistributedObject):
         base.transitions.irisIn()
         self.rulesDoneEvent = 'finishedRules'
         self.accept(self.rulesDoneEvent, self.handleRulesDone)
-        self.rulesPanel = MinigameRulesPanel.MinigameRulesPanel('RacingRulesPanel', self.getTitle(), self.getInstructions(), self.rulesDoneEvent, 10)
+        self.rulesPanel = MinigameRulesPanel.MinigameRulesPanel('RacingRulesPanel', self.getTitle(),
+                                                                self.getInstructions(), self.rulesDoneEvent, 10)
         self.rulesPanel.load()
         self.rulesPanel.frame.setPos(0, 0, -0.6667)
         self.rulesPanel.enter()
@@ -477,13 +490,13 @@ class DistributedRace(DistributedObject.DistributedObject):
     def enterStart(self):
         waitTime = self.baseTime - globalClock.getFrameTime()
         taskName = 'enableRaceModeLater'
-        taskMgr.doMethodLater(1, self.gui.enableRaceMode, taskName, extraArgs=[])
+        taskMgr.doMethodLater(1, self.gui.enableRaceMode, taskName, extraArgs = [])
         self.miscTaskNames.append(taskName)
         for i in self.avIds:
             self.gui.racerEntered(i)
 
         self.startCountdownClock(waitTime, 0)
-        taskMgr.doMethodLater(waitTime, self.fsm.request, 'goToRacing', extraArgs=['racing'])
+        taskMgr.doMethodLater(waitTime, self.fsm.request, 'goToRacing', extraArgs = ['racing'])
 
     def exitStart(self):
         pass
@@ -553,16 +566,16 @@ class DistributedRace(DistributedObject.DistributedObject):
             self.laps += 1
             self.changeMusicTempo(1 + self.laps * 0.5)
             self.notify.debug('crossed the start line: %s, %s, %s, %s' % (self.laps,
-             self.startT,
-             self.currT,
-             newT))
+                                                                          self.startT,
+                                                                          self.currT,
+                                                                          newT))
         elif newLapT - self.currLapT > 0.5:
             self.laps -= 1
             self.changeMusicTempo(1 + self.laps * 0.5)
             self.notify.debug('crossed the start line - wrong way: %s, %s, %s, %s' % (self.laps,
-             self.startT,
-             self.currT,
-             newT))
+                                                                                      self.startT,
+                                                                                      self.currT,
+                                                                                      newT))
         self.currT = newT
         self.currLapT = newLapT
         if self.isUrbanTrack:
@@ -571,23 +584,23 @@ class DistributedRace(DistributedObject.DistributedObject):
         timestamp = globalClockDelta.localToNetworkTime(now)
         if self.laps == self.lapCount:
             self.sendUpdate('heresMyT', [localAvatar.doId,
-             self.laps,
-             self.currLapT,
-             timestamp])
+                                         self.laps,
+                                         self.currLapT,
+                                         timestamp])
             self.fsm.request('finished')
         if self.laps > self.maxLap:
             self.maxLap = self.laps
             self.sendUpdate('heresMyT', [localAvatar.doId,
-             self.laps,
-             self.currLapT,
-             timestamp])
+                                         self.laps,
+                                         self.currLapT,
+                                         timestamp])
         if now - self.lastTimeUpdate > 0.5:
             self.lastTimeUpdate = now
             self.sendUpdate('heresMyT', [localAvatar.doId,
-             self.laps,
-             self.currLapT,
-             timestamp])
-        self.gui.updateRacerInfo(localAvatar.doId, curvetime=self.currLapT + self.laps)
+                                         self.laps,
+                                         self.currLapT,
+                                         timestamp])
+        self.gui.updateRacerInfo(localAvatar.doId, curvetime = self.currLapT + self.laps)
         self.gui.update(now)
         return Task.cont
 
@@ -597,7 +610,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         self.localKart.interruptTurbo()
         self.localKart.disableControls()
         taskName = 'parkIt'
-        taskMgr.doMethodLater(2, self.stopDriving, taskName, extraArgs=[])
+        taskMgr.doMethodLater(2, self.stopDriving, taskName, extraArgs = [])
         self.miscTaskNames.append(taskName)
         self.finished = True
         camera.reparentTo(render)
@@ -633,7 +646,8 @@ class DistributedRace(DistributedObject.DistributedObject):
         if self.raceType == RaceGlobals.Circuit and not len(self.circuitLoop) == 0:
             self.sendUpdate('racerLeft', [localAvatar.doId])
         else:
-            taskMgr.doMethodLater(1, self.goToSpeedway, 'leaveRace', extraArgs=[[localAvatar.doId], RaceGlobals.Exit_UserReq])
+            taskMgr.doMethodLater(1, self.goToSpeedway, 'leaveRace',
+                                  extraArgs = [[localAvatar.doId], RaceGlobals.Exit_UserReq])
         if self.victory:
             self.victory.stop()
         self.bananaSound.stop()
@@ -645,9 +659,9 @@ class DistributedRace(DistributedObject.DistributedObject):
 
     def getCountdownColor(self, countdownTimeInt):
         clockNodeColors = [Vec4(0, 1, 0, 1),
-         Vec4(1, 1, 0, 1),
-         Vec4(1, 0.5, 0, 1),
-         Vec4(1, 0, 0, 1)]
+                           Vec4(1, 1, 0, 1),
+                           Vec4(1, 0.5, 0, 1),
+                           Vec4(1, 0, 0, 1)]
         i = max(min(countdownTimeInt, len(clockNodeColors) - 1), 0)
         return clockNodeColors[i]
 
@@ -871,10 +885,10 @@ class DistributedRace(DistributedObject.DistributedObject):
                 nextGrp = (bldgInd + 1) % numBldgGroups
                 nextGrp2 = (bldgInd + 2) % numBldgGroups
                 self.currBldgGroups[side] = [prevGrp2,
-                 prevGrp,
-                 currGrp,
-                 nextGrp,
-                 nextGrp2]
+                                             prevGrp,
+                                             currGrp,
+                                             nextGrp,
+                                             nextGrp2]
                 for i in self.currBldgGroups[side]:
                     self.buildingGroups[side][i].unstash()
 
@@ -1011,7 +1025,7 @@ class DistributedRace(DistributedObject.DistributedObject):
                 bldgGroup.flattenStrong()
 
         if self.isUrbanTrack:
-            self.showBuildings(0, forceRecompute=True)
+            self.showBuildings(0, forceRecompute = True)
 
     def findSegmentStart(self):
         kart = base.cr.doId2do.get(self.kartMap.get(localAvatar.doId, None), None)
@@ -1092,16 +1106,16 @@ class DistributedRace(DistributedObject.DistributedObject):
 
     def racerLeft(self, avId):
         if avId != localAvatar.doId:
-            self.gui.racerLeft(avId, unexpected=False)
+            self.gui.racerLeft(avId, unexpected = False)
 
     def skyTrack(self, task):
         return SkyUtil.cloudSkyTrack(task)
 
     def startSky(self):
         if self.hasFog:
-            SkyUtil.startCloudSky(self, parent=self.dummyNode, effects=CompassEffect.PRot)
+            SkyUtil.startCloudSky(self, parent = self.dummyNode, effects = CompassEffect.PRot)
         else:
-            SkyUtil.startCloudSky(self, parent=render)
+            SkyUtil.startCloudSky(self, parent = render)
 
     def stopSky(self):
         taskMgr.remove('skyTrack')
@@ -1207,7 +1221,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         if self.musicTrack:
             self.musicTrack.finish()
         curVol = self.raceMusic.getVolume()
-        interval = LerpFunctionInterval(self.raceMusic.setVolume, fromData=curVol, toData=0, duration=3)
+        interval = LerpFunctionInterval(self.raceMusic.setVolume, fromData = curVol, toData = 0, duration = 3)
         self.musicTrack = Sequence(interval)
         self.musicTrack.start()
 
@@ -1215,7 +1229,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         if self.musicTrack:
             self.musicTrack.finish()
         curPR = self.raceMusic.getPlayRate()
-        interval = LerpFunctionInterval(self.raceMusic.setPlayRate, fromData=curPR, toData=newPR, duration=3)
+        interval = LerpFunctionInterval(self.raceMusic.setPlayRate, fromData = curPR, toData = newPR, duration = 3)
         self.musicTrack = Sequence(interval)
         self.musicTrack.start()
 
@@ -1225,12 +1239,14 @@ class DistributedRace(DistributedObject.DistributedObject):
         self.kartCleanup()
         self.doneBarrier('waitingForExit')
         self.sendUpdate('racerLeft', [localAvatar.doId])
-        out = {'loader': 'racetrack',
-         'where': 'racetrack',
-         'hoodId': hoodId,
-         'zoneId': zoneId,
-         'trackId': trackId,
-         'shardId': None,
-         'reason': RaceGlobals.Exit_UserReq}
+        out = {
+            'loader': 'racetrack',
+            'where': 'racetrack',
+            'hoodId': hoodId,
+            'zoneId': zoneId,
+            'trackId': trackId,
+            'shardId': None,
+            'reason': RaceGlobals.Exit_UserReq
+        }
         base.cr.playGame.hood.loader.fsm.request('quietZone', [out])
         return

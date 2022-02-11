@@ -12,7 +12,9 @@ from direct.task import Task
 from pandac.PandaModules import *
 from otp.otpbase import OTPGlobals
 from toontown.estate import DistributedLawnDecor
+
 DIRT_AS_WATER_INDICATOR = True
+
 
 class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGagTree')
@@ -131,17 +133,19 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         messenger.send('wakeup')
         if self.isFruiting() and self.canBeHarvested():
             if self.velvetRoped():
-                self._teaserPanel = TeaserPanel(pageName='pickGags')
+                self._teaserPanel = TeaserPanel(pageName = 'pickGags')
                 localAvatar._gagTreeVelvetRoped = None
             else:
                 self.startInteraction()
                 self.doHarvesting()
             return
         fullName = self.name
-        text = TTLocalizer.ConfirmRemoveTree % {'tree': fullName}
+        text = TTLocalizer.ConfirmRemoveTree % {
+            'tree': fullName
+        }
         if self.hasDependentTrees():
             text += TTLocalizer.ConfirmWontBeAbleToHarvest
-        self.confirmDialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=text, command=self.confirmCallback)
+        self.confirmDialog = TTDialog.TTDialog(style = TTDialog.YesNo, text = text, command = self.confirmCallback)
         self.confirmDialog.show()
         self.startInteraction()
         return
@@ -260,7 +264,7 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         if self.model:
             self.model.setTransparency(1)
             self.model.setAlphaScale(0)
-            self.movie.append(LerpFunc(self.model.setAlphaScale, fromData=0, toData=1, duration=3))
+            self.movie.append(LerpFunc(self.model.setAlphaScale, fromData = 0, toData = 1, duration = 3))
         if self.signModel:
             self.signModel.hide()
             self.movie.append(Func(self.signModel.show))
@@ -296,7 +300,11 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         pos.setZ(pos.getZ() + 2)
         fruitTrack = Parallel()
         for fruit in self.backupFruits:
-            fruitTrack.append(Sequence(Func(fruit.show), LerpPosInterval(fruit, 1.5, pos, startPos=Point3(fruit.getX(), fruit.getY(), fruit.getZ() + self.model.getZ())), Func(fruit.removeNode)))
+            fruitTrack.append(Sequence(Func(fruit.show), LerpPosInterval(fruit, 1.5, pos,
+                                                                         startPos = Point3(fruit.getX(), fruit.getY(),
+                                                                                           fruit.getZ() +
+                                                                                           self.model.getZ())),
+                                       Func(fruit.removeNode)))
 
         self.fruits = None
         harvestTrack = Sequence(fruitTrack, Func(self.clearBackupFruits))
@@ -397,7 +405,8 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         species = GardenGlobals.getTreeTypeIndex(curTrack, curLevel)
         treeName = GardenGlobals.PlantAttributes[species]['name']
         stringToShow = TTLocalizer.getResultPlantedSomethingSentence(treeName)
-        self.resultDialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=stringToShow, command=self.resultsCallback)
+        self.resultDialog = TTDialog.TTDialog(style = TTDialog.Acknowledge, text = stringToShow,
+                                              command = self.resultsCallback)
 
     def resultsCallback(self, value):
         if self.resultDialog:

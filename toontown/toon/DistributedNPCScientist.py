@@ -2,11 +2,14 @@ from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from . import DistributedNPCToonBase
 
+
 class DistributedNPCScientist(DistributedNPCToonBase.DistributedNPCToonBase):
 
     def __init__(self, cr):
         DistributedNPCToonBase.DistributedNPCToonBase.__init__(self, cr)
-        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.SILLYMETER_HOLIDAY) or base.cr.newsManager.isHolidayRunning(ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
+        if base.cr.newsManager.isHolidayRunning(
+                ToontownGlobals.SILLYMETER_HOLIDAY) or base.cr.newsManager.isHolidayRunning(
+                ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
             self.show()
         else:
             self.hide()
@@ -39,7 +42,9 @@ class DistributedNPCScientist(DistributedNPCToonBase.DistributedNPCToonBase):
 
     def announceGenerate(self):
         DistributedNPCToonBase.DistributedNPCToonBase.announceGenerate(self)
-        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.SILLYMETER_HOLIDAY) or base.cr.newsManager.isHolidayRunning(ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
+        if base.cr.newsManager.isHolidayRunning(
+                ToontownGlobals.SILLYMETER_HOLIDAY) or base.cr.newsManager.isHolidayRunning(
+                ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
             self.show()
         else:
             self.hide()
@@ -71,7 +76,8 @@ class DistributedNPCScientist(DistributedNPCToonBase.DistributedNPCToonBase):
                 placeholder.setScale(render, 1.0)
                 placeholder.setPos(0, 0, 0.1)
 
-        elif self.style.getTorsoSize() == 'long' and self.style.getAnimal() == 'monkey' or self.style.getTorsoSize() == 'medium' and self.style.getAnimal() == 'horse':
+        elif self.style.getTorsoSize() == 'long' and self.style.getAnimal() == 'monkey' or self.style.getTorsoSize() \
+                == 'medium' and self.style.getAnimal() == 'horse':
             clipBoard = loader.loadModel('phase_4/models/props/tt_m_prp_acs_clipboard')
             for rHand in self.getRightHands():
                 placeholder = rHand.attachNewNode('ClipBoard')

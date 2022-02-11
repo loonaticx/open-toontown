@@ -5,6 +5,7 @@ from toontown.fishing import FishGlobals
 from . import GardenGlobals
 from direct.actor import Actor
 
+
 class DirectRegion(NodePath):
     notify = DirectNotifyGlobal.directNotify.newCategory('DirectRegion')
 
@@ -49,9 +50,9 @@ class DirectRegion(NodePath):
             ll = render2d.getRelativePoint(card, newBounds[0])
             ur = render2d.getRelativePoint(card, newBounds[1])
             newBounds = [ll.getX(),
-             ur.getX(),
-             ll.getZ(),
-             ur.getZ()]
+                         ur.getX(),
+                         ll.getZ(),
+                         ur.getZ()]
             newBounds = [max(0.0, min(1.0, (x + 1.0) / 2.0)) for x in newBounds]
             self.cDr = base.win.makeDisplayRegion(*newBounds)
             self.cDr.setSort(10)
@@ -114,7 +115,7 @@ class FlowerPhoto(NodePath):
         actor.setDepthTest(1)
         actor.setDepthWrite(1)
         if not hasattr(self, 'flowerDisplayRegion'):
-            self.flowerDisplayRegion = DirectRegion(parent=self)
+            self.flowerDisplayRegion = DirectRegion(parent = self)
             self.flowerDisplayRegion.setBounds(*self.swimBounds)
             self.flowerDisplayRegion.setColor(*self.swimColor)
         frame = self.flowerDisplayRegion.load()

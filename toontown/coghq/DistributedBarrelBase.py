@@ -5,6 +5,7 @@ from toontown.coghq import BarrelBase
 from otp.level import BasicEntities
 from direct.directnotify import DirectNotifyGlobal
 
+
 class DistributedBarrelBase(BasicEntities.DistributedNodePathEntity, BarrelBase.BarrelBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBarrelBase')
 
@@ -89,7 +90,9 @@ class DistributedBarrelBase(BasicEntities.DistributedNodePathEntity, BarrelBase.
             self.animTrack.finish()
             self.animTrack = None
         flytime = 1.0
-        self.animTrack = Sequence(LerpScaleInterval(self.barrel, 0.2, 1.1 * self.barrelScale, blendType='easeInOut'), LerpScaleInterval(self.barrel, 0.2, self.barrelScale, blendType='easeInOut'), Func(self.resetBarrel), name=self.uniqueName('animTrack'))
+        self.animTrack = Sequence(LerpScaleInterval(self.barrel, 0.2, 1.1 * self.barrelScale, blendType = 'easeInOut'),
+                                  LerpScaleInterval(self.barrel, 0.2, self.barrelScale, blendType = 'easeInOut'),
+                                  Func(self.resetBarrel), name = self.uniqueName('animTrack'))
         self.animTrack.start()
         return
 

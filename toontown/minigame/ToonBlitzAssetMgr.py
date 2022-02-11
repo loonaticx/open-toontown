@@ -5,6 +5,7 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.minigame import ToonBlitzGlobals, TwoDBlock
 from pandac.PandaModules import CardMaker
 
+
 class ToonBlitzAssetMgr(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedToonBlitzAssets')
 
@@ -72,7 +73,8 @@ class ToonBlitzAssetMgr(DirectObject):
             hash = self.aspect2dRoot.attachNewNode(self.cardMaker.generate())
             hash.setScale(self.progressLine.getScale()[2], 1, self.progressLine.getScale()[2] * 5)
             t = float(n) / ToonBlitzGlobals.NumSections[self.game.getSafezoneId()]
-            hash.setPos(self.faceStartPos[0] * (1 - t) + self.faceEndPos[0] * t, self.faceStartPos[1], self.faceStartPos[2])
+            hash.setPos(self.faceStartPos[0] * (1 - t) + self.faceEndPos[0] * t, self.faceStartPos[1],
+                        self.faceStartPos[2])
 
     def destroy(self):
         while len(self.blockTypes):
@@ -118,7 +120,7 @@ class ToonBlitzAssetMgr(DirectObject):
 
     def onstage(self):
         self.world.reparentTo(render)
-        base.playMusic(self.gameMusic, looping=1, volume=0.9)
+        base.playMusic(self.gameMusic, looping = 1, volume = 0.9)
 
     def offstage(self):
         self.world.hide()
@@ -138,16 +140,16 @@ class ToonBlitzAssetMgr(DirectObject):
 
     def playJumpSound(self):
         base.localAvatar.soundRun.stop()
-        base.playSfx(self.soundJump, looping=0)
+        base.playSfx(self.soundJump, looping = 0)
 
     def playWatergunSound(self):
         self.watergunSound.stop()
-        base.playSfx(self.watergunSound, looping=0)
+        base.playSfx(self.watergunSound, looping = 0)
 
     def playSplashSound(self):
         self.splashSound.stop()
-        base.playSfx(self.splashSound, looping=0)
+        base.playSfx(self.splashSound, looping = 0)
 
     def playHeadCollideSound(self):
         self.headCollideSound.stop()
-        base.playSfx(self.headCollideSound, looping=0)
+        base.playSfx(self.headCollideSound, looping = 0)

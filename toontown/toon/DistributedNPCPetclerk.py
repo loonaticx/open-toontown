@@ -9,6 +9,7 @@ from toontown.pets import PetshopGUI
 from toontown.hood import ZoneUtil
 from toontown.toontowngui import TeaserPanel
 
+
 class DistributedNPCPetclerk(DistributedNPCToonBase):
 
     def __init__(self, cr):
@@ -72,7 +73,7 @@ class DistributedNPCPetclerk(DistributedNPCToonBase):
             place = base.cr.playGame.getPlace()
             if place:
                 place.fsm.request('stopped')
-            self.dialog = TeaserPanel.TeaserPanel(pageName='tricks', doneFunc=self.handleOkTeaser)
+            self.dialog = TeaserPanel.TeaserPanel(pageName = 'tricks', doneFunc = self.handleOkTeaser)
 
     def __handleUnexpectedExit(self):
         self.notify.warning('unexpected exit')
@@ -139,7 +140,9 @@ class DistributedNPCPetclerk(DistributedNPCToonBase):
             self.setupAvatars(self.av)
             if self.isLocalToon:
                 camera.wrtReparentTo(render)
-                self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-5, 9, base.localAvatar.getHeight() - 0.5), Point3(-150, -2, 0), other=self, blendType='easeOut', name=self.uniqueName('lerpCamera'))
+                self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-5, 9, base.localAvatar.getHeight() - 0.5),
+                                                            Point3(-150, -2, 0), other = self, blendType = 'easeOut',
+                                                            name = self.uniqueName('lerpCamera'))
                 self.lerpCameraSeq.start()
             if self.isLocalToon:
                 taskMgr.doMethodLater(1.0, self.popupPetshopGUI, self.uniqueName('popupPetshopGUI'))

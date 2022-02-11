@@ -13,6 +13,7 @@ from direct.fsm import State
 from direct.fsm import ClassicFSM, State
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedBattleFactory(DistributedLevelBattle.DistributedLevelBattle):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleFactory')
 
@@ -43,6 +44,6 @@ class DistributedBattleFactory(DistributedLevelBattle.DistributedLevelBattle):
 
     def exitFactoryReward(self):
         self.notify.info('exitFactoryReward()')
-        self.movie.resetReward(finish=1)
+        self.movie.resetReward(finish = 1)
         self._removeMembersKeep()
         NametagGlobals.setMasterArrowsOn(1)

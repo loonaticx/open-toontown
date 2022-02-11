@@ -4,12 +4,16 @@ from otp.speedchat.SCMenuHolder import SCMenuHolder
 from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
 from toontown.speedchat.TTSCIndexedTerminal import TTSCIndexedTerminal
 from otp.otpbase import OTPLocalizer
-WinterMenu = [(OTPLocalizer.WinterMenuSections[0], {30200: 30220,
-   30201: 30221,
-   30202: 30222,
-   30203: 30223,
-   30204: 30224,
-   30205: 30225}), (OTPLocalizer.WinterMenuSections[1], [30275, 30276, 30277])]
+
+WinterMenu = [(OTPLocalizer.WinterMenuSections[0], {
+    30200: 30220,
+    30201: 30221,
+    30202: 30222,
+    30203: 30223,
+    30204: 30224,
+    30205: 30225
+}), (OTPLocalizer.WinterMenuSections[1], [30275, 30276, 30277])]
+
 
 class TTSCWinterMenu(SCMenu):
 

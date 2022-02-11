@@ -10,6 +10,7 @@ from toontown.toonbase import ToontownGlobals
 from . import MazeGameGlobals
 import functools
 
+
 class MazeSuit(DirectObject):
     COLL_SPHERE_NAME = 'MazeSuitSphere'
     COLLISION_EVENT_NAME = 'MazeSuitCollision'
@@ -19,17 +20,21 @@ class MazeSuit(DirectObject):
     DIR_LEFT = 2
     DIR_RIGHT = 3
     oppositeDirections = [DIR_DOWN,
-     DIR_UP,
-     DIR_RIGHT,
-     DIR_LEFT]
+                          DIR_UP,
+                          DIR_RIGHT,
+                          DIR_LEFT]
     directionHs = [0,
-     180,
-     90,
-     270]
+                   180,
+                   90,
+                   270]
     DEFAULT_SPEED = 4.0
     SUIT_Z = 0.1
 
-    def __init__(self, serialNum, maze, randomNumGen, cellWalkPeriod, difficulty, suitDnaName = 'f', startTile = None, ticFreq = MazeGameGlobals.SUIT_TIC_FREQ, walkSameDirectionProb = MazeGameGlobals.WALK_SAME_DIRECTION_PROB, walkTurnAroundProb = MazeGameGlobals.WALK_TURN_AROUND_PROB, uniqueRandomNumGen = True, walkAnimName = None):
+    def __init__(self, serialNum, maze, randomNumGen, cellWalkPeriod, difficulty, suitDnaName = 'f', startTile = None,
+                 ticFreq = MazeGameGlobals.SUIT_TIC_FREQ,
+                 walkSameDirectionProb = MazeGameGlobals.WALK_SAME_DIRECTION_PROB,
+                 walkTurnAroundProb = MazeGameGlobals.WALK_TURN_AROUND_PROB, uniqueRandomNumGen = True,
+                 walkAnimName = None):
         self.serialNum = serialNum
         self.maze = maze
         if uniqueRandomNumGen:
@@ -171,9 +176,9 @@ class MazeSuit(DirectObject):
                 if self.maze.isWalkable(newTX, newTY, unwalkables):
                     return oppositeDir
         candidateDirs = [self.DIR_UP,
-         self.DIR_DOWN,
-         self.DIR_LEFT,
-         self.DIR_RIGHT]
+                         self.DIR_DOWN,
+                         self.DIR_LEFT,
+                         self.DIR_RIGHT]
         candidateDirs.remove(self.oppositeDirections[self.direction])
         while len(candidateDirs):
             dir = self.rng.choice(candidateDirs)
@@ -207,7 +212,8 @@ class MazeSuit(DirectObject):
             toCoords = self.maze.tile2world(self.nextTX, self.nextTY)
             self.fromPos.set(fromCoords[0], fromCoords[1], self.SUIT_Z)
             self.toPos.set(toCoords[0], toCoords[1], self.SUIT_Z)
-            self.moveIval = LerpPosInterval(self.suit, self.cellWalkDuration, self.toPos, startPos=self.fromPos, name=self.uniqueName(self.MOVE_IVAL_NAME))
+            self.moveIval = LerpPosInterval(self.suit, self.cellWalkDuration, self.toPos, startPos = self.fromPos,
+                                            name = self.uniqueName(self.MOVE_IVAL_NAME))
             if self.direction != self.lastDirection:
                 self.fromH = self.directionHs[self.lastDirection]
                 toH = self.directionHs[self.direction]
@@ -217,8 +223,9 @@ class MazeSuit(DirectObject):
                     self.fromH = 360
                 self.fromHpr.set(self.fromH, 0, 0)
                 self.toHpr.set(toH, 0, 0)
-                turnIval = LerpHprInterval(self.suit, self.turnDuration, self.toHpr, startHpr=self.fromHpr, name=self.uniqueName('turnMazeSuit'))
-                self.moveIval = Parallel(self.moveIval, turnIval, name=self.uniqueName(self.MOVE_IVAL_NAME))
+                turnIval = LerpHprInterval(self.suit, self.turnDuration, self.toHpr, startHpr = self.fromHpr,
+                                           name = self.uniqueName('turnMazeSuit'))
+                self.moveIval = Parallel(self.moveIval, turnIval, name = self.uniqueName(self.MOVE_IVAL_NAME))
             else:
                 self.suit.setH(self.directionHs[self.direction])
             moveStartT = float(self.nextThinkTic) / float(self.ticFreq)
@@ -234,7 +241,7 @@ class MazeSuit(DirectObject):
             updateTics = suitList[i].getThinkTimestampTics(curTic)
             suitUpdates.extend(list(zip(updateTics, [i] * len(updateTics))))
 
-        suitUpdates.sort(key=functools.cmp_to_key(lambda a, b: a[0] - b[0]))
+        suitUpdates.sort(key = functools.cmp_to_key(lambda a, b: a[0] - b[0]))
         if len(suitUpdates) > 0:
             curTic = 0
             for i in range(len(suitUpdates)):

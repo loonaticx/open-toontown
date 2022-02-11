@@ -6,6 +6,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.hood import ZoneUtil
 from toontown.hood import HoodUtil
 
+
 class GenericAnimatedProp(AnimatedProp.AnimatedProp):
     notify = DirectNotifyGlobal.directNotify.newCategory('GenericAnimatedProp')
     AnimsUsingWav = []
@@ -71,9 +72,11 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
 
     def setupActor(self, node):
         anim = node.getTag('DNAAnim')
-        self.trashcan = Actor.Actor(node, copy=0)
+        self.trashcan = Actor.Actor(node, copy = 0)
         self.trashcan.reparentTo(node)
-        self.trashcan.loadAnims({'anim': '%s/%s' % (self.path, anim)})
+        self.trashcan.loadAnims({
+                                    'anim': '%s/%s' % (self.path, anim)
+                                })
         self.trashcan.pose('anim', 0)
         self.node = self.trashcan
 
@@ -114,9 +117,11 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
             if maximumDuration < soundDur:
                 if base.config.GetBool('interactive-prop-info', False):
                     if self.visId == localAvatar.zoneId and origAnimName != 'tt_a_ara_dga_hydrant_idleIntoFight':
-                        self.notify.warning('anim %s had duration of %s while sound  has duration of %s' % (origAnimName, maximumDuration, soundDur))
+                        self.notify.warning('anim %s had duration of %s while sound  has duration of %s' % (
+                        origAnimName, maximumDuration, soundDur))
                 soundDur = maximumDuration
-            result = SoundInterval(theSound, node=self.node, listenerNode=base.localAvatar, volume=sfxVolume, cutOff=cutoff, startTime=0, duration=soundDur)
+            result = SoundInterval(theSound, node = self.node, listenerNode = base.localAvatar, volume = sfxVolume,
+                                   cutOff = cutoff, startTime = 0, duration = soundDur)
         else:
             result = Sequence()
         return result

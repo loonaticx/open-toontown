@@ -9,21 +9,26 @@ from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
 
+
 class TownBattleToonPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('TownBattleToonPanel')
 
     def __init__(self, id):
         gui = loader.loadModel('phase_3.5/models/gui/battle_gui')
-        DirectFrame.__init__(self, relief=None, image=gui.find('**/ToonBtl_Status_BG'), image_color=Vec4(0.5, 0.9, 0.5, 0.7))
+        DirectFrame.__init__(self, relief = None, image = gui.find('**/ToonBtl_Status_BG'),
+                             image_color = Vec4(0.5, 0.9, 0.5, 0.7))
         self.setScale(0.8)
         self.initialiseoptions(TownBattleToonPanel)
         self.avatar = None
-        self.sosText = DirectLabel(parent=self, relief=None, pos=(0.1, 0, 0.015), text=TTLocalizer.TownBattleToonSOS, text_scale=0.06)
+        self.sosText = DirectLabel(parent = self, relief = None, pos = (0.1, 0, 0.015),
+                                   text = TTLocalizer.TownBattleToonSOS, text_scale = 0.06)
         self.sosText.hide()
-        self.fireText = DirectLabel(parent=self, relief=None, pos=(0.1, 0, 0.015), text=TTLocalizer.TownBattleToonFire, text_scale=0.06)
+        self.fireText = DirectLabel(parent = self, relief = None, pos = (0.1, 0, 0.015),
+                                    text = TTLocalizer.TownBattleToonFire, text_scale = 0.06)
         self.fireText.hide()
-        self.undecidedText = DirectLabel(parent=self, relief=None, pos=(0.1, 0, 0.015), text=TTLocalizer.TownBattleUndecided, text_scale=0.1)
-        self.healthText = DirectLabel(parent=self, text='', pos=(-0.06, 0, -0.075), text_scale=0.055)
+        self.undecidedText = DirectLabel(parent = self, relief = None, pos = (0.1, 0, 0.015),
+                                         text = TTLocalizer.TownBattleUndecided, text_scale = 0.1)
+        self.healthText = DirectLabel(parent = self, text = '', pos = (-0.06, 0, -0.075), text_scale = 0.055)
         self.hpChangeEvent = None
         self.gagNode = self.attachNewNode('gag')
         self.gagNode.setPos(0.1, 0, 0.03)
@@ -36,7 +41,7 @@ class TownBattleToonPanel(DirectFrame):
         passGui.reparentTo(self.passNode)
         self.passNode.hide()
         self.laffMeter = None
-        self.whichText = DirectLabel(parent=self, text='', pos=(0.1, 0, -0.08), text_scale=0.05)
+        self.whichText = DirectLabel(parent = self, text = '', pos = (0.1, 0, -0.08), text_scale = 0.05)
         self.hide()
         gui.removeNode()
         return
@@ -62,8 +67,10 @@ class TownBattleToonPanel(DirectFrame):
         return None
 
     def setHealthText(self, hp, maxHp, quietly = 0):
-        self.healthText['text'] = TTLocalizer.TownBattleHealthText % {'hitPoints': hp,
-         'maxHit': maxHp}
+        self.healthText['text'] = TTLocalizer.TownBattleHealthText % {
+            'hitPoints': hp,
+            'maxHit': maxHp
+        }
 
     def show(self):
         DirectFrame.show(self)
@@ -81,12 +88,13 @@ class TownBattleToonPanel(DirectFrame):
         self.setHealthText(hp, maxHp)
 
     def setValues(self, index, track, level = None, numTargets = None, targetIndex = None, localNum = None):
-        self.notify.debug('Toon Panel setValues: index=%s track=%s level=%s numTargets=%s targetIndex=%s localNum=%s' % (index,
-         track,
-         level,
-         numTargets,
-         targetIndex,
-         localNum))
+        self.notify.debug(
+            'Toon Panel setValues: index=%s track=%s level=%s numTargets=%s targetIndex=%s localNum=%s' % (index,
+                                                                                                           track,
+                                                                                                           level,
+                                                                                                           numTargets,
+                                                                                                           targetIndex,
+                                                                                                           localNum))
         self.undecidedText.hide()
         self.sosText.hide()
         self.fireText.hide()

@@ -13,6 +13,7 @@ from toontown.toon import Toon, ToonHead, ToonDNA
 from .CogdoUtil import CogdoGameMovie
 from . import CogdoUtil
 
+
 class CogdoElevatorMovie(CogdoGameMovie):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogdoElevatorMovie')
     elevatorDuration = 5
@@ -57,9 +58,12 @@ class CogdoElevatorMovie(CogdoGameMovie):
         self.bg.setPos(0.14, 0, -0.6667)
         self.bg.reparentTo(aspect2d)
         self.chatBubble.reparentTo(aspect2d)
-        self.frame = DirectFrame(geom=self.bg, relief=None, pos=(0.2, 0, -0.6667))
+        self.frame = DirectFrame(geom = self.bg, relief = None, pos = (0.2, 0, -0.6667))
         self.bg.wrtReparentTo(self.frame)
-        self.gameTitleText = DirectLabel(parent=self.frame, text=TTLocalizer.CogdoExecutiveSuiteTitle, scale=TTLocalizer.MRPgameTitleText * 0.8, text_align=TextNode.ACenter, text_font=getSignFont(), text_fg=(1.0, 0.33, 0.33, 1.0), pos=TTLocalizer.MRgameTitleTextPos, relief=None)
+        self.gameTitleText = DirectLabel(parent = self.frame, text = TTLocalizer.CogdoExecutiveSuiteTitle,
+                                         scale = TTLocalizer.MRPgameTitleText * 0.8, text_align = TextNode.ACenter,
+                                         text_font = getSignFont(), text_fg = (1.0, 0.33, 0.33, 1.0),
+                                         pos = TTLocalizer.MRgameTitleTextPos, relief = None)
         self.chatBubble.wrtReparentTo(self.frame)
         self.frame.hide()
         backgroundGui.removeNode()

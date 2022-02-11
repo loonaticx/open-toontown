@@ -5,6 +5,7 @@ from otp.otpbase import OTPGlobals
 from direct.fsm import FSM
 from direct.task import Task
 
+
 class DistCogdoCraneObjectAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, FSM.FSM):
     wantsWatchDrift = 1
 

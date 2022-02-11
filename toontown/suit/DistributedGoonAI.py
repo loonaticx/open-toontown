@@ -8,6 +8,7 @@ from direct.distributed import ClockDelta
 import random
 from direct.task import Task
 
+
 class DistributedGoonAI(DistributedCrushableEntityAI.DistributedCrushableEntityAI):
     UPDATE_TIMESTAMP_INTERVAL = 180.0
     STUN_TIME = 4
@@ -46,14 +47,15 @@ class DistributedGoonAI(DistributedCrushableEntityAI.DistributedCrushableEntityA
 
     def startGoon(self):
         ts = 100 * random.random()
-        self.sendMovie(GOON_MOVIE_WALK, pauseTime=ts)
+        self.sendMovie(GOON_MOVIE_WALK, pauseTime = ts)
 
     def requestBattle(self, pauseTime):
         avId = self.air.getAvatarIdFromSender()
         self.notify.debug('requestBattle, avId = %s' % avId)
         self.sendMovie(GOON_MOVIE_BATTLE, avId, pauseTime)
         taskMgr.remove(self.taskName('resumeWalk'))
-        taskMgr.doMethodLater(5, self.sendMovie, self.taskName('resumeWalk'), extraArgs=(GOON_MOVIE_WALK, avId, pauseTime))
+        taskMgr.doMethodLater(5, self.sendMovie, self.taskName('resumeWalk'),
+                              extraArgs = (GOON_MOVIE_WALK, avId, pauseTime))
 
     def requestStunned(self, pauseTime):
         avId = self.air.getAvatarIdFromSender()
@@ -71,31 +73,34 @@ class DistributedGoonAI(DistributedCrushableEntityAI.DistributedCrushableEntityA
                 taskMgr.doMethodLater(0.1, self.accumulateGoonMessages, self.taskName('GoonBombCheck'))
         self.sendMovie(GOON_MOVIE_STUNNED, avId, pauseTime)
         taskMgr.remove(self.taskName('recovery'))
-        taskMgr.doMethodLater(self.STUN_TIME, self.sendMovie, self.taskName('recovery'), extraArgs=(GOON_MOVIE_RECOVERY, avId, pauseTime))
+        taskMgr.doMethodLater(self.STUN_TIME, self.sendMovie, self.taskName('recovery'),
+                              extraArgs = (GOON_MOVIE_RECOVERY, avId, pauseTime))
 
     def accumulateGoonMessages(self, task):
         if not hasattr(self.level, 'goonStunRequests'):
             return
         for toonId in self.level.goonStunRequests:
             if self.level.goonStunRequests[toonId] > 2:
-                self.air.writeServerEvent('suspicious', toonId, 'Stunned multiple goons very close together. Possible multihack.')
+                self.air.writeServerEvent('suspicious', toonId,
+                                          'Stunned multiple goons very close together. Possible multihack.')
 
         self.level.goonStunRequests.clear()
         del self.level.goonStunRequests
 
-    def requestResync(self, task=None):
+    def requestResync(self, task = None):
         self.notify.debug('resyncGoon')
         self.sendMovie(GOON_MOVIE_SYNC)
         self.updateGrid()
 
-    def sendMovie(self, type, avId=0, pauseTime=0):
+    def sendMovie(self, type, avId = 0, pauseTime = 0):
         if type == GOON_MOVIE_WALK:
             self.pathStartTime = globalClock.getFrameTime()
             if self.parameterized:
                 self.walkTrackTime = pauseTime % self.totalPathTime
             else:
                 self.walkTrackTime = pauseTime
-            self.notify.debug('GOON_MOVIE_WALK doId = %s, pathStartTime = %s, walkTrackTime = %s' % (self.doId, self.pathStartTime, self.walkTrackTime))
+            self.notify.debug('GOON_MOVIE_WALK doId = %s, pathStartTime = %s, walkTrackTime = %s' % (
+            self.doId, self.pathStartTime, self.walkTrackTime))
         if type == GOON_MOVIE_WALK or type == GOON_MOVIE_SYNC:
             curT = globalClock.getFrameTime()
             elapsedT = curT - self.pathStartTime
@@ -104,7 +109,8 @@ class DistributedGoonAI(DistributedCrushableEntityAI.DistributedCrushableEntityA
                 pathT = pathT % self.totalPathTime
             self.sendUpdate('setMovie', [type, avId, pathT, ClockDelta.globalClockDelta.localToNetworkTime(curT)])
             taskMgr.remove(self.taskName('sync'))
-            taskMgr.doMethodLater(self.UPDATE_TIMESTAMP_INTERVAL, self.requestResync, self.taskName('sync'), extraArgs=None)
+            taskMgr.doMethodLater(self.UPDATE_TIMESTAMP_INTERVAL, self.requestResync, self.taskName('sync'),
+                                  extraArgs = None)
         else:
             self.sendUpdate('setMovie', [type, avId, pauseTime, ClockDelta.globalClockDelta.getFrameNetworkTime()])
         return

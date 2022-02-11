@@ -6,6 +6,7 @@ from . import GardenGlobals
 from direct.actor import Actor
 import random
 
+
 class DirectRegion(NodePath):
     notify = DirectNotifyGlobal.directNotify.newCategory('DirectRegion')
 
@@ -50,9 +51,9 @@ class DirectRegion(NodePath):
             ll = render2d.getRelativePoint(card, newBounds[0])
             ur = render2d.getRelativePoint(card, newBounds[1])
             newBounds = [ll.getX(),
-             ur.getX(),
-             ll.getZ(),
-             ur.getZ()]
+                         ur.getX(),
+                         ll.getZ(),
+                         ur.getZ()]
             newBounds = [max(0.0, min(1.0, (x + 1.0) / 2.0)) for x in newBounds]
             self.cDr = base.win.makeDisplayRegion(*newBounds)
             self.cDr.setSort(10)
@@ -119,7 +120,7 @@ class SpecialsPhoto(NodePath):
         actor.setDepthTest(1)
         actor.setDepthWrite(1)
         if not hasattr(self, 'specialsDisplayRegion'):
-            self.specialsDisplayRegion = DirectRegion(parent=self)
+            self.specialsDisplayRegion = DirectRegion(parent = self)
             self.specialsDisplayRegion.setBounds(*self.backBounds)
             self.specialsDisplayRegion.setColor(*self.backColor)
         frame = self.specialsDisplayRegion.load()

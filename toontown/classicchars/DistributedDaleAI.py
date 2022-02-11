@@ -9,6 +9,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from . import CharStateDatasAI
 
+
 class DistributedDaleAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedDaleAI')
 
@@ -17,16 +18,16 @@ class DistributedDaleAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
         self.chipId = chipId
         self.chip = air.doId2do.get(chipId)
         self.fsm = ClassicFSM.ClassicFSM('DistributedDaleAI', [
-         State.State('Off', self.enterOff, self.exitOff, [
-          'Lonely']),
-         State.State('Lonely', self.enterLonely, self.exitLonely, [
-          'Chatty', 'FollowChip', 'Walk']),
-         State.State('Chatty', self.enterChatty, self.exitChatty, [
-          'Lonely', 'FollowChip', 'Walk']),
-         State.State('Walk', self.enterWalk, self.exitWalk, [
-          'Lonely', 'Chatty']),
-         State.State('FollowChip', self.enterFollowChip, self.exitFollowChip, [
-          'Lonely', 'Chatty', 'FollowChip'])], 'Off', 'Off')
+            State.State('Off', self.enterOff, self.exitOff, [
+                'Lonely']),
+            State.State('Lonely', self.enterLonely, self.exitLonely, [
+                'Chatty', 'FollowChip', 'Walk']),
+            State.State('Chatty', self.enterChatty, self.exitChatty, [
+                'Lonely', 'FollowChip', 'Walk']),
+            State.State('Walk', self.enterWalk, self.exitWalk, [
+                'Lonely', 'Chatty']),
+            State.State('FollowChip', self.enterFollowChip, self.exitFollowChip, [
+                'Lonely', 'Chatty', 'FollowChip'])], 'Off', 'Off')
         self.fsm.enterInitialState()
         self.handleHolidays()
 

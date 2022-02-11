@@ -18,6 +18,7 @@ from . import CannonGameGlobals
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
+
 LAND_TIME = 2
 WORLD_SCALE = 2.0
 GROUND_SCALE = 1.4 * WORLD_SCALE
@@ -40,6 +41,7 @@ TOWER_X_RANGE = int(TOWER_Y_RANGE / 2.0)
 INITIAL_VELOCITY = 94.0
 WHISTLE_SPEED = INITIAL_VELOCITY * 0.55
 
+
 class DistributedCannonGame(DistributedMinigame):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMinigame')
     font = ToontownGlobals.getToonFont()
@@ -58,11 +60,16 @@ class DistributedCannonGame(DistributedMinigame):
 
     def __init__(self, cr):
         DistributedMinigame.__init__(self, cr)
-        self.gameFSM = ClassicFSM.ClassicFSM('DistributedCannonGame', [State.State('off', self.enterOff, self.exitOff, ['aim']),
-         State.State('aim', self.enterAim, self.exitAim, ['shoot', 'waitForToonsToLand', 'cleanup']),
-         State.State('shoot', self.enterShoot, self.exitShoot, ['aim', 'waitForToonsToLand', 'cleanup']),
-         State.State('waitForToonsToLand', self.enterWaitForToonsToLand, self.exitWaitForToonsToLand, ['cleanup']),
-         State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off', 'cleanup')
+        self.gameFSM = ClassicFSM.ClassicFSM('DistributedCannonGame',
+                                             [State.State('off', self.enterOff, self.exitOff, ['aim']),
+                                              State.State('aim', self.enterAim, self.exitAim,
+                                                          ['shoot', 'waitForToonsToLand', 'cleanup']),
+                                              State.State('shoot', self.enterShoot, self.exitShoot,
+                                                          ['aim', 'waitForToonsToLand', 'cleanup']),
+                                              State.State('waitForToonsToLand', self.enterWaitForToonsToLand,
+                                                          self.exitWaitForToonsToLand, ['cleanup']),
+                                              State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off',
+                                             'cleanup')
         self.addChildGameFSM(self.gameFSM)
         self.cannonLocationDict = {}
         self.cannonPositionDict = {}
@@ -110,8 +117,12 @@ class DistributedCannonGame(DistributedMinigame):
         purchaseModels = loader.loadModel('phase_4/models/gui/purchase_gui')
         self.jarImage = purchaseModels.find('**/Jar')
         self.jarImage.reparentTo(hidden)
-        self.rewardPanel = DirectLabel(parent=hidden, relief=None, pos=(1.16, 0.0, 0.45), scale=0.65, text='', text_scale=0.2, text_fg=(0.95, 0.95, 0, 1), text_pos=(0, -.13), text_font=ToontownGlobals.getSignFont(), image=self.jarImage)
-        self.rewardPanelTitle = DirectLabel(parent=self.rewardPanel, relief=None, pos=(0, 0, 0.06), scale=0.08, text=TTLocalizer.CannonGameReward, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1))
+        self.rewardPanel = DirectLabel(parent = hidden, relief = None, pos = (1.16, 0.0, 0.45), scale = 0.65, text = '',
+                                       text_scale = 0.2, text_fg = (0.95, 0.95, 0, 1), text_pos = (0, -.13),
+                                       text_font = ToontownGlobals.getSignFont(), image = self.jarImage)
+        self.rewardPanelTitle = DirectLabel(parent = self.rewardPanel, relief = None, pos = (0, 0, 0.06), scale = 0.08,
+                                            text = TTLocalizer.CannonGameReward, text_fg = (0.95, 0.95, 0, 1),
+                                            text_shadow = (0, 0, 0, 1))
         self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_cannon_game.ogg')
         self.sndCannonMove = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
         self.sndCannonFire = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.ogg')
@@ -123,14 +134,25 @@ class DistributedCannonGame(DistributedMinigame):
         self.sndRewardTick = base.loader.loadSfx('phase_3.5/audio/sfx/tick_counter.ogg')
         guiModel = 'phase_4/models/gui/cannon_game_gui'
         cannonGui = loader.loadModel(guiModel)
-        self.aimPad = DirectFrame(image=cannonGui.find('**/CannonFire_PAD'), relief=None, pos=(0.7, 0, -0.553333), scale=0.8)
+        self.aimPad = DirectFrame(image = cannonGui.find('**/CannonFire_PAD'), relief = None, pos = (0.7, 0, -0.553333),
+                                  scale = 0.8)
         cannonGui.removeNode()
         self.aimPad.hide()
-        self.fireButton = DirectButton(parent=self.aimPad, image=((guiModel, '**/Fire_Btn_UP'), (guiModel, '**/Fire_Btn_DN'), (guiModel, '**/Fire_Btn_RLVR')), relief=None, pos=(0.0115741, 0, 0.00505051), scale=1.0, command=self.__firePressed)
-        self.upButton = DirectButton(parent=self.aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(0.0115741, 0, 0.221717))
-        self.downButton = DirectButton(parent=self.aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(0.0136112, 0, -0.210101), image_hpr=(0, 0, 180))
-        self.leftButton = DirectButton(parent=self.aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(-0.199352, 0, -0.000505269), image_hpr=(0, 0, -90))
-        self.rightButton = DirectButton(parent=self.aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(0.219167, 0, -0.00101024), image_hpr=(0, 0, 90))
+        self.fireButton = DirectButton(parent = self.aimPad, image = (
+        (guiModel, '**/Fire_Btn_UP'), (guiModel, '**/Fire_Btn_DN'), (guiModel, '**/Fire_Btn_RLVR')), relief = None,
+                                       pos = (0.0115741, 0, 0.00505051), scale = 1.0, command = self.__firePressed)
+        self.upButton = DirectButton(parent = self.aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                     relief = None, pos = (0.0115741, 0, 0.221717))
+        self.downButton = DirectButton(parent = self.aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                       relief = None, pos = (0.0136112, 0, -0.210101), image_hpr = (0, 0, 180))
+        self.leftButton = DirectButton(parent = self.aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                       relief = None, pos = (-0.199352, 0, -0.000505269), image_hpr = (0, 0, -90))
+        self.rightButton = DirectButton(parent = self.aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                        relief = None, pos = (0.219167, 0, -0.00101024), image_hpr = (0, 0, 90))
         self.aimPad.setColor(1, 1, 1, 0.9)
 
         def bindButton(button, upHandler, downHandler):
@@ -244,7 +266,7 @@ class DistributedCannonGame(DistributedMinigame):
         base.camLens.setFar(FAR_PLANE_DIST)
         self.__startIntro()
         base.transitions.irisIn(0.4)
-        base.playMusic(self.music, looping=1, volume=0.8)
+        base.playMusic(self.music, looping = 1, volume = 0.8)
 
     def offstage(self):
         self.notify.debug('offstage')
@@ -311,12 +333,15 @@ class DistributedCannonGame(DistributedMinigame):
         numAvs = self.numPlayers
         for i in range(numAvs):
             avId = self.avIdList[i]
-            self.cannonLocationDict[avId] = Point3(i * CANNON_X_SPACING - (numAvs - 1) * CANNON_X_SPACING / 2, CANNON_Y, CANNON_Z)
+            self.cannonLocationDict[avId] = Point3(i * CANNON_X_SPACING - (numAvs - 1) * CANNON_X_SPACING / 2, CANNON_Y,
+                                                   CANNON_Z)
             if self.DEBUG_TOWER_RANGE:
                 if self.DEBUG_CANNON_FAR_LEFT:
-                    self.cannonLocationDict[avId] = Point3(0 * CANNON_X_SPACING - (4 - 1) * CANNON_X_SPACING / 2, CANNON_Y, CANNON_Z)
+                    self.cannonLocationDict[avId] = Point3(0 * CANNON_X_SPACING - (4 - 1) * CANNON_X_SPACING / 2,
+                                                           CANNON_Y, CANNON_Z)
                 else:
-                    self.cannonLocationDict[avId] = Point3(3 * CANNON_X_SPACING - (4 - 1) * CANNON_X_SPACING / 2, CANNON_Y, CANNON_Z)
+                    self.cannonLocationDict[avId] = Point3(3 * CANNON_X_SPACING - (4 - 1) * CANNON_X_SPACING / 2,
+                                                           CANNON_Y, CANNON_Z)
             self.cannonPositionDict[avId] = [0, CannonGameGlobals.CANNON_ANGLE_MIN]
             self.cannonDict[avId][0].setPos(self.cannonLocationDict[avId])
             self.__updateCannonPosition(avId)
@@ -395,7 +420,9 @@ class DistributedCannonGame(DistributedMinigame):
             return
         if not self.__playing():
             return
-        self.notify.debug('setCannonWillFire: ' + str(avId) + ': zRot=' + str(zRot) + ', angle=' + str(angle) + ', time=' + str(fireTime))
+        self.notify.debug(
+            'setCannonWillFire: ' + str(avId) + ': zRot=' + str(zRot) + ', angle=' + str(angle) + ', time=' + str(
+                fireTime))
         self.cannonPositionDict[avId][0] = zRot
         self.cannonPositionDict[avId][1] = angle
         self.__updateCannonPosition(avId)
@@ -436,7 +463,8 @@ class DistributedCannonGame(DistributedMinigame):
     def enterShoot(self):
         self.notify.debug('enterShoot')
         self.__broadcastLocalCannonPosition()
-        self.sendUpdate('setCannonLit', [self.cannonPositionDict[self.localAvId][0], self.cannonPositionDict[self.localAvId][1]])
+        self.sendUpdate('setCannonLit',
+                        [self.cannonPositionDict[self.localAvId][0], self.cannonPositionDict[self.localAvId][1]])
 
     def exitShoot(self):
         pass
@@ -627,7 +655,7 @@ class DistributedCannonGame(DistributedMinigame):
         if oldRot != pos[0] or oldAng != pos[1]:
             if self.cannonMoving == 0:
                 self.cannonMoving = 1
-                base.playSfx(self.sndCannonMove, looping=1)
+                base.playSfx(self.sndCannonMove, looping = 1)
             self.__updateCannonPosition(self.localAvId)
             if task.time - task.lastPositionBroadcastTime > CANNON_MOVE_UPDATE_FREQ:
                 task.lastPositionBroadcastTime = task.time
@@ -639,7 +667,8 @@ class DistributedCannonGame(DistributedMinigame):
         return Task.cont
 
     def __broadcastLocalCannonPosition(self):
-        self.sendUpdate('setCannonPosition', [self.cannonPositionDict[self.localAvId][0], self.cannonPositionDict[self.localAvId][1]])
+        self.sendUpdate('setCannonPosition',
+                        [self.cannonPositionDict[self.localAvId][0], self.cannonPositionDict[self.localAvId][1]])
 
     def __updateCannonPosition(self, avId):
         self.cannonDict[avId][0].setHpr(self.cannonPositionDict[avId][0], 0.0, 0.0)
@@ -683,16 +712,19 @@ class DistributedCannonGame(DistributedMinigame):
         startVel = Vec3(xVel, yVel, zVel)
         trajectory = Trajectory.Trajectory(launchTime, startPos, startVel)
         towerList = [towerPos + Point3(0, 0, BUCKET_HEIGHT), TOWER_RADIUS, TOWER_HEIGHT - BUCKET_HEIGHT]
-        self.notify.debug('calcFlightResults(%s): rotation(%s), angle(%s), horizVel(%s), xVel(%s), yVel(%s), zVel(%s), startVel(%s), trajectory(%s), towerList(%s)' % (avId,
-         rotation,
-         angle,
-         horizVel,
-         xVel,
-         yVel,
-         zVel,
-         startVel,
-         trajectory,
-         towerList))
+        self.notify.debug(
+            'calcFlightResults(%s): rotation(%s), angle(%s), horizVel(%s), xVel(%s), yVel(%s), zVel(%s), '
+            'startVel(%s), trajectory(%s), towerList(%s)' % (
+            avId,
+            rotation,
+            angle,
+            horizVel,
+            xVel,
+            yVel,
+            zVel,
+            startVel,
+            trajectory,
+            towerList))
         timeOfImpact, hitWhat = self.__calcToonImpact(trajectory, towerList)
         return startPos, startHpr, startVel, trajectory, timeOfImpact, hitWhat
 
@@ -737,7 +769,8 @@ class DistributedCannonGame(DistributedMinigame):
         info['hRot'] = self.cannonPositionDict[avId][0]
         info['haveWhistled'] = 0
         info['maxCamPullback'] = CAMERA_PULLBACK_MIN
-        info['timeEnterTowerXY'], info['timeExitTowerXY'] = trajectory.calcEnterAndLeaveCylinderXY(self.tower.getPos(render), TOWER_RADIUS)
+        info['timeEnterTowerXY'], info['timeExitTowerXY'] = trajectory.calcEnterAndLeaveCylinderXY(
+            self.tower.getPos(render), TOWER_RADIUS)
         shootTask.info = info
         flyTask.info = info
         seqDoneTask.info = info
@@ -780,7 +813,8 @@ class DistributedCannonGame(DistributedMinigame):
         pos = task.info['trajectory'].getPos(t)
         task.info['toon'].setPos(pos)
         shadowPos = Point3(pos)
-        if t >= task.info['timeEnterTowerXY'] and t <= task.info['timeExitTowerXY'] and pos[2] >= self.tower.getPos(render)[2] + TOWER_HEIGHT:
+        if t >= task.info['timeEnterTowerXY'] and t <= task.info['timeExitTowerXY'] and pos[2] >= \
+                self.tower.getPos(render)[2] + TOWER_HEIGHT:
             shadowPos.setZ(self.tower.getPos(render)[2] + TOWER_HEIGHT + SHADOW_Z_OFFSET)
         else:
             shadowPos.setZ(SHADOW_Z_OFFSET)
@@ -810,7 +844,8 @@ class DistributedCannonGame(DistributedMinigame):
                 lookAt = lookAt + perp * (multiplier * MAX_LOOKAT_OFFSET)
             foo = Vec3(pos - lookAt)
             foo.normalize()
-            task.info['maxCamPullback'] = max(task.info['maxCamPullback'], CAMERA_PULLBACK_MIN + multiplier * (CAMERA_PULLBACK_MAX - CAMERA_PULLBACK_MIN))
+            task.info['maxCamPullback'] = max(task.info['maxCamPullback'], CAMERA_PULLBACK_MIN + multiplier * (
+                        CAMERA_PULLBACK_MAX - CAMERA_PULLBACK_MIN))
             foo = foo * task.info['maxCamPullback']
             camPos = pos + Point3(foo)
             camera.setPos(camPos)
@@ -846,7 +881,8 @@ class DistributedCannonGame(DistributedMinigame):
                 hitPos = pos + Point3(ttVec * (0.75 * sf))
                 toon.setPos(hitPos)
                 hitPos.setZ(hitPos[2] - 1.0)
-                s = Sequence(Wait(0.5), toon.posInterval(duration=LAND_TIME - 0.5, pos=hitPos, blendType='easeIn'))
+                s = Sequence(Wait(0.5),
+                             toon.posInterval(duration = LAND_TIME - 0.5, pos = hitPos, blendType = 'easeIn'))
                 self.toonIntervalDict[task.info['avId']] = s
                 s.start()
                 avatar.setPos(0, 0, 0)
@@ -897,7 +933,9 @@ class DistributedCannonGame(DistributedMinigame):
             if hasattr(self, 'jarIval'):
                 self.jarIval.finish()
             s = self.rewardPanel.getScale()
-            self.jarIval = Parallel(Sequence(self.rewardPanel.scaleInterval(0.15, s * 3.0 / 4.0, blendType='easeOut'), self.rewardPanel.scaleInterval(0.15, s, blendType='easeIn')), SoundInterval(self.sndRewardTick), name='cannonGameRewardJarThrob')
+            self.jarIval = Parallel(Sequence(self.rewardPanel.scaleInterval(0.15, s * 3.0 / 4.0, blendType = 'easeOut'),
+                                             self.rewardPanel.scaleInterval(0.15, s, blendType = 'easeIn')),
+                                    SoundInterval(self.sndRewardTick), name = 'cannonGameRewardJarThrob')
             self.jarIval.start()
         task.curScore = score
         return Task.cont
@@ -918,7 +956,9 @@ class DistributedCannonGame(DistributedMinigame):
         taskPullBackFromWater.data = commonData
         taskFlyUpToToon.data = commonData
         taskFlyToBackOfCannon.data = commonData
-        introTask = Task.sequence(taskLookInWater, Task.pause(self.T_WATER), taskPullBackFromWater, Task.pause(self.T_WATER2LONGVIEW + self.T_LONGVIEW), taskFlyUpToToon, Task.pause(self.T_LONGVIEW2TOONHEAD + self.T_TOONHEAD), taskFlyToBackOfCannon)
+        introTask = Task.sequence(taskLookInWater, Task.pause(self.T_WATER), taskPullBackFromWater,
+                                  Task.pause(self.T_WATER2LONGVIEW + self.T_LONGVIEW), taskFlyUpToToon,
+                                  Task.pause(self.T_LONGVIEW2TOONHEAD + self.T_TOONHEAD), taskFlyToBackOfCannon)
         taskMgr.add(introTask, self.INTRO_TASK_NAME)
 
     def __stopIntro(self):
@@ -937,7 +977,8 @@ class DistributedCannonGame(DistributedMinigame):
         targetQuat.setHpr(camera.getHpr())
         camera.setPos(oldPos)
         camera.setHpr(oldHpr)
-        self.introCameraSeq = camera.posQuatInterval(duration, Point3(targetPos), targetQuat, blendType='easeInOut', name=self.INTRO_TASK_NAME_CAMERA_LERP)
+        self.introCameraSeq = camera.posQuatInterval(duration, Point3(targetPos), targetQuat, blendType = 'easeInOut',
+                                                     name = self.INTRO_TASK_NAME_CAMERA_LERP)
         self.introCameraSeq.start()
 
     def __taskLookInWater(self, task):
@@ -983,6 +1024,10 @@ class DistributedCannonGame(DistributedMinigame):
         camera.reparentTo(lerpNode)
         camera.setPos(relCamPos)
         camera.setHpr(relCamHpr)
-        self.introCameraSeq = Parallel(lerpNode.hprInterval(self.T_TOONHEAD2CANNONBACK, endRotation, blendType='easeInOut', name=self.INTRO_TASK_NAME_CAMERA_LERP), camera.posInterval(self.T_TOONHEAD2CANNONBACK, endPos, blendType='easeInOut', name=self.INTRO_TASK_NAME_CAMERA_LERP))
+        self.introCameraSeq = Parallel(
+            lerpNode.hprInterval(self.T_TOONHEAD2CANNONBACK, endRotation, blendType = 'easeInOut',
+                                 name = self.INTRO_TASK_NAME_CAMERA_LERP),
+            camera.posInterval(self.T_TOONHEAD2CANNONBACK, endPos, blendType = 'easeInOut',
+                               name = self.INTRO_TASK_NAME_CAMERA_LERP))
         self.introCameraSeq.start()
         return Task.done

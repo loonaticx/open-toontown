@@ -11,10 +11,12 @@ from .CogdoFlyingObstacles import CogdoFlyingObtacleFactory
 from .CogdoGameExit import CogdoGameExit
 from otp.otpbase import OTPGlobals
 
+
 class CogdoFlyingLevel(DirectObject):
     notify = directNotify.newCategory('CogdoFlyingLevel')
 
-    def __init__(self, parent, frameModel, startPlatformModel, endPlatformModel, quadLengthUnits, quadVisibilityAhead, quadVisibiltyBehind):
+    def __init__(self, parent, frameModel, startPlatformModel, endPlatformModel, quadLengthUnits, quadVisibilityAhead,
+                 quadVisibiltyBehind):
         self.parent = parent
         self.quadLengthUnits = quadLengthUnits
         self._halfQuadLengthUnits = quadLengthUnits / 2.0
@@ -168,7 +170,8 @@ class CogdoFlyingLevel(DirectObject):
                     self.endPlatform.onstage()
 
         self._currentQuadNum = quadNum
-        for i in list(range(0, max(self._currentQuadNum - self.quadVisibiltyBehind, 0))) + list(range(min(self._currentQuadNum + self.quadVisibiltyAhead + 1, self._numQuads), self._numQuads)):
+        for i in list(range(0, max(self._currentQuadNum - self.quadVisibiltyBehind, 0))) + list(
+                range(min(self._currentQuadNum + self.quadVisibiltyAhead + 1, self._numQuads), self._numQuads)):
             self.quadrants[i].offstage()
             if i == 0:
                 self.startPlatform.offstage()
@@ -212,7 +215,8 @@ class CogdoFlyingLevelFactory:
         frameModel.find('**/fogTranslucent_top').setBin('fixed', 2)
         frameModel.getChildren().reparentTo(levelNode)
         levelNode.hide()
-        self._level = CogdoFlyingLevel(self.parent, levelNode, startPlatformModel, endPlatformModel, self.quadLengthUnits, self.quadVisibiltyAhead, self.quadVisibiltyBehind)
+        self._level = CogdoFlyingLevel(self.parent, levelNode, startPlatformModel, endPlatformModel,
+                                       self.quadLengthUnits, self.quadVisibiltyAhead, self.quadVisibiltyBehind)
         if Globals.Dev.WantTempLevel:
             quads = Globals.Dev.DevQuadsOrder
         else:

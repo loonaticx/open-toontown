@@ -4,10 +4,14 @@ from otp.speedchat import SCMenuHolder
 from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
 from otp.otpbase import OTPLocalizer
 from toontown.toonbase import ToontownGlobals
-holidayId2menuInfo = {ToontownGlobals.ELECTION_PROMOTION: (OTPLocalizer.SCMenuElection, [10000,
-                                       10001,
-                                       10006,
-                                       10007])}
+
+holidayId2menuInfo = {
+    ToontownGlobals.ELECTION_PROMOTION: (OTPLocalizer.SCMenuElection, [10000,
+                                                                       10001,
+                                                                       10006,
+                                                                       10007])
+}
+
 
 class TTSCPromotionalMenu(SCMenu):
     notify = DirectNotifyGlobal.directNotify.newCategory('TTSCPromotionalMenu')
@@ -25,10 +29,11 @@ class TTSCPromotionalMenu(SCMenu):
 
     def startHoliday(self, holidayId):
         if self.curHolidayId is not None:
-            TTSCPromotionalMenu.notify.warning('overriding existing holidayId %s with %s' % (self.curHolidayId, holidayId))
+            TTSCPromotionalMenu.notify.warning(
+                'overriding existing holidayId %s with %s' % (self.curHolidayId, holidayId))
         self.curHolidayId = holidayId
         title, structure = holidayId2menuInfo[holidayId]
-        self.rebuildFromStructure(structure, title=title)
+        self.rebuildFromStructure(structure, title = title)
         return
 
     def endHoliday(self, holidayId):

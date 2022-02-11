@@ -4,12 +4,14 @@ from otp.otpbase import OTPGlobals
 from toontown.toonbase.ToonBaseGlobal import *
 from . import ArrowKeys
 
+
 class OrthoDrive:
     notify = DirectNotifyGlobal.directNotify.newCategory('OrthoDrive')
     TASK_NAME = 'OrthoDriveTask'
     SET_ATREST_HEADING_TASK = 'setAtRestHeadingTask'
 
-    def __init__(self, speed, maxFrameMove = None, customCollisionCallback = None, priority = 0, setHeading = 1, upHeading = 0, instantTurn = False, wantSound = False):
+    def __init__(self, speed, maxFrameMove = None, customCollisionCallback = None, priority = 0, setHeading = 1,
+                 upHeading = 0, instantTurn = False, wantSound = False):
         self.wantSound = wantSound
         self.speed = speed
         self.maxFrameMove = maxFrameMove
@@ -29,7 +31,7 @@ class OrthoDrive:
     def start(self):
         self.notify.debug('start')
         self.__placeToonHOG(self.lt.getPos())
-        taskMgr.add(self.__update, OrthoDrive.TASK_NAME, priority=self.priority)
+        taskMgr.add(self.__update, OrthoDrive.TASK_NAME, priority = self.priority)
         self.lastAction = None
         return
 
@@ -111,7 +113,8 @@ class OrthoDrive:
             startAngle = self.lt.getH()
             startAngle = fitSrcAngle2Dest(startAngle, angle)
             dur = 0.1 * abs(startAngle - angle) / 90
-            self.turnLocalToonIval = LerpHprInterval(self.lt, dur, Point3(angle, 0, 0), startHpr=Point3(startAngle, 0, 0), name='OrthoDriveLerpHpr')
+            self.turnLocalToonIval = LerpHprInterval(self.lt, dur, Point3(angle, 0, 0),
+                                                     startHpr = Point3(startAngle, 0, 0), name = 'OrthoDriveLerpHpr')
             if self.instantTurn:
                 self.turnLocalToonIval.finish()
             else:

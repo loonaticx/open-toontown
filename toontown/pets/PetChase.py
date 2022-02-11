@@ -3,6 +3,7 @@ from direct.showbase.PythonUtil import reduceAngle
 from otp.movement import Impulse
 import math
 
+
 class PetChase(Impulse.Impulse):
 
     def __init__(self, target = None, minDist = None, moveAngle = None):

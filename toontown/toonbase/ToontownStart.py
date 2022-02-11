@@ -1,5 +1,6 @@
 import builtins
 
+
 class game:
     name = 'toontown'
     process = 'client'
@@ -9,6 +10,7 @@ builtins.game = game()
 from panda3d.core import *
 import time
 import sys
+
 try:
     launcher
 except:
@@ -16,6 +18,7 @@ except:
         loadPrcFile('etc/Configrc.prc')
 
     from toontown.launcher.ToontownDummyLauncher import ToontownDummyLauncher
+
     launcher = ToontownDummyLauncher()
     builtins.launcher = launcher
 
@@ -34,11 +37,14 @@ else:
 tempLoader = Loader()
 backgroundNode = tempLoader.loadSync(Filename('phase_3/models/gui/loading-background'))
 from direct.gui import DirectGuiGlobals
+
 print('ToontownStart: setting default font')
 from . import ToontownGlobals
+
 DirectGuiGlobals.setDefaultFontFunc(ToontownGlobals.getInterfaceFont)
 launcher.setPandaErrorCode(7)
 from . import ToonBase
+
 ToonBase.ToonBase()
 if base.win == None:
     print('Unable to open window; aborting.')
@@ -58,6 +64,7 @@ DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI
 DirectGuiGlobals.setDefaultDialogGeom(loader.loadModel('phase_3/models/gui/dialog_box_gui'))
 from . import TTLocalizer
 from otp.otpbase import OTPGlobals
+
 OTPGlobals.setDefaultProductPrefix(TTLocalizer.ProductPrefix)
 if base.musicManagerIsValid:
     music = base.musicManager.getSound('phase_3/audio/bgm/tt_theme.ogg')
@@ -71,13 +78,16 @@ if base.musicManagerIsValid:
 else:
     music = None
 from direct.gui.DirectGui import *
+
 serverVersion = base.config.GetString('server-version', 'no_version_set')
 print('ToontownStart: serverVersion: ', serverVersion)
-version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
+version = OnscreenText(serverVersion, pos = (-1.3, -0.975), scale = 0.06, fg = Vec4(0, 0, 1, 0.6),
+                       align = TextNode.ALeft)
 loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NONE)
 from .ToonBaseGlobal import *
 from direct.showbase.MessengerGlobal import *
 from toontown.distributed import ToontownClientRepository
+
 cr = ToontownClientRepository.ToontownClientRepository(serverVersion, launcher)
 cr.music = music
 del music
@@ -85,6 +95,7 @@ base.initNametagGlobals()
 base.cr = cr
 loader.endBulkLoad('init')
 from otp.distributed.OtpDoGlobals import *
+
 cr.generateGlobalObject(OTP_DO_ID_FRIEND_MANAGER, 'FriendManager')
 if not launcher.isDummy():
     base.startShow(cr, launcher.getGameServer())
@@ -107,5 +118,6 @@ if autoRun and launcher.isDummy() and (not Thread.isTrueThreads() or __name__ ==
         raise
     except:
         from otp.otpbase import PythonUtil
+
         print(PythonUtil.describeException())
         raise

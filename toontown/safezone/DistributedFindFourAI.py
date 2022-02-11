@@ -6,6 +6,7 @@ from direct.fsm import StateData
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 
+
 class DistributedFindFourAI(DistributedNodeAI):
 
     def __init__(self, air, parent, name, x, y, z, h, p, r):
@@ -15,9 +16,10 @@ class DistributedFindFourAI(DistributedNodeAI):
         self.setPos(x, y, z)
         self.setHpr(h, p, r)
         self.myPos = (
-         x, y, z)
+            x, y, z)
         self.myHpr = (h, p, r)
-        self.board = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
+        self.board = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
         self.parent = self.air.doId2do[parent]
         self.parentDo = parent
         self.wantStart = []
@@ -28,7 +30,7 @@ class DistributedFindFourAI(DistributedNodeAI):
         self.playerNum = 1
         self.winDirection = None
         self.playersGamePos = [
-         None, None]
+            None, None]
         self.wantTimer = True
         self.timerEnd = 0
         self.turnEnd = 0
@@ -36,16 +38,17 @@ class DistributedFindFourAI(DistributedNodeAI):
         self.winLaffPoints = 20
         self.movesRequiredToWin = 10
         self.zoneId = self.air.allocateZone()
-        self.generateOtpObject(air.districtId, self.zoneId, optionalFields=['setX', 'setY', 'setZ', 'setH', 'setP', 'setR'])
+        self.generateOtpObject(air.districtId, self.zoneId,
+                               optionalFields = ['setX', 'setY', 'setZ', 'setH', 'setP', 'setR'])
         self.parent.setCheckersZoneId(self.zoneId)
         self.timerStart = None
         self.fsm = ClassicFSM.ClassicFSM('Checkers', [
-         State.State('waitingToBegin', self.enterWaitingToBegin, self.exitWaitingToBegin, [
-          'playing']),
-         State.State('playing', self.enterPlaying, self.exitPlaying, [
-          'gameOver']),
-         State.State('gameOver', self.enterGameOver, self.exitGameOver, [
-          'waitingToBegin'])], 'waitingToBegin', 'waitingToBegin')
+            State.State('waitingToBegin', self.enterWaitingToBegin, self.exitWaitingToBegin, [
+                'playing']),
+            State.State('playing', self.enterPlaying, self.exitPlaying, [
+                'gameOver']),
+            State.State('gameOver', self.enterGameOver, self.exitGameOver, [
+                'waitingToBegin'])], 'waitingToBegin', 'waitingToBegin')
         self.fsm.enterInitialState()
         return
 
@@ -136,7 +139,8 @@ class DistributedFindFourAI(DistributedNodeAI):
         y = pieceNum[1]
         if self.checkWin(x, y, playerNum) == True:
             self.sendUpdate('announceWinnerPosition', [x, y, self.winDirection, playerNum])
-            winnersSequence = Sequence(Wait(5.0), Func(self.fsm.request, 'gameOver'), Func(self.parent.announceWinner, 'Find Four', avId))
+            winnersSequence = Sequence(Wait(5.0), Func(self.fsm.request, 'gameOver'),
+                                       Func(self.parent.announceWinner, 'Find Four', avId))
             winnersSequence.start()
         else:
             self.sendUpdateToAvatarId(avId, 'illegalMove', [])
@@ -277,7 +281,7 @@ class DistributedFindFourAI(DistributedNodeAI):
 
     def getGameState(self):
         return [
-         self.board, 0, 0, 0]
+            self.board, 0, 0, 0]
 
     def clearBoard(self):
         for x in self.board.squareList:
@@ -288,8 +292,9 @@ class DistributedFindFourAI(DistributedNodeAI):
 
     def tempSetBoardState(self):
         self.board = [
-         [
-          0, 0, 0, 0, 0, 0, 0], [1, 2, 1, 2, 2, 2, 1], [2, 2, 1, 2, 1, 2, 1], [2, 1, 1, 2, 2, 1, 2], [1, 2, 2, 1, 2, 1, 1], [1, 2, 1, 2, 1, 2, 1]]
+            [
+                0, 0, 0, 0, 0, 0, 0], [1, 2, 1, 2, 2, 2, 1], [2, 2, 1, 2, 1, 2, 1], [2, 1, 1, 2, 2, 1, 2],
+            [1, 2, 2, 1, 2, 1, 1], [1, 2, 1, 2, 1, 2, 1]]
         self.sendUpdate('setGameState', [self.board, 0, 0, 1])
 
     def checkWin(self, rVal, cVal, playerNum):

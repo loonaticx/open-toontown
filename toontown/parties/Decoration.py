@@ -6,6 +6,7 @@ import random
 from toontown.parties import PartyGlobals
 from toontown.parties.PartyUtils import getCenterPosFromGridSize
 
+
 class Decoration(NodePath):
     notify = directNotify.newCategory('Decoration')
 
@@ -31,7 +32,9 @@ class Decoration(NodePath):
             banner2.reparentTo(temp)
             banner.append(banner1)
             banner.append(banner2)
-            self.partyBanner = Actor.Actor(partyBannerModel, {'float': 'phase_13/models/parties/tt_m_ara_pty_bannerJellybean'})
+            self.partyBanner = Actor.Actor(partyBannerModel, {
+                'float': 'phase_13/models/parties/tt_m_ara_pty_bannerJellybean'
+            })
             bannerSeqNodeParent = self.partyBanner.find('**/bannerJoint')
             bannerSeqNode = SequenceNode('banner')
             for bannerNode in banner:
@@ -54,14 +57,17 @@ class Decoration(NodePath):
             self.partyBanner.loop('float')
             self.partyBanner.reparentTo(self)
         elif self.name == 'GagGlobe':
-            self.partyGlobe = Actor.Actor('phase_13/models/parties/tt_m_ara_pty_gagGlobe_model', {'idle': 'phase_13/models/parties/tt_m_ara_pty_gagGlobe'})
+            self.partyGlobe = Actor.Actor('phase_13/models/parties/tt_m_ara_pty_gagGlobe_model', {
+                'idle': 'phase_13/models/parties/tt_m_ara_pty_gagGlobe'
+            })
             self.partyGlobe.setBillboardAxis()
             confettiLocator = self.partyGlobe.find('**/uvj_confetti')
             confettiMesh = self.partyGlobe.find('**/innerGlobeMesh')
             confettiMesh.setTexProjector(confettiMesh.findTextureStage('default'), confettiLocator, self.partyGlobe)
             collisionMesh = self.partyGlobe.find('**/collisionMesh')
             collisionMesh.hide()
-            self.globeSphere = CollisionSphere(confettiMesh.getBounds().getCenter(), confettiMesh.getBounds().getRadius())
+            self.globeSphere = CollisionSphere(confettiMesh.getBounds().getCenter(),
+                                               confettiMesh.getBounds().getRadius())
             self.globeSphere.setTangible(1)
             self.globeSphereNode = CollisionNode('gagGlobe' + str(self.getPos()))
             self.globeSphereNode.setIntoCollideMask(ToontownGlobals.WallBitmask)
@@ -71,11 +77,14 @@ class Decoration(NodePath):
             self.partyGlobe.reparentTo(self)
         elif self.name == 'FlyingHeart':
             flyingHeartModel = loader.loadModel('phase_13/models/parties/tt_m_ara_pty_heartWing_model')
-            self.flyingHeart = Actor.Actor(flyingHeartModel, {'idle': 'phase_13/models/parties/tt_m_ara_pty_heartWing'})
+            self.flyingHeart = Actor.Actor(flyingHeartModel, {
+                'idle': 'phase_13/models/parties/tt_m_ara_pty_heartWing'
+            })
             wingsSeqNodeParent = self.flyingHeart.find('**/heartWingJoint')
             collisionMesh = self.flyingHeart.find('**/collision_heartWing')
             collisionMesh.hide()
-            self.globeSphere = CollisionSphere(collisionMesh.getBounds().getCenter(), collisionMesh.getBounds().getRadius())
+            self.globeSphere = CollisionSphere(collisionMesh.getBounds().getCenter(),
+                                               collisionMesh.getBounds().getRadius())
             self.globeSphere.setTangible(1)
             self.globeSphereNode = CollisionNode('flyingHeart' + str(self.getPos()))
             self.globeSphereNode.setIntoCollideMask(ToontownGlobals.WallBitmask)
@@ -112,7 +121,9 @@ class Decoration(NodePath):
             self.flyingHeart.loop('idle')
             self.flyingHeart.reparentTo(self)
         elif self.name == 'HeartBanner':
-            self.heartBanner = Actor.Actor('phase_13/models/parties/tt_m_ara_pty_bannerValentine_model', {'idle': 'phase_13/models/parties/tt_m_ara_pty_bannerValentine'})
+            self.heartBanner = Actor.Actor('phase_13/models/parties/tt_m_ara_pty_bannerValentine_model', {
+                'idle': 'phase_13/models/parties/tt_m_ara_pty_bannerValentine'
+            })
             balloonLeft = self.heartBanner.find('**/balloonsL')
             balloonRight = self.heartBanner.find('**/balloonsR')
             balloonLeft.setBillboardAxis()
@@ -125,14 +136,20 @@ class Decoration(NodePath):
             self.heartBanner.reparentTo(self)
         elif self.name == 'Hydra' or self.name == 'StageWinter':
             if self.name == 'StageWinter':
-                self.hydra = Actor.Actor('phase_13/models/parties/tt_r_ara_pty_winterProps', {'dance': 'phase_13/models/parties/tt_a_ara_pty_hydra_dance'})
+                self.hydra = Actor.Actor('phase_13/models/parties/tt_r_ara_pty_winterProps', {
+                    'dance': 'phase_13/models/parties/tt_a_ara_pty_hydra_dance'
+                })
             else:
-                self.hydra = Actor.Actor('phase_13/models/parties/tt_a_ara_pty_hydra_default', {'dance': 'phase_13/models/parties/tt_a_ara_pty_hydra_dance'})
+                self.hydra = Actor.Actor('phase_13/models/parties/tt_a_ara_pty_hydra_default', {
+                    'dance': 'phase_13/models/parties/tt_a_ara_pty_hydra_dance'
+                })
             st = random.randint(0, 10)
             animIval = ActorInterval(self.hydra, 'dance')
             animIvalDur = animIval.getDuration()
             self.decSfx = loader.loadSfx('phase_13/audio/sfx/tt_s_ara_pty_propsShow_dance.ogg')
-            soundIval = SoundInterval(self.decSfx, node=self.hydra, listenerNode=base.localAvatar, volume=PartyGlobals.DECORATION_VOLUME, cutOff=PartyGlobals.DECORATION_CUTOFF, duration=animIvalDur)
+            soundIval = SoundInterval(self.decSfx, node = self.hydra, listenerNode = base.localAvatar,
+                                      volume = PartyGlobals.DECORATION_VOLUME, cutOff = PartyGlobals.DECORATION_CUTOFF,
+                                      duration = animIvalDur)
             self.animSeq = Parallel(animIval, soundIval)
             self.animSeq.loop(st)
             collisions = self.hydra.find('**/*collision*')
@@ -144,19 +161,25 @@ class Decoration(NodePath):
                 self.hydra.node().setBounds(stageBounds)
                 self.hydra.node().setFinal(1)
         elif self.name == 'TubeCogVictory':
-            self.tubeCog = Actor.Actor('phase_5.5/models/estate/tt_a_ara_pty_tubeCogVictory_default', {'wave': 'phase_5.5/models/estate/tt_a_ara_pty_tubeCogVictory_wave'})
+            self.tubeCog = Actor.Actor('phase_5.5/models/estate/tt_a_ara_pty_tubeCogVictory_default', {
+                'wave': 'phase_5.5/models/estate/tt_a_ara_pty_tubeCogVictory_wave'
+            })
             st = random.randint(0, 10)
             animIval = ActorInterval(self.tubeCog, 'wave')
             animIvalDur = animIval.getDuration()
             self.decSfx = loader.loadSfx('phase_13/audio/sfx/tt_s_ara_pty_tubeCogVictory_wave.ogg')
-            soundIval = SoundInterval(self.decSfx, node=self.tubeCog, listenerNode=base.localAvatar, volume=PartyGlobals.DECORATION_VOLUME, cutOff=PartyGlobals.DECORATION_CUTOFF, duration=animIvalDur)
+            soundIval = SoundInterval(self.decSfx, node = self.tubeCog, listenerNode = base.localAvatar,
+                                      volume = PartyGlobals.DECORATION_VOLUME, cutOff = PartyGlobals.DECORATION_CUTOFF,
+                                      duration = animIvalDur)
             self.animSeq = Parallel(animIval, soundIval)
             self.animSeq.loop()
             self.animSeq.setT(st)
             self.tubeCog.flattenStrong()
             self.tubeCog.reparentTo(self)
         elif self.name == 'BannerVictory':
-            self.bannerVictory = Actor.Actor('phase_13/models/parties/tt_m_ara_pty_bannerVictory_model', {'idle': 'phase_13/models/parties/tt_m_ara_pty_bannerVictory'})
+            self.bannerVictory = Actor.Actor('phase_13/models/parties/tt_m_ara_pty_bannerVictory_model', {
+                'idle': 'phase_13/models/parties/tt_m_ara_pty_bannerVictory'
+            })
             balloonLeft = self.bannerVictory.find('**/balloonsLMesh')
             balloonRight = self.bannerVictory.find('**/balloonsRMesh')
             balloonLeft.setBillboardAxis()
@@ -168,7 +191,9 @@ class Decoration(NodePath):
             self.bannerVictory.loop('idle')
             self.bannerVictory.reparentTo(self)
         elif self.name == 'CannonVictory':
-            self.cannonVictory = Actor.Actor('phase_13/models/parties/tt_m_ara_pty_cannonVictory_model', {'idle': 'phase_13/models/parties/tt_m_ara_pty_cannonVictory'})
+            self.cannonVictory = Actor.Actor('phase_13/models/parties/tt_m_ara_pty_cannonVictory_model', {
+                'idle': 'phase_13/models/parties/tt_m_ara_pty_cannonVictory'
+            })
             confettiLocator = self.cannonVictory.findAllMatches('**/uvj_confetties')[1]
             confettiMesh = self.cannonVictory.find('**/confettis')
             confettiMesh.setTexProjector(confettiMesh.findTextureStage('default'), self.cannonVictory, confettiLocator)
@@ -227,7 +252,9 @@ class Decoration(NodePath):
         if self.animSeq:
             self.animSeq.finish()
         if self.startAnim == 1:
-            self.animSeq = Sequence(LerpHprInterval(self.decorationModel, 3.0, Vec3(random.randint(0, 5), random.randint(0, 5), random.randint(0, 5))), Wait(0.05), Func(self.startAnimSeq))
+            self.animSeq = Sequence(LerpHprInterval(self.decorationModel, 3.0,
+                                                    Vec3(random.randint(0, 5), random.randint(0, 5),
+                                                         random.randint(0, 5))), Wait(0.05), Func(self.startAnimSeq))
             self.animSeq.start()
 
     def cleanUpAnimSequences(self):

@@ -11,6 +11,7 @@ from toontown.distributed import DelayDelete
 from toontown.toonbase import TTLocalizer
 from toontown.hood import ZoneUtil
 
+
 class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp):
 
     def __init__(self, cr):
@@ -98,7 +99,13 @@ class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp)
         pos = doorNP.node().getSolid(0).getCenter()
         self.nametagNP.setPos(pos + Vec3(0, 0, avatar.getHeight() + 2))
         d = duration * 0.125
-        track = Sequence(Parallel(Sequence(Wait(d * 0.5), SoundInterval(self.knockSfx)), Func(self.nametag.setChat, TTLocalizer.DoorKnockKnock, CFSpeech), Wait(d)), Func(avatar.setChatAbsolute, TTLocalizer.DoorWhosThere, CFSpeech | CFTimeout, openEnded=0), Wait(d), Func(self.nametag.setChat, joke[0], CFSpeech), Wait(d), Func(avatar.setChatAbsolute, joke[0] + TTLocalizer.DoorWhoAppendix, CFSpeech | CFTimeout, openEnded=0), Wait(d), Func(self.nametag.setChat, joke[1], CFSpeech), Parallel(SoundInterval(self.rimshot, startTime=2.0), Wait(d * 4)), Func(self.cleanupTrack))
+        track = Sequence(Parallel(Sequence(Wait(d * 0.5), SoundInterval(self.knockSfx)),
+                                  Func(self.nametag.setChat, TTLocalizer.DoorKnockKnock, CFSpeech), Wait(d)),
+                         Func(avatar.setChatAbsolute, TTLocalizer.DoorWhosThere, CFSpeech | CFTimeout, openEnded = 0),
+                         Wait(d), Func(self.nametag.setChat, joke[0], CFSpeech), Wait(d),
+                         Func(avatar.setChatAbsolute, joke[0] + TTLocalizer.DoorWhoAppendix, CFSpeech | CFTimeout,
+                              openEnded = 0), Wait(d), Func(self.nametag.setChat, joke[1], CFSpeech),
+                         Parallel(SoundInterval(self.rimshot, startTime = 2.0), Wait(d * 4)), Func(self.cleanupTrack))
         track.delayDelete = DelayDelete.DelayDelete(avatar, 'knockKnockTrack')
         return track
 

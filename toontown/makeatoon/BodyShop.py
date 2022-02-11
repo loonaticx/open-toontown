@@ -9,6 +9,7 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.toontowngui import TeaserPanel
 from . import ShuffleButton
 
+
 class BodyShop(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('BodyShop')
 
@@ -95,47 +96,88 @@ class BodyShop(StateData.StateData):
         shuffleArrowDisabled = self.gui.find('**/tt_t_gui_mat_shuffleArrowDisabled')
         self.upsellModel = loader.loadModel('phase_3/models/gui/tt_m_gui_ups_mainGui')
         upsellTex = self.upsellModel.find('**/tt_t_gui_ups_banner')
-        self.parentFrame = DirectFrame(relief=DGG.RAISED, pos=(0.98, 0, 0.416), frameColor=(1, 0, 0, 0))
-        self.speciesFrame = DirectFrame(parent=self.parentFrame, image=shuffleFrame, image_scale=halfButtonInvertScale, relief=None, pos=(0, 0, -0.073), hpr=(0, 0, 0), scale=1.3, frameColor=(1, 1, 1, 1), text='Species', text_scale=0.0625, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
-        self.speciesLButton = DirectButton(parent=self.speciesFrame, relief=None, image=(shuffleArrowUp,
-         shuffleArrowDown,
-         shuffleArrowRollover,
-         shuffleArrowDisabled), image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, pos=(-0.2, 0, 0), command=self.__swapSpecies, extraArgs=[-1])
-        self.speciesRButton = DirectButton(parent=self.speciesFrame, relief=None, image=(shuffleArrowUp,
-         shuffleArrowDown,
-         shuffleArrowRollover,
-         shuffleArrowDisabled), image_scale=halfButtonInvertScale, image1_scale=halfButtonInvertHoverScale, image2_scale=halfButtonInvertHoverScale, pos=(0.2, 0, 0), command=self.__swapSpecies, extraArgs=[1])
-        self.headFrame = DirectFrame(parent=self.parentFrame, image=shuffleFrame, image_scale=halfButtonInvertScale, relief=None, pos=(0, 0, -0.3), hpr=(0, 0, 2), scale=0.9, frameColor=(1, 1, 1, 1), text=TTLocalizer.BodyShopHead, text_scale=0.0625, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
-        self.headLButton = DirectButton(parent=self.headFrame, relief=None, image=(shuffleArrowUp,
-         shuffleArrowDown,
-         shuffleArrowRollover,
-         shuffleArrowDisabled), image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, pos=(-0.2, 0, 0), command=self.__swapHead, extraArgs=[-1])
-        self.headRButton = DirectButton(parent=self.headFrame, relief=None, image=(shuffleArrowUp,
-         shuffleArrowDown,
-         shuffleArrowRollover,
-         shuffleArrowDisabled), image_scale=halfButtonInvertScale, image1_scale=halfButtonInvertHoverScale, image2_scale=halfButtonInvertHoverScale, pos=(0.2, 0, 0), command=self.__swapHead, extraArgs=[1])
-        self.bodyFrame = DirectFrame(parent=self.parentFrame, image=shuffleFrame, image_scale=halfButtonScale, relief=None, pos=(0, 0, -0.5), hpr=(0, 0, -2), scale=0.9, frameColor=(1, 1, 1, 1), text=TTLocalizer.BodyShopBody, text_scale=0.0625, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
-        self.torsoLButton = DirectButton(parent=self.bodyFrame, relief=None, image=(shuffleArrowUp,
-         shuffleArrowDown,
-         shuffleArrowRollover,
-         shuffleArrowDisabled), image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, pos=(-0.2, 0, 0), command=self.__swapTorso, extraArgs=[-1])
-        self.torsoRButton = DirectButton(parent=self.bodyFrame, relief=None, image=(shuffleArrowUp,
-         shuffleArrowDown,
-         shuffleArrowRollover,
-         shuffleArrowDisabled), image_scale=halfButtonInvertScale, image1_scale=halfButtonInvertHoverScale, image2_scale=halfButtonInvertHoverScale, pos=(0.2, 0, 0), command=self.__swapTorso, extraArgs=[1])
-        self.legsFrame = DirectFrame(parent=self.parentFrame, image=shuffleFrame, image_scale=halfButtonInvertScale, relief=None, pos=(0, 0, -0.7), hpr=(0, 0, 3), scale=0.9, frameColor=(1, 1, 1, 1), text=TTLocalizer.BodyShopLegs, text_scale=0.0625, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
-        self.legLButton = DirectButton(parent=self.legsFrame, relief=None, image=(shuffleArrowUp,
-         shuffleArrowDown,
-         shuffleArrowRollover,
-         shuffleArrowDisabled), image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, pos=(-0.2, 0, 0), command=self.__swapLegs, extraArgs=[-1])
-        self.legRButton = DirectButton(parent=self.legsFrame, relief=None, image=(shuffleArrowUp,
-         shuffleArrowDown,
-         shuffleArrowRollover,
-         shuffleArrowDisabled), image_scale=halfButtonInvertScale, image1_scale=halfButtonInvertHoverScale, image2_scale=halfButtonInvertHoverScale, pos=(0.2, 0, 0), command=self.__swapLegs, extraArgs=[1])
-        self.memberButton = DirectButton(relief=None, image=(upsellTex,
-         upsellTex,
-         upsellTex,
-         upsellTex), image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, scale=0.9, pos=(0, 0, -0.84), command=self.__restrictForward)
+        self.parentFrame = DirectFrame(relief = DGG.RAISED, pos = (0.98, 0, 0.416), frameColor = (1, 0, 0, 0))
+        self.speciesFrame = DirectFrame(parent = self.parentFrame, image = shuffleFrame,
+                                        image_scale = halfButtonInvertScale, relief = None, pos = (0, 0, -0.073),
+                                        hpr = (0, 0, 0), scale = 1.3, frameColor = (1, 1, 1, 1), text = 'Species',
+                                        text_scale = 0.0625, text_pos = (-0.001, -0.015), text_fg = (1, 1, 1, 1))
+        self.speciesLButton = DirectButton(parent = self.speciesFrame, relief = None, image = (shuffleArrowUp,
+                                                                                               shuffleArrowDown,
+                                                                                               shuffleArrowRollover,
+                                                                                               shuffleArrowDisabled),
+                                           image_scale = halfButtonScale, image1_scale = halfButtonHoverScale,
+                                           image2_scale = halfButtonHoverScale, pos = (-0.2, 0, 0),
+                                           command = self.__swapSpecies, extraArgs = [-1])
+        self.speciesRButton = DirectButton(parent = self.speciesFrame, relief = None, image = (shuffleArrowUp,
+                                                                                               shuffleArrowDown,
+                                                                                               shuffleArrowRollover,
+                                                                                               shuffleArrowDisabled),
+                                           image_scale = halfButtonInvertScale,
+                                           image1_scale = halfButtonInvertHoverScale,
+                                           image2_scale = halfButtonInvertHoverScale, pos = (0.2, 0, 0),
+                                           command = self.__swapSpecies, extraArgs = [1])
+        self.headFrame = DirectFrame(parent = self.parentFrame, image = shuffleFrame,
+                                     image_scale = halfButtonInvertScale, relief = None, pos = (0, 0, -0.3),
+                                     hpr = (0, 0, 2), scale = 0.9, frameColor = (1, 1, 1, 1),
+                                     text = TTLocalizer.BodyShopHead, text_scale = 0.0625, text_pos = (-0.001, -0.015),
+                                     text_fg = (1, 1, 1, 1))
+        self.headLButton = DirectButton(parent = self.headFrame, relief = None, image = (shuffleArrowUp,
+                                                                                         shuffleArrowDown,
+                                                                                         shuffleArrowRollover,
+                                                                                         shuffleArrowDisabled),
+                                        image_scale = halfButtonScale, image1_scale = halfButtonHoverScale,
+                                        image2_scale = halfButtonHoverScale, pos = (-0.2, 0, 0),
+                                        command = self.__swapHead, extraArgs = [-1])
+        self.headRButton = DirectButton(parent = self.headFrame, relief = None, image = (shuffleArrowUp,
+                                                                                         shuffleArrowDown,
+                                                                                         shuffleArrowRollover,
+                                                                                         shuffleArrowDisabled),
+                                        image_scale = halfButtonInvertScale, image1_scale = halfButtonInvertHoverScale,
+                                        image2_scale = halfButtonInvertHoverScale, pos = (0.2, 0, 0),
+                                        command = self.__swapHead, extraArgs = [1])
+        self.bodyFrame = DirectFrame(parent = self.parentFrame, image = shuffleFrame, image_scale = halfButtonScale,
+                                     relief = None, pos = (0, 0, -0.5), hpr = (0, 0, -2), scale = 0.9,
+                                     frameColor = (1, 1, 1, 1), text = TTLocalizer.BodyShopBody, text_scale = 0.0625,
+                                     text_pos = (-0.001, -0.015), text_fg = (1, 1, 1, 1))
+        self.torsoLButton = DirectButton(parent = self.bodyFrame, relief = None, image = (shuffleArrowUp,
+                                                                                          shuffleArrowDown,
+                                                                                          shuffleArrowRollover,
+                                                                                          shuffleArrowDisabled),
+                                         image_scale = halfButtonScale, image1_scale = halfButtonHoverScale,
+                                         image2_scale = halfButtonHoverScale, pos = (-0.2, 0, 0),
+                                         command = self.__swapTorso, extraArgs = [-1])
+        self.torsoRButton = DirectButton(parent = self.bodyFrame, relief = None, image = (shuffleArrowUp,
+                                                                                          shuffleArrowDown,
+                                                                                          shuffleArrowRollover,
+                                                                                          shuffleArrowDisabled),
+                                         image_scale = halfButtonInvertScale, image1_scale = halfButtonInvertHoverScale,
+                                         image2_scale = halfButtonInvertHoverScale, pos = (0.2, 0, 0),
+                                         command = self.__swapTorso, extraArgs = [1])
+        self.legsFrame = DirectFrame(parent = self.parentFrame, image = shuffleFrame,
+                                     image_scale = halfButtonInvertScale, relief = None, pos = (0, 0, -0.7),
+                                     hpr = (0, 0, 3), scale = 0.9, frameColor = (1, 1, 1, 1),
+                                     text = TTLocalizer.BodyShopLegs, text_scale = 0.0625, text_pos = (-0.001, -0.015),
+                                     text_fg = (1, 1, 1, 1))
+        self.legLButton = DirectButton(parent = self.legsFrame, relief = None, image = (shuffleArrowUp,
+                                                                                        shuffleArrowDown,
+                                                                                        shuffleArrowRollover,
+                                                                                        shuffleArrowDisabled),
+                                       image_scale = halfButtonScale, image1_scale = halfButtonHoverScale,
+                                       image2_scale = halfButtonHoverScale, pos = (-0.2, 0, 0),
+                                       command = self.__swapLegs, extraArgs = [-1])
+        self.legRButton = DirectButton(parent = self.legsFrame, relief = None, image = (shuffleArrowUp,
+                                                                                        shuffleArrowDown,
+                                                                                        shuffleArrowRollover,
+                                                                                        shuffleArrowDisabled),
+                                       image_scale = halfButtonInvertScale, image1_scale = halfButtonInvertHoverScale,
+                                       image2_scale = halfButtonInvertHoverScale, pos = (0.2, 0, 0),
+                                       command = self.__swapLegs, extraArgs = [1])
+        self.memberButton = DirectButton(relief = None, image = (upsellTex,
+                                                                 upsellTex,
+                                                                 upsellTex,
+                                                                 upsellTex), image_scale = halfButtonScale,
+                                         image1_scale = halfButtonHoverScale, image2_scale = halfButtonHoverScale,
+                                         scale = 0.9, pos = (0, 0, -0.84), command = self.__restrictForward)
         self.parentFrame.hide()
         self.memberButton.hide()
         self.shuffleFetchMsg = 'BodyShopShuffle'
@@ -224,12 +266,14 @@ class BodyShop(StateData.StateData):
                 self.toon.style.sleeveTexColor = sleeveColor
             if self.toon.style.botTex not in ToonDNA.MakeAToonGirlBottoms:
                 if self.toon.style.torso[1] == 'd':
-                    botTex, botTexColor = ToonDNA.getRandomBottom(gender, ToonDNA.MAKE_A_TOON, girlBottomType=ToonDNA.SKIRT)
+                    botTex, botTexColor = ToonDNA.getRandomBottom(gender, ToonDNA.MAKE_A_TOON,
+                                                                  girlBottomType = ToonDNA.SKIRT)
                     self.toon.style.botTex = botTex
                     self.toon.style.botTexColor = botTexColor
                     torsoOffset = 3
                 else:
-                    botTex, botTexColor = ToonDNA.getRandomBottom(gender, ToonDNA.MAKE_A_TOON, girlBottomType=ToonDNA.SHORTS)
+                    botTex, botTexColor = ToonDNA.getRandomBottom(gender, ToonDNA.MAKE_A_TOON,
+                                                                  girlBottomType = ToonDNA.SHORTS)
                     self.toon.style.botTex = botTex
                     self.toon.style.botTexColor = botTexColor
                     torsoOffset = 0
@@ -261,7 +305,8 @@ class BodyShop(StateData.StateData):
     def __swapSpecies(self, offset):
         length = len(ToonDNA.toonSpeciesTypes)
         self.speciesChoice = (self.speciesChoice + offset) % length
-        self.__updateScrollButtons(self.speciesChoice, length, self.speciesStart, self.speciesLButton, self.speciesRButton)
+        self.__updateScrollButtons(self.speciesChoice, length, self.speciesStart, self.speciesLButton,
+                                   self.speciesRButton)
         self.species = ToonDNA.toonSpeciesTypes[self.speciesChoice]
         self.headList = ToonDNA.getHeadList(self.species)
         self.__changeSpeciesName(self.species)
@@ -271,7 +316,8 @@ class BodyShop(StateData.StateData):
         self.__updateHead()
 
     def __updateHead(self):
-        self.__updateScrollButtons(self.headChoice, len(self.headList), self.headStart, self.headLButton, self.headRButton)
+        self.__updateScrollButtons(self.headChoice, len(self.headList), self.headStart, self.headLButton,
+                                   self.headRButton)
         headIndex = ToonDNA.getHeadStartIndex(self.species) + self.headChoice
         newHead = ToonDNA.toonHeadTypes[headIndex]
         self.dna.head = newHead
@@ -290,11 +336,13 @@ class BodyShop(StateData.StateData):
         elif choice != start % length:
             lButton['state'] = DGG.NORMAL
         if lButton['state'] == DGG.DISABLED and rButton['state'] == DGG.DISABLED:
-            self.notify.info('Both buttons got disabled! Doing fallback code. choice%d, length=%d, start=%d, lButton=%s, rButton=%s' % (choice,
-             length,
-             start,
-             lButton,
-             rButton))
+            self.notify.info(
+                'Both buttons got disabled! Doing fallback code. choice%d, length=%d, start=%d, lButton=%s, rButton=%s' % (
+                choice,
+                length,
+                start,
+                lButton,
+                rButton))
             if choice == start % length:
                 lButton['state'] = DGG.DISABLED
                 rButton['state'] = DGG.NORMAL
@@ -321,7 +369,7 @@ class BodyShop(StateData.StateData):
                 self.accept('next', self.__handleForward)
 
     def __restrictForward(self):
-        TeaserPanel.TeaserPanel(pageName='species')
+        TeaserPanel.TeaserPanel(pageName = 'species')
 
     def changeBody(self):
         newChoice = self.shuffleButton.getCurrChoice()

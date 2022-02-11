@@ -11,6 +11,7 @@ from direct.fsm import State
 from toontown.hood import ZoneUtil
 from toontown.toonbase import TTLocalizer
 
+
 class DistributedLawOfficeElevatorInt(DistributedElevatorFloor.DistributedElevatorFloor):
 
     def __init__(self, cr):
@@ -79,9 +80,11 @@ class DistributedLawOfficeElevatorInt(DistributedElevatorFloor.DistributedElevat
     def setLawOfficeInteriorZone(self, zoneId):
         if self.localToonOnBoard:
             hoodId = self.cr.playGame.hood.hoodId
-            doneStatus = {'loader': 'cogHQLoader',
-             'where': 'factoryInterior',
-             'how': 'teleportIn',
-             'zoneId': zoneId,
-             'hoodId': hoodId}
+            doneStatus = {
+                'loader': 'cogHQLoader',
+                'where': 'factoryInterior',
+                'how': 'teleportIn',
+                'zoneId': zoneId,
+                'hoodId': hoodId
+            }
             self.cr.playGame.getPlace().elevator.signalDone(doneStatus)

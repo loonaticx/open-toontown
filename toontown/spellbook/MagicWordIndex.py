@@ -85,21 +85,23 @@ class MagicWord:
     def __register(self):
         for wordName in self.aliases:
             if wordName in magicWordIndex:
-                self.notify.error('Duplicate Magic Word name or alias detected! Invalid name: {}'. format(wordName))
-            magicWordIndex[wordName] = {'class': self,
-                                        'classname': self.__class__.__name__,
-                                        'hidden': self.hidden,
-                                        'administrative': self.administrative,
-                                        'aliases': self.aliases,
-                                        'desc': self.desc,
-                                        'advancedDesc': self.advancedDesc,
-                                        'example': self.example,
-                                        'execLocation': self.execLocation,
-                                        'access': self.accessLevel,
-                                        'affectRange': self.affectRange,
-                                        'args': self.arguments}
+                self.notify.error('Duplicate Magic Word name or alias detected! Invalid name: {}'.format(wordName))
+            magicWordIndex[wordName] = {
+                'class': self,
+                'classname': self.__class__.__name__,
+                'hidden': self.hidden,
+                'administrative': self.administrative,
+                'aliases': self.aliases,
+                'desc': self.desc,
+                'advancedDesc': self.advancedDesc,
+                'example': self.example,
+                'execLocation': self.execLocation,
+                'access': self.accessLevel,
+                'affectRange': self.affectRange,
+                'args': self.arguments
+            }
 
-    def loadWord(self, air=None, cr=None, invokerId=None, targets=None, args=None):
+    def loadWord(self, air = None, cr = None, invokerId = None, targets = None, args = None):
         self.air = air
         self.cr = cr
         self.invokerId = invokerId
@@ -140,9 +142,13 @@ class MagicWord:
                 if len(self.targets) > 1:
                     validTargets -= 1
                     continue
-                targetAccess = OTPGlobals.AccessLevelDebug2Name.get(OTPGlobals.AccessLevelInt2Name.get(toon.getAccessLevel()))
-                invokerAccess = OTPGlobals.AccessLevelDebug2Name.get(OTPGlobals.AccessLevelInt2Name.get(invoker.getAccessLevel()))
-                return "You don't have a high enough Access Level to target {0}! Their Access Level: {1}. Your Access Level: {2}.".format(name, targetAccess, invokerAccess)
+                targetAccess = OTPGlobals.AccessLevelDebug2Name.get(
+                    OTPGlobals.AccessLevelInt2Name.get(toon.getAccessLevel()))
+                invokerAccess = OTPGlobals.AccessLevelDebug2Name.get(
+                    OTPGlobals.AccessLevelInt2Name.get(invoker.getAccessLevel()))
+                return "You don't have a high enough Access Level to target {0}! Their Access Level: {1}. Your Access " \
+                       "Level: {2}.".format(
+                    name, targetAccess, invokerAccess)
 
             if self.execLocation == MagicWordConfig.EXEC_LOC_CLIENT:
                 self.args = json.loads(self.args)
@@ -242,6 +248,7 @@ class ToggleRun(MagicWord):
         inputState.set('debugRunning', not inputState.isSet('debugRunning'))
         return "Run mode has been toggled."
 
+
 class MaxToon(MagicWord):
     aliases = ["max", "idkfa"]
     desc = "Maxes your target toon."
@@ -272,6 +279,7 @@ class MaxToon(MagicWord):
         toon.b_setBankMoney(toon.maxBankMoney)
 
         return f"Successfully maxed {toon.getName()}!"
+
 
 # Instantiate all classes defined here to register them.
 # A bit hacky, but better than the old system

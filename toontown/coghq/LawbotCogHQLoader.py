@@ -10,15 +10,19 @@ from . import StageInterior
 from . import LawbotHQExterior
 from . import LawbotHQBossBattle
 from . import LawbotOfficeExterior
+
 aspectSF = 0.7227
+
 
 class LawbotCogHQLoader(CogHQLoader.CogHQLoader):
     notify = DirectNotifyGlobal.directNotify.newCategory('LawbotCogHQLoader')
 
     def __init__(self, hood, parentFSMState, doneEvent):
         CogHQLoader.CogHQLoader.__init__(self, hood, parentFSMState, doneEvent)
-        self.fsm.addState(State.State('stageInterior', self.enterStageInterior, self.exitStageInterior, ['quietZone', 'cogHQExterior']))
-        self.fsm.addState(State.State('factoryExterior', self.enterFactoryExterior, self.exitFactoryExterior, ['quietZone', 'cogHQExterior']))
+        self.fsm.addState(State.State('stageInterior', self.enterStageInterior, self.exitStageInterior,
+                                      ['quietZone', 'cogHQExterior']))
+        self.fsm.addState(State.State('factoryExterior', self.enterFactoryExterior, self.exitFactoryExterior,
+                                      ['quietZone', 'cogHQExterior']))
         for stateName in ['start', 'cogHQExterior', 'quietZone']:
             state = self.fsm.getStateNamed(stateName)
             state.addTransition('stageInterior')

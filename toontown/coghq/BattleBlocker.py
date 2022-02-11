@@ -5,6 +5,7 @@ from otp.level import BasicEntities
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 
+
 class BattleBlocker(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('BattleBlocker')
 
@@ -73,7 +74,8 @@ class BattleBlocker(BasicEntities.DistributedNodePathEntity):
             for suitId in self.suitIds:
                 suit = base.cr.doId2do.get(suitId)
                 if suit:
-                    self.notify.debug('act like we collided with Suit %d ( in state %s )' % (suitId, suit.fsm.getCurrentState().getName()))
+                    self.notify.debug('act like we collided with Suit %d ( in state %s )' % (
+                    suitId, suit.fsm.getCurrentState().getName()))
                     callback = suit.handleBattleBlockerCollision
                     break
 

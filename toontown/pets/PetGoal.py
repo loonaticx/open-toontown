@@ -5,6 +5,7 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.pets import PetConstants
 from toontown.toon import DistributedToonAI
 
+
 class PetGoal(FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('PetGoal')
     SerialNum = 0
@@ -17,7 +18,11 @@ class PetGoal(FSM.FSM):
         self.removeOnDone = 0
         self.serialNum = PetGoal.SerialNum
         PetGoal.SerialNum += 1
-        self.fsm = ClassicFSM.ClassicFSM('PetGoalFSM', [State.State('off', self.enterOff, self.exitOff, ['background']), State.State('background', self.enterBackground, self.exitBackground, ['foreground']), State.State('foreground', self.enterForeground, self.exitForeground, ['background'])], 'off', 'off')
+        self.fsm = ClassicFSM.ClassicFSM('PetGoalFSM', [State.State('off', self.enterOff, self.exitOff, ['background']),
+                                                        State.State('background', self.enterBackground,
+                                                                    self.exitBackground, ['foreground']),
+                                                        State.State('foreground', self.enterForeground,
+                                                                    self.exitForeground, ['background'])], 'off', 'off')
         self.fsm.enterInitialState()
         return
 
@@ -259,6 +264,6 @@ class DoTrick(InteractWithAvatar):
 
     def __str__(self):
         return '%s-%s-%s: %s' % (self.__class__.__name__,
-         self.avatar.doId,
-         self.trickId,
-         self.getPriority())
+                                 self.avatar.doId,
+                                 self.trickId,
+                                 self.getPriority())

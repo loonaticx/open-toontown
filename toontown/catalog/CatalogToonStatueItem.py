@@ -5,6 +5,7 @@ from otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
 from toontown.estate import GardenGlobals
 
+
 class CatalogToonStatueItem(CatalogGardenItem.CatalogGardenItem):
     pictureToonStatue = None
 
@@ -51,7 +52,7 @@ class CatalogToonStatueItem(CatalogGardenItem.CatalogGardenItem):
     def getAllToonStatues(self):
         self.statueList = []
         for index in range(self.startPoseIndex, self.endPoseIndex + 1):
-            self.statueList.append(CatalogToonStatueItem(index, 1, endPoseIndex=index))
+            self.statueList.append(CatalogToonStatueItem(index, 1, endPoseIndex = index))
 
         return self.statueList
 

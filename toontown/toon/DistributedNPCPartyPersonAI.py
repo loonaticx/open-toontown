@@ -6,6 +6,7 @@ from toontown.toon import NPCToons
 from direct.distributed import ClockDelta
 from toontown.parties import PartyGlobals
 
+
 class DistributedNPCPartyPersonAI(DistributedNPCToonBaseAI):
 
     def __init__(self, air, npcId):
@@ -28,7 +29,7 @@ class DistributedNPCPartyPersonAI(DistributedNPCToonBaseAI):
             return
         av = self.air.doId2do[avId]
         self.busy = avId
-        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
+        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs = [avId])
         parties = av.hostedParties
         if not self.air.partyManager.canBuyParties():
             flag = NPCToons.PARTY_MOVIE_COMINGSOON
@@ -54,10 +55,10 @@ class DistributedNPCPartyPersonAI(DistributedNPCToonBaseAI):
 
     def d_setMovie(self, avId, flag, extraArgs = []):
         self.sendUpdate('setMovie', [flag,
-         self.npcId,
-         avId,
-         extraArgs,
-         ClockDelta.globalClockDelta.getRealNetworkTime()])
+                                     self.npcId,
+                                     avId,
+                                     extraArgs,
+                                     ClockDelta.globalClockDelta.getRealNetworkTime()])
 
     def sendTimeoutMovie(self, task):
         self.d_setMovie(self.busy, NPCToons.PARTY_MOVIE_TIMEOUT)
@@ -81,7 +82,8 @@ class DistributedNPCPartyPersonAI(DistributedNPCToonBaseAI):
             av = simbase.air.doId2do.get(avId)
             if av:
                 if av.getGameAccess() != ToontownGlobals.AccessFull:
-                    self.air.writeServerEvent('suspicious', avId, 'DistributedNPCPartyPersonAI.free player tried to host party.')
+                    self.air.writeServerEvent('suspicious', avId,
+                                              'DistributedNPCPartyPersonAI.free player tried to host party.')
                     flag = NPCToons.PARTY_MOVIE_ONLYPAID
                     self.d_setMovie(avId, flag)
                 else:

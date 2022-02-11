@@ -18,6 +18,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.launcher import ToontownDownloadWatcher
 
+
 class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')
 
@@ -212,7 +213,7 @@ class ToonBase(OTPBase.OTPBase):
             self.glitchCount += 1
             return
         if not hasattr(self, 'localAvatar'):
-            self.screenshot(namePrefix=namePrefix)
+            self.screenshot(namePrefix = namePrefix)
             self.lastScreenShotTime = globalClock.getRealTime()
             return
         coordOnScreen = self.config.GetBool('screenshot-coords', 0)
@@ -221,14 +222,18 @@ class ToonBase(OTPBase.OTPBase):
         self.screenshotStr = ''
         messenger.send('takingScreenshot')
         if coordOnScreen:
-            coordTextLabel = DirectLabel(pos=(-0.81, 0.001, -0.87), text=ctext, text_scale=0.05, text_fg=VBase4(1.0, 1.0, 1.0, 1.0), text_bg=(0, 0, 0, 0), text_shadow=(0, 0, 0, 1), relief=None)
+            coordTextLabel = DirectLabel(pos = (-0.81, 0.001, -0.87), text = ctext, text_scale = 0.05,
+                                         text_fg = VBase4(1.0, 1.0, 1.0, 1.0), text_bg = (0, 0, 0, 0),
+                                         text_shadow = (0, 0, 0, 1), relief = None)
             coordTextLabel.setBin('gui-popup', 0)
             strTextLabel = None
             if len(self.screenshotStr):
-                strTextLabel = DirectLabel(pos=(0.0, 0.001, 0.9), text=self.screenshotStr, text_scale=0.05, text_fg=VBase4(1.0, 1.0, 1.0, 1.0), text_bg=(0, 0, 0, 0), text_shadow=(0, 0, 0, 1), relief=None)
+                strTextLabel = DirectLabel(pos = (0.0, 0.001, 0.9), text = self.screenshotStr, text_scale = 0.05,
+                                           text_fg = VBase4(1.0, 1.0, 1.0, 1.0), text_bg = (0, 0, 0, 0),
+                                           text_shadow = (0, 0, 0, 1), relief = None)
                 strTextLabel.setBin('gui-popup', 0)
         self.graphicsEngine.renderFrame()
-        self.screenshot(namePrefix=namePrefix, imageComment=ctext + ' ' + self.screenshotStr)
+        self.screenshot(namePrefix = namePrefix, imageComment = ctext + ' ' + self.screenshotStr)
         self.lastScreenShotTime = globalClock.getRealTime()
         if coordOnScreen:
             if strTextLabel is not None:
@@ -273,13 +278,16 @@ class ToonBase(OTPBase.OTPBase):
         self.marginManager = MarginManager()
         self.margins = self.aspect2d.attachNewNode(self.marginManager, DirectGuiGlobals.MIDGROUND_SORT_INDEX + 1)
         mm = self.marginManager
-        self.leftCells = [mm.addGridCell(0, 1, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop), mm.addGridCell(0, 2, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop), mm.addGridCell(0, 3, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop)]
+        self.leftCells = [mm.addGridCell(0, 1, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop),
+                          mm.addGridCell(0, 2, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop),
+                          mm.addGridCell(0, 3, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop)]
         self.bottomCells = [mm.addGridCell(0.5, 0, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop),
-         mm.addGridCell(1.5, 0, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop),
-         mm.addGridCell(2.5, 0, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop),
-         mm.addGridCell(3.5, 0, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop),
-         mm.addGridCell(4.5, 0, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop)]
-        self.rightCells = [mm.addGridCell(5, 2, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop), mm.addGridCell(5, 1, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop)]
+                            mm.addGridCell(1.5, 0, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop),
+                            mm.addGridCell(2.5, 0, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop),
+                            mm.addGridCell(3.5, 0, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop),
+                            mm.addGridCell(4.5, 0, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop)]
+        self.rightCells = [mm.addGridCell(5, 2, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop),
+                           mm.addGridCell(5, 1, base.a2dLeft, base.a2dRight, base.a2dBottom, base.a2dTop)]
 
     def setCellsAvailable(self, cell_list, available):
         for cell in cell_list:
@@ -348,9 +356,11 @@ class ToonBase(OTPBase.OTPBase):
     def setExitErrorCode(self, code):
         self.exitErrorCode = code
         if os.name == 'nt':
-            exitCode2exitPage = {OTPLauncherGlobals.ExitEnableChat: 'chat',
-             OTPLauncherGlobals.ExitSetParentPassword: 'setparentpassword',
-             OTPLauncherGlobals.ExitPurchase: 'purchase'}
+            exitCode2exitPage = {
+                OTPLauncherGlobals.ExitEnableChat: 'chat',
+                OTPLauncherGlobals.ExitSetParentPassword: 'setparentpassword',
+                OTPLauncherGlobals.ExitPurchase: 'purchase'
+            }
             if code in exitCode2exitPage:
                 launcher.setRegistry('EXIT_PAGE', exitCode2exitPage[code])
 
@@ -387,11 +397,17 @@ class ToonBase(OTPBase.OTPBase):
 
     def getShardPopLimits(self):
         if self.cr.productName == 'JP':
-            return (config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP_JP), config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP_JP), config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP_JP))
+            return (config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP_JP),
+                    config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP_JP),
+                    config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP_JP))
         elif self.cr.productName in ['BR', 'FR']:
-            return (config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP_INTL), config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP_INTL), config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP_INTL))
+            return (config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP_INTL),
+                    config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP_INTL),
+                    config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP_INTL))
         else:
-            return (config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP), config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP), config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP))
+            return (config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP),
+                    config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP),
+                    config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP))
 
     def playMusic(self, music, looping = 0, interrupt = 1, volume = None, time = 0.0):
         OTPBase.OTPBase.playMusic(self, music, looping, interrupt, volume, time)

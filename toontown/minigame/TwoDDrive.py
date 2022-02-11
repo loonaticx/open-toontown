@@ -4,12 +4,14 @@ from direct.interval.IntervalGlobal import *
 from . import ArrowKeys
 from direct.task.Task import Task
 
+
 class TwoDDrive:
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDDrive')
     TASK_NAME = 'TwoDDriveTask'
     SET_ATREST_HEADING_TASK = 'setAtRestHeadingTask'
 
-    def __init__(self, game, speed, maxFrameMove = None, customCollisionCallback = None, priority = 0, setHeading = 1, upHeading = 0):
+    def __init__(self, game, speed, maxFrameMove = None, customCollisionCallback = None, priority = 0, setHeading = 1,
+                 upHeading = 0):
         self.game = game
         self.speed = speed
         self.maxFrameMove = maxFrameMove
@@ -42,7 +44,7 @@ class TwoDDrive:
         self.__placeToonHOG(self.lt.getPos())
         base.localAvatar.enableAvatarControls()
         taskMgr.remove(TwoDDrive.TASK_NAME)
-        taskMgr.add(self.__update, TwoDDrive.TASK_NAME, priority=self.priority)
+        taskMgr.add(self.__update, TwoDDrive.TASK_NAME, priority = self.priority)
 
     def __placeToonHOG(self, pos, h = None):
         if h == None:
@@ -129,7 +131,8 @@ class TwoDDrive:
             startAngle = self.lt.getH()
             startAngle = fitSrcAngle2Dest(startAngle, angle)
             dur = 0.1 * abs(startAngle - angle) / 90
-            self.turnLocalToonIval = LerpHprInterval(self.lt, dur, Point3(angle, 0, 0), startHpr=Point3(startAngle, 0, 0), name='TwoDDriveLerpHpr')
+            self.turnLocalToonIval = LerpHprInterval(self.lt, dur, Point3(angle, 0, 0),
+                                                     startHpr = Point3(startAngle, 0, 0), name = 'TwoDDriveLerpHpr')
             self.turnLocalToonIval.start()
             if self.atRestHeading != self.oldAtRestHeading:
                 self.oldAtRestHeading = self.atRestHeading

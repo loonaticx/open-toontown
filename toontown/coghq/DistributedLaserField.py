@@ -14,6 +14,7 @@ from toontown.coghq import BattleBlocker
 from toontown.toonbase import TTLocalizer
 import random
 
+
 class DistributedLaserField(BattleBlocker.BattleBlocker):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLaserField')
     laserFieldModels = ['phase_9/models/cogHQ/square_stomper']
@@ -57,9 +58,9 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
         self.gridGameText = ' '
         self.activeLF = 1
         self.successSound = loader.loadSfx('phase_11/audio/sfx/LB_capacitor_discharge_3.ogg')
-        self.successTrack = Parallel(SoundInterval(self.successSound, node=self, volume=0.8))
+        self.successTrack = Parallel(SoundInterval(self.successSound, node = self, volume = 0.8))
         self.failSound = loader.loadSfx('phase_11/audio/sfx/LB_sparks_1.ogg')
-        self.failTrack = Parallel(SoundInterval(self.failSound, node=self, volume=0.8))
+        self.failTrack = Parallel(SoundInterval(self.failSound, node = self, volume = 0.8))
         return
 
     def generateInit(self):
@@ -144,193 +145,193 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
     def makeGridSymbols(self):
         symbolBlank = [0, (1.0, 0.0, 0.0), ()]
         symbolOne = [None, (1.0, 0.0, 0.0), ((0.45, 0.8),
-          (0.55, 0.8),
-          (0.55, 0.2),
-          (0.45, 0.2),
-          (0.45, 0.8))]
+                                             (0.55, 0.8),
+                                             (0.55, 0.2),
+                                             (0.45, 0.2),
+                                             (0.45, 0.8))]
         symbolTwo = [None, (1.0, 0.0, 0.0), ((0.3, 0.8),
-          (0.7, 0.8),
-          (0.7, 0.45),
-          (0.4, 0.45),
-          (0.4, 0.3),
-          (0.7, 0.3),
-          (0.7, 0.2),
-          (0.3, 0.2),
-          (0.3, 0.55),
-          (0.6, 0.55),
-          (0.6, 0.7),
-          (0.3, 0.7),
-          (0.3, 0.8))]
+                                             (0.7, 0.8),
+                                             (0.7, 0.45),
+                                             (0.4, 0.45),
+                                             (0.4, 0.3),
+                                             (0.7, 0.3),
+                                             (0.7, 0.2),
+                                             (0.3, 0.2),
+                                             (0.3, 0.55),
+                                             (0.6, 0.55),
+                                             (0.6, 0.7),
+                                             (0.3, 0.7),
+                                             (0.3, 0.8))]
         symbolThree = [None, (1.0, 0.0, 0.0), ((0.3, 0.8),
-          (0.7, 0.8),
-          (0.7, 0.2),
-          (0.3, 0.2),
-          (0.3, 0.3),
-          (0.6, 0.3),
-          (0.6, 0.45),
-          (0.4, 0.45),
-          (0.4, 0.55),
-          (0.6, 0.55),
-          (0.6, 0.7),
-          (0.3, 0.7),
-          (0.3, 0.8))]
+                                               (0.7, 0.8),
+                                               (0.7, 0.2),
+                                               (0.3, 0.2),
+                                               (0.3, 0.3),
+                                               (0.6, 0.3),
+                                               (0.6, 0.45),
+                                               (0.4, 0.45),
+                                               (0.4, 0.55),
+                                               (0.6, 0.55),
+                                               (0.6, 0.7),
+                                               (0.3, 0.7),
+                                               (0.3, 0.8))]
         symbolFour = [None, (1.0, 0.0, 0.0), ((0.3, 0.8),
-          (0.4, 0.8),
-          (0.4, 0.6),
-          (0.6, 0.6),
-          (0.6, 0.8),
-          (0.7, 0.8),
-          (0.7, 0.2),
-          (0.6, 0.2),
-          (0.6, 0.5),
-          (0.3, 0.5),
-          (0.3, 0.8))]
+                                              (0.4, 0.8),
+                                              (0.4, 0.6),
+                                              (0.6, 0.6),
+                                              (0.6, 0.8),
+                                              (0.7, 0.8),
+                                              (0.7, 0.2),
+                                              (0.6, 0.2),
+                                              (0.6, 0.5),
+                                              (0.3, 0.5),
+                                              (0.3, 0.8))]
         symbolFive = [None, (1.0, 0.0, 0.0), ((0.3, 0.8),
-          (0.4, 0.8),
-          (0.4, 0.6),
-          (0.6, 0.6),
-          (0.6, 0.8),
-          (0.7, 0.8),
-          (0.7, 0.2),
-          (0.6, 0.2),
-          (0.6, 0.5),
-          (0.3, 0.5),
-          (0.3, 0.8))]
+                                              (0.4, 0.8),
+                                              (0.4, 0.6),
+                                              (0.6, 0.6),
+                                              (0.6, 0.8),
+                                              (0.7, 0.8),
+                                              (0.7, 0.2),
+                                              (0.6, 0.2),
+                                              (0.6, 0.5),
+                                              (0.3, 0.5),
+                                              (0.3, 0.8))]
         symbolSix = [None, (1.0, 0.0, 0.0), ((0.3, 0.8),
-          (0.4, 0.8),
-          (0.4, 0.6),
-          (0.6, 0.6),
-          (0.6, 0.8),
-          (0.7, 0.8),
-          (0.7, 0.2),
-          (0.6, 0.2),
-          (0.6, 0.5),
-          (0.3, 0.5),
-          (0.3, 0.8))]
+                                             (0.4, 0.8),
+                                             (0.4, 0.6),
+                                             (0.6, 0.6),
+                                             (0.6, 0.8),
+                                             (0.7, 0.8),
+                                             (0.7, 0.2),
+                                             (0.6, 0.2),
+                                             (0.6, 0.5),
+                                             (0.3, 0.5),
+                                             (0.3, 0.8))]
         symbolSeven = [None, (1.0, 0.0, 0.0), ((0.3, 0.8),
-          (0.4, 0.8),
-          (0.4, 0.6),
-          (0.6, 0.6),
-          (0.6, 0.8),
-          (0.7, 0.8),
-          (0.7, 0.2),
-          (0.6, 0.2),
-          (0.6, 0.5),
-          (0.3, 0.5),
-          (0.3, 0.8))]
+                                               (0.4, 0.8),
+                                               (0.4, 0.6),
+                                               (0.6, 0.6),
+                                               (0.6, 0.8),
+                                               (0.7, 0.8),
+                                               (0.7, 0.2),
+                                               (0.6, 0.2),
+                                               (0.6, 0.5),
+                                               (0.3, 0.5),
+                                               (0.3, 0.8))]
         symbolEight = [None, (1.0, 0.0, 0.0), ((0.3, 0.8),
-          (0.4, 0.8),
-          (0.4, 0.6),
-          (0.6, 0.6),
-          (0.6, 0.8),
-          (0.7, 0.8),
-          (0.7, 0.2),
-          (0.6, 0.2),
-          (0.6, 0.5),
-          (0.3, 0.5),
-          (0.3, 0.8))]
+                                               (0.4, 0.8),
+                                               (0.4, 0.6),
+                                               (0.6, 0.6),
+                                               (0.6, 0.8),
+                                               (0.7, 0.8),
+                                               (0.7, 0.2),
+                                               (0.6, 0.2),
+                                               (0.6, 0.5),
+                                               (0.3, 0.5),
+                                               (0.3, 0.8))]
         symbolNine = [None, (1.0, 0.0, 0.0), ((0.3, 0.8),
-          (0.4, 0.8),
-          (0.4, 0.6),
-          (0.6, 0.6),
-          (0.6, 0.8),
-          (0.7, 0.8),
-          (0.7, 0.2),
-          (0.6, 0.2),
-          (0.6, 0.5),
-          (0.3, 0.5),
-          (0.3, 0.8))]
+                                              (0.4, 0.8),
+                                              (0.4, 0.6),
+                                              (0.6, 0.6),
+                                              (0.6, 0.8),
+                                              (0.7, 0.8),
+                                              (0.7, 0.2),
+                                              (0.6, 0.2),
+                                              (0.6, 0.5),
+                                              (0.3, 0.5),
+                                              (0.3, 0.8))]
         symbolSquare = [None, (1.0, 0.0, 0.0), ((0.1, 0.9),
-          (0.9, 0.9),
-          (0.9, 0.1),
-          (0.1, 0.1),
-          (0.1, 0.9))]
+                                                (0.9, 0.9),
+                                                (0.9, 0.1),
+                                                (0.1, 0.1),
+                                                (0.1, 0.9))]
         symbolTriangle = [None, (0.0, 1.0, 0.0), ((0.1, 0.1),
-          (0.5, 0.9),
-          (0.9, 0.1),
-          (0.1, 0.1))]
+                                                  (0.5, 0.9),
+                                                  (0.9, 0.1),
+                                                  (0.1, 0.1))]
         symbolBlueSquare = [None, (0.3, 0.3, 1.0), ((0.1, 0.9),
-          (0.9, 0.9),
-          (0.9, 0.1),
-          (0.1, 0.1),
-          (0.1, 0.9))]
+                                                    (0.9, 0.9),
+                                                    (0.9, 0.1),
+                                                    (0.1, 0.1),
+                                                    (0.1, 0.9))]
         symbolHiddenBomb = [self.sendFail, (1.0, 0.0, 0.0), ((0.1, 0.9),
-          (0.9, 0.9),
-          (0.9, 0.1),
-          (0.1, 0.1),
-          (0.1, 0.9))]
+                                                             (0.9, 0.9),
+                                                             (0.9, 0.1),
+                                                             (0.1, 0.1),
+                                                             (0.1, 0.9))]
         symbolBomb = [self.sendFail, (1.0, 0.0, 0.0), ((0.8, 1.0),
-          (1.0, 0.8),
-          (0.8, 0.6),
-          (0.8, 0.4),
-          (0.6, 0.2),
-          (0.4, 0.2),
-          (0.2, 0.4),
-          (0.2, 0.6),
-          (0.4, 0.8),
-          (0.6, 0.8),
-          (0.8, 1.0))]
+                                                       (1.0, 0.8),
+                                                       (0.8, 0.6),
+                                                       (0.8, 0.4),
+                                                       (0.6, 0.2),
+                                                       (0.4, 0.2),
+                                                       (0.2, 0.4),
+                                                       (0.2, 0.6),
+                                                       (0.4, 0.8),
+                                                       (0.6, 0.8),
+                                                       (0.8, 1.0))]
         symbolSkull = [self.sendFail, (1.0, 0.0, 0.0), ((0.5, 0.9),
-          (0.7, 0.8),
-          (0.7, 0.6),
-          (0.6, 0.5),
-          (0.6, 0.4),
-          (0.5, 0.4),
-          (0.5, 0.3),
-          (0.7, 0.4),
-          (0.8, 0.4),
-          (0.8, 0.3),
-          (0.7, 0.3),
-          (0.6, 0.25),
-          (0.7, 0.2),
-          (0.8, 0.2),
-          (0.8, 0.1),
-          (0.7, 0.1),
-          (0.5, 0.2),
-          (0.3, 0.1),
-          (0.2, 0.1),
-          (0.2, 0.2),
-          (0.3, 0.2),
-          (0.4, 0.25),
-          (0.3, 0.3),
-          (0.2, 0.3),
-          (0.2, 0.4),
-          (0.3, 0.4),
-          (0.5, 0.3),
-          (0.5, 0.4),
-          (0.4, 0.4),
-          (0.4, 0.5),
-          (0.3, 0.6),
-          (0.3, 0.8),
-          (0.5, 0.9))]
+                                                        (0.7, 0.8),
+                                                        (0.7, 0.6),
+                                                        (0.6, 0.5),
+                                                        (0.6, 0.4),
+                                                        (0.5, 0.4),
+                                                        (0.5, 0.3),
+                                                        (0.7, 0.4),
+                                                        (0.8, 0.4),
+                                                        (0.8, 0.3),
+                                                        (0.7, 0.3),
+                                                        (0.6, 0.25),
+                                                        (0.7, 0.2),
+                                                        (0.8, 0.2),
+                                                        (0.8, 0.1),
+                                                        (0.7, 0.1),
+                                                        (0.5, 0.2),
+                                                        (0.3, 0.1),
+                                                        (0.2, 0.1),
+                                                        (0.2, 0.2),
+                                                        (0.3, 0.2),
+                                                        (0.4, 0.25),
+                                                        (0.3, 0.3),
+                                                        (0.2, 0.3),
+                                                        (0.2, 0.4),
+                                                        (0.3, 0.4),
+                                                        (0.5, 0.3),
+                                                        (0.5, 0.4),
+                                                        (0.4, 0.4),
+                                                        (0.4, 0.5),
+                                                        (0.3, 0.6),
+                                                        (0.3, 0.8),
+                                                        (0.5, 0.9))]
         symbolDot = [None, (1.0, 0.0, 0.0), ((0.4, 0.6),
-          (0.6, 0.6),
-          (0.6, 0.4),
-          (0.4, 0.4),
-          (0.4, 0.6))]
+                                             (0.6, 0.6),
+                                             (0.6, 0.4),
+                                             (0.4, 0.4),
+                                             (0.4, 0.6))]
         symbolRedX = [None, (1.0, 0.0, 0.0), ((0.3, 0.8),
-          (0.5, 0.6),
-          (0.7, 0.8),
-          (0.8, 0.7),
-          (0.6, 0.5),
-          (0.8, 0.3),
-          (0.7, 0.2),
-          (0.5, 0.4),
-          (0.3, 0.2),
-          (0.2, 0.3),
-          (0.4, 0.5),
-          (0.2, 0.7),
-          (0.3, 0.8))]
+                                              (0.5, 0.6),
+                                              (0.7, 0.8),
+                                              (0.8, 0.7),
+                                              (0.6, 0.5),
+                                              (0.8, 0.3),
+                                              (0.7, 0.2),
+                                              (0.5, 0.4),
+                                              (0.3, 0.2),
+                                              (0.2, 0.3),
+                                              (0.4, 0.5),
+                                              (0.2, 0.7),
+                                              (0.3, 0.8))]
         self.symbolSelect = [(1.0, 0.0, 0.0), ((0.05, 0.95),
-          (0.95, 0.95),
-          (0.95, 0.05),
-          (0.05, 0.05),
-          (0.05, 0.95))]
+                                               (0.95, 0.95),
+                                               (0.95, 0.05),
+                                               (0.05, 0.05),
+                                               (0.05, 0.95))]
         symbolBlueDot = [None, (0.5, 0.5, 1.0), ((0.5, 0.7),
-          (0.7, 0.5),
-          (0.5, 0.3),
-          (0.3, 0.5),
-          (0.5, 0.7))]
+                                                 (0.7, 0.5),
+                                                 (0.5, 0.3),
+                                                 (0.3, 0.5),
+                                                 (0.5, 0.7))]
         self.gridSymbols = []
         self.gridSymbols.append(symbolBlank)
         self.gridSymbols.append(symbolOne)
@@ -366,7 +367,8 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
         if distance < greaterDim * 0.75:
             if not self.isToonInRange:
                 self.doToonInRange()
-            if localAvatar.getPos(self)[0] > 0 and localAvatar.getPos(self)[0] < self.gridScaleX and localAvatar.getPos(self)[1] > 0 and localAvatar.getPos(self)[1] < self.gridScaleY:
+            if localAvatar.getPos(self)[0] > 0 and localAvatar.getPos(self)[0] < self.gridScaleX and \
+                    localAvatar.getPos(self)[1] > 0 and localAvatar.getPos(self)[1] < self.gridScaleY:
                 self.__toonHit()
             else:
                 if self.isToonIn:
@@ -425,9 +427,9 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
     def sendHit(self, newX, newY, oldX, oldY):
         if self.toonX >= 0:
             self.sendUpdate('hit', [newX,
-             newY,
-             oldX,
-             oldY])
+                                    newY,
+                                    oldX,
+                                    oldY])
 
     def disable(self):
         self.notify.debug('disable')
@@ -543,10 +545,14 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
                     sizeSymbol = len(gridSymbol)
                     for iVertex in range(sizeSymbol):
                         vertex = gridSymbol[iVertex]
-                        self.gridVertexWriter.addData3f(columnLeft + vertex[0] * gridScaleX, rowBottom + vertex[1] * gridScaleY, self.zFloat)
-                        self.gridColorWriter.addData4f(gridColor[0] * red, gridColor[1] * green, gridColor[2] * blue, alpha)
-                        self.beamVertexWriter.addData3f(columnLeft + vertex[0] * gridScaleX, rowBottom + vertex[1] * gridScaleY, self.zFloat)
-                        self.beamColorWriter.addData4f(gridColor[0] * beamRed, gridColor[1] * beamGreen, gridColor[2] * beamBlue, beamAlpha)
+                        self.gridVertexWriter.addData3f(columnLeft + vertex[0] * gridScaleX,
+                                                        rowBottom + vertex[1] * gridScaleY, self.zFloat)
+                        self.gridColorWriter.addData4f(gridColor[0] * red, gridColor[1] * green, gridColor[2] * blue,
+                                                       alpha)
+                        self.beamVertexWriter.addData3f(columnLeft + vertex[0] * gridScaleX,
+                                                        rowBottom + vertex[1] * gridScaleY, self.zFloat)
+                        self.beamColorWriter.addData4f(gridColor[0] * beamRed, gridColor[1] * beamGreen,
+                                                       gridColor[2] * beamBlue, beamAlpha)
 
                 rowBottom = rowTop
 
@@ -556,10 +562,13 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
             sizeSymbol = len(gridSymbol)
             for iVertex in range(sizeSymbol):
                 vertex = gridSymbol[iVertex]
-                self.gridVertexWriter.addData3f(self.toonX * gridScaleX + vertex[0] * gridScaleX, self.toonY * gridScaleY + vertex[1] * gridScaleY, self.zFloat)
+                self.gridVertexWriter.addData3f(self.toonX * gridScaleX + vertex[0] * gridScaleX,
+                                                self.toonY * gridScaleY + vertex[1] * gridScaleY, self.zFloat)
                 self.gridColorWriter.addData4f(gridColor[0] * red, gridColor[1] * green, gridColor[2] * blue, alpha)
-                self.beamVertexWriter.addData3f(self.toonX * gridScaleX + vertex[0] * gridScaleX, self.toonY * gridScaleY + vertex[1] * gridScaleY, self.zFloat)
-                self.beamColorWriter.addData4f(gridColor[0] * beamRed, gridColor[1] * beamGreen, gridColor[2] * beamBlue, beamAlpha)
+                self.beamVertexWriter.addData3f(self.toonX * gridScaleX + vertex[0] * gridScaleX,
+                                                self.toonY * gridScaleY + vertex[1] * gridScaleY, self.zFloat)
+                self.beamColorWriter.addData4f(gridColor[0] * beamRed, gridColor[1] * beamGreen,
+                                               gridColor[2] * beamBlue, beamAlpha)
 
         self.gridTris = GeomLinestrips(Geom.UHDynamic)
         self.beamTris = GeomTriangles(Geom.UHDynamic)

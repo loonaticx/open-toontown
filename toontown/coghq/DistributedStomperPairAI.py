@@ -4,6 +4,7 @@ from otp.level import DistributedEntityAI
 from . import StomperGlobals
 from direct.distributed import ClockDelta
 
+
 class DistributedStomperPairAI(DistributedEntityAI.DistributedEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStomperAI')
 

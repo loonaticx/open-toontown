@@ -1,20 +1,28 @@
 from pandac.PandaModules import ColorBlendAttrib
+
 ModelPhase = 5
-ModelTypes = {'animation': 'a',
- 'model': 'm',
- 'rig': 'r'}
-ModelGroups = {'area': 'ara',
- 'gui': 'gui'}
-Games = {'flying': 'cfg',
- 'maze': 'cmg',
- 'shared': 'csa'}
+ModelTypes = {
+    'animation': 'a',
+    'model': 'm',
+    'rig': 'r'
+}
+ModelGroups = {
+    'area': 'ara',
+    'gui': 'gui'
+}
+Games = {
+    'flying': 'cfg',
+    'maze': 'cmg',
+    'shared': 'csa'
+}
+
 
 def loadFlyingModel(baseName, type = 'model', group = 'area'):
-    return loadModel(baseName, 'flying', type=type, group=group)
+    return loadModel(baseName, 'flying', type = type, group = group)
 
 
 def loadMazeModel(baseName, type = 'model', group = 'area'):
-    return loadModel(baseName, 'maze', type=type, group=group)
+    return loadModel(baseName, 'maze', type = type, group = group)
 
 
 def getModelPath(baseName, game = 'shared', type = 'model', group = 'area'):
@@ -22,11 +30,11 @@ def getModelPath(baseName, game = 'shared', type = 'model', group = 'area'):
     if hasattr(getBase(), 'air'):
         extension = '.bam'
     return 'phase_%i/models/cogdominium/tt_%s_%s_%s_%s%s' % (ModelPhase,
-     ModelTypes[type],
-     ModelGroups[group],
-     Games[game],
-     baseName,
-     extension)
+                                                             ModelTypes[type],
+                                                             ModelGroups[group],
+                                                             Games[game],
+                                                             baseName,
+                                                             extension)
 
 
 def loadModel(baseName, game = 'shared', type = 'model', group = 'area'):
@@ -35,6 +43,7 @@ def loadModel(baseName, game = 'shared', type = 'model', group = 'area'):
 
 class VariableContainer:
     pass
+
 
 class DevVariableContainer:
 
@@ -104,7 +113,8 @@ class CogdoGameMovie:
 
 
 def initializeLightCone(np, bin = 'fixed', sorting = 3):
-    np.node().setAttrib(ColorBlendAttrib.make(ColorBlendAttrib.MAdd, ColorBlendAttrib.OIncomingAlpha, ColorBlendAttrib.OOne))
+    np.node().setAttrib(
+        ColorBlendAttrib.make(ColorBlendAttrib.MAdd, ColorBlendAttrib.OIncomingAlpha, ColorBlendAttrib.OOne))
     if bin:
         np.setBin(bin, sorting)
     np.setDepthWrite(False)
@@ -112,6 +122,7 @@ def initializeLightCone(np, bin = 'fixed', sorting = 3):
 
 
 ROTATE_TABLE_ALLOWED_ANGLES = (0, 90, 180, 270)
+
 
 def rotateTable(table, angle):
     if angle == 0:

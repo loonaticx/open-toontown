@@ -11,6 +11,7 @@ from direct.fsm import State
 from toontown.hood import ZoneUtil
 from toontown.toonbase import TTLocalizer
 
+
 class DistributedFactoryElevatorExt(DistributedElevatorExt.DistributedElevatorExt):
 
     def __init__(self, cr):
@@ -60,11 +61,13 @@ class DistributedFactoryElevatorExt(DistributedElevatorExt.DistributedElevatorEx
     def setFactoryInteriorZone(self, zoneId):
         if self.localToonOnBoard:
             hoodId = self.cr.playGame.hood.hoodId
-            doneStatus = {'loader': 'cogHQLoader',
-             'where': 'factoryInterior',
-             'how': 'teleportIn',
-             'zoneId': zoneId,
-             'hoodId': hoodId}
+            doneStatus = {
+                'loader': 'cogHQLoader',
+                'where': 'factoryInterior',
+                'how': 'teleportIn',
+                'zoneId': zoneId,
+                'hoodId': hoodId
+            }
             self.cr.playGame.getPlace().elevator.signalDone(doneStatus)
 
     def setFactoryInteriorZoneForce(self, zoneId):
@@ -72,15 +75,18 @@ class DistributedFactoryElevatorExt(DistributedElevatorExt.DistributedElevatorEx
         if place:
             place.fsm.request('elevator', [self, 1])
             hoodId = self.cr.playGame.hood.hoodId
-            doneStatus = {'loader': 'cogHQLoader',
-             'where': 'factoryInterior',
-             'how': 'teleportIn',
-             'zoneId': zoneId,
-             'hoodId': hoodId}
+            doneStatus = {
+                'loader': 'cogHQLoader',
+                'where': 'factoryInterior',
+                'how': 'teleportIn',
+                'zoneId': zoneId,
+                'hoodId': hoodId
+            }
             if hasattr(place, 'elevator') and place.elevator:
                 place.elevator.signalDone(doneStatus)
             else:
-                self.notify.warning("setMintInteriorZoneForce: Couldn't find playGame.getPlace().elevator, zoneId: %s" % zoneId)
+                self.notify.warning(
+                    "setMintInteriorZoneForce: Couldn't find playGame.getPlace().elevator, zoneId: %s" % zoneId)
         else:
             self.notify.warning("setFactoryInteriorZoneForce: Couldn't find playGame.getPlace(), zoneId: %s" % zoneId)
 

@@ -5,6 +5,7 @@ from toontown.pets import PetMood, PetTricks
 from toontown.toonbase import ToontownGlobals
 import string
 
+
 class DistributedPetProxy(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPetProxy')
 
@@ -107,7 +108,7 @@ class DistributedPetProxy(DistributedObject.DistributedObject):
         return max(0.0, t)
 
     def updateOfflineMood(self):
-        self.mood.driftMood(dt=self.getTimeSinceLastSeen(), curMood=self.lastKnownMood)
+        self.mood.driftMood(dt = self.getTimeSinceLastSeen(), curMood = self.lastKnownMood)
 
     def __handleMoodSet(self, component, value):
         if self.isGenerated():
@@ -137,19 +138,19 @@ class DistributedPetProxy(DistributedObject.DistributedObject):
         self.mood = PetMood.PetMood(self)
         self.lastKnownMood = self.mood.makeCopy()
         for mood, value in list(self.requiredMoodComponents.items()):
-            self.mood.setComponent(mood, value, announce=0)
+            self.mood.setComponent(mood, value, announce = 0)
 
         self.requiredMoodComponents = {}
         DistributedPetProxy.notify.debug('time since last seen: %s' % self.getTimeSinceLastSeen())
         self.style = [self.head,
-         self.ears,
-         self.nose,
-         self.tail,
-         self.bodyTexture,
-         self.color,
-         self.colorScale,
-         self.eyeColor,
-         self.gender]
+                      self.ears,
+                      self.nose,
+                      self.tail,
+                      self.bodyTexture,
+                      self.color,
+                      self.colorScale,
+                      self.eyeColor,
+                      self.gender]
         self.setLastSeenTimestamp(self.lastSeenTimestamp)
         self.updateOfflineMood()
         self.sendGenerateMessage = 1

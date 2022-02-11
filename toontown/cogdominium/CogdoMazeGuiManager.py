@@ -8,6 +8,7 @@ from .CogdoGameMessageDisplay import CogdoGameMessageDisplay
 from . import CogdoMazeGameGlobals as Globals
 from .CogdoMemoGui import CogdoMemoGui
 
+
 class CogdoMazeGuiManager:
 
     def __init__(self, maze, bossCode):
@@ -34,7 +35,8 @@ class CogdoMazeGuiManager:
         self._timer.posInTopRightCorner()
 
     def _initMessageDisplay(self):
-        self.messageDisplay = CogdoGameMessageDisplay('CogdoMazeMessageDisplay', self.root, pos=Globals.MessageLabelPos)
+        self.messageDisplay = CogdoGameMessageDisplay('CogdoMazeMessageDisplay', self.root,
+                                                      pos = Globals.MessageLabelPos)
 
     def destroy(self):
         ToontownIntervals.cleanup('present_gui')
@@ -76,7 +78,11 @@ class CogdoMazeGuiManager:
         ToontownIntervals.start(ToontownIntervals.getPresentGuiIval(self._memoGui, 'present_memo'))
 
     def startGame(self, firstMessage):
-        self._presentGuiIval = ToontownIntervals.start(Sequence(ToontownIntervals.getPresentGuiIval(self._bossGui, '', startPos=(0, 0, -0.15)), Func(self.mazeMapGui.show), ToontownIntervals.getPulseLargerIval(self.mazeMapGui, '', scale=self.mazeMapGui.getScale()), Func(self.setMessage, firstMessage), name='present_gui'))
+        self._presentGuiIval = ToontownIntervals.start(
+            Sequence(ToontownIntervals.getPresentGuiIval(self._bossGui, '', startPos = (0, 0, -0.15)),
+                     Func(self.mazeMapGui.show),
+                     ToontownIntervals.getPulseLargerIval(self.mazeMapGui, '', scale = self.mazeMapGui.getScale()),
+                     Func(self.setMessage, firstMessage), name = 'present_gui'))
 
     def hideMazeMap(self):
         self.mazeMapGui.hide()
@@ -102,7 +108,8 @@ class CogdoMazeGuiManager:
             self._initTimer()
         self._timer.setTime(duration)
         self._timer.countdown(duration, timerExpiredCallback)
-        self._presentTimerIval = ToontownIntervals.start(ToontownIntervals.getPresentGuiIval(self._timer, 'present_timer', startPos=(0, 0, 0.35)))
+        self._presentTimerIval = ToontownIntervals.start(
+            ToontownIntervals.getPresentGuiIval(self._timer, 'present_timer', startPos = (0, 0, 0.35)))
         return
 
     def hideTimer(self):

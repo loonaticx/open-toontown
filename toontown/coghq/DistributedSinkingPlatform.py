@@ -9,6 +9,7 @@ from direct.distributed import DistributedObject
 from . import SinkingPlatformGlobals
 from direct.directnotify import DirectNotifyGlobal
 
+
 class DistributedSinkingPlatform(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSinkingPlatform')
 
@@ -20,7 +21,11 @@ class DistributedSinkingPlatform(BasicEntities.DistributedNodePathEntity):
     def generateInit(self):
         self.notify.debug('generateInit')
         BasicEntities.DistributedNodePathEntity.generateInit(self)
-        self.fsm = ClassicFSM.ClassicFSM('DistributedSinkingPlatform', [State.State('off', self.enterOff, self.exitOff, ['sinking']), State.State('sinking', self.enterSinking, self.exitSinking, ['rising']), State.State('rising', self.enterRising, self.exitRising, ['sinking', 'off'])], 'off', 'off')
+        self.fsm = ClassicFSM.ClassicFSM('DistributedSinkingPlatform',
+                                         [State.State('off', self.enterOff, self.exitOff, ['sinking']),
+                                          State.State('sinking', self.enterSinking, self.exitSinking, ['rising']),
+                                          State.State('rising', self.enterRising, self.exitRising, ['sinking', 'off'])],
+                                         'off', 'off')
         self.fsm.enterInitialState()
 
     def generate(self):
@@ -59,11 +64,11 @@ class DistributedSinkingPlatform(BasicEntities.DistributedNodePathEntity):
         self.platform.setPos(0, 0, 0)
 
     def localToonEntered(self):
-        ts = globalClockDelta.localToNetworkTime(globalClock.getFrameTime(), bits=32)
+        ts = globalClockDelta.localToNetworkTime(globalClock.getFrameTime(), bits = 32)
         self.sendUpdate('setOnOff', [1, ts])
 
     def localToonLeft(self):
-        ts = globalClockDelta.localToNetworkTime(globalClock.getFrameTime(), bits=32)
+        ts = globalClockDelta.localToNetworkTime(globalClock.getFrameTime(), bits = 32)
         self.sendUpdate('setOnOff', [0, ts])
 
     def enterOff(self):
@@ -114,7 +119,7 @@ class DistributedSinkingPlatform(BasicEntities.DistributedNodePathEntity):
             endPos = Vec3(0, 0, -self.verticalRange)
             pause = None
             duration = self.sinkDuration
-        startT = globalClockDelta.networkToLocalTime(ts, bits=32)
+        startT = globalClockDelta.networkToLocalTime(ts, bits = 32)
         curT = globalClock.getFrameTime()
         ivalTime = curT - startT
         if ivalTime < 0:
@@ -127,6 +132,8 @@ class DistributedSinkingPlatform(BasicEntities.DistributedNodePathEntity):
         self.moveIval = Sequence()
         if pause is not None:
             self.moveIval.append(WaitInterval(pause))
-        self.moveIval.append(LerpPosInterval(moveNode, duration, endPos, startPos=moveNode.getPos(), blendType='easeInOut', name='%s-move' % self.platform.name, fluid=1))
+        self.moveIval.append(
+            LerpPosInterval(moveNode, duration, endPos, startPos = moveNode.getPos(), blendType = 'easeInOut',
+                            name = '%s-move' % self.platform.name, fluid = 1))
         self.moveIval.start()
         return

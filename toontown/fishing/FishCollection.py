@@ -1,6 +1,7 @@
 from . import FishBase
 from . import FishGlobals
 
+
 class FishCollection:
 
     def __init__(self):
@@ -57,10 +58,10 @@ class FishCollection:
         return FishGlobals.COLLECT_NEW_ENTRY
 
     def collectFish(self, newFish):
-        return self.__collect(newFish, updateCollection=1)
+        return self.__collect(newFish, updateCollection = 1)
 
     def getCollectResult(self, newFish):
-        return self.__collect(newFish, updateCollection=0)
+        return self.__collect(newFish, updateCollection = 0)
 
     def __str__(self):
         numFish = len(self.fishList)

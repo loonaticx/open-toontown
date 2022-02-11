@@ -20,23 +20,35 @@ from toontown.toon import TTEmote
 from otp.avatar import Emote
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 
+
 class DistributedMinigame(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMinigame')
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
-        self.waitingStartLabel = DirectLabel(text=TTLocalizer.MinigameWaitingForOtherPlayers, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
+        self.waitingStartLabel = DirectLabel(text = TTLocalizer.MinigameWaitingForOtherPlayers,
+                                             text_fg = VBase4(1, 1, 1, 1), relief = None, pos = (-0.6, 0, -0.75),
+                                             scale = 0.075)
         self.waitingStartLabel.hide()
         self.avIdList = []
         self.remoteAvIdList = []
         self.localAvId = base.localAvatar.doId
-        self.frameworkFSM = ClassicFSM.ClassicFSM('DistributedMinigame', [State.State('frameworkInit', self.enterFrameworkInit, self.exitFrameworkInit, ['frameworkRules', 'frameworkCleanup', 'frameworkAvatarExited']),
-         State.State('frameworkRules', self.enterFrameworkRules, self.exitFrameworkRules, ['frameworkWaitServerStart', 'frameworkCleanup', 'frameworkAvatarExited']),
-         State.State('frameworkWaitServerStart', self.enterFrameworkWaitServerStart, self.exitFrameworkWaitServerStart, ['frameworkGame', 'frameworkCleanup', 'frameworkAvatarExited']),
-         State.State('frameworkGame', self.enterFrameworkGame, self.exitFrameworkGame, ['frameworkWaitServerFinish', 'frameworkCleanup', 'frameworkAvatarExited']),
-         State.State('frameworkWaitServerFinish', self.enterFrameworkWaitServerFinish, self.exitFrameworkWaitServerFinish, ['frameworkCleanup']),
-         State.State('frameworkAvatarExited', self.enterFrameworkAvatarExited, self.exitFrameworkAvatarExited, ['frameworkCleanup']),
-         State.State('frameworkCleanup', self.enterFrameworkCleanup, self.exitFrameworkCleanup, [])], 'frameworkInit', 'frameworkCleanup')
+        self.frameworkFSM = ClassicFSM.ClassicFSM('DistributedMinigame', [
+            State.State('frameworkInit', self.enterFrameworkInit, self.exitFrameworkInit,
+                        ['frameworkRules', 'frameworkCleanup', 'frameworkAvatarExited']),
+            State.State('frameworkRules', self.enterFrameworkRules, self.exitFrameworkRules,
+                        ['frameworkWaitServerStart', 'frameworkCleanup', 'frameworkAvatarExited']),
+            State.State('frameworkWaitServerStart', self.enterFrameworkWaitServerStart,
+                        self.exitFrameworkWaitServerStart,
+                        ['frameworkGame', 'frameworkCleanup', 'frameworkAvatarExited']),
+            State.State('frameworkGame', self.enterFrameworkGame, self.exitFrameworkGame,
+                        ['frameworkWaitServerFinish', 'frameworkCleanup', 'frameworkAvatarExited']),
+            State.State('frameworkWaitServerFinish', self.enterFrameworkWaitServerFinish,
+                        self.exitFrameworkWaitServerFinish, ['frameworkCleanup']),
+            State.State('frameworkAvatarExited', self.enterFrameworkAvatarExited, self.exitFrameworkAvatarExited,
+                        ['frameworkCleanup']),
+            State.State('frameworkCleanup', self.enterFrameworkCleanup, self.exitFrameworkCleanup, [])],
+                                                  'frameworkInit', 'frameworkCleanup')
         hoodMinigameState = self.cr.playGame.hood.fsm.getStateNamed('minigame')
         hoodMinigameState.addChild(self.frameworkFSM)
         self.rulesDoneEvent = 'rulesDone'
@@ -102,7 +114,8 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         self.sendUpdate('setAvatarJoined', [])
         self.normalExit = 1
         count = self.modelCount
-        loader.beginBulkLoad('minigame', TTLocalizer.HeadingToMinigameTitle % self.getTitle(), count, 1, TTLocalizer.TIP_MINIGAME)
+        loader.beginBulkLoad('minigame', TTLocalizer.HeadingToMinigameTitle % self.getTitle(), count, 1,
+                             TTLocalizer.TIP_MINIGAME)
         self.load()
         loader.endBulkLoad('minigame')
         globalClock.syncFrameTime()
@@ -165,11 +178,13 @@ class DistributedMinigame(DistributedObject.DistributedObject):
             if base.randomMinigameDisconnect:
                 maxDuration = calcMaxDuration()
                 self.randomDisconnectDelay = random.random() * maxDuration
-                taskMgr.doMethodLater(self.randomDisconnectDelay, self.doRandomDisconnect, self.uniqueName('random-disconnect'))
+                taskMgr.doMethodLater(self.randomDisconnectDelay, self.doRandomDisconnect,
+                                      self.uniqueName('random-disconnect'))
             if base.randomMinigameNetworkPlugPull:
                 maxDuration = calcMaxDuration()
                 self.randomNetPlugPullDelay = random.random() * maxDuration
-                taskMgr.doMethodLater(self.randomNetPlugPullDelay, self.doRandomNetworkPlugPull, self.uniqueName('random-netplugpull'))
+                taskMgr.doMethodLater(self.randomNetPlugPullDelay, self.doRandomNetworkPlugPull,
+                                      self.uniqueName('random-netplugpull'))
 
     def doRandomAbort(self, task):
         print('*** DOING RANDOM MINIGAME ABORT AFTER %.2f SECONDS ***' % self.randomAbortDelay)
@@ -237,7 +252,8 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         self.__serverFinished = 0
         for avId in self.remoteAvIdList:
             if avId not in self.cr.doId2do:
-                self.notify.warning('BASE: toon %s already left or has not yet arrived; waiting for server to abort the game' % avId)
+                self.notify.warning(
+                    'BASE: toon %s already left or has not yet arrived; waiting for server to abort the game' % avId)
                 return 1
 
         for avId in self.remoteAvIdList:
@@ -328,7 +344,8 @@ class DistributedMinigame(DistributedObject.DistributedObject):
     def enterFrameworkRules(self):
         self.notify.debug('BASE: enterFrameworkRules')
         self.accept(self.rulesDoneEvent, self.handleRulesDone)
-        self.rulesPanel = MinigameRulesPanel.MinigameRulesPanel('MinigameRulesPanel', self.getTitle(), self.getInstructions(), self.rulesDoneEvent)
+        self.rulesPanel = MinigameRulesPanel.MinigameRulesPanel('MinigameRulesPanel', self.getTitle(),
+                                                                self.getInstructions(), self.rulesDoneEvent)
         self.rulesPanel.load()
         self.rulesPanel.enter()
 
@@ -432,7 +449,8 @@ class DistributedMinigame(DistributedObject.DistributedObject):
 
     def setStartingVotes(self, startingVotesArray):
         if not len(startingVotesArray) == len(self.avIdList):
-            self.notify.error('length does not match, startingVotes=%s, avIdList=%s' % (startingVotesArray, self.avIdList))
+            self.notify.error(
+                'length does not match, startingVotes=%s, avIdList=%s' % (startingVotesArray, self.avIdList))
             return
         for index in range(len(self.avIdList)):
             avId = self.avIdList[index]

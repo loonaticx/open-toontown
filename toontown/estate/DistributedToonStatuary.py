@@ -11,8 +11,8 @@ from toontown.toonbase import ToontownGlobals
 from pandac.PandaModules import NodePath
 from pandac.PandaModules import Point3
 
-def dnaCodeFromToonDNA(dna):
 
+def dnaCodeFromToonDNA(dna):
     def findItemNumInList(wantItem, wantList):
         i = 0
         for item in wantList:
@@ -46,7 +46,8 @@ class DistributedToonStatuary(DistributedStatuary.DistributedStatuary):
         self.model.setScale(self.worldScale * 1.5, self.worldScale * 1.5, self.worldScale)
         self.getToonPropertiesFromOptional()
         dna = ToonDNA.ToonDNA()
-        dna.newToonFromProperties(self.headType, self.torsoType, self.legType, self.gender, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        dna.newToonFromProperties(self.headType, self.torsoType, self.legType, self.gender, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                  0)
         self.setupStoneToon(dna)
         self.poseToonFromTypeIndex(self.typeIndex)
         self.toon.reparentTo(self.model)
@@ -130,7 +131,8 @@ class DistributedToonStatuary(DistributedStatuary.DistributedStatuary):
         tsDetail = TextureStage('tsDetail')
         tsDetail.setPriority(2)
         tsDetail.setSort(10)
-        tsDetail.setCombineRgb(tsDetail.CMInterpolate, tsDetail.CSTexture, tsDetail.COSrcColor, tsDetail.CSPrevious, tsDetail.COSrcColor, tsDetail.CSConstant, tsDetail.COSrcColor)
+        tsDetail.setCombineRgb(tsDetail.CMInterpolate, tsDetail.CSTexture, tsDetail.COSrcColor, tsDetail.CSPrevious,
+                               tsDetail.COSrcColor, tsDetail.CSConstant, tsDetail.COSrcColor)
         tsDetail.setColor(VBase4(0.5, 0.5, 0.5, 1))
         if self.toon.hasLOD():
             for lodName in self.toon.getLODNames():

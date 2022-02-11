@@ -18,28 +18,32 @@ from otp.speedchat import SpeedChatGlobals
 from toontown.ai import DistributedBlackCatMgr
 from direct.showbase import PythonUtil
 from direct.interval.IntervalGlobal import *
+
 notify = DirectNotifyGlobal.directNotify.newCategory('QuestParser')
 lineDict = {}
 globalVarDict = {}
 curId = None
 
+
 def init():
-    globalVarDict.update({'render': render,
-     'camera': camera,
-     'hidden': hidden,
-     'aspect2d': aspect2d,
-     'localToon': base.localAvatar,
-     'laffMeter': base.localAvatar.laffMeter,
-     'inventory': base.localAvatar.inventory,
-     'bFriendsList': base.localAvatar.bFriendsList,
-     'book': base.localAvatar.book,
-     'bookPrevArrow': base.localAvatar.book.prevArrow,
-     'bookNextArrow': base.localAvatar.book.nextArrow,
-     'bookOpenButton': base.localAvatar.book.bookOpenButton,
-     'bookCloseButton': base.localAvatar.book.bookCloseButton,
-     'chatNormalButton': base.localAvatar.chatMgr.normalButton,
-     'chatScButton': base.localAvatar.chatMgr.scButton,
-     'arrows': BlinkingArrows.BlinkingArrows()})
+    globalVarDict.update({
+                             'render': render,
+                             'camera': camera,
+                             'hidden': hidden,
+                             'aspect2d': aspect2d,
+                             'localToon': base.localAvatar,
+                             'laffMeter': base.localAvatar.laffMeter,
+                             'inventory': base.localAvatar.inventory,
+                             'bFriendsList': base.localAvatar.bFriendsList,
+                             'book': base.localAvatar.book,
+                             'bookPrevArrow': base.localAvatar.book.prevArrow,
+                             'bookNextArrow': base.localAvatar.book.nextArrow,
+                             'bookOpenButton': base.localAvatar.book.bookOpenButton,
+                             'bookCloseButton': base.localAvatar.book.bookCloseButton,
+                             'chatNormalButton': base.localAvatar.chatMgr.normalButton,
+                             'chatScButton': base.localAvatar.chatMgr.scButton,
+                             'arrows': BlinkingArrows.BlinkingArrows()
+                         })
 
 
 def clear():
@@ -133,7 +137,8 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         elif varName in globalVarDict:
             return globalVarDict[varName]
         elif varName.find('tomDialogue') > -1 or varName.find('harryDialogue') > -1:
-            notify.warning('%s getting referenced. Tutorial Ack: %d                                  Place: %s' % (varName, base.localAvatar.tutorialAck, base.cr.playGame.hood))
+            notify.warning('%s getting referenced. Tutorial Ack: %d                                  Place: %s' % (
+            varName, base.localAvatar.tutorialAck, base.cr.playGame.hood))
             return None
         else:
             notify.error('Variable not defined: %s' % varName)
@@ -446,7 +451,8 @@ class NPCMoviePlayer(DirectObject.DirectObject):
                 elif command == 'SET_MUSIC_VOLUME':
                     iList.append(self.parseSetMusicVolume(line))
                 else:
-                    notify.warning('Unknown command token: %s for scriptId: %s on line: %s' % (command, self.scriptId, lineNum))
+                    notify.warning(
+                        'Unknown command token: %s for scriptId: %s on line: %s' % (command, self.scriptId, lineNum))
 
         self.closePreviousChapter(chapterList)
         if timeoutList:
@@ -555,10 +561,14 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         return Func(nmp.play)
 
     def parseLockLocalToon(self, line):
-        return Sequence(Func(self.toon.detachCamera), Func(self.toon.collisionsOff), Func(self.toon.disableAvatarControls), Func(self.toon.stopTrackAnimToSpeed), Func(self.toon.stopUpdateSmartCamera))
+        return Sequence(Func(self.toon.detachCamera), Func(self.toon.collisionsOff),
+                        Func(self.toon.disableAvatarControls), Func(self.toon.stopTrackAnimToSpeed),
+                        Func(self.toon.stopUpdateSmartCamera))
 
     def parseFreeLocalToon(self, line):
-        return Sequence(Func(self.toon.attachCamera), Func(self.toon.startTrackAnimToSpeed), Func(self.toon.collisionsOn), Func(self.toon.enableAvatarControls), Func(self.toon.startUpdateSmartCamera))
+        return Sequence(Func(self.toon.attachCamera), Func(self.toon.startTrackAnimToSpeed),
+                        Func(self.toon.collisionsOn), Func(self.toon.enableAvatarControls),
+                        Func(self.toon.startUpdateSmartCamera))
 
     def parseDebug(self, line):
         token, str = line
@@ -783,32 +793,36 @@ class NPCMoviePlayer(DirectObject.DirectObject):
     def parseLerpPos(self, line):
         token, nodeName, x, y, z, t = line
         node = self.getVar(nodeName)
-        return Sequence(LerpPosInterval(node, t, Point3(x, y, z), blendType='easeInOut'), duration=0.0)
+        return Sequence(LerpPosInterval(node, t, Point3(x, y, z), blendType = 'easeInOut'), duration = 0.0)
 
     def parseLerpHpr(self, line):
         token, nodeName, h, p, r, t = line
         node = self.getVar(nodeName)
-        return Sequence(LerpHprInterval(node, t, VBase3(h, p, r), blendType='easeInOut'), duration=0.0)
+        return Sequence(LerpHprInterval(node, t, VBase3(h, p, r), blendType = 'easeInOut'), duration = 0.0)
 
     def parseLerpScale(self, line):
         token, nodeName, x, y, z, t = line
         node = self.getVar(nodeName)
-        return Sequence(LerpScaleInterval(node, t, VBase3(x, y, z), blendType='easeInOut'), duration=0.0)
+        return Sequence(LerpScaleInterval(node, t, VBase3(x, y, z), blendType = 'easeInOut'), duration = 0.0)
 
     def parseLerpPosHprScale(self, line):
         token, nodeName, x, y, z, h, p, r, sx, sy, sz, t = line
         node = self.getVar(nodeName)
-        return Sequence(LerpPosHprScaleInterval(node, t, VBase3(x, y, z), VBase3(h, p, r), VBase3(sx, sy, sz), blendType='easeInOut'), duration=0.0)
+        return Sequence(LerpPosHprScaleInterval(node, t, VBase3(x, y, z), VBase3(h, p, r), VBase3(sx, sy, sz),
+                                                blendType = 'easeInOut'), duration = 0.0)
 
     def parseLerpColor(self, line):
         token, nodeName, sr, sg, sb, sa, er, eg, eb, ea, t = line
         node = self.getVar(nodeName)
-        return Sequence(LerpColorInterval(node, t, VBase4(er, eg, eb, ea), startColorScale=VBase4(sr, sg, sb, sa), blendType='easeInOut'), duration=0.0)
+        return Sequence(LerpColorInterval(node, t, VBase4(er, eg, eb, ea), startColorScale = VBase4(sr, sg, sb, sa),
+                                          blendType = 'easeInOut'), duration = 0.0)
 
     def parseLerpColorScale(self, line):
         token, nodeName, sr, sg, sb, sa, er, eg, eb, ea, t = line
         node = self.getVar(nodeName)
-        return Sequence(LerpColorScaleInterval(node, t, VBase4(er, eg, eb, ea), startColorScale=VBase4(sr, sg, sb, sa), blendType='easeInOut'), duration=0.0)
+        return Sequence(
+            LerpColorScaleInterval(node, t, VBase4(er, eg, eb, ea), startColorScale = VBase4(sr, sg, sb, sa),
+                                   blendType = 'easeInOut'), duration = 0.0)
 
     def parseDepthWriteOn(self, line):
         token, nodeName, depthWrite = line
@@ -878,7 +892,8 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         token, track, level, number = line
         inventory = self.getVar('inventory')
         countSound = base.loader.loadSfx('phase_3.5/audio/sfx/tick_counter.ogg')
-        return Sequence(Func(base.playSfx, countSound), Func(inventory.buttonBoing, track, level), Func(inventory.addItems, track, level, number), Func(inventory.updateGUI, track, level))
+        return Sequence(Func(base.playSfx, countSound), Func(inventory.buttonBoing, track, level),
+                        Func(inventory.addItems, track, level, number), Func(inventory.updateGUI, track, level))
 
     def parseSetInventory(self, line):
         token, track, level, number = line
@@ -918,7 +933,8 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         return Func(FriendsListPanel.hideFriendsListTutorial)
 
     def parseShowBook(self, line):
-        return Sequence(Func(self.toon.book.setPage, self.toon.mapPage), Func(self.toon.book.enter), Func(self.toon.book.disableBookCloseButton))
+        return Sequence(Func(self.toon.book.setPage, self.toon.mapPage), Func(self.toon.book.enter),
+                        Func(self.toon.book.disableBookCloseButton))
 
     def parseEnableCloseBook(self, line):
         return Sequence(Func(self.toon.book.enableBookCloseButton))
@@ -948,7 +964,9 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         node = self.getVar(nodeName)
         startCScale = Point4(r, g, b, a)
         destCScale = Point4(r2, g2, b2, a2)
-        self.throbIval = Sequence(LerpColorScaleInterval(node, t / 2.0, destCScale, startColorScale=startCScale, blendType='easeInOut'), LerpColorScaleInterval(node, t / 2.0, startCScale, startColorScale=destCScale, blendType='easeInOut'))
+        self.throbIval = Sequence(
+            LerpColorScaleInterval(node, t / 2.0, destCScale, startColorScale = startCScale, blendType = 'easeInOut'),
+            LerpColorScaleInterval(node, t / 2.0, startCScale, startColorScale = destCScale, blendType = 'easeInOut'))
         return Func(self.throbIval.loop)
 
     def parseStopThrob(self, line):
@@ -970,7 +988,8 @@ class NPCMoviePlayer(DirectObject.DirectObject):
             self.toonHeads[toonId] = toonHeadFrame
             self.setVar('%sToonHead' % toonName, toonHeadFrame)
         if toggle:
-            return Sequence(Func(toonHeadFrame.setPos, x, 0, z), Func(toonHeadFrame.setScale, scale), Func(toonHeadFrame.show))
+            return Sequence(Func(toonHeadFrame.setPos, x, 0, z), Func(toonHeadFrame.setScale, scale),
+                            Func(toonHeadFrame.show))
         else:
             return Func(toonHeadFrame.hide)
 
@@ -1020,14 +1039,18 @@ class NPCMoviePlayer(DirectObject.DirectObject):
                 return
             curGagLevel = newGagLevel
             base.localAvatar.setTrackAccess([0,
-             0,
-             0,
-             0,
-             curGagLevel,
-             curGagLevel,
-             0])
+                                             0,
+                                             0,
+                                             0,
+                                             curGagLevel,
+                                             curGagLevel,
+                                             0])
 
-        return Sequence(Func(grabCurTrackAccess), LerpFunctionInterval(updateGagLevel, fromData=1, toData=7, duration=0.3), WaitInterval(3.5), LerpFunctionInterval(updateGagLevel, fromData=7, toData=1, duration=0.3), Func(restoreTrackAccess), Func(messenger.send, 'doneThrowSquirtPreview'))
+        return Sequence(Func(grabCurTrackAccess),
+                        LerpFunctionInterval(updateGagLevel, fromData = 1, toData = 7, duration = 0.3),
+                        WaitInterval(3.5),
+                        LerpFunctionInterval(updateGagLevel, fromData = 7, toData = 1, duration = 0.3),
+                        Func(restoreTrackAccess), Func(messenger.send, 'doneThrowSquirtPreview'))
 
     def parseSetMusicVolume(self, line):
         if base.config.GetString('language', 'english') == 'japanese':
@@ -1057,7 +1080,7 @@ class NPCMoviePlayer(DirectObject.DirectObject):
                     def setVolume(level):
                         music.setVolume(level)
 
-                    return LerpFunctionInterval(setVolume, fromData=fromLevel, toData=level, duration=duration)
+                    return LerpFunctionInterval(setVolume, fromData = fromLevel, toData = level, duration = duration)
             except AttributeError:
                 pass
 

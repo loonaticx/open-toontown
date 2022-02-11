@@ -7,6 +7,7 @@ import sys
 import dbm
 import time
 
+
 class DataStore:
     QueryTypes = []
     QueryTypes = dict(list(zip(QueryTypes, list(range(len(QueryTypes))))))
@@ -15,7 +16,7 @@ class DataStore:
     def addQueryTypes(cls, typeStrings):
         superTypes = list(zip(list(cls.QueryTypes.values()), list(cls.QueryTypes.keys())))
         superTypes.sort()
-        newTypes = [ item[1] for item in superTypes ] + typeStrings
+        newTypes = [item[1] for item in superTypes] + typeStrings
         newTypes = dict(list(zip(newTypes, list(range(1 + len(newTypes))))))
         return newTypes
 
@@ -142,9 +143,11 @@ class DataStore:
             if os.path.exists(self.filepath):
                 try:
                     os.rename(tail, newFileName)
-                    uber.air.writeServerEvent('Uberdog data store Info', 0, 'Creating backup of file: %s saving as: %s' % (tail, newFileName))
+                    uber.air.writeServerEvent('Uberdog data store Info', 0,
+                                              'Creating backup of file: %s saving as: %s' % (tail, newFileName))
                 except:
-                    uber.air.writeServerEvent('Uberdog data store Info', 0, 'Unable to create backup of file: %s ' % tail)
+                    uber.air.writeServerEvent('Uberdog data store Info', 0,
+                                              'Unable to create backup of file: %s ' % tail)
 
             else:
                 files = os.listdir(head)
@@ -153,9 +156,12 @@ class DataStore:
                         filename, ext = os.path.splitext(file)
                         try:
                             os.rename(file, newFileName + ext)
-                            uber.air.writeServerEvent('Uberdog data store Info', 0, 'Creating backup of file: %s saving as: %s' % (file, newFileName + ext))
+                            uber.air.writeServerEvent('Uberdog data store Info', 0,
+                                                      'Creating backup of file: %s saving as: %s' % (
+                                                      file, newFileName + ext))
                         except:
-                            uber.air.writeServerEvent('Uberdog data store Info', 0, 'Unable to create backup of file: %s ' % newFileName + ext)
+                            uber.air.writeServerEvent('Uberdog data store Info', 0,
+                                                      'Unable to create backup of file: %s ' % newFileName + ext)
 
         else:
             if os.path.exists(self.filepath + '.bu'):

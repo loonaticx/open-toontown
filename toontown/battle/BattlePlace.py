@@ -4,6 +4,7 @@ from toontown.hood import Place
 from toontown.hood import ZoneUtil
 from toontown.toonbase import ToontownGlobals
 
+
 class BattlePlace(Place.Place):
 
     def __init__(self, loader, doneEvent):
@@ -16,9 +17,11 @@ class BattlePlace(Place.Place):
     def setState(self, state, battleEvent = None):
         if battleEvent:
             if not self.fsm.request(state, [battleEvent]):
-                self.notify.warning("fsm.request('%s') returned 0 (zone id %s, avatar pos %s)." % (state, self.zoneId, base.localAvatar.getPos(render)))
+                self.notify.warning("fsm.request('%s') returned 0 (zone id %s, avatar pos %s)." % (
+                state, self.zoneId, base.localAvatar.getPos(render)))
         elif not self.fsm.request(state):
-            self.notify.warning("fsm.request('%s') returned 0 (zone id %s, avatar pos %s)." % (state, self.zoneId, base.localAvatar.getPos(render)))
+            self.notify.warning("fsm.request('%s') returned 0 (zone id %s, avatar pos %s)." % (
+            state, self.zoneId, base.localAvatar.getPos(render)))
 
     def enterWalk(self, flag = 0):
         Place.Place.enterWalk(self, flag)
@@ -38,7 +41,7 @@ class BattlePlace(Place.Place):
         if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: COGBATTLE: Enter Battle')
         self.loader.music.stop()
-        base.playMusic(self.loader.battleMusic, looping=1, volume=0.9)
+        base.playMusic(self.loader.battleMusic, looping = 1, volume = 0.9)
         self.enterTownBattle(event)
         base.localAvatar.b_setAnimState('off', 1)
         self.accept('teleportQuery', self.handleTeleportQuery)
@@ -51,7 +54,7 @@ class BattlePlace(Place.Place):
     def exitBattle(self):
         self.loader.townBattle.exit()
         self.loader.battleMusic.stop()
-        base.playMusic(self.loader.music, looping=1, volume=0.8)
+        base.playMusic(self.loader.music, looping = 1, volume = 0.8)
         base.localAvatar.cantLeaveGame = 0
         base.localAvatar.setTeleportAvailable(0)
         self.ignore('teleportQuery')
@@ -61,7 +64,7 @@ class BattlePlace(Place.Place):
 
     def enterFallDown(self, extraArgs = []):
         base.localAvatar.laffMeter.start()
-        base.localAvatar.b_setAnimState('FallDown', callback=self.handleFallDownDone, extraArgs=extraArgs)
+        base.localAvatar.b_setAnimState('FallDown', callback = self.handleFallDownDone, extraArgs = extraArgs)
 
     def handleFallDownDone(self):
         base.cr.playGame.getPlace().setState('walk')

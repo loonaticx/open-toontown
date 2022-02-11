@@ -10,6 +10,7 @@ from pandac.PandaModules import *
 from panda3d.otp import *
 from panda3d.toontown import *
 
+
 class FactoryExterior(BattlePlace.BattlePlace):
     notify = DirectNotifyGlobal.directNotify.newCategory('FactoryExterior')
 
@@ -19,38 +20,48 @@ class FactoryExterior(BattlePlace.BattlePlace):
         self.elevatorDoneEvent = 'elevatorDone'
 
     def load(self):
-        self.fsm = ClassicFSM.ClassicFSM('FactoryExterior', [State.State('start', self.enterStart, self.exitStart, ['walk',
-          'tunnelIn',
-          'teleportIn',
-          'doorIn']),
-         State.State('walk', self.enterWalk, self.exitWalk, ['stickerBook',
-          'teleportOut',
-          'tunnelOut',
-          'DFA',
-          'doorOut',
-          'elevator',
-          'stopped',
-          'WaitForBattle',
-          'battle']),
-         State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'teleportOut', 'elevator']),
-         State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
-          'DFA',
-          'WaitForBattle',
-          'battle',
-          'elevator']),
-         State.State('WaitForBattle', self.enterWaitForBattle, self.exitWaitForBattle, ['battle', 'walk']),
-         State.State('battle', self.enterBattle, self.exitBattle, ['walk', 'teleportOut', 'died']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut', 'tunnelOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
-         State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
-         State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'final', 'WaitForBattle']),
-         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
-         State.State('died', self.enterDied, self.exitDied, ['quietZone']),
-         State.State('tunnelIn', self.enterTunnelIn, self.exitTunnelIn, ['walk']),
-         State.State('tunnelOut', self.enterTunnelOut, self.exitTunnelOut, ['final']),
-         State.State('elevator', self.enterElevator, self.exitElevator, ['walk', 'stopped']),
-         State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
+        self.fsm = ClassicFSM.ClassicFSM('FactoryExterior',
+                                         [State.State('start', self.enterStart, self.exitStart, ['walk',
+                                                                                                 'tunnelIn',
+                                                                                                 'teleportIn',
+                                                                                                 'doorIn']),
+                                          State.State('walk', self.enterWalk, self.exitWalk, ['stickerBook',
+                                                                                              'teleportOut',
+                                                                                              'tunnelOut',
+                                                                                              'DFA',
+                                                                                              'doorOut',
+                                                                                              'elevator',
+                                                                                              'stopped',
+                                                                                              'WaitForBattle',
+                                                                                              'battle']),
+                                          State.State('stopped', self.enterStopped, self.exitStopped,
+                                                      ['walk', 'teleportOut', 'elevator']),
+                                          State.State('stickerBook', self.enterStickerBook, self.exitStickerBook,
+                                                      ['walk',
+                                                       'DFA',
+                                                       'WaitForBattle',
+                                                       'battle',
+                                                       'elevator']),
+                                          State.State('WaitForBattle', self.enterWaitForBattle, self.exitWaitForBattle,
+                                                      ['battle', 'walk']),
+                                          State.State('battle', self.enterBattle, self.exitBattle,
+                                                      ['walk', 'teleportOut', 'died']),
+                                          State.State('DFA', self.enterDFA, self.exitDFA,
+                                                      ['DFAReject', 'teleportOut', 'tunnelOut']),
+                                          State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
+                                          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn,
+                                                      ['walk']),
+                                          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut,
+                                                      ['teleportIn', 'final', 'WaitForBattle']),
+                                          State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
+                                          State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
+                                          State.State('died', self.enterDied, self.exitDied, ['quietZone']),
+                                          State.State('tunnelIn', self.enterTunnelIn, self.exitTunnelIn, ['walk']),
+                                          State.State('tunnelOut', self.enterTunnelOut, self.exitTunnelOut, ['final']),
+                                          State.State('elevator', self.enterElevator, self.exitElevator,
+                                                      ['walk', 'stopped']),
+                                          State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start',
+                                         'final')
         self.parentFSM.getStateNamed('factoryExterior').addChild(self.fsm)
         BattlePlace.BattlePlace.load(self)
 
@@ -63,7 +74,7 @@ class FactoryExterior(BattlePlace.BattlePlace):
         self.zoneId = requestStatus['zoneId']
         BattlePlace.BattlePlace.enter(self)
         self.fsm.enterInitialState()
-        base.playMusic(self.loader.music, looping=1, volume=0.8)
+        base.playMusic(self.loader.music, looping = 1, volume = 0.8)
         self.loader.geom.reparentTo(render)
         self.nodeList = [self.loader.geom]
         self.loader.hood.startSky()

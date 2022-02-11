@@ -9,6 +9,7 @@ from pandac.PandaModules import TextNode, Vec3
 from toontown.toonbase import ToontownGlobals
 from toontown.hood import ZoneUtil
 
+
 def clearPythonIvals(ival):
     if hasattr(ival, 'function'):
         ival.function = None
@@ -73,7 +74,7 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
             self.numFightAnims = len(self.ZoneToFightAnims[self.hoodId])
         self.idleInterval = None
         anim = node.getTag('DNAAnim')
-        self.trashcan = Actor.Actor(node, copy=0)
+        self.trashcan = Actor.Actor(node, copy = 0)
         self.trashcan.reparentTo(node)
         animDict = {}
         animDict['anim'] = '%s/%s' % (self.path, anim)
@@ -169,7 +170,9 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
                 result.append(animAndSoundIval)
 
         self.createBattleCheerText()
-        battleCheerTextIval = Sequence(Func(self.hpText.show), self.hpText.posInterval(duration=4.0, pos=Vec3(0, 0, 7), startPos=(0, 0, 3)), Func(self.hpText.hide))
+        battleCheerTextIval = Sequence(Func(self.hpText.show),
+                                       self.hpText.posInterval(duration = 4.0, pos = Vec3(0, 0, 7),
+                                                               startPos = (0, 0, 3)), Func(self.hpText.hide))
         ivalWithText = Parallel(battleCheerTextIval, result)
         return ivalWithText
 
@@ -269,7 +272,7 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
                 pairs.append((math.pow(2, reversedChance), i))
 
             sum = math.pow(2, self.numIdles) - 1
-            result = weightedChoice(pairs, sum=sum)
+            result = weightedChoice(pairs, sum = sum)
             self.notify.debug('chooseAnimToRun numIdles=%s pairs=%s result=%s' % (self.numIdles, pairs, result))
         else:
             result = self.lastPlayingAnimPhase + 1
@@ -300,7 +303,7 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
         return
 
     def createIdleAnimAndSoundInterval(self, whichIdleAnim, startingTime = 0):
-        animIval = self.node.actorInterval('idle%d' % whichIdleAnim, startTime=startingTime)
+        animIval = self.node.actorInterval('idle%d' % whichIdleAnim, startTime = startingTime)
         animIvalDuration = animIval.getDuration()
         origAnimName = self.ZoneToIdles[self.hoodId][whichIdleAnim]
         if isinstance(origAnimName, tuple):
@@ -317,11 +320,13 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
     def createIdleAnimSequence(self, whichIdleAnim):
         dummyResult = Sequence(Wait(self.IdlePauseTime))
         if not hasattr(self, 'node') or not self.node:
-            self.notify.warning("createIdleAnimSequence returning dummyResult hasattr(self,'node')=%s" % hasattr(self, 'node'))
+            self.notify.warning(
+                "createIdleAnimSequence returning dummyResult hasattr(self,'node')=%s" % hasattr(self, 'node'))
             return dummyResult
         idleAnimAndSound = self.createIdleAnimAndSoundInterval(whichIdleAnim)
         result = Sequence(idleAnimAndSound, Wait(self.IdlePauseTime), Func(self.startNextIdleAnim))
-        if isinstance(self.ZoneToIdles[self.hoodId][whichIdleAnim], tuple) and len(self.ZoneToIdles[self.hoodId][whichIdleAnim]) > 2:
+        if isinstance(self.ZoneToIdles[self.hoodId][whichIdleAnim], tuple) and len(
+                self.ZoneToIdles[self.hoodId][whichIdleAnim]) > 2:
             info = self.ZoneToIdles[self.hoodId][whichIdleAnim]
             origAnimName = info[0]
             minLoop = info[1]
@@ -460,7 +465,8 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
 
     def getSettleName(self, whichIdleAnim):
         result = None
-        if isinstance(self.ZoneToIdles[self.hoodId][whichIdleAnim], tuple) and len(self.ZoneToIdles[self.hoodId][whichIdleAnim]) > 3:
+        if isinstance(self.ZoneToIdles[self.hoodId][whichIdleAnim], tuple) and len(
+                self.ZoneToIdles[self.hoodId][whichIdleAnim]) > 3:
             result = self.ZoneToIdles[self.hoodId][whichIdleAnim][3]
         return result
 

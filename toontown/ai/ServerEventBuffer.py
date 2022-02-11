@@ -1,5 +1,3 @@
-
-
 class ServerEventBuffer:
 
     def __init__(self, air, name, avId, period = None):

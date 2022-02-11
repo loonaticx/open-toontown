@@ -3,6 +3,7 @@ from direct.distributed import DistributedObject
 from otp.speedchat import SpeedChatGlobals
 from . import DistributedScavengerHuntTarget
 
+
 class DistributedTrickOrTreatTarget(DistributedScavengerHuntTarget.DistributedScavengerHuntTarget):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTrickOrTreatTarget')
 
@@ -19,4 +20,4 @@ class DistributedTrickOrTreatTarget(DistributedScavengerHuntTarget.DistributedSc
         if phraseId == helpPhrase and not self.triggered:
             self.triggered = True
             self.attemptScavengerHunt()
-            taskMgr.doMethodLater(self.triggerDelay, reset, 'ScavengerHunt-phrase-reset', extraArgs=[])
+            taskMgr.doMethodLater(self.triggerDelay, reset, 'ScavengerHunt-phrase-reset', extraArgs = [])

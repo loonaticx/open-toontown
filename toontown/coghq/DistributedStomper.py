@@ -10,9 +10,11 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStomper')
-    stomperSounds = ['phase_4/audio/sfx/CHQ_FACT_stomper_small.ogg', 'phase_9/audio/sfx/CHQ_FACT_stomper_med.ogg', 'phase_9/audio/sfx/CHQ_FACT_stomper_large.ogg']
+    stomperSounds = ['phase_4/audio/sfx/CHQ_FACT_stomper_small.ogg', 'phase_9/audio/sfx/CHQ_FACT_stomper_med.ogg',
+                     'phase_9/audio/sfx/CHQ_FACT_stomper_large.ogg']
     stomperModels = ['phase_9/models/cogHQ/square_stomper']
 
     def __init__(self, cr):
@@ -215,7 +217,11 @@ class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
             return (None, 0)
         wantSound = self.soundOn
         if self.motion is MotionLinear:
-            motionIval = Sequence(LerpPosInterval(self.model, self.period / 2.0, Point3(0, -self.range, 0), startPos=Point3(0, 0, 0), fluid=1), WaitInterval(self.period / 4.0), LerpPosInterval(self.model, self.period / 4.0, Point3(0, 0, 0), startPos=Point3(0, -self.range, 0), fluid=1))
+            motionIval = Sequence(
+                LerpPosInterval(self.model, self.period / 2.0, Point3(0, -self.range, 0), startPos = Point3(0, 0, 0),
+                                fluid = 1), WaitInterval(self.period / 4.0),
+                LerpPosInterval(self.model, self.period / 4.0, Point3(0, 0, 0), startPos = Point3(0, -self.range, 0),
+                                fluid = 1))
         elif self.motion is MotionSinus:
 
             def sinusFunc(t, self = self):
@@ -223,7 +229,7 @@ class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
                 c = math.cos(theta)
                 self.model.setFluidY((0.5 + c * 0.5) * -self.range)
 
-            motionIval = Sequence(LerpFunctionInterval(sinusFunc, duration=self.period))
+            motionIval = Sequence(LerpFunctionInterval(sinusFunc, duration = self.period))
         elif self.motion is MotionSlowFast:
 
             def motionFunc(t, self = self):
@@ -237,7 +243,7 @@ class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
                 elif t > turnaround:
                     self.model.setFluidY(-self.range + (t - turnaround) * self.range / (1 - turnaround))
 
-            motionIval = Sequence(LerpFunctionInterval(motionFunc, duration=self.period))
+            motionIval = Sequence(LerpFunctionInterval(motionFunc, duration = self.period))
         elif self.motion is MotionCrush:
 
             def motionFunc(t, self = self):
@@ -258,12 +264,18 @@ class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
             tUp = 0.45 * self.period
             tPause = 0.2 * self.period
             tDown = 0.15 * self.period
-            motionIval = Sequence(Wait(tStick), LerpPosInterval(self.model, tUp, Vec3(0, -self.range, 0), blendType='easeInOut', fluid=1), Wait(tPause), Func(self.doCrush), LerpPosInterval(self.model, tDown, Vec3(0, 0, 0), blendType='easeInOut', fluid=1))
+            motionIval = Sequence(Wait(tStick),
+                                  LerpPosInterval(self.model, tUp, Vec3(0, -self.range, 0), blendType = 'easeInOut',
+                                                  fluid = 1), Wait(tPause), Func(self.doCrush),
+                                  LerpPosInterval(self.model, tDown, Vec3(0, 0, 0), blendType = 'easeInOut', fluid = 1))
         elif self.motion is MotionSwitched:
             if mode == STOMPER_STOMP:
-                motionIval = Sequence(Func(self.doCrush), LerpPosInterval(self.model, 0.35, Vec3(0, 0, 0), blendType='easeInOut', fluid=1))
+                motionIval = Sequence(Func(self.doCrush),
+                                      LerpPosInterval(self.model, 0.35, Vec3(0, 0, 0), blendType = 'easeInOut',
+                                                      fluid = 1))
             elif mode == STOMPER_RISE:
-                motionIval = Sequence(LerpPosInterval(self.model, 0.5, Vec3(0, -self.range, 0), blendType='easeInOut', fluid=1))
+                motionIval = Sequence(
+                    LerpPosInterval(self.model, 0.5, Vec3(0, -self.range, 0), blendType = 'easeInOut', fluid = 1))
                 wantSound = 0
             else:
                 motionIval = None
@@ -272,7 +284,7 @@ class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
             def halfSinusFunc(t, self = self):
                 self.model.setFluidY(math.sin(t * math.pi) * -self.range)
 
-            motionIval = Sequence(LerpFunctionInterval(halfSinusFunc, duration=self.period))
+            motionIval = Sequence(LerpFunctionInterval(halfSinusFunc, duration = self.period))
         return (motionIval, wantSound)
 
     def startStomper(self, startTime, mode = STOMPER_START):
@@ -283,10 +295,11 @@ class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
         motionIval, wantSound = self.getMotionIval(mode)
         if motionIval == None:
             return
-        self.ival = Parallel(Sequence(motionIval, Func(self.__startSmokeTask), Func(self.sendStompToon)), name=self.uniqueName('Stomper'))
+        self.ival = Parallel(Sequence(motionIval, Func(self.__startSmokeTask), Func(self.sendStompToon)),
+                             name = self.uniqueName('Stomper'))
         if wantSound:
             sndDur = motionIval.getDuration()
-            self.ival.append(Sequence(Wait(sndDur), Func(base.playSfx, self.sound, node=self.model, volume=0.45)))
+            self.ival.append(Sequence(Wait(sndDur), Func(base.playSfx, self.sound, node = self.model, volume = 0.45)))
         if self.shadow is not None and self.animateShadow:
 
             def adjustShadowScale(t, self = self):
@@ -296,7 +309,7 @@ class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
                 self.shadow.setScale(lerp(1, 0.2, a))
                 self.shadow.setAlphaScale(lerp(1, 0.2, a))
 
-            self.ival.append(LerpFunctionInterval(adjustShadowScale, duration=self.period))
+            self.ival.append(LerpFunctionInterval(adjustShadowScale, duration = self.period))
         if mode == STOMPER_START:
             self.ival.loop()
             self.ival.setT(globalClock.getFrameTime() - self.level.startTime + self.period * self.phaseShift)
@@ -332,7 +345,9 @@ class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
         if self.smokeTrack:
             self.smokeTrack.finish()
             del self.smokeTrack
-        self.smokeTrack = Sequence(Parallel(LerpScaleInterval(self.smoke, 0.2, Point3(4, 1, 4)), LerpColorScaleInterval(self.smoke, 1, Vec4(1, 1, 1, 0))), Func(self.smoke.reparentTo, hidden), Func(self.smoke.clearColorScale))
+        self.smokeTrack = Sequence(Parallel(LerpScaleInterval(self.smoke, 0.2, Point3(4, 1, 4)),
+                                            LerpColorScaleInterval(self.smoke, 1, Vec4(1, 1, 1, 0))),
+                                   Func(self.smoke.reparentTo, hidden), Func(self.smoke.clearColorScale))
         self.smokeTrack.start()
         return Task.done
 
@@ -342,7 +357,8 @@ class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
             zRange = self.headScale[2]
             xRange = self.headScale[0]
             yRange = 5
-            if tPos[2] < zRange and tPos[2] > -zRange and tPos[0] < xRange and tPos[0] > -xRange and tPos[1] < yRange / 10.0 and tPos[1] > -yRange:
+            if tPos[2] < zRange and tPos[2] > -zRange and tPos[0] < xRange and tPos[0] > -xRange and tPos[
+                1] < yRange / 10.0 and tPos[1] > -yRange:
                 self.level.b_setOuch(self.damage, 'Squish')
                 base.localAvatar.setZ(self.getZ(render) + 0.025)
 

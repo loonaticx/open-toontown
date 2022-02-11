@@ -8,6 +8,7 @@ from toontown.coghq import CountryClubRoomBase, LevelSuitPlannerAI
 from toontown.coghq import DistributedCountryClubBattleAI
 from toontown.suit import DistributedMintSuitAI
 
+
 class DistributedCountryClubRoomAI(DistributedLevelAI.DistributedLevelAI, CountryClubRoomBase.CountryClubRoomBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCountryClubRoomAI')
 
@@ -22,7 +23,7 @@ class DistributedCountryClubRoomAI(DistributedLevelAI.DistributedLevelAI, Countr
         self.battleExpAggreg = battleExpAggreg
 
     def createEntityCreator(self):
-        return FactoryEntityCreatorAI.FactoryEntityCreatorAI(level=self)
+        return FactoryEntityCreatorAI.FactoryEntityCreatorAI(level = self)
 
     def getBattleCreditMultiplier(self):
         return ToontownBattleGlobals.getCountryClubCreditMultiplier(self.countryClubId)
@@ -40,7 +41,12 @@ class DistributedCountryClubRoomAI(DistributedLevelAI.DistributedLevelAI, Countr
         DistributedLevelAI.DistributedLevelAI.generate(self, roomSpec)
         self.notify.debug('creating cogs')
         cogSpecModule = CountryClubRoomSpecs.getCogSpecModule(self.roomId)
-        self.planner = LevelSuitPlannerAI.LevelSuitPlannerAI(self.air, self, DistributedMintSuitAI.DistributedMintSuitAI, DistributedCountryClubBattleAI.DistributedCountryClubBattleAI, cogSpecModule.CogData, cogSpecModule.ReserveCogData, cogSpecModule.BattleCells, battleExpAggreg=self.battleExpAggreg)
+        self.planner = LevelSuitPlannerAI.LevelSuitPlannerAI(self.air, self,
+                                                             DistributedMintSuitAI.DistributedMintSuitAI,
+                                                             DistributedCountryClubBattleAI.DistributedCountryClubBattleAI,
+                                                             cogSpecModule.CogData, cogSpecModule.ReserveCogData,
+                                                             cogSpecModule.BattleCells,
+                                                             battleExpAggreg = self.battleExpAggreg)
         suitHandles = self.planner.genSuits()
         messenger.send('plannerCreated-' + str(self.doId))
         self.suits = suitHandles['activeSuits']
@@ -66,7 +72,7 @@ class DistributedCountryClubRoomAI(DistributedLevelAI.DistributedLevelAI, Countr
                 suit.requestDelete()
 
         del self.battleExpAggreg
-        DistributedLevelAI.DistributedLevelAI.delete(self, deAllocZone=False)
+        DistributedLevelAI.DistributedLevelAI.delete(self, deAllocZone = False)
 
     def getCountryClubId(self):
         return self.countryClubId

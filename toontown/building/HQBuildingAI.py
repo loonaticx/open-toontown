@@ -4,6 +4,7 @@ from . import DistributedDoorAI, DistributedHQInteriorAI, FADoorCodes, DoorTypes
 from toontown.toon import NPCToons
 from toontown.quest import Quests
 
+
 class HQBuildingAI:
 
     def __init__(self, air, exteriorZone, interiorZone, blockNumber):
@@ -32,10 +33,10 @@ class HQBuildingAI:
         self.interior = DistributedHQInteriorAI.DistributedHQInteriorAI(blockNumber, self.air, self.interiorZone)
         self.npcs = NPCToons.createNpcsInZone(self.air, self.interiorZone)
         self.interior.generateWithRequired(self.interiorZone)
-        door0 = DistributedDoorAI.DistributedDoorAI(self.air, blockNumber, DoorTypes.EXT_HQ, doorIndex=0)
-        door1 = DistributedDoorAI.DistributedDoorAI(self.air, blockNumber, DoorTypes.EXT_HQ, doorIndex=1)
-        insideDoor0 = DistributedDoorAI.DistributedDoorAI(self.air, blockNumber, DoorTypes.INT_HQ, doorIndex=0)
-        insideDoor1 = DistributedDoorAI.DistributedDoorAI(self.air, blockNumber, DoorTypes.INT_HQ, doorIndex=1)
+        door0 = DistributedDoorAI.DistributedDoorAI(self.air, blockNumber, DoorTypes.EXT_HQ, doorIndex = 0)
+        door1 = DistributedDoorAI.DistributedDoorAI(self.air, blockNumber, DoorTypes.EXT_HQ, doorIndex = 1)
+        insideDoor0 = DistributedDoorAI.DistributedDoorAI(self.air, blockNumber, DoorTypes.INT_HQ, doorIndex = 0)
+        insideDoor1 = DistributedDoorAI.DistributedDoorAI(self.air, blockNumber, DoorTypes.INT_HQ, doorIndex = 1)
         door0.setOtherDoor(insideDoor0)
         insideDoor0.setOtherDoor(door0)
         door1.setOtherDoor(insideDoor1)

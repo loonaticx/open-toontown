@@ -11,6 +11,7 @@ from toontown.toonbase import ToontownBattleGlobals
 from .GolfGreenGameGlobals import *
 import random, time
 
+
 class DistributedGolfGreenGameAI(BattleBlockerAI.BattleBlockerAI, NodePath, BasicEntities.NodePathAttribs):
 
     def __init__(self, level, entId):
@@ -110,7 +111,7 @@ class DistributedGolfGreenGameAI(BattleBlockerAI.BattleBlockerAI, NodePath, Basi
         taskMgr.doMethodLater(1.0, self.__printTime, self.taskName('GolfGreenGameTimeout Print'))
         return task.done
 
-    def __handleTimeOut(self, task=None):
+    def __handleTimeOut(self, task = None):
         taskMgr.remove(self.taskName('GolfGreenGameTimeout'))
         self.__handleFinsihed(0)
         return task.done
@@ -204,7 +205,8 @@ class DistributedGolfGreenGameAI(BattleBlockerAI.BattleBlockerAI, NodePath, Basi
             self.__handleFinsihed(1)
         else:
             self.boardList[boardIndex][0].append(senderId)
-            self.sendUpdateToAvatarId(senderId, 'startBoard', [self.boardData[self.boardList[boardIndex][1]], self.attackPatterns[self.boardList[boardIndex][2]]])
+            self.sendUpdateToAvatarId(senderId, 'startBoard', [self.boardData[self.boardList[boardIndex][1]],
+                                                               self.attackPatterns[self.boardList[boardIndex][2]]])
         return
 
     def addGag(self, avId):
@@ -250,7 +252,7 @@ class DistributedGolfGreenGameAI(BattleBlockerAI.BattleBlockerAI, NodePath, Basi
                 for avId in playerIds:
                     av = simbase.air.doId2do.get(avId)
                     if av:
-                        av.takeDamage(self.DamageOnFailure, quietly=0)
+                        av.takeDamage(self.DamageOnFailure, quietly = 0)
                         room.sendUpdate('forceOuch', [self.DamageOnFailure])
 
         if not self.challengeDefeated:

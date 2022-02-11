@@ -11,6 +11,7 @@ from toontown.coghq import LaserGameMineSweeper
 from toontown.coghq import LaserGameRoll
 import random
 
+
 class DistributedSecurityCameraAI(DistributedEntityAI.DistributedEntityAI, NodePath, BasicEntities.NodePathAttribs):
 
     def __init__(self, level, entId):

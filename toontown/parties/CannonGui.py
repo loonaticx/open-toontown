@@ -3,6 +3,7 @@ from direct.gui.DirectGui import DirectFrame, DirectButton
 import direct.gui.DirectGuiGlobals as DGG
 from toontown.parties import PartyUtils
 
+
 class CannonGui(DirectObject):
     notify = directNotify.newCategory('CannonGui')
     FIRE_KEY = 'control'
@@ -28,13 +29,24 @@ class CannonGui(DirectObject):
         self.__timerPad = PartyUtils.getNewToontownTimer()
         guiModel = 'phase_4/models/gui/cannon_game_gui'
         guiNode = loader.loadModel(guiModel)
-        self.__aimPad = DirectFrame(image=guiNode.find('**/CannonFire_PAD'), relief=None, pos=(0.7, 0, -0.553333), scale=0.8)
+        self.__aimPad = DirectFrame(image = guiNode.find('**/CannonFire_PAD'), relief = None, pos = (0.7, 0, -0.553333),
+                                    scale = 0.8)
         guiNode.removeNode()
-        self.fireButton = DirectButton(parent=self.__aimPad, image=((guiModel, '**/Fire_Btn_UP'), (guiModel, '**/Fire_Btn_DN'), (guiModel, '**/Fire_Btn_RLVR')), relief=None, pos=(0.0115741, 0, 0.00505051), scale=1.0, command=self.__firePressed)
-        self.upButton = DirectButton(parent=self.__aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(0.0115741, 0, 0.221717))
-        self.downButton = DirectButton(parent=self.__aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(0.0136112, 0, -0.210101), image_hpr=(0, 0, 180))
-        self.leftButton = DirectButton(parent=self.__aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(-0.199352, 0, -0.000505269), image_hpr=(0, 0, -90))
-        self.rightButton = DirectButton(parent=self.__aimPad, image=((guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')), relief=None, pos=(0.219167, 0, -0.00101024), image_hpr=(0, 0, 90))
+        self.fireButton = DirectButton(parent = self.__aimPad, image = (
+        (guiModel, '**/Fire_Btn_UP'), (guiModel, '**/Fire_Btn_DN'), (guiModel, '**/Fire_Btn_RLVR')), relief = None,
+                                       pos = (0.0115741, 0, 0.00505051), scale = 1.0, command = self.__firePressed)
+        self.upButton = DirectButton(parent = self.__aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                     relief = None, pos = (0.0115741, 0, 0.221717))
+        self.downButton = DirectButton(parent = self.__aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                       relief = None, pos = (0.0136112, 0, -0.210101), image_hpr = (0, 0, 180))
+        self.leftButton = DirectButton(parent = self.__aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                       relief = None, pos = (-0.199352, 0, -0.000505269), image_hpr = (0, 0, -90))
+        self.rightButton = DirectButton(parent = self.__aimPad, image = (
+        (guiModel, '**/Cannon_Arrow_UP'), (guiModel, '**/Cannon_Arrow_DN'), (guiModel, '**/Cannon_Arrow_RLVR')),
+                                        relief = None, pos = (0.219167, 0, -0.00101024), image_hpr = (0, 0, 90))
         self.__aimPad.setColor(1, 1, 1, 0.9)
 
         def bindButton(button, upHandler, downHandler):

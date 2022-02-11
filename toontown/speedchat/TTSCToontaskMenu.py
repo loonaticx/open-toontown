@@ -3,6 +3,7 @@ from .TTSCToontaskTerminal import TTSCToontaskTerminal
 from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
 from toontown.quest import Quests
 
+
 class TTSCToontaskMenu(SCMenu):
 
     def __init__(self):

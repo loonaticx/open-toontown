@@ -4,6 +4,7 @@ from direct.showbase import PythonUtil
 from direct.gui.DirectGui import *
 from toontown.toonbase import ToontownGlobals
 
+
 class CatalogAtticItem(CatalogItem.CatalogItem):
 
     def storedInAttic(self):
@@ -39,7 +40,8 @@ class CatalogAtticItem(CatalogItem.CatalogItem):
         if numHouseItems >= ToontownGlobals.MaxHouseItems and not self.replacesExisting():
             self.requestPurchaseCleanup()
             buttonCallback = PythonUtil.Functor(self.__handleFullPurchaseDialog, phone, callback)
-            self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.CatalogPurchaseHouseFull, text_wordwrap=15, command=buttonCallback)
+            self.dialog = TTDialog.TTDialog(style = TTDialog.YesNo, text = TTLocalizer.CatalogPurchaseHouseFull,
+                                            text_wordwrap = 15, command = buttonCallback)
             self.dialog.show()
         else:
             CatalogItem.CatalogItem.requestPurchase(self, phone, callback)

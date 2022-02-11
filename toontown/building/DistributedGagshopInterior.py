@@ -8,6 +8,7 @@ from direct.directnotify import DirectNotifyGlobal
 from . import ToonInteriorColors
 from toontown.hood import ZoneUtil
 
+
 class DistributedGagshopInterior(DistributedObject.DistributedObject):
 
     def __init__(self, cr):

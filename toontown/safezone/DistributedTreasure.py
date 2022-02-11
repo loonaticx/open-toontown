@@ -4,6 +4,7 @@ from toontown.toonbase.ToontownGlobals import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 
+
 class DistributedTreasure(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTreasure')
 
@@ -112,8 +113,14 @@ class DistributedTreasure(DistributedObject.DistributedObject):
         if self.treasureFlyTrack:
             self.treasureFlyTrack.finish()
             self.treasureFlyTrack = None
-        base.playSfx(self.rejectSound, node=self.nodePath)
-        self.treasureFlyTrack = Sequence(LerpColorScaleInterval(self.nodePath, 0.8, colorScale=VBase4(0, 0, 0, 0), startColorScale=VBase4(1, 1, 1, 1), blendType='easeIn'), LerpColorScaleInterval(self.nodePath, 0.2, colorScale=VBase4(1, 1, 1, 1), startColorScale=VBase4(0, 0, 0, 0), blendType='easeOut'), name=self.uniqueName('treasureFlyTrack'))
+        base.playSfx(self.rejectSound, node = self.nodePath)
+        self.treasureFlyTrack = Sequence(LerpColorScaleInterval(self.nodePath, 0.8, colorScale = VBase4(0, 0, 0, 0),
+                                                                startColorScale = VBase4(1, 1, 1, 1),
+                                                                blendType = 'easeIn'),
+                                         LerpColorScaleInterval(self.nodePath, 0.2, colorScale = VBase4(1, 1, 1, 1),
+                                                                startColorScale = VBase4(0, 0, 0, 0),
+                                                                blendType = 'easeOut'),
+                                         name = self.uniqueName('treasureFlyTrack'))
         self.treasureFlyTrack.start()
         return
 
@@ -127,7 +134,7 @@ class DistributedTreasure(DistributedObject.DistributedObject):
             self.nodePath.detachNode()
             return
         if self.playSoundForRemoteToons or self.avId == base.localAvatar.getDoId():
-            base.playSfx(self.grabSound, node=self.nodePath)
+            base.playSfx(self.grabSound, node = self.nodePath)
         if not self.fly:
             self.nodePath.detachNode()
             return
@@ -138,11 +145,14 @@ class DistributedTreasure(DistributedObject.DistributedObject):
         avatarGoneName = self.av.uniqueName('disable')
         self.accept(avatarGoneName, self.handleUnexpectedExit)
         flytime = 1.0
-        track = Sequence(LerpPosInterval(self.nodePath, flytime, pos=Point3(0, 0, 3), startPos=self.nodePath.getPos(), blendType='easeInOut'), Func(self.nodePath.detachNode), Func(self.ignore, avatarGoneName))
+        track = Sequence(
+            LerpPosInterval(self.nodePath, flytime, pos = Point3(0, 0, 3), startPos = self.nodePath.getPos(),
+                            blendType = 'easeInOut'), Func(self.nodePath.detachNode), Func(self.ignore, avatarGoneName))
         if self.shadow:
-            self.treasureFlyTrack = Sequence(HideInterval(self.dropShadow), track, ShowInterval(self.dropShadow), name=self.uniqueName('treasureFlyTrack'))
+            self.treasureFlyTrack = Sequence(HideInterval(self.dropShadow), track, ShowInterval(self.dropShadow),
+                                             name = self.uniqueName('treasureFlyTrack'))
         else:
-            self.treasureFlyTrack = Sequence(track, name=self.uniqueName('treasureFlyTrack'))
+            self.treasureFlyTrack = Sequence(track, name = self.uniqueName('treasureFlyTrack'))
         self.treasureFlyTrack.start()
         return
 

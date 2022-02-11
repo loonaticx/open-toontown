@@ -5,10 +5,12 @@ from . import ToonHead
 from toontown.distributed import DelayDelete
 from toontown.toonbase import ToontownGlobals
 
+
 class ToonHeadFrame(DirectFrame):
 
     def __init__(self, av, color = ToontownGlobals.GlobalDialogColor, g = DGG.getDefaultDialogGeom()):
-        DirectFrame.__init__(self, relief=None, geom=g, geom_color=color, geom_scale=(1, 1, 0.5), pos=(0, 0, 0))
+        DirectFrame.__init__(self, relief = None, geom = g, geom_color = color, geom_scale = (1, 1, 0.5),
+                             pos = (0, 0, 0))
         self.initialiseoptions(ToonHeadFrame)
         self.av = av
         self.avKeep = DelayDelete.DelayDelete(av, 'ToonHeadFrame.avKeep')
@@ -16,7 +18,7 @@ class ToonHeadFrame(DirectFrame):
         self.head.setPosHprScale(-0.27, 10.0, -0.09, 180.0, 0.0, 0.0, 0.2, 0.2, 0.2)
         self.headModel = ToonHead.ToonHead()
         self.headModel.startBlink()
-        self.headModel.setupHead(self.av.style, forGui=1)
+        self.headModel.setupHead(self.av.style, forGui = 1)
         self.headModel.reparentTo(self.head)
         self.tag1Node = NametagFloat2d()
         self.tag1Node.setContents(Nametag.CSpeech | Nametag.CThought)
@@ -28,7 +30,8 @@ class ToonHeadFrame(DirectFrame):
         self.av.nametag.addNametag(self.tag2Node)
         self.tag2 = self.attachNewNode(self.tag2Node.upcastToPandaNode())
         self.tag2.setPosHprScale(-0.27, 10.0, 0.16, 0, 0, 0, 0.05, 0.05, 0.05)
-        self.extraData = DirectLabel(parent=self, relief=None, pos=(0.0, 0.0, 0.06), scale=1.0, text='', text0_fg=(0.3, 0.2, 1, 1), text_scale=(0.14, 0.06), text_pos=(0, -0.01))
+        self.extraData = DirectLabel(parent = self, relief = None, pos = (0.0, 0.0, 0.06), scale = 1.0, text = '',
+                                     text0_fg = (0.3, 0.2, 1, 1), text_scale = (0.14, 0.06), text_pos = (0, -0.01))
         self.extraData.hide()
         return
 

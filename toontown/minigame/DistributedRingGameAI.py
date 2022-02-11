@@ -6,6 +6,7 @@ from . import RingGameGlobals
 import random
 import types
 
+
 class DistributedRingGameAI(DistributedMinigameAI):
 
     def __init__(self, air, minigameId):
@@ -14,7 +15,10 @@ class DistributedRingGameAI(DistributedMinigameAI):
         except:
             self.DistributedRingGameAI_initialized = 1
             DistributedMinigameAI.__init__(self, air, minigameId)
-            self.gameFSM = ClassicFSM.ClassicFSM('DistributedRingGameAI', [State.State('inactive', self.enterInactive, self.exitInactive, ['swimming']), State.State('swimming', self.enterSwimming, self.exitSwimming, ['cleanup']), State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
+            self.gameFSM = ClassicFSM.ClassicFSM('DistributedRingGameAI', [
+                State.State('inactive', self.enterInactive, self.exitInactive, ['swimming']),
+                State.State('swimming', self.enterSwimming, self.exitSwimming, ['cleanup']),
+                State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
             self.addChildGameFSM(self.gameFSM)
             self.__timeBase = globalClockDelta.localToNetworkTime(globalClock.getRealTime())
             self.selectColorIndices()
@@ -58,9 +62,9 @@ class DistributedRingGameAI(DistributedMinigameAI):
 
     def selectColorIndices(self):
         self.colorIndices = [None,
-         None,
-         None,
-         None]
+                             None,
+                             None,
+                             None]
         chooseFrom = RingGameGlobals.ringColorSelection[:]
         for i in range(0, 4):
             c = random.choice(chooseFrom)
@@ -124,10 +128,12 @@ class DistributedRingGameAI(DistributedMinigameAI):
 
                 self.sendUpdate('setRingGroupResults', [bitfield])
             if ringGroupIndex >= RingGameGlobals.NUM_RING_GROUPS - 1:
-                perfectBonuses = {1: 5,
-                 2: 5,
-                 3: 10,
-                 4: 18}
+                perfectBonuses = {
+                    1: 5,
+                    2: 5,
+                    3: 10,
+                    4: 18
+                }
                 numPerfectToons = 0
                 for avId in self.avIdList:
                     if self.perfectGames[avId]:

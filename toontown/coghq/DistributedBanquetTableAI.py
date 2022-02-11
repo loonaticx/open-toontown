@@ -5,6 +5,7 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.coghq import BanquetTableBase
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM, BanquetTableBase.BanquetTableBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBanquetTableAI')
 
@@ -77,7 +78,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
     def setState(self, state):
         self.request(state)
 
-    def d_setState(self, state, avId=0, extraInfo=0):
+    def d_setState(self, state, avId = 0, extraInfo = 0):
         newState = state
         if state == 'On':
             newState = 'N'
@@ -98,7 +99,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
                                 newState = 'L'
         self.sendUpdate('setState', [newState, avId, extraInfo])
 
-    def b_setState(self, state, avId=0, extraInfo=0):
+    def b_setState(self, state, avId = 0, extraInfo = 0):
         if state == 'Controlled' or state == 'Flat':
             self.request(state, avId)
         else:
@@ -117,7 +118,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         if chairIndex in self.transitionTasks:
             self.removeTask(self.transitionTasks[chairIndex])
         taskName = self.uniqueName('transition-%d' % chairIndex)
-        newTask = self.doMethodLater(eatingDur, self.finishedEating, taskName, extraArgs=[chairIndex])
+        newTask = self.doMethodLater(eatingDur, self.finishedEating, taskName, extraArgs = [chairIndex])
         self.transitionTasks[chairIndex] = newTask
 
     def finishedEating(self, chairIndex):
@@ -131,7 +132,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
             self.b_setDinerStatus(chairIndex, self.HUNGRY)
             taskName = self.uniqueName('transition-%d' % chairIndex)
             hungryDur = self.dinerInfo[chairIndex][0]
-            newTask = self.doMethodLater(hungryDur, self.finishedHungry, taskName, extraArgs=[chairIndex])
+            newTask = self.doMethodLater(hungryDur, self.finishedHungry, taskName, extraArgs = [chairIndex])
             self.transitionTasks[chairIndex] = newTask
 
     def incrementFoodEaten(self, chairIndex):
@@ -189,7 +190,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         avId = self.air.getAvatarIdFromSender()
         if avId == self.avId:
             if self.state == 'Controlled':
-                self.b_setState('Free', extraInfo=gotHitByBoss)
+                self.b_setState('Free', extraInfo = gotHitByBoss)
                 if self.boss:
                     self.boss.toonLeftTable(self.index)
             else:

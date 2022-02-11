@@ -2,6 +2,7 @@ from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from toontown.battle.BattleProps import globalPropPool
 
+
 class Ripples(NodePath):
     rippleCount = 0
 
@@ -21,7 +22,10 @@ class Ripples(NodePath):
 
     def createTrack(self, rate = 1):
         tflipDuration = self.seqNode.getNumChildren() / (float(rate) * 24)
-        self.track = Sequence(Func(self.show), Func(self.seqNode.play, 0, self.seqNode.getNumFrames() - 1), Func(self.seqNode.setPlayRate, rate), Wait(tflipDuration), Func(self.seqNode.setPlayRate, 0), Func(self.hide), name='ripples-track-%d' % self.trackId)
+        self.track = Sequence(Func(self.show), Func(self.seqNode.play, 0, self.seqNode.getNumFrames() - 1),
+                              Func(self.seqNode.setPlayRate, rate), Wait(tflipDuration),
+                              Func(self.seqNode.setPlayRate, 0), Func(self.hide),
+                              name = 'ripples-track-%d' % self.trackId)
 
     def play(self, rate = 1):
         self.stop()

@@ -16,6 +16,7 @@ from . import CCharChatter
 from . import CCharPaths
 import copy
 
+
 class DistributedCCharBase(DistributedChar.DistributedChar):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCCharBase')
 
@@ -32,7 +33,8 @@ class DistributedCCharBase(DistributedChar.DistributedChar):
         self.setDNA(dna)
         self.setName(name)
         self.setTransparency(TransparencyAttrib.MDual, 1)
-        fadeIn = self.colorScaleInterval(0.5, Vec4(1, 1, 1, 1), startColorScale=Vec4(1, 1, 1, 0), blendType='easeInOut')
+        fadeIn = self.colorScaleInterval(0.5, Vec4(1, 1, 1, 1), startColorScale = Vec4(1, 1, 1, 0),
+                                         blendType = 'easeInOut')
         fadeIn.start()
         self.diffPath = None
         self.transitionToCostume = 0
@@ -98,9 +100,11 @@ class DistributedCCharBase(DistributedChar.DistributedChar):
     def generate(self, diffPath = None):
         DistributedChar.DistributedChar.generate(self)
         if diffPath == None:
-            self.setPos(CCharPaths.getNodePos(CCharPaths.startNode, CCharPaths.getPaths(self.getName(), self.getCCLocation())))
+            self.setPos(
+                CCharPaths.getNodePos(CCharPaths.startNode, CCharPaths.getPaths(self.getName(), self.getCCLocation())))
         else:
-            self.setPos(CCharPaths.getNodePos(CCharPaths.startNode, CCharPaths.getPaths(diffPath, self.getCCLocation())))
+            self.setPos(
+                CCharPaths.getNodePos(CCharPaths.startNode, CCharPaths.getPaths(diffPath, self.getCCLocation())))
         self.setHpr(0, 0, 0)
         self.setParent(ToontownGlobals.SPRender)
         self.startBlink()
@@ -145,9 +149,9 @@ class DistributedCCharBase(DistributedChar.DistributedChar):
 
     def __handleChatUpdateSCToontask(self, taskId, toNpcId, toonProgress, msgIndex):
         self.sendUpdate('setNearbyAvatarSCToontask', [taskId,
-         toNpcId,
-         toonProgress,
-         msgIndex])
+                                                      toNpcId,
+                                                      toonProgress,
+                                                      msgIndex])
 
     def makeTurnToHeadingTrack(self, heading):
         curHpr = self.getHpr()
@@ -162,7 +166,7 @@ class DistributedCCharBase(DistributedChar.DistributedChar):
         turnTracks = Parallel()
         if time > 0.2:
             turnTracks.append(Sequence(Func(self.loop, 'walk'), Wait(time), Func(self.loop, 'neutral')))
-        turnTracks.append(LerpHprInterval(self, time, destHpr, name='lerp' + self.getName() + 'Hpr'))
+        turnTracks.append(LerpHprInterval(self, time, destHpr, name = 'lerp' + self.getName() + 'Hpr'))
         return turnTracks
 
     def setChat(self, category, msg, avId):
@@ -268,23 +272,27 @@ class DistributedCCharBase(DistributedChar.DistributedChar):
                 self.CCChatter = ToontownGlobals.SELLBOT_FIELD_OFFICE
 
     def fadeAway(self):
-        fadeOut = self.colorScaleInterval(0.5, Vec4(1, 1, 1, 0.5), startColorScale=Vec4(1, 1, 1, 1), blendType='easeInOut')
+        fadeOut = self.colorScaleInterval(0.5, Vec4(1, 1, 1, 0.5), startColorScale = Vec4(1, 1, 1, 1),
+                                          blendType = 'easeInOut')
         fadeOut.start()
         self.loop('neutral')
         if self.fsm:
-            self.fsm.addState(State.State('TransitionToCostume', self.enterTransitionToCostume, self.exitTransitionToCostume, ['Off']))
-            self.fsm.request('TransitionToCostume', force=1)
+            self.fsm.addState(
+                State.State('TransitionToCostume', self.enterTransitionToCostume, self.exitTransitionToCostume,
+                            ['Off']))
+            self.fsm.request('TransitionToCostume', force = 1)
         self.ignoreAll()
 
     def enterTransitionToCostume(self):
 
         def getDustCloudIval():
-            dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
+            dustCloud = DustCloud.DustCloud(fBillboard = 0, wantSound = 1)
             dustCloud.setBillboardAxis(2.0)
             dustCloud.setZ(4)
             dustCloud.setScale(0.6)
             dustCloud.createTrack()
-            return Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy), name='dustCloadIval')
+            return Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy),
+                            name = 'dustCloadIval')
 
         dust = getDustCloudIval()
         dust.start()

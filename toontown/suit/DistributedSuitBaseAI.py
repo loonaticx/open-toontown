@@ -4,6 +4,7 @@ from . import SuitPlannerBase, SuitBase, SuitDNA
 from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import SuitBattleGlobals
 
+
 class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.SuitBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSuitBaseAI')
 
@@ -38,7 +39,7 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
             self.requestDelete()
         return
 
-    def setLevel(self, lvl=None):
+    def setLevel(self, lvl = None):
         attributes = SuitBattleGlobals.SuitAttributes[self.dna.name]
         if lvl:
             self.level = lvl - attributes['level'] - 1

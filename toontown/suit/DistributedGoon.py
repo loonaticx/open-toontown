@@ -16,6 +16,7 @@ from otp.level import PathEntity
 from . import GoonDeath
 import random
 
+
 class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goon.Goon, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGoon')
 
@@ -153,12 +154,12 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
         if self.walkTrack:
             self.walkTrack.pause()
             self.walkTrack = None
-        self.walkTrack = self.path.makePathTrack(self, self.velocity, self.uniqueName('goonWalk'), turnTime=T_TURN)
+        self.walkTrack = self.path.makePathTrack(self, self.velocity, self.uniqueName('goonWalk'), turnTime = T_TURN)
         if self.gridId != None:
             self.sendUpdate('setParameterize', [self.path.pos[0],
-             self.path.pos[1],
-             self.path.pos[2],
-             self.path.pathIndex])
+                                                self.path.pos[1],
+                                                self.path.pos[2],
+                                                self.path.pathIndex])
         return
 
     def disable(self):
@@ -221,7 +222,8 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
         self.isStunned = 0
         if self.path:
             if not self.walkTrack:
-                self.walkTrack = self.path.makePathTrack(self, self.velocity, self.uniqueName('goonWalk'), turnTime=T_TURN)
+                self.walkTrack = self.path.makePathTrack(self, self.velocity, self.uniqueName('goonWalk'),
+                                                         turnTime = T_TURN)
             self.startWalk(ts)
 
     def startWalk(self, ts):
@@ -268,7 +270,8 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
         self.notify.debug('enterStunned')
         if self.radar:
             self.radar.hide()
-        self.animTrack = Parallel(Sequence(ActorInterval(self, 'collapse'), Func(self.pose, 'collapse', 48)), SoundInterval(self.collapseSound, node=self))
+        self.animTrack = Parallel(Sequence(ActorInterval(self, 'collapse'), Func(self.pose, 'collapse', 48)),
+                                  SoundInterval(self.collapseSound, node = self))
         self.animTrack.start(ts)
 
     def exitStunned(self):
@@ -293,11 +296,12 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
         self.animTrack.start(ts)
         delay = max(0, duration - ts)
         taskMgr.remove(self.taskName('recoveryDone'))
-        taskMgr.doMethodLater(delay, self.recoveryDone, self.taskName('recoveryDone'), extraArgs=(pauseTime,))
+        taskMgr.doMethodLater(delay, self.recoveryDone, self.taskName('recoveryDone'), extraArgs = (pauseTime,))
         return
 
     def getRecoveryTrack(self):
-        return Parallel(Sequence(ActorInterval(self, 'recovery'), Func(self.pose, 'recovery', 96)), Func(base.playSfx, self.recoverSound, node=self))
+        return Parallel(Sequence(ActorInterval(self, 'recovery'), Func(self.pose, 'recovery', 96)),
+                        Func(base.playSfx, self.recoverSound, node = self))
 
     def recoveryDone(self, pauseTime):
         self.request('Walk', None, pauseTime)
@@ -316,7 +320,12 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
         h = self.head.getH()
         freakDeg = 60
         hatZ = self.hat.getZ()
-        track = Parallel(Sequence(LerpColorScaleInterval(self.eye, 0.2, Vec4(1, 0, 0, 1)), LerpColorScaleInterval(self.eye, 0.2, Vec4(0, 0, 1, 1)), LerpColorScaleInterval(self.eye, 0.2, Vec4(1, 0, 0, 1)), LerpColorScaleInterval(self.eye, 0.2, Vec4(0, 0, 1, 1)), Func(self.eye.clearColorScale)), SoundInterval(self.attackSound, node=self, volume=0.4))
+        track = Parallel(Sequence(LerpColorScaleInterval(self.eye, 0.2, Vec4(1, 0, 0, 1)),
+                                  LerpColorScaleInterval(self.eye, 0.2, Vec4(0, 0, 1, 1)),
+                                  LerpColorScaleInterval(self.eye, 0.2, Vec4(1, 0, 0, 1)),
+                                  LerpColorScaleInterval(self.eye, 0.2, Vec4(0, 0, 1, 1)),
+                                  Func(self.eye.clearColorScale)),
+                         SoundInterval(self.attackSound, node = self, volume = 0.4))
         return track
 
     def doDetect(self):
@@ -329,7 +338,7 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
         resumeTime = 1.5
         if ts < resumeTime:
             taskMgr.remove(self.taskName('resumeWalk'))
-            taskMgr.doMethodLater(resumeTime - ts, self.request, self.taskName('resumeWalk'), extraArgs=('Walk',))
+            taskMgr.doMethodLater(resumeTime - ts, self.request, self.taskName('resumeWalk'), extraArgs = ('Walk',))
         else:
             self.request('Walk', ts - resumeTime)
 
@@ -341,7 +350,7 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
         stunTime = 4.0
         if ts < stunTime:
             taskMgr.remove(self.taskName('resumeWalk'))
-            taskMgr.doMethodLater(stunTime - ts, self.request, self.taskName('resumeWalk'), extraArgs=('Recovery',))
+            taskMgr.doMethodLater(stunTime - ts, self.request, self.taskName('resumeWalk'), extraArgs = ('Recovery',))
         else:
             self.request('Recovery', ts - stunTime)
 
@@ -388,10 +397,10 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
             return
         ts = ClockDelta.globalClockDelta.localElapsedTime(timestamp)
         self.notify.debug('%s: setMovie(%s,%s,%s,%s)' % (self.doId,
-         mode,
-         avId,
-         pauseTime,
-         ts))
+                                                         mode,
+                                                         avId,
+                                                         pauseTime,
+                                                         ts))
         if mode == GOON_MOVIE_BATTLE:
             if self.state != 'Battle':
                 self.request('Battle', avId, ts)
@@ -437,7 +446,8 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
         goonPos = self.getPos()
         sx = random.uniform(0.3, 0.8) * self.scale
         sz = random.uniform(0.3, 0.8) * self.scale
-        crushTrack = Sequence(GoonDeath.createGoonExplosion(self.getParent(), goonPos, VBase3(sx, 1, sz)), name=self.uniqueName('crushTrack'), autoFinish=1)
+        crushTrack = Sequence(GoonDeath.createGoonExplosion(self.getParent(), goonPos, VBase3(sx, 1, sz)),
+                              name = self.uniqueName('crushTrack'), autoFinish = 1)
         self.dead()
         crushTrack.start()
 

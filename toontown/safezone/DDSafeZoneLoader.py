@@ -6,6 +6,7 @@ from toontown.char import CharDNA
 from toontown.char import Char
 from toontown.toonbase import ToontownGlobals
 
+
 class DDSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
 
     def __init__(self, hood, parentFSM, doneEvent):

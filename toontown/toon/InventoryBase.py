@@ -6,6 +6,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 
+
 class InventoryBase(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('InventoryBase')
 
@@ -207,7 +208,9 @@ class InventoryBase(DirectObject.DirectObject):
                 if tempInv[track][level] > self.getMax(track, level):
                     return 0
                 if tempInv[track][level] > 0 and not self.toon.hasTrackAccess(track):
-                    commentStr = "Player %s trying to purchase gag they don't have track access to. track: %s level: %s" % (self.toon.doId, track, level)
+                    commentStr = "Player %s trying to purchase gag they don't have track access to. track: %s level: " \
+                                 "%s" % (
+                    self.toon.doId, track, level)
                     dislId = self.toon.DISLid
                     if simbase.config.GetBool('want-ban-gagtrack', False):
                         simbase.air.banManager.ban(self.toon.doId, dislId, commentStr)

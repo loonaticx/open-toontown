@@ -7,6 +7,7 @@ from direct.task.Task import Task
 from toontown.suit import Suit
 from toontown.suit import SuitDNA
 
+
 class Ouch(DirectObject.DirectObject):
 
     def __init__(self, keyEvent, callback):
@@ -62,7 +63,6 @@ class ToonLifter(DirectObject.DirectObject):
         taskMgr.remove(self.taskName)
 
     def startLifting(self):
-
         def liftTask(task, self = self):
             base.localAvatar.setZ(base.localAvatar.getZ() + self.speed)
             return Task.cont

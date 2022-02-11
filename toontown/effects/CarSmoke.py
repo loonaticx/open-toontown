@@ -4,6 +4,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import AppRunnerGlobal
 import os
 
+
 class CarSmoke(NodePath):
 
     def __init__(self, parent):
@@ -38,7 +39,7 @@ class CarSmoke(NodePath):
         ren.setTextureFromNode('phase_4/models/props/tt_m_efx_ext_smoke', '**/*')
 
     def start(self):
-        self.effect.start(parent=self.effectNode)
+        self.effect.start(parent = self.effectNode)
 
     def stop(self):
         try:

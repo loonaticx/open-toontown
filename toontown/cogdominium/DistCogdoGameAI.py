@@ -6,6 +6,7 @@ from toontown.cogdominium import CogdoGameConsts
 from toontown.cogdominium.DistCogdoGameBase import DistCogdoGameBase
 from otp.ai.Barrier import Barrier
 
+
 class SadCallbackToken:
     pass
 
@@ -198,7 +199,8 @@ class DistCogdoGameAI(DistCogdoGameBase, DistributedObjectAI):
 
     def enterIntro(self):
         self.sendUpdate('setIntroStart', [])
-        self._introBarrier = Barrier('intro', self.uniqueName('intro'), self.getToonIds(), 1 << 20, doneFunc = self._handleIntroBarrierDone)
+        self._introBarrier = Barrier('intro', self.uniqueName('intro'), self.getToonIds(), 1 << 20,
+                                     doneFunc = self._handleIntroBarrierDone)
         self._sadToken = self._registerSadCallback(self._handleSadToonDuringIntro)
 
     def exitIntro(self):

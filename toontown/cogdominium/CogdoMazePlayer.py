@@ -7,6 +7,7 @@ from . import CogdoMazeGameGlobals as Globals
 from . import CogdoUtil
 import random
 
+
 class CogdoMazePlayer(FSM, CogdoMazeSplattable):
     notify = directNotify.newCategory('CogdoMazePlayer')
     _key = None
@@ -18,11 +19,13 @@ class CogdoMazePlayer(FSM, CogdoMazeSplattable):
         CogdoMazeSplattable.__init__(self, toon, '%s-%i' % (Globals.PlayerCollisionName, id), 0.5)
         self.id = id
         self.toon = toon
-        self.defaultTransitions = {'Off': ['Ready'],
-         'Ready': ['Normal', 'Off'],
-         'Normal': ['Hit', 'Done', 'Off'],
-         'Hit': ['Normal', 'Done', 'Off'],
-         'Done': ['Off']}
+        self.defaultTransitions = {
+            'Off': ['Ready'],
+            'Ready': ['Normal', 'Off'],
+            'Normal': ['Hit', 'Done', 'Off'],
+            'Hit': ['Normal', 'Done', 'Off'],
+            'Done': ['Off']
+        }
         self.toon.reparentTo(render)
         self.gagModel = CogdoUtil.loadMazeModel('waterBalloon')
         self.equippedGag = None
@@ -66,7 +69,8 @@ class CogdoMazePlayer(FSM, CogdoMazeSplattable):
 
     def enterHit(self, elapsedTime = 0.0):
         animationInfo = Globals.ToonAnimationInfo['hit']
-        self._hitIval = self._getToonAnimationIval(animationInfo[0], duration=animationInfo[1], startFrame=animationInfo[2], nextState='Normal')
+        self._hitIval = self._getToonAnimationIval(animationInfo[0], duration = animationInfo[1],
+                                                   startFrame = animationInfo[2], nextState = 'Normal')
         self._hitIval.start(elapsedTime)
         self._toonHitSfx.play()
 
@@ -165,13 +169,26 @@ class CogdoMazePlayer(FSM, CogdoMazeSplattable):
         if throwSoundIval.isPlaying():
             throwSoundIval.finish()
         throwSoundIval.node = toon
-        toonThrowIval1 = ActorInterval(toon, 'throw', startFrame=Globals.ThrowStartFrame, endFrame=Globals.ThrowEndFrame, playRate=Globals.ThrowPlayRate, partName='torso')
-        toss = Track((0, Sequence(Func(toon.setPosHpr, x, y, z, h, p, r), Func(gag.reparentTo, toon.rightHand), Func(gag.setPosHpr, 0, 0, 0, 0, 0, 0), toonThrowIval1)), (toonThrowIval1.getDuration(), Parallel(Func(gag.detachNode), Sequence(ActorInterval(toon, 'throw', startFrame=Globals.ThrowEndFrame + 1, playRate=Globals.ThrowPlayRate, partName='torso'), Func(self.completeThrow)))))
+        toonThrowIval1 = ActorInterval(toon, 'throw', startFrame = Globals.ThrowStartFrame,
+                                       endFrame = Globals.ThrowEndFrame, playRate = Globals.ThrowPlayRate,
+                                       partName = 'torso')
+        toss = Track((0, Sequence(Func(toon.setPosHpr, x, y, z, h, p, r), Func(gag.reparentTo, toon.rightHand),
+                                  Func(gag.setPosHpr, 0, 0, 0, 0, 0, 0), toonThrowIval1)), (
+                     toonThrowIval1.getDuration(), Parallel(Func(gag.detachNode), Sequence(
+                         ActorInterval(toon, 'throw', startFrame = Globals.ThrowEndFrame + 1,
+                                       playRate = Globals.ThrowPlayRate, partName = 'torso'),
+                         Func(self.completeThrow)))))
 
         def getEndPos(toon = toon):
             return render.getRelativePoint(toon, Point3(0, Globals.ThrowDistance, 0))
 
-        fly = Track((0, throwSoundIval), (toonThrowIval1.getDuration(), Sequence(Func(flyGag.reparentTo, render), Func(flyGag.setPosHpr, toon, 0.52, 0.97, 2.24, 0, -45, 0), ProjectileInterval(flyGag, endPos=getEndPos, duration=Globals.ThrowDuration), Func(flyGag.detachNode))))
+        fly = Track((0, throwSoundIval), (toonThrowIval1.getDuration(), Sequence(Func(flyGag.reparentTo, render),
+                                                                                 Func(flyGag.setPosHpr, toon, 0.52,
+                                                                                      0.97, 2.24, 0, -45, 0),
+                                                                                 ProjectileInterval(flyGag,
+                                                                                                    endPos = getEndPos,
+                                                                                                    duration = Globals.ThrowDuration),
+                                                                                 Func(flyGag.detachNode))))
         return (toss, fly, flyGag)
 
     def _getToonAnimationIval(self, animName, startFrame = 0, duration = 1, nextState = None):
@@ -180,7 +197,9 @@ class CogdoMazePlayer(FSM, CogdoMazeSplattable):
         frameRate = self.toon.getFrameRate(animName)
         newRate = frames / duration
         playRate = newRate / frameRate
-        ival = Sequence(ActorInterval(self.toon, animName, startTime=startFrame / newRate, endTime=totalFrames / newRate, playRate=playRate))
+        ival = Sequence(
+            ActorInterval(self.toon, animName, startTime = startFrame / newRate, endTime = totalFrames / newRate,
+                          playRate = playRate))
         if nextState is not None:
 
             def done():

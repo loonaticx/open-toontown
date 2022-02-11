@@ -16,6 +16,7 @@ from . import SuitBattleGlobals
 import random
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleBldg')
     camFOFov = 30.0
@@ -40,7 +41,7 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
             self.battleMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
         else:
             self.battleMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_general_bg_indoor.ogg')
-        base.playMusic(self.battleMusic, looping=1, volume=0.9)
+        base.playMusic(self.battleMusic, looping = 1, volume = 0.9)
 
     def getBossBattleTaunt(self):
         return TTLocalizer.BattleBldgBossTaunt
@@ -105,7 +106,7 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
             oneToonTrack = Sequence()
             destPos, destHpr = self.getActorPosHpr(toon, self.toons)
             oneToonTrack.append(Wait(delay))
-            oneToonTrack.append(self.createAdjustInterval(toon, destPos, destHpr, toon=1, run=1))
+            oneToonTrack.append(self.createAdjustInterval(toon, destPos, destHpr, toon = 1, run = 1))
             toonTrack.append(oneToonTrack)
 
         camTrack = Sequence()
@@ -134,7 +135,7 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
         camTrack.append(Func(camera.setPosHpr, camPos, camHpr))
         mtrack = Parallel(suitTrack, toonTrack, camTrack)
         done = Func(callback)
-        track = Sequence(mtrack, done, name=name)
+        track = Sequence(mtrack, done, name = name)
         track.start(ts)
         self.storeInterval(track, name)
         return
@@ -163,10 +164,11 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
     def __playReward(self, ts, callback):
         toonTracks = Parallel()
         for toon in self.toons:
-            toonTracks.append(Sequence(Func(toon.loop, 'victory'), Wait(FLOOR_REWARD_TIMEOUT), Func(toon.loop, 'neutral')))
+            toonTracks.append(
+                Sequence(Func(toon.loop, 'victory'), Wait(FLOOR_REWARD_TIMEOUT), Func(toon.loop, 'neutral')))
 
         name = self.uniqueName('floorReward')
-        track = Sequence(toonTracks, Func(callback), name=name)
+        track = Sequence(toonTracks, Func(callback), name = name)
         camera.setPos(0, 0, 1)
         camera.setHpr(180, 10, 0)
         self.storeInterval(track, name)
@@ -195,7 +197,7 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
         self.delayDeleteMembers()
         if self.hasLocalToon():
             NametagGlobals.setMasterArrowsOn(0)
-        self.movie.playReward(ts, self.uniqueName('building-reward'), self.__handleBuildingRewardDone, noSkip=True)
+        self.movie.playReward(ts, self.uniqueName('building-reward'), self.__handleBuildingRewardDone, noSkip = True)
         return None
 
     def __handleBuildingRewardDone(self):
@@ -205,7 +207,7 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
         self.fsm.request('Resume')
 
     def exitBuildingReward(self):
-        self.movie.resetReward(finish=1)
+        self.movie.resetReward(finish = 1)
         self._removeMembersKeep()
         NametagGlobals.setMasterArrowsOn(1)
         return None

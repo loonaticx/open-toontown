@@ -7,6 +7,7 @@ from direct.showbase.PythonUtil import lerp
 from toontown.pets import PetTricks
 from toontown.toon import DistributedToonAI
 
+
 class PetActionFSM(FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('PetActionFSM')
 
@@ -108,7 +109,8 @@ class PetActionFSM(FSM.FSM):
 
         self.trickDoneEvent = 'trickDone-%s-%s' % (self.pet.doId, self.trickSerialNum)
         self.trickSerialNum += 1
-        self.trickFinishIval = Sequence(WaitInterval(PetTricks.TrickLengths[trickId]), Func(finish), name='petTrickFinish-%s' % self.pet.doId)
+        self.trickFinishIval = Sequence(WaitInterval(PetTricks.TrickLengths[trickId]), Func(finish),
+                                        name = 'petTrickFinish-%s' % self.pet.doId)
         self.trickFinishIval.start()
 
     def getTrickDoLaterName(self):

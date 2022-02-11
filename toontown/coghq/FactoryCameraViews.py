@@ -3,6 +3,7 @@ from direct.showbase.PythonUtil import Functor
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 
+
 class FactoryCameraViews:
     notify = DirectNotifyGlobal.directNotify.newCategory('FactoryCameraViews')
 
@@ -11,18 +12,20 @@ class FactoryCameraViews:
         av = base.localAvatar
         self.currentCamPos = None
         self.views = [['signatureRoomView', (Point3(0.0, -14.8419799805, 13.212685585),
-           Point3(0.0, -13.9563484192, 12.749215126),
-           Point3(0.0, 1.5, 15.75),
-           Point3(0.0, 1.5, -3.9375),
-           1), ['localToonLeftBattle']], ['lookoutTrigger', (Point3(0, -17.7, 28.8),
-           Point3(0, 10, 0),
-           Point3(0.0, 1.5, 15.75),
-           Point3(0.0, 1.5, -3.9375),
-           1), []], ['moleFieldView', (Point3(0, -17.7, 28.8),
-           Point3(0, 10, 0),
-           Point3(0.0, 1.5, 15.75),
-           Point3(0.0, 1.5, -3.9375),
-           1), []]]
+                                             Point3(0.0, -13.9563484192, 12.749215126),
+                                             Point3(0.0, 1.5, 15.75),
+                                             Point3(0.0, 1.5, -3.9375),
+                                             1), ['localToonLeftBattle']], ['lookoutTrigger', (Point3(0, -17.7, 28.8),
+                                                                                               Point3(0, 10, 0),
+                                                                                               Point3(0.0, 1.5, 15.75),
+                                                                                               Point3(0.0, 1.5,
+                                                                                                      -3.9375),
+                                                                                               1), []],
+                      ['moleFieldView', (Point3(0, -17.7, 28.8),
+                                         Point3(0, 10, 0),
+                                         Point3(0.0, 1.5, 15.75),
+                                         Point3(0.0, 1.5, -3.9375),
+                                         1), []]]
         camHeight = av.getClampedAvatarHeight()
         for i in range(len(self.views)):
             camPos = self.views[i][1]

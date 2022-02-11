@@ -3,18 +3,21 @@ from otp.speedchat.SCMenu import SCMenu
 from otp.speedchat.SCMenuHolder import SCMenuHolder
 from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
 from otp.otpbase import OTPLocalizer
+
 JellybeanJamMenu = [(OTPLocalizer.JellybeanJamMenuSections[0], [30180,
-   30181,
-   30182,
-   30183,
-   30184,
-   30185]), (OTPLocalizer.JellybeanJamMenuSections[1], [30186,
-   30187,
-   30188,
-   30189,
-   30190])]
+                                                                30181,
+                                                                30182,
+                                                                30183,
+                                                                30184,
+                                                                30185]),
+                    (OTPLocalizer.JellybeanJamMenuSections[1], [30186,
+                                                                30187,
+                                                                30188,
+                                                                30189,
+                                                                30190])]
 JellybeanJamPhases = PythonUtil.Enum('TROLLEY, FISHING, PARTIES')
 PhaseSpecifPhrases = [30180, 30181, 30182]
+
 
 class TTSCJellybeanJamMenu(SCMenu):
 

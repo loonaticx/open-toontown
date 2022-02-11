@@ -6,6 +6,7 @@ from .CogdoGameMessageDisplay import CogdoGameMessageDisplay
 from .CogdoMemoGui import CogdoMemoGui
 from . import CogdoFlyingGameGlobals as Globals
 
+
 class CogdoFlyingGuiManager:
     ClearMessageDisplayEventName = 'ClearMessageDisplayEvent'
     EagleTargetingLocalPlayerEventName = 'EagleTargetingLocalPlayerEvent'
@@ -39,7 +40,7 @@ class CogdoFlyingGuiManager:
     def _initMessageDisplay(self):
         audioMgr = base.cogdoGameAudioMgr
         sound = audioMgr.createSfx('popupHelpText')
-        self._messageDisplay = CogdoGameMessageDisplay('CogdoFlyingMessageDisplay', self.root, sfx=sound)
+        self._messageDisplay = CogdoGameMessageDisplay('CogdoFlyingMessageDisplay', self.root, sfx = sound)
 
     def destroyTimer(self):
         if self._timer is not None:

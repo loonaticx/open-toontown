@@ -7,6 +7,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.fishing import FishSellGUI
 from direct.task.Task import Task
 
+
 class DistributedNPCFisherman(DistributedNPCToonBase):
 
     def __init__(self, cr):
@@ -66,9 +67,9 @@ class DistributedNPCFisherman(DistributedNPCToonBase):
     def setupAvatars(self, av):
         self.ignoreAvatars()
         av.stopLookAround()
-        av.lerpLookAt(Point3(-0.5, 4, 0), time=0.5)
+        av.lerpLookAt(Point3(-0.5, 4, 0), time = 0.5)
         self.stopLookAround()
-        self.lerpLookAt(Point3(av.getPos(self)), time=0.5)
+        self.lerpLookAt(Point3(av.getPos(self)), time = 0.5)
 
     def resetFisherman(self):
         self.ignoreAll()
@@ -113,7 +114,8 @@ class DistributedNPCFisherman(DistributedNPCToonBase):
             self.setupAvatars(self.av)
             if self.isLocalToon:
                 camera.wrtReparentTo(render)
-                camera.lerpPosHpr(-5, 9, base.localAvatar.getHeight() - 0.5, -150, -2, 0, 1, other=self, blendType='easeOut', task=self.uniqueName('lerpCamera'))
+                camera.lerpPosHpr(-5, 9, base.localAvatar.getHeight() - 0.5, -150, -2, 0, 1, other = self,
+                                  blendType = 'easeOut', task = self.uniqueName('lerpCamera'))
             if self.isLocalToon:
                 taskMgr.doMethodLater(1.0, self.popupFishGUI, self.uniqueName('popupFishGUI'))
         elif mode == NPCToons.SELL_MOVIE_COMPLETE:

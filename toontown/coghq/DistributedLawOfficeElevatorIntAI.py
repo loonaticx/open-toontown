@@ -8,6 +8,7 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task import Task
 
+
 class DistributedLawOfficeElevatorIntAI(DistributedElevatorFloorAI.DistributedElevatorFloorAI):
 
     def __init__(self, air, lawOfficeId, bldg, avIds):

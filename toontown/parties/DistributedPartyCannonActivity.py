@@ -20,12 +20,14 @@ from toontown.parties.PartyGlobals import PartyCannonCollisions
 from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
 from toontown.parties.CannonGui import CannonGui
 from toontown.parties.PartyUtils import toRadians, toDegrees
+
 CANNON_ROTATION_VEL = 15.0
 CANNON_ANGLE_VEL = 15.0
 GROUND_PLANE_MIN = -15
 SHADOW_Z_OFFSET = 0.5
 INITIAL_VELOCITY = 90.0
 WHISTLE_SPEED = INITIAL_VELOCITY * 0.35
+
 
 class DistributedPartyCannonActivity(DistributedPartyActivity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyCannonActivity')
@@ -40,7 +42,8 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
     BroadcastPeriod = 0.2
 
     def __init__(self, cr):
-        DistributedPartyActivity.__init__(self, cr, ActivityIds.PartyCannon, ActivityTypes.Continuous, wantRewardGui=True)
+        DistributedPartyActivity.__init__(self, cr, ActivityIds.PartyCannon, ActivityTypes.Continuous,
+                                          wantRewardGui = True)
         self.gui = None
         self.firingCannon = None
         self.shadowNode = None
@@ -117,7 +120,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         self._doneCannons = False
         self._avId2trajectoryInfo = {}
         self._remoteToonFlyTaskName = 'remoteToonFlyTask-%s' % self.doId
-        taskMgr.add(self._remoteToonFlyTask, self._remoteToonFlyTaskName, priority=45)
+        taskMgr.add(self._remoteToonFlyTask, self._remoteToonFlyTaskName, priority = 45)
         self.d_cloudsColorRequest()
 
     def unload(self):
@@ -273,8 +276,10 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             self.notify.debug('time of launch: ' + str(launchTime))
         cannon.removeToonReadyToFire()
         shootTask = Task(self.__shootTask, self.taskNameShoot)
-        shootTask.info = {'toonId': toonId,
-         'cannon': cannon}
+        shootTask.info = {
+            'toonId': toonId,
+            'cannon': cannon
+        }
         if self.isLocalToonId(toonId):
             self.flyingToonOffsetRotation = 0
             self.flyingToonOffsetAngle = 0
@@ -312,17 +317,17 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             self.notify.debug('Disable standard local toon controls.')
             base.localAvatar.disableAvatarControls()
             frameTime = globalClock.getFrameTime()
-            netLaunchTime = globalClockDelta.localToNetworkTime(launchTime + frameTime, bits=31)
+            netLaunchTime = globalClockDelta.localToNetworkTime(launchTime + frameTime, bits = 31)
             self.sendUpdate('setToonTrajectoryAi', [netLaunchTime,
-             startPos[0],
-             startPos[1],
-             startPos[2],
-             startHpr[0],
-             startHpr[1],
-             startHpr[2],
-             startVel[0],
-             startVel[1],
-             startVel[2]])
+                                                    startPos[0],
+                                                    startPos[1],
+                                                    startPos[2],
+                                                    startHpr[0],
+                                                    startHpr[1],
+                                                    startHpr[2],
+                                                    startVel[0],
+                                                    startVel[1],
+                                                    startVel[2]])
         else:
             seqTask = shootTask
         taskMgr.add(seqTask, self.taskName('flyingToon') + '-' + str(toonId))
@@ -335,9 +340,10 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         startPos = Vec3(x, y, z)
         startHpr = Vec3(h, p, r)
         startVel = Vec3(vx, vy, vz)
-        startT = globalClockDelta.networkToLocalTime(launchTime, bits=31) + 0.2
+        startT = globalClockDelta.networkToLocalTime(launchTime, bits = 31) + 0.2
         trajectory = Trajectory.Trajectory(0.0, startPos, startVel)
-        self._avId2trajectoryInfo[avId] = ScratchPad(startPos=startPos, startHpr=startHpr, startVel=startVel, startT=startT, trajectory=trajectory)
+        self._avId2trajectoryInfo[avId] = ScratchPad(startPos = startPos, startHpr = startHpr, startVel = startVel,
+                                                     startT = startT, trajectory = trajectory)
 
     def _remoteToonFlyTask(self, task = None):
         ids2del = []
@@ -376,10 +382,12 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         quantizeVec(startVel, self.NetDivisor)
         trajectory = Trajectory.Trajectory(launchTime, startPos, startVel)
         self.trajectory = trajectory
-        return {'startPos': startPos,
-         'startHpr': startHpr,
-         'startVel': startVel,
-         'trajectory': trajectory}
+        return {
+            'startPos': startPos,
+            'startHpr': startHpr,
+            'startVel': startVel,
+            'trajectory': trajectory
+        }
 
     def __shootTask(self, task):
         task.info['cannon'].fire()
@@ -500,7 +508,8 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         if now - self._lastBroadcastTime >= self.BroadcastPeriod:
             self._dirtyNewVel = newVel
         if self._dirtyNewVel:
-            self.sendUpdate('updateToonTrajectoryStartVelAi', [self._dirtyNewVel[0], self._dirtyNewVel[1], self._dirtyNewVel[2]])
+            self.sendUpdate('updateToonTrajectoryStartVelAi',
+                            [self._dirtyNewVel[0], self._dirtyNewVel[1], self._dirtyNewVel[2]])
             self._lastBroadcastTime = now
             self._dirtyNewVel = None
         return
@@ -579,18 +588,18 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
                 toon.lookAt(toon.getPos() + vel)
                 toon.setH(-toon.getH())
                 now = globalClock.getFrameTime()
-                netLaunchTime = globalClockDelta.localToNetworkTime(now, bits=31)
+                netLaunchTime = globalClockDelta.localToNetworkTime(now, bits = 31)
                 hpr = toon.getHpr()
                 self.sendUpdate('setToonTrajectoryAi', [netLaunchTime,
-                 startPos[0],
-                 startPos[1],
-                 startPos[2],
-                 hpr[0],
-                 hpr[1],
-                 hpr[2],
-                 self.lastVel[0],
-                 self.lastVel[1],
-                 self.lastVel[2]])
+                                                        startPos[0],
+                                                        startPos[1],
+                                                        startPos[2],
+                                                        hpr[0],
+                                                        hpr[1],
+                                                        hpr[2],
+                                                        self.lastVel[0],
+                                                        self.lastVel[1],
+                                                        self.lastVel[2]])
                 self._lastBroadcastTime = now
                 self._dirtyNewVel = None
                 self.flyingToonOffsetRotation = 0
@@ -749,7 +758,12 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         hitPylonAboveWater = False
         hitPylonBelowWater = False
         hitNormal = intoNormal
-        if hitNode.find('cSphere') == 0 or hitNode.find('treasureSphere') == 0 or hitNode.find('prop') == 0 or hitNode.find('distAvatarCollNode') == 0 or hitNode.find('CannonSphere') == 0 or hitNode.find('plotSphere') == 0 or hitNode.find('flySphere') == 0 or hitNode.find('FishingSpotSphere') == 0 or hitNode.find('TrampolineTrigger') == 0 or hitNode == 'gagtree_collision' or hitNode == 'sign_collision' or hitNode == 'FlowerSellBox' or hitPylonBelowWater:
+        if hitNode.find('cSphere') == 0 or hitNode.find('treasureSphere') == 0 or hitNode.find(
+                'prop') == 0 or hitNode.find('distAvatarCollNode') == 0 or hitNode.find(
+                'CannonSphere') == 0 or hitNode.find('plotSphere') == 0 or hitNode.find(
+                'flySphere') == 0 or hitNode.find('FishingSpotSphere') == 0 or hitNode.find(
+                'TrampolineTrigger') == 0 or hitNode == 'gagtree_collision' or hitNode == 'sign_collision' or hitNode\
+                == 'FlowerSellBox' or hitPylonBelowWater:
             self.notify.debug('--------------hit and ignoring %s' % hitNode)
             return
         if vel.dot(hitNormal) > 0 and not hitNode == 'collision_roof' and not hitNode == 'collision_fence':
@@ -759,7 +773,8 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         bumperNodes = ['sky_collision'] + PartyCannonCollisions['bounce'] + PartyCannonCollisions['fence']
         cloudBumpers = PartyCannonCollisions['clouds']
         bumperNodes += cloudBumpers
-        if hitNode in bumperNodes or hitNode.find('cogPie') == 0 or PartyCannonCollisions['trampoline_bounce'] in hitNode:
+        if hitNode in bumperNodes or hitNode.find('cogPie') == 0 or PartyCannonCollisions[
+            'trampoline_bounce'] in hitNode:
             if hitNode == 'sky_collision' or hitNode in PartyCannonCollisions['fence'] or hitNode.find('cogPie') == 0:
                 self.__hitFence(self.localFlyingToon, collisionEntry)
             elif PartyCannonCollisions['trampoline_bounce'] in hitNode or hitNode in PartyCannonCollisions['bounce']:
@@ -768,7 +783,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
                 else:
                     hitSound = self.sndBounce3
                 self.hitCloud = 1
-                self.__hitBumper(self.localFlyingToon, collisionEntry, hitSound, kr=0.09, angVel=5)
+                self.__hitBumper(self.localFlyingToon, collisionEntry, hitSound, kr = 0.09, angVel = 5)
                 self.hitBumper = 0
             elif hitNode in cloudBumpers:
                 self.__hitCloudPlatform(self.localFlyingToon, collisionEntry)
@@ -808,7 +823,8 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         elif hitNode.find('cloudSphere') == 0:
             track.append(Func(self.__hitCloudPlatform, self.localFlyingToon, collisionEntry))
         else:
-            self.notify.warning('************* unhandled hitNode=%s parent =%s' % (hitNode, collisionEntry.getIntoNodePath().getParent()))
+            self.notify.warning('************* unhandled hitNode=%s parent =%s' % (
+            hitNode, collisionEntry.getIntoNodePath().getParent()))
         track.append(Func(self.d_setLanded, self.localFlyingToonId))
         if self.isLocalToonId(self.localFlyingToonId):
             track.append(Func(self.localFlyingToon.collisionsOn))
@@ -869,7 +885,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
 
     def __hitFence(self, avatar, collisionEntry, extraArgs = []):
         self.notify.debug('__hitFence')
-        self.__hitBumper(avatar, collisionEntry, self.sndHitHouse, kr=0.2, angVel=3)
+        self.__hitBumper(avatar, collisionEntry, self.sndHitHouse, kr = 0.2, angVel = 3)
 
     def __hitWater(self, avatar, pos, collisionEntry, extraArgs = []):
         hitP = avatar.getPos(render)
@@ -888,7 +904,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         place = base.cr.playGame.getPlace()
 
     def __hitStatuary(self, avatar, collisionEntry, extraArgs = []):
-        self.__hitBumper(avatar, collisionEntry, self.sndHitHouse, kr=0.4, angVel=5)
+        self.__hitBumper(avatar, collisionEntry, self.sndHitHouse, kr = 0.4, angVel = 5)
 
     def d_cloudsColorRequest(self):
         self.notify.debug('cloudsColorRequest')
@@ -901,9 +917,9 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
 
     def d_requestCloudHit(self, cloudNumber, color):
         self.sendUpdate('requestCloudHit', [cloudNumber,
-         color.getX(),
-         color.getY(),
-         color.getZ()])
+                                            color.getX(),
+                                            color.getY(),
+                                            color.getZ()])
 
     def setCloudHit(self, cloudNumber, r, g, b):
         cloud = render.find('**/cloud-%d' % cloudNumber)
@@ -915,7 +931,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
     def __hitCloudPlatform(self, avatar, collisionEntry, extraArgs = []):
         if not self.hitBumper and not self.hitCloud:
             self.hitCloud = 1
-            self.__hitBumper(avatar, collisionEntry, self.sndBounce1, kr=0.35, angVel=5)
+            self.__hitBumper(avatar, collisionEntry, self.sndBounce1, kr = 0.35, angVel = 5)
             self.hitBumper = 0
             if self._lastCloudHit is None:
                 cloud = collisionEntry.getIntoNodePath().getParent()
@@ -925,7 +941,8 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
                 self.d_requestCloudHit(cloudNumber, base.localAvatar.style.getHeadColor())
                 self.__playDustCloud(avatar, collisionEntry.getSurfacePoint(render))
                 self.flyingToonCloudsHit += 1
-                taskMgr.doMethodLater(0.25, self.__reactivateLastCloudHit, DistributedPartyCannonActivity.REACTIVATE_CLOUD_TASK)
+                taskMgr.doMethodLater(0.25, self.__reactivateLastCloudHit,
+                                      DistributedPartyCannonActivity.REACTIVATE_CLOUD_TASK)
         return
 
     def __reactivateLastCloudHit(self, task):
@@ -944,7 +961,9 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             self.notify.debug('Toon has left the party')
 
     def __checkHoodValidity(self):
-        if hasattr(base.cr.playGame, 'hood') and base.cr.playGame.hood and hasattr(base.cr.playGame.hood, 'loader') and base.cr.playGame.hood.loader and hasattr(base.cr.playGame.hood.loader, 'geom') and base.cr.playGame.hood.loader.geom:
+        if hasattr(base.cr.playGame, 'hood') and base.cr.playGame.hood and hasattr(base.cr.playGame.hood,
+                                                                                   'loader') and base.cr.playGame.hood.loader and hasattr(
+                base.cr.playGame.hood.loader, 'geom') and base.cr.playGame.hood.loader.geom:
             return True
         else:
             return False

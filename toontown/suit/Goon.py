@@ -7,10 +7,16 @@ from toontown.toonbase import TTLocalizer
 from . import GoonGlobals
 from . import SuitDNA
 import math
-AnimDict = {'pg': (('walk', '-walk'), ('collapse', '-collapse'), ('recovery', '-recovery')),
- 'sg': (('walk', '-walk'), ('collapse', '-collapse'), ('recovery', '-recovery'))}
-ModelDict = {'pg': 'phase_9/models/char/Cog_Goonie',
- 'sg': 'phase_9/models/char/Cog_Goonie'}
+
+AnimDict = {
+    'pg': (('walk', '-walk'), ('collapse', '-collapse'), ('recovery', '-recovery')),
+    'sg': (('walk', '-walk'), ('collapse', '-collapse'), ('recovery', '-recovery'))
+}
+ModelDict = {
+    'pg': 'phase_9/models/char/Cog_Goonie',
+    'sg': 'phase_9/models/char/Cog_Goonie'
+}
+
 
 class Goon(Avatar.Avatar):
 

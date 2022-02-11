@@ -12,7 +12,9 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownTimer
 from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TTDialog
+
 BG = BingoGlobals
+
 
 class BingoCardGui(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('BingoCardGui')
@@ -21,12 +23,12 @@ class BingoCardGui(DirectFrame):
         self.notify.debug('Bingo card initialized')
         self.model = loader.loadModel('phase_4/models/gui/FishBingo')
         optiondefs = (('relief', None, None),
-         ('state', DGG.NORMAL, None),
-         ('image', self.model.find('**/g'), None),
-         ('image_color', BG.getColor(0), None),
-         ('image_scale', BG.CardImageScale, None),
-         ('image_hpr', (0.0, 90.0, 0.0), None),
-         ('pos', BG.CardPosition, None))
+                      ('state', DGG.NORMAL, None),
+                      ('image', self.model.find('**/g'), None),
+                      ('image_color', BG.getColor(0), None),
+                      ('image_scale', BG.CardImageScale, None),
+                      ('image_hpr', (0.0, 90.0, 0.0), None),
+                      ('pos', BG.CardPosition, None))
         self.defineoptions(kw, optiondefs)
         DirectFrame.__init__(self, parent)
         self.initialiseoptions(BingoCardGui)
@@ -96,7 +98,9 @@ class BingoCardGui(DirectFrame):
         self.gameType.hide()
 
     def loadNextGameTimer(self):
-        self.nextGame = DirectLabel(parent=self, relief=None, text='', text_font=ToontownGlobals.getSignFont(), text_scale=TTLocalizer.BCGnextGame * BG.CardImageScale[2], text_fg=(1.0, 1.0, 1.0, 1), pos=(BG.GridXOffset, 0, 4 * BG.CardImageScale[2]))
+        self.nextGame = DirectLabel(parent = self, relief = None, text = '', text_font = ToontownGlobals.getSignFont(),
+                                    text_scale = TTLocalizer.BCGnextGame * BG.CardImageScale[2],
+                                    text_fg = (1.0, 1.0, 1.0, 1), pos = (BG.GridXOffset, 0, 4 * BG.CardImageScale[2]))
         self.nextGameTimer = ToontownTimer.ToontownTimer()
         self.nextGameTimer.reparentTo(self.nextGame)
         self.nextGameTimer.setPos(0, 0, -5 * BG.CardImageScale[2])
@@ -116,17 +120,36 @@ class BingoCardGui(DirectFrame):
         textScale = 0.06
         textHeight = 0.38 * BG.CardImageScale[2]
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
-        self.bingo = DirectButton(parent=self, pos=(BG.GridXOffset, 0, 0.305), scale=(0.0343, 0.035, 0.035), relief=None, state=DGG.DISABLED, geom=self.model.find('**/BINGObutton'), geom_pos=(0, 0, 0), geom_hpr=(0, 90, 0), image=(self.model.find('**/Gold_TTButtUP'), self.model.find('**/goldTTButtDown'), self.model.find('**/RolloverBingoButton1')), image_pos=(0, 0, 0), image_hpr=(0, 90, 0), image_color=BG.getButtonColor(0), pressEffect=False)
+        self.bingo = DirectButton(parent = self, pos = (BG.GridXOffset, 0, 0.305), scale = (0.0343, 0.035, 0.035),
+                                  relief = None, state = DGG.DISABLED, geom = self.model.find('**/BINGObutton'),
+                                  geom_pos = (0, 0, 0), geom_hpr = (0, 90, 0), image = (
+            self.model.find('**/Gold_TTButtUP'), self.model.find('**/goldTTButtDown'),
+            self.model.find('**/RolloverBingoButton1')), image_pos = (0, 0, 0), image_hpr = (0, 90, 0),
+                                  image_color = BG.getButtonColor(0), pressEffect = False)
         guiButton.removeNode()
         arrowModel = loader.loadModel('phase_3.5/models/gui/speedChatGui')
-        self.gameType = DirectButton(parent=self, pos=(BG.GridXOffset, 0, -8 * BG.CardImageScale[2] - 0.01), relief=None, image=arrowModel.find('**/chatArrow'), image_scale=-0.05, image_pos=(-0.2, 0, 0.025), text='', text_scale=0.045, text_fg=(1, 1, 1, 1), text_font=ToontownGlobals.getSignFont(), text_wordwrap=10.5, text_pos=(0.01, 0.008), pressEffect=False)
+        self.gameType = DirectButton(parent = self, pos = (BG.GridXOffset, 0, -8 * BG.CardImageScale[2] - 0.01),
+                                     relief = None, image = arrowModel.find('**/chatArrow'), image_scale = -0.05,
+                                     image_pos = (-0.2, 0, 0.025), text = '', text_scale = 0.045,
+                                     text_fg = (1, 1, 1, 1), text_font = ToontownGlobals.getSignFont(),
+                                     text_wordwrap = 10.5, text_pos = (0.01, 0.008), pressEffect = False)
         arrowModel.removeNode()
         self.gameType.bind(DGG.ENTER, self.onMouseEnter)
         self.gameType.bind(DGG.EXIT, self.onMouseLeave)
         self.gameType.hide()
-        self.jpText = DirectLabel(parent=self, pos=(BG.GridXOffset, 0, 0.22), relief=None, state=DGG.NORMAL, text='', text_scale=TTLocalizer.BCGjpText, text_pos=(0, 0, 0), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_font=ToontownGlobals.getInterfaceFont(), text_wordwrap=TTLocalizer.BCGjpTextWordwrap)
-        self.gameOver = DirectLabel(parent=self, pos=(BG.GridXOffset, 0, 0), relief=None, state=DGG.NORMAL, text='', text_scale=textScale, text_fg=(1, 1, 1, 1), text_font=ToontownGlobals.getSignFont())
-        self.jpSign = DirectFrame(parent=self.parent, relief=None, state=DGG.NORMAL, pos=BG.CardPosition, scale=(0.035, 0.035, 0.035), text=TTLocalizer.FishBingoJackpot, text_scale=2, text_pos=(-1.5, 18.6), text_fg=(1, 1, 1, 1), image=self.model.find('**/jackpot'), image_pos=(0, 0, 0), image_hpr=(0, 90, 0), sortOrder=DGG.BACKGROUND_SORT_INDEX)
+        self.jpText = DirectLabel(parent = self, pos = (BG.GridXOffset, 0, 0.22), relief = None, state = DGG.NORMAL,
+                                  text = '', text_scale = TTLocalizer.BCGjpText, text_pos = (0, 0, 0),
+                                  text_fg = (1, 1, 1, 1), text_shadow = (0, 0, 0, 1),
+                                  text_font = ToontownGlobals.getInterfaceFont(),
+                                  text_wordwrap = TTLocalizer.BCGjpTextWordwrap)
+        self.gameOver = DirectLabel(parent = self, pos = (BG.GridXOffset, 0, 0), relief = None, state = DGG.NORMAL,
+                                    text = '', text_scale = textScale, text_fg = (1, 1, 1, 1),
+                                    text_font = ToontownGlobals.getSignFont())
+        self.jpSign = DirectFrame(parent = self.parent, relief = None, state = DGG.NORMAL, pos = BG.CardPosition,
+                                  scale = (0.035, 0.035, 0.035), text = TTLocalizer.FishBingoJackpot, text_scale = 2,
+                                  text_pos = (-1.5, 18.6), text_fg = (1, 1, 1, 1),
+                                  image = self.model.find('**/jackpot'), image_pos = (0, 0, 0), image_hpr = (0, 90, 0),
+                                  sortOrder = DGG.BACKGROUND_SORT_INDEX)
         self.makeJackpotLights(self.jpSign)
         self.hideJackpot()
         self.makeTutorial()
@@ -201,7 +224,8 @@ class BingoCardGui(DirectFrame):
                     tmpFish = fishList.pop(choice)
                 xPos = BG.CellImageScale * (j - 2) + BG.GridXOffset
                 yPos = BG.CellImageScale * (i - 2) - 0.015
-                cellGui = BingoCardCell.BingoCardCell(i * rowSize + j, tmpFish, self.model, color, self, image_scale=BG.CellImageScale, pos=(xPos, 0, yPos))
+                cellGui = BingoCardCell.BingoCardCell(i * rowSize + j, tmpFish, self.model, color, self,
+                                                      image_scale = BG.CellImageScale, pos = (xPos, 0, yPos))
                 self.cellGuiList.append(cellGui)
 
     def cellUpdateCheck(self, id, genus, species):
@@ -280,7 +304,7 @@ class BingoCardGui(DirectFrame):
 
         else:
             self.resetCellColors()
-        taskMgr.doMethodLater(0.5, self.__indicateMatches, self.taskNameFlashFish, extraArgs=(not bFlipFlop, fish))
+        taskMgr.doMethodLater(0.5, self.__indicateMatches, self.taskNameFlashFish, extraArgs = (not bFlipFlop, fish))
         return Task.done
 
     def fishCaught(self, fish):
@@ -321,7 +345,7 @@ class BingoCardGui(DirectFrame):
         else:
             c = BG.getButtonColor(self.game.getGameType())
             self.bingo['image_color'] = Vec4(c[0], c[1], c[2], c[3])
-        taskMgr.doMethodLater(0.5, self.__indicateBingo, 'bingoFlash', extraArgs=(not bFlipFlop,))
+        taskMgr.doMethodLater(0.5, self.__indicateBingo, 'bingoFlash', extraArgs = (not bFlipFlop,))
         return Task.done
 
     NumLights = 32
@@ -353,7 +377,8 @@ class BingoCardGui(DirectFrame):
         self.jpLights = []
         for nLight in range(self.NumLights):
             lightName = self.getLightName(nLight, self.Off)
-            light = DirectFrame(parent=parent, relief=None, image=self.model.find(lightName), image_hpr=(0, 90, 0))
+            light = DirectFrame(parent = parent, relief = None, image = self.model.find(lightName),
+                                image_hpr = (0, 90, 0))
             self.jpLights.append(light)
 
         return
@@ -399,11 +424,13 @@ class BingoCardGui(DirectFrame):
 
             nTimeIndex = (nTimeIndex + 1) % 2
             delay = 0.2
-        taskMgr.doMethodLater(delay, self.flashJackpotLights, 'jackpotLightFlash', extraArgs=(flashMode, nTimeIndex))
+        taskMgr.doMethodLater(delay, self.flashJackpotLights, 'jackpotLightFlash', extraArgs = (flashMode, nTimeIndex))
         return Task.done
 
     def makeTutorial(self):
-        self.tutorial = TTDialog.TTDialog(fadeScreen=0, pad=(0.05, 0.05), midPad=0, topPad=0, sidePad=0, text=TTLocalizer.FishBingoHelpBlockout, style=TTDialog.NoButtons, pos=BG.TutorialPosition, scale=BG.TutorialScale)
+        self.tutorial = TTDialog.TTDialog(fadeScreen = 0, pad = (0.05, 0.05), midPad = 0, topPad = 0, sidePad = 0,
+                                          text = TTLocalizer.FishBingoHelpBlockout, style = TTDialog.NoButtons,
+                                          pos = BG.TutorialPosition, scale = BG.TutorialScale)
         self.tutorial.hide()
 
     def cleanTutorial(self):

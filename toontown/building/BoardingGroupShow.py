@@ -5,9 +5,11 @@ from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
 from toontown.toonbase import TTLocalizer
 from toontown.effects import DustCloud
+
 TRACK_TYPE_TELEPORT = 1
 TRACK_TYPE_RUN = 2
 TRACK_TYPE_POOF = 3
+
 
 class BoardingGroupShow:
     notify = DirectNotifyGlobal.directNotify.newCategory('BoardingGroupShow')
@@ -123,12 +125,14 @@ class BoardingGroupShow:
 
         def getDustCloudIval():
             cleanupDustCloudIval()
-            dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
+            dustCloud = DustCloud.DustCloud(fBillboard = 0, wantSound = 1)
             dustCloud.setBillboardAxis(2.0)
             dustCloud.setZ(3)
             dustCloud.setScale(0.4)
             dustCloud.createTrack()
-            self.dustCloudIval = Sequence(Func(dustCloud.reparentTo, render), Func(dustCloud.setPos, getDustCloudPos()), dustCloud.track, Func(dustCloud.detachNode), Func(dustCloud.destroy), name='dustCloadIval')
+            self.dustCloudIval = Sequence(Func(dustCloud.reparentTo, render), Func(dustCloud.setPos, getDustCloudPos()),
+                                          dustCloud.track, Func(dustCloud.detachNode), Func(dustCloud.destroy),
+                                          name = 'dustCloadIval')
             self.dustCloudIval.start()
 
         if self.toon:

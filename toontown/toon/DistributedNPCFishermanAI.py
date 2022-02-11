@@ -6,6 +6,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.fishing import FishGlobals
 from direct.task import Task
 
+
 class DistributedNPCFishermanAI(DistributedNPCToonBaseAI):
 
     def __init__(self, air, npcId):
@@ -28,7 +29,7 @@ class DistributedNPCFishermanAI(DistributedNPCToonBaseAI):
             return
         av = self.air.doId2do[avId]
         self.busy = avId
-        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
+        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs = [avId])
         value = av.fishTank.getTotalValue()
         if value > 0:
             flag = NPCToons.SELL_MOVIE_START
@@ -46,10 +47,10 @@ class DistributedNPCFishermanAI(DistributedNPCToonBaseAI):
 
     def d_setMovie(self, avId, flag, extraArgs = []):
         self.sendUpdate('setMovie', [flag,
-         self.npcId,
-         avId,
-         extraArgs,
-         ClockDelta.globalClockDelta.getRealNetworkTime()])
+                                     self.npcId,
+                                     avId,
+                                     extraArgs,
+                                     ClockDelta.globalClockDelta.getRealNetworkTime()])
 
     def sendTimeoutMovie(self, task):
         self.d_setMovie(self.busy, NPCToons.SELL_MOVIE_TIMEOUT)
@@ -66,7 +67,8 @@ class DistributedNPCFishermanAI(DistributedNPCToonBaseAI):
     def completeSale(self, sell):
         avId = self.air.getAvatarIdFromSender()
         if self.busy != avId:
-            self.air.writeServerEvent('suspicious', avId, 'DistributedNPCFishermanAI.completeSale busy with %s' % self.busy)
+            self.air.writeServerEvent('suspicious', avId,
+                                      'DistributedNPCFishermanAI.completeSale busy with %s' % self.busy)
             self.notify.warning('somebody called setMovieDone that I was not busy with! avId: %s' % avId)
             return
         if sell:

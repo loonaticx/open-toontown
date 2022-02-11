@@ -1,6 +1,7 @@
 from direct.distributed import DistributedObjectAI
 from direct.fsm import FSM
 
+
 class DistributedGolfSpotAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM):
 
     def __init__(self, air, boss, index):
@@ -20,7 +21,7 @@ class DistributedGolfSpotAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM):
     def getIndex(self):
         return self.index
 
-    def d_setState(self, state, avId, extraInfo=0):
+    def d_setState(self, state, avId, extraInfo = 0):
         self.sendUpdate('setState', [state, avId, extraInfo])
 
     def requestControl(self):

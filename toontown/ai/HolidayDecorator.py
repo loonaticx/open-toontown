@@ -3,6 +3,7 @@ from direct.interval.IntervalGlobal import Parallel, Sequence, Func, Wait
 from pandac.PandaModules import Vec4, CSDefault, TransformState, NodePath, TransparencyAttrib
 from panda3d.toontown import loadDNAFile
 
+
 class HolidayDecorator:
 
     def __init__(self):
@@ -63,7 +64,13 @@ class HolidayDecorator:
                 transform = loader.holidayPropTransforms.get(index, TransformState.makeIdentity())
                 newNP.setTransform(NodePath(), transform)
                 newNP.setTag('transformIndex', repr(index))
-            s = Sequence(Wait(wait), np.colorScaleInterval(tFadeOut, Vec4(1, 1, 1, 0), startColorScale=Vec4(1, 1, 1, 1), blendType='easeInOut'), Func(np.detachNode), Func(np.clearTransparency), newNP.colorScaleInterval(tFadeOut, Vec4(1, 1, 1, 1), startColorScale=Vec4(1, 1, 1, 0), blendType='easeInOut'), Func(newNP.clearTransparency), Func(newNP.clearColorScale))
+            s = Sequence(Wait(wait),
+                         np.colorScaleInterval(tFadeOut, Vec4(1, 1, 1, 0), startColorScale = Vec4(1, 1, 1, 1),
+                                               blendType = 'easeInOut'), Func(np.detachNode),
+                         Func(np.clearTransparency),
+                         newNP.colorScaleInterval(tFadeOut, Vec4(1, 1, 1, 1), startColorScale = Vec4(1, 1, 1, 0),
+                                                  blendType = 'easeInOut'), Func(newNP.clearTransparency),
+                         Func(newNP.clearColorScale))
             p.append(s)
 
         return p

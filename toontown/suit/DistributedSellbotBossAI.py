@@ -15,6 +15,7 @@ from toontown.suit import SellbotBossGlobals
 from toontown.suit import SuitDNA
 import random
 
+
 class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSellbotBossAI')
     limitHitCount = 6
@@ -56,7 +57,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def __setCagedToonNpcId(self):
 
         def npcFriendsMaxStars(stars):
-            return [ id for id in list(NPCToons.npcFriends.keys()) if NPCToons.getNPCTrackLevelHpRarity(id)[3] <= stars ]
+            return [id for id in list(NPCToons.npcFriends.keys()) if NPCToons.getNPCTrackLevelHpRarity(id)[3] <= stars]
 
         if self.numRentalDiguises >= 4:
             self.cagedToonNpcId = random.choice(NPCToons.npcFriendsMinMaxStars(3, 3))
@@ -139,7 +140,9 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         if self.attackCode == ToontownGlobals.BossCogDizzyNow:
             attackCode = ToontownGlobals.BossCogRecoverDizzyAttack
         else:
-            attackCode = random.choice([ToontownGlobals.BossCogAreaAttack, ToontownGlobals.BossCogFrontAttack, ToontownGlobals.BossCogDirectedAttack, ToontownGlobals.BossCogDirectedAttack, ToontownGlobals.BossCogDirectedAttack, ToontownGlobals.BossCogDirectedAttack])
+            attackCode = random.choice([ToontownGlobals.BossCogAreaAttack, ToontownGlobals.BossCogFrontAttack,
+                                        ToontownGlobals.BossCogDirectedAttack, ToontownGlobals.BossCogDirectedAttack,
+                                        ToontownGlobals.BossCogDirectedAttack, ToontownGlobals.BossCogDirectedAttack])
         if attackCode == ToontownGlobals.BossCogAreaAttack:
             self.__doAreaAttack()
         else:
@@ -312,7 +315,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.cagedToonDialogIndex = 100
         self.__saySomethingLater()
 
-    def __saySomething(self, task=None):
+    def __saySomething(self, task = None):
         index = None
         avId = 0
         if len(self.involvedToons) == 0:
@@ -332,7 +335,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.__saySomethingLater()
         return
 
-    def __saySomethingLater(self, delayTime=15):
+    def __saySomethingLater(self, delayTime = 15):
         taskName = self.uniqueName('CagedToonSaySomething')
         taskMgr.remove(taskName)
         taskMgr.doMethodLater(delayTime, self.__saySomething, taskName)
@@ -359,14 +362,26 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
 
     def enterVictory(self):
         self.resetBattles()
-        self.suitsKilled.append({'type': None, 'level': None, 'track': self.dna.dept, 'isSkelecog': 0, 'isForeman': 0, 'isVP': 1, 'isCFO': 0, 'isSupervisor': 0, 'isVirtual': 0, 'activeToons': self.involvedToons[:]})
+        self.suitsKilled.append({
+                                    'type': None,
+                                    'level': None,
+                                    'track': self.dna.dept,
+                                    'isSkelecog': 0,
+                                    'isForeman': 0,
+                                    'isVP': 1,
+                                    'isCFO': 0,
+                                    'isSupervisor': 0,
+                                    'isVirtual': 0,
+                                    'activeToons': self.involvedToons[:]
+                                })
         self.barrier = self.beginBarrier('Victory', self.involvedToons, 10, self.__doneVictory)
         return
 
     def __doneVictory(self, avIds):
         self.d_setBattleExperience()
         self.b_setState('Reward')
-        BattleExperienceAI.assignRewards(self.involvedToons, self.toonSkillPtsGained, self.suitsKilled, ToontownGlobals.dept2cogHQ(self.dept), self.helpfulToons)
+        BattleExperienceAI.assignRewards(self.involvedToons, self.toonSkillPtsGained, self.suitsKilled,
+                                         ToontownGlobals.dept2cogHQ(self.dept), self.helpfulToons)
         for toonId in self.involvedToons:
             toon = self.air.doId2do.get(toonId)
             if toon:
@@ -375,7 +390,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
                     maxNumCalls = 1
                 else:
                     maxNumCalls = 2
-                if not toon.attemptAddNPCFriend(self.cagedToonNpcId, numCalls=maxNumCalls):
+                if not toon.attemptAddNPCFriend(self.cagedToonNpcId, numCalls = maxNumCalls):
                     self.notify.info('%s.unable to add NPCFriend %s to %s.' % (self.doId, self.cagedToonNpcId, toonId))
                 if self.__shouldPromoteToon(toon):
                     toon.b_promote(self.deptIndex)
@@ -410,7 +425,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             suit = DistributedSuitAI.DistributedSuitAI(self.air, None)
             level = random.randrange(len(SuitDNA.suitsPerLevel))
             suit.dna = SuitDNA.SuitDNA()
-            suit.dna.newSuitRandom(level=level, dept=self.dna.dept)
+            suit.dna.newSuitRandom(level = level, dept = self.dna.dept)
             suit.setLevel(level)
             suit.generateWithRequired(self.zoneId)
             self.doobers.append(suit)

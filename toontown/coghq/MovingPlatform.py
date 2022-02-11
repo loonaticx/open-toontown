@@ -4,6 +4,7 @@ from direct.showbase import DirectObject
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 
+
 class MovingPlatform(DirectObject.DirectObject, NodePath):
     notify = DirectNotifyGlobal.directNotify.newCategory('MovingPlatform')
 

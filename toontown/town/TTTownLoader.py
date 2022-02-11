@@ -2,6 +2,7 @@ from . import TownLoader
 from . import TTStreet
 from toontown.suit import Suit
 
+
 class TTTownLoader(TownLoader.TownLoader):
 
     def __init__(self, hood, parentFSM, doneEvent):

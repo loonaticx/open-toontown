@@ -17,8 +17,10 @@ from toontown.parties.PartyDanceActivityToonFSM import ToonDancingStates
 from toontown.parties.KeyCodes import KeyCodes
 from toontown.parties.KeyCodesGui import KeyCodesGui
 from toontown.parties import PartyGlobals
+
 DANCE_FLOOR_COLLISION = 'danceFloor_collision'
 DanceViews = Enum(('Normal', 'Dancing', 'Isometric'))
+
 
 class DistributedPartyDanceActivityBase(DistributedPartyActivity):
     notify = directNotify.newCategory('DistributedPartyDanceActivity')
@@ -42,7 +44,7 @@ class DistributedPartyDanceActivityBase(DistributedPartyActivity):
     def generateInit(self):
         self.notify.debug('generateInit')
         DistributedPartyActivity.generateInit(self)
-        self.keyCodes = KeyCodes(patterns=list(self.dancePatternToAnims.keys()))
+        self.keyCodes = KeyCodes(patterns = list(self.dancePatternToAnims.keys()))
         self.gui = KeyCodesGui(self.keyCodes)
         self.__initOrthoWalk()
         self.activityFSM = DanceActivityFSM(self)
@@ -62,7 +64,9 @@ class DistributedPartyDanceActivityBase(DistributedPartyActivity):
         floor = self.danceFloor.find('**/danceFloor_mesh')
         self.danceFloorSequence = Sequence(Wait(0.3), Func(floor.setH, floor, 36))
         discoBall = self.danceFloor.find('**/discoBall_mesh')
-        self.discoBallSequence = Parallel(discoBall.hprInterval(6.0, Vec3(360, 0, 0)), Sequence(discoBall.posInterval(3, Point3(0, 0, 1), blendType='easeInOut'), discoBall.posInterval(3, Point3(0, 0, 0), blendType='easeInOut')))
+        self.discoBallSequence = Parallel(discoBall.hprInterval(6.0, Vec3(360, 0, 0)),
+                                          Sequence(discoBall.posInterval(3, Point3(0, 0, 1), blendType = 'easeInOut'),
+                                                   discoBall.posInterval(3, Point3(0, 0, 0), blendType = 'easeInOut')))
 
     def unload(self):
         DistributedPartyActivity.unload(self)
@@ -134,7 +138,7 @@ class DistributedPartyDanceActivityBase(DistributedPartyActivity):
     def __initOrthoWalk(self):
         self.notify.debug('Initialize Ortho Walk')
         orthoDrive = OrthoDrive(9.778)
-        self.orthoWalk = OrthoWalk(orthoDrive, broadcast=True)
+        self.orthoWalk = OrthoWalk(orthoDrive, broadcast = True)
 
     def __destroyOrthoWalk(self):
         self.notify.debug('Destroy Ortho Walk')
@@ -181,7 +185,8 @@ class DistributedPartyDanceActivityBase(DistributedPartyActivity):
         self.setToonIds(toonIds)
         self._processExitedToons(exitedToons)
         for toonId in joinedToons:
-            if toonId != base.localAvatar.doId or toonId == base.localAvatar.doId and self.isLocalToonRequestStatus(PartyGlobals.ActivityRequestStatus.Joining):
+            if toonId != base.localAvatar.doId or toonId == base.localAvatar.doId and self.isLocalToonRequestStatus(
+                    PartyGlobals.ActivityRequestStatus.Joining):
                 self._enableHandleToonDisabled(toonId)
                 self.handleToonJoined(toonId, toonHeadings[toonIds.index(toonId)])
                 if toonId == base.localAvatar.doId:
@@ -292,9 +297,17 @@ class DistributedPartyDanceActivityBase(DistributedPartyActivity):
                 pos = camera.getPos()
                 camParent = camera.getParent()
                 camera.wrtReparentTo(camNode)
-                self.localToonDanceSequence = Sequence(Func(self.__localDisableControls), Parallel(camera.posInterval(0.5, Point3(0, 15, 10), blendType='easeIn'), camera.hprInterval(0.5, Point3(h, -20, 0), blendType='easeIn')), camNode.hprInterval(4.0, Point3(camNode.getH() - 360, 0, 0)), Func(camera.wrtReparentTo, camParent), Func(camNode.removeNode), Parallel(camera.posInterval(0.5, pos, blendType='easeOut'), camera.hprInterval(0.5, hpr, blendType='easeOut')), Func(self.__localEnableControls))
+                self.localToonDanceSequence = Sequence(Func(self.__localDisableControls), Parallel(
+                    camera.posInterval(0.5, Point3(0, 15, 10), blendType = 'easeIn'),
+                    camera.hprInterval(0.5, Point3(h, -20, 0), blendType = 'easeIn')),
+                                                       camNode.hprInterval(4.0, Point3(camNode.getH() - 360, 0, 0)),
+                                                       Func(camera.wrtReparentTo, camParent), Func(camNode.removeNode),
+                                                       Parallel(camera.posInterval(0.5, pos, blendType = 'easeOut'),
+                                                                camera.hprInterval(0.5, hpr, blendType = 'easeOut')),
+                                                       Func(self.__localEnableControls))
             else:
-                self.localToonDanceSequence = Sequence(Func(self.__localDisableControls), Wait(2.0), Func(self.__localEnableControls))
+                self.localToonDanceSequence = Sequence(Func(self.__localDisableControls), Wait(2.0),
+                                                       Func(self.__localEnableControls))
             self.localToonDanceSequence.start()
             self.localPatternsMatched.append(pattern)
 
@@ -302,7 +315,8 @@ class DistributedPartyDanceActivityBase(DistributedPartyActivity):
         self.gui.setColor(1, 0, 0)
         self.gui.showText('No Match!')
         self.__updateLocalToonState(ToonDancingStates.DanceMove)
-        self.localToonDanceSequence = Sequence(Func(self.__localDisableControls), Wait(1.0), Func(self.__localEnableControls))
+        self.localToonDanceSequence = Sequence(Func(self.__localDisableControls), Wait(1.0),
+                                               Func(self.__localEnableControls))
         self.localToonDanceSequence.start()
 
     def _handleKeyDown(self, key, index):
@@ -363,7 +377,9 @@ class DistributedPartyDanceActivityBase(DistributedPartyActivity):
             pos = node.getPos(self.danceFloor)
             node2.removeNode()
             node.removeNode()
-            self.cameraParallel = Parallel(camera.posInterval(0.5, pos, blendType='easeIn'), camera.hprInterval(0.5, Point3(0, -27, 0), other=toon.getParent(), blendType='easeIn'))
+            self.cameraParallel = Parallel(camera.posInterval(0.5, pos, blendType = 'easeIn'),
+                                           camera.hprInterval(0.5, Point3(0, -27, 0), other = toon.getParent(),
+                                                              blendType = 'easeIn'))
             self.cameraParallel.start()
         self.currentCameraMode = mode
         return

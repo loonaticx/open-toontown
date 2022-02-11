@@ -1,5 +1,3 @@
-
-
 class SingleReply:
 
     def __init__(self, inviteeId, status):

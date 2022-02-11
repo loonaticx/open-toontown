@@ -2,6 +2,7 @@ from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from .EffectController import EffectController
 
+
 class RayBurst(NodePath, EffectController):
 
     def __init__(self):
@@ -15,7 +16,8 @@ class RayBurst(NodePath, EffectController):
         self.effectModel.setBillboardPointWorld()
         self.effectModel.reparentTo(self)
         self.effectModel.setColorScale(0, 0, 0, 0)
-        self.setAttrib(ColorBlendAttrib.make(ColorBlendAttrib.MAdd, ColorBlendAttrib.OIncomingAlpha, ColorBlendAttrib.OOne))
+        self.setAttrib(
+            ColorBlendAttrib.make(ColorBlendAttrib.MAdd, ColorBlendAttrib.OIncomingAlpha, ColorBlendAttrib.OOne))
         self.setBillboardPointWorld()
         self.setDepthWrite(0)
         self.setLightOff()
@@ -23,8 +25,10 @@ class RayBurst(NodePath, EffectController):
 
     def createTrack(self):
         self.effectModel.setColorScale(1, 1, 1, 0)
-        fadeBlast = self.effectModel.colorScaleInterval(self.fadeTime, Vec4(1, 1, 1, 0), startColorScale=Vec4(self.effectColor), blendType='easeIn')
-        scaleBlast = self.effectModel.scaleInterval(self.fadeTime, 700 * self.effectScale, startScale=100 * self.effectScale, blendType='easeOut')
+        fadeBlast = self.effectModel.colorScaleInterval(self.fadeTime, Vec4(1, 1, 1, 0),
+                                                        startColorScale = Vec4(self.effectColor), blendType = 'easeIn')
+        scaleBlast = self.effectModel.scaleInterval(self.fadeTime, 700 * self.effectScale,
+                                                    startScale = 100 * self.effectScale, blendType = 'easeOut')
         self.track = Sequence(Parallel(fadeBlast, scaleBlast), Func(self.cleanUpEffect))
 
     def setEffectColor(self, color):

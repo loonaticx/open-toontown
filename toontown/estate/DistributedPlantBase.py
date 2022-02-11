@@ -5,6 +5,7 @@ from direct.showbase.ShowBase import *
 from . import GardenGlobals
 from toontown.toonbase import TTLocalizer
 
+
 class DistributedPlantBase(DistributedLawnDecor.DistributedLawnDecor):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPlantBase')
 
@@ -198,7 +199,9 @@ class DistributedPlantBase(DistributedLawnDecor.DistributedLawnDecor):
         sound = loader.loadSfx('phase_5/audio/sfx/firehose_spray.ogg')
         sound.setPlayRate(0.75)
         waterTrack = Parallel()
-        waterTrack.append(Sequence(Parallel(ActorInterval(toon, 'water'), SoundInterval(sound, node=toon, volume=0.5)), Func(toon.loop, 'neutral')))
+        waterTrack.append(
+            Sequence(Parallel(ActorInterval(toon, 'water'), SoundInterval(sound, node = toon, volume = 0.5)),
+                     Func(toon.loop, 'neutral')))
         if hasattr(self, 'dropShadow') and self.dropShadow:
             newColor = self.dropShadow.getColor()
             alpha = min(1.0, newColor.getW() + 1 / 5.0)

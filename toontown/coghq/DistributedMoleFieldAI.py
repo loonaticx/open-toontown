@@ -3,6 +3,7 @@ from toontown.coghq import MoleFieldBase
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.directnotify import DirectNotifyGlobal
 
+
 class DistributedMoleFieldAI(DistributedEntityAI.DistributedEntityAI, MoleFieldBase.MoleFieldBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMoleFieldAI')
 
@@ -32,7 +33,8 @@ class DistributedMoleFieldAI(DistributedEntityAI.DistributedEntityAI, MoleFieldB
         if not hasattr(self, 'gameStartTime'):
             self.gameStartTime = globalClock.getRealTime()
         if not self.started:
-            self.b_setGameStart(globalClockDelta.localToNetworkTime(self.gameStartTime), self.moleTarget, self.timeToPlay)
+            self.b_setGameStart(globalClockDelta.localToNetworkTime(self.gameStartTime), self.moleTarget,
+                                self.timeToPlay)
             self.started = 1
 
     def b_setGameStart(self, timestamp, moleTarget, timeToPlay):
@@ -77,7 +79,7 @@ class DistributedMoleFieldAI(DistributedEntityAI.DistributedEntityAI, MoleFieldB
             if not self.challengeDefeated:
                 self.forceChallengeDefeated()
 
-    def forceChallengeDefeated(self, pityWin=False):
+    def forceChallengeDefeated(self, pityWin = False):
         self.challengeDefeated = True
         self.removeTask(self.moleFieldEndTimeTaskName)
         roomId = self.getLevelDoId()
@@ -99,7 +101,7 @@ class DistributedMoleFieldAI(DistributedEntityAI.DistributedEntityAI, MoleFieldB
         else:
             if self.roundsFailed >= 4:
                 if not self.challengeDefeated:
-                    self.forceChallengeDefeated(pityWin=True)
+                    self.forceChallengeDefeated(pityWin = True)
 
     def damageMe(self):
         roomId = self.getLevelDoId()
@@ -110,7 +112,7 @@ class DistributedMoleFieldAI(DistributedEntityAI.DistributedEntityAI, MoleFieldB
         av = simbase.air.doId2do.get(senderId)
         playerIds = room.presentAvIds
         if av and senderId in playerIds:
-            av.takeDamage(self.DamageOnFailure, quietly=0)
+            av.takeDamage(self.DamageOnFailure, quietly = 0)
             room.sendUpdate('forceOuch', [self.DamageOnFailure])
 
     def restartGame(self):

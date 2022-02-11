@@ -11,6 +11,7 @@ from toontown.toonbase import ToontownGlobals
 from otp.otpbase import OTPGlobals
 from direct.actor import Actor
 
+
 class DistributedLawbotBossGavel(DistributedObject.DistributedObject, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotBossGavel')
 
@@ -133,17 +134,23 @@ class DistributedLawbotBossGavel(DistributedObject.DistributedObject, FSM.FSM):
         self.notify.debug('enterOn for gavel %d' % self.index)
         myHeadings = ToontownGlobals.LawbotBossGavelHeadings[self.index]
         seqName = 'LawbotBossGavel-%s' % self.doId
-        self.ival = Sequence(name=seqName)
+        self.ival = Sequence(name = seqName)
         downAngle = -80
         for index in range(len(myHeadings)):
             nextIndex = index + 1
             if nextIndex == len(myHeadings):
                 nextIndex = 0
-            goingDown = self.nodePath.hprInterval(self.downTime, Point3(myHeadings[index] + self.origHpr[0], downAngle, self.origHpr[2]), startHpr=Point3(myHeadings[index] + self.origHpr[0], 0, self.origHpr[2]))
+            goingDown = self.nodePath.hprInterval(self.downTime, Point3(myHeadings[index] + self.origHpr[0], downAngle,
+                                                                        self.origHpr[2]),
+                                                  startHpr = Point3(myHeadings[index] + self.origHpr[0], 0,
+                                                                    self.origHpr[2]))
             self.ival.append(goingDown)
-            self.ival.append(SoundInterval(self.gavelSfx, node=self.gavelTop))
+            self.ival.append(SoundInterval(self.gavelSfx, node = self.gavelTop))
             self.ival.append(Wait(self.stayDownTime))
-            goingUp = self.nodePath.hprInterval(self.upTime, Point3(myHeadings[nextIndex] + self.origHpr[0], 0, self.origHpr[2]), startHpr=Point3(myHeadings[index] + self.origHpr[0], downAngle, self.origHpr[2]))
+            goingUp = self.nodePath.hprInterval(self.upTime,
+                                                Point3(myHeadings[nextIndex] + self.origHpr[0], 0, self.origHpr[2]),
+                                                startHpr = Point3(myHeadings[index] + self.origHpr[0], downAngle,
+                                                                  self.origHpr[2]))
             self.ival.append(goingUp)
 
         self.ival.loop()

@@ -11,7 +11,9 @@ from toontown.coghq import DistributedCashbotBossObject
 from direct.showbase import PythonUtil
 from . import DistributedGoon
 
-class DistributedCashbotBossGoon(DistributedGoon.DistributedGoon, DistributedCashbotBossObject.DistributedCashbotBossObject):
+
+class DistributedCashbotBossGoon(DistributedGoon.DistributedGoon,
+                                 DistributedCashbotBossObject.DistributedCashbotBossObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCashbotBossGoon')
     walkGrabZ = -3.6
     stunGrabZ = -2.2
@@ -27,9 +29,11 @@ class DistributedCashbotBossGoon(DistributedGoon.DistributedGoon, DistributedCas
         self.arrivalTime = None
         self.flyToMagnetSfx = loader.loadSfx('phase_5/audio/sfx/TL_rake_throw_only.ogg')
         self.hitMagnetSfx = loader.loadSfx('phase_4/audio/sfx/AA_drop_anvil_miss.ogg')
-        self.toMagnetSoundInterval = Sequence(SoundInterval(self.flyToMagnetSfx, duration=ToontownGlobals.CashbotBossToMagnetTime, node=self), SoundInterval(self.hitMagnetSfx, node=self))
+        self.toMagnetSoundInterval = Sequence(
+            SoundInterval(self.flyToMagnetSfx, duration = ToontownGlobals.CashbotBossToMagnetTime, node = self),
+            SoundInterval(self.hitMagnetSfx, node = self))
         self.hitFloorSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_flowerpot.ogg')
-        self.hitFloorSoundInterval = SoundInterval(self.hitFloorSfx, duration=1.0, node=self)
+        self.hitFloorSoundInterval = SoundInterval(self.hitFloorSfx, duration = 1.0, node = self)
         self.wiggleSfx = loader.loadSfx('phase_5/audio/sfx/SA_finger_wag.ogg')
         return
 
@@ -91,7 +95,8 @@ class DistributedCashbotBossGoon(DistributedGoon.DistributedGoon, DistributedCas
                 denom = turnTime + walkTime
                 if denom != 0:
                     timeCompress = availableTime / denom
-                    self.walkTrack = Sequence(self.hprInterval(turnTime * timeCompress, VBase3(h, 0, 0)), self.posInterval(walkTime * timeCompress, self.target))
+                    self.walkTrack = Sequence(self.hprInterval(turnTime * timeCompress, VBase3(h, 0, 0)),
+                                              self.posInterval(walkTime * timeCompress, self.target))
                     self.walkTrack.start()
             else:
                 self.setPos(self.target)
@@ -134,7 +139,7 @@ class DistributedCashbotBossGoon(DistributedGoon.DistributedGoon, DistributedCas
             self.grabPos = (0, 0, self.walkGrabZ * self.scale)
             self.wiggleStart = globalClock.getFrameTime()
             taskMgr.add(self.__wiggleTask, self.wiggleTaskName)
-            base.sfxPlayer.playSfx(self.wiggleSfx, node=self)
+            base.sfxPlayer.playSfx(self.wiggleSfx, node = self)
             if self.avId == localAvatar.doId:
                 taskMgr.doMethodLater(self.wiggleFreeTime, self.__wiggleFree, self.wiggleFreeName)
         self.radar.hide()

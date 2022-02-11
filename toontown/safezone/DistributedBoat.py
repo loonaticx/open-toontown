@@ -8,6 +8,7 @@ from pandac.PandaModules import NodePath
 from direct.directutil import Mopath
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedBoat(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
@@ -16,14 +17,19 @@ class DistributedBoat(DistributedObject.DistributedObject):
         self.westEastMopath = Mopath.Mopath()
         self.eastWestMopathInterval = None
         self.westEastMopathInterval = None
-        self.fsm = ClassicFSM.ClassicFSM('DistributedBoat', [State.State('off', self.enterOff, self.exitOff, ['DockedEast',
-          'SailingWest',
-          'DockedWest',
-          'SailingEast']),
-         State.State('DockedEast', self.enterDockedEast, self.exitDockedEast, ['SailingWest', 'SailingEast', 'DockedWest']),
-         State.State('SailingWest', self.enterSailingWest, self.exitSailingWest, ['DockedWest', 'SailingEast', 'DockedEast']),
-         State.State('DockedWest', self.enterDockedWest, self.exitDockedWest, ['SailingEast', 'SailingWest', 'DockedEast']),
-         State.State('SailingEast', self.enterSailingEast, self.exitSailingEast, ['DockedEast', 'DockedWest', 'SailingWest'])], 'off', 'off')
+        self.fsm = ClassicFSM.ClassicFSM('DistributedBoat',
+                                         [State.State('off', self.enterOff, self.exitOff, ['DockedEast',
+                                                                                           'SailingWest',
+                                                                                           'DockedWest',
+                                                                                           'SailingEast']),
+                                          State.State('DockedEast', self.enterDockedEast, self.exitDockedEast,
+                                                      ['SailingWest', 'SailingEast', 'DockedWest']),
+                                          State.State('SailingWest', self.enterSailingWest, self.exitSailingWest,
+                                                      ['DockedWest', 'SailingEast', 'DockedEast']),
+                                          State.State('DockedWest', self.enterDockedWest, self.exitDockedWest,
+                                                      ['SailingEast', 'SailingWest', 'DockedEast']),
+                                          State.State('SailingEast', self.enterSailingEast, self.exitSailingEast,
+                                                      ['DockedEast', 'DockedWest', 'SailingWest'])], 'off', 'off')
         self.fsm.enterInitialState()
         return
 
@@ -43,10 +49,12 @@ class DistributedBoat(DistributedObject.DistributedObject):
         bellSound = self.cr.playGame.hood.loader.bellSound
         self.eastWestMopath.loadFile('phase_6/paths/dd-e-w')
         self.eastWestMopathInterval = MopathInterval(self.eastWestMopath, boat)
-        ewBoatTrack = ParallelEndTogether(Parallel(self.eastWestMopathInterval, SoundInterval(bellSound, node=boat)), SoundInterval(foghornSound, node=boat), name='ew-boat')
+        ewBoatTrack = ParallelEndTogether(Parallel(self.eastWestMopathInterval, SoundInterval(bellSound, node = boat)),
+                                          SoundInterval(foghornSound, node = boat), name = 'ew-boat')
         self.westEastMopath.loadFile('phase_6/paths/dd-w-e')
         self.westEastMopathInterval = MopathInterval(self.westEastMopath, boat)
-        weBoatTrack = ParallelEndTogether(Parallel(self.westEastMopathInterval, SoundInterval(bellSound, node=boat)), SoundInterval(foghornSound, node=boat), name='we-boat')
+        weBoatTrack = ParallelEndTogether(Parallel(self.westEastMopathInterval, SoundInterval(bellSound, node = boat)),
+                                          SoundInterval(foghornSound, node = boat), name = 'we-boat')
         PIER_TIME = 5.0
         eastPier = self.cr.playGame.hood.loader.geom.find('**/east_pier')
         ePierHpr = VBase3(90, -44.2601, 0)
@@ -54,12 +62,16 @@ class DistributedBoat(DistributedObject.DistributedObject):
         westPier = self.cr.playGame.hood.loader.geom.find('**/west_pier')
         wPierHpr = VBase3(-90, -44.2601, 0)
         wPierTargetHpr = VBase3(-90, 0.25, 0)
-        ePierDownTrack = Parallel(LerpHprInterval(eastPier, PIER_TIME, ePierHpr, ePierTargetHpr), SoundInterval(dockSound, node=eastPier), name='e-pier-down')
-        ePierUpTrack = Parallel(LerpHprInterval(eastPier, PIER_TIME, ePierTargetHpr, ePierHpr), SoundInterval(dockSound, node=eastPier), name='e-pier-up')
-        wPierDownTrack = Parallel(LerpHprInterval(westPier, PIER_TIME, wPierHpr, wPierTargetHpr), SoundInterval(dockSound, node=westPier), name='w-pier-down')
-        wPierUpTrack = Parallel(LerpHprInterval(westPier, PIER_TIME, wPierTargetHpr, wPierHpr), SoundInterval(dockSound, node=westPier), name='w-pier-up')
-        self.ewTrack = ParallelEndTogether(Parallel(ewBoatTrack, ePierDownTrack), wPierUpTrack, name='ew-track')
-        self.weTrack = ParallelEndTogether(Parallel(weBoatTrack, wPierDownTrack), ePierUpTrack, name='we-track')
+        ePierDownTrack = Parallel(LerpHprInterval(eastPier, PIER_TIME, ePierHpr, ePierTargetHpr),
+                                  SoundInterval(dockSound, node = eastPier), name = 'e-pier-down')
+        ePierUpTrack = Parallel(LerpHprInterval(eastPier, PIER_TIME, ePierTargetHpr, ePierHpr),
+                                SoundInterval(dockSound, node = eastPier), name = 'e-pier-up')
+        wPierDownTrack = Parallel(LerpHprInterval(westPier, PIER_TIME, wPierHpr, wPierTargetHpr),
+                                  SoundInterval(dockSound, node = westPier), name = 'w-pier-down')
+        wPierUpTrack = Parallel(LerpHprInterval(westPier, PIER_TIME, wPierTargetHpr, wPierHpr),
+                                SoundInterval(dockSound, node = westPier), name = 'w-pier-up')
+        self.ewTrack = ParallelEndTogether(Parallel(ewBoatTrack, ePierDownTrack), wPierUpTrack, name = 'ew-track')
+        self.weTrack = ParallelEndTogether(Parallel(weBoatTrack, wPierDownTrack), ePierUpTrack, name = 'we-track')
 
     def disable(self):
         base.cr.parentMgr.unregisterParent(ToontownGlobals.SPDonaldsBoat)

@@ -10,6 +10,7 @@ from toontown.cogdominium.DistCogdoCraneCogAI import DistCogdoCraneCogAI
 from toontown.suit.SuitDNA import SuitDNA
 import random
 
+
 class DistCogdoCraneGameAI(CogdoCraneGameBase, DistCogdoLevelGameAI, PM.NodePath):
     notify = directNotify.newCategory('DistCogdoCraneGameAI')
 
@@ -17,9 +18,9 @@ class DistCogdoCraneGameAI(CogdoCraneGameBase, DistCogdoLevelGameAI, PM.NodePath
         PM.NodePath.__init__(self, uniqueName('CraneGameAI'))
         DistCogdoLevelGameAI.__init__(self, air, interior)
         self._cranes = [
-            None] * CogdoGameConsts.MaxPlayers
+                           None] * CogdoGameConsts.MaxPlayers
         self._moneyBags = [
-            None] * 8
+                              None] * 8
 
     def delete(self):
         DistCogdoLevelGameAI.delete(self)
@@ -66,14 +67,16 @@ class DistCogdoCraneGameAI(CogdoCraneGameBase, DistCogdoLevelGameAI, PM.NodePath
             if self._moneyBags[i]:
                 self._moneyBags[i].request('Initial')
 
-        self._cog = DistCogdoCraneCogAI(self.air, self, self.getDroneCogDNA(), random.randrange(4), globalClock.getFrameTime())
+        self._cog = DistCogdoCraneCogAI(self.air, self, self.getDroneCogDNA(), random.randrange(4),
+                                        globalClock.getFrameTime())
         self._cog.generateWithRequired(self.zoneId)
         self._scheduleGameDone()
 
     def _scheduleGameDone(self):
         timeLeft = GameConsts.Settings.GameDuration.get() - (globalClock.getRealTime() - self.getStartTime())
         if timeLeft > 0:
-            self._gameDoneEvent = taskMgr.doMethodLater(timeLeft, self._gameDoneDL, self.uniqueName('boardroomGameDone'))
+            self._gameDoneEvent = taskMgr.doMethodLater(timeLeft, self._gameDoneDL,
+                                                        self.uniqueName('boardroomGameDone'))
         else:
             self._gameDoneDL()
 

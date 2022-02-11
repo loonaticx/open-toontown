@@ -9,6 +9,7 @@ from toontown.hood import AnimatedProp
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 
+
 class ZeroAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('ZeroAnimatedProp')
 
@@ -101,7 +102,7 @@ class ZeroAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
                 pairs.append((math.pow(2, i), i))
 
             sum = math.pow(2, self.curPhase + 1) - 1
-            result = weightedChoice(pairs, sum=sum)
+            result = weightedChoice(pairs, sum = sum)
             self.notify.debug('chooseAnimToRun curPhase=%s pairs=%s result=%s' % (self.curPhase, pairs, result))
         return result
 
@@ -156,7 +157,9 @@ class ZeroAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
             curPhase = zeroMgr.getCurPhase()
             if curPhase >= len(self.phaseIvals):
                 curPhase = len(self.phaseIvals) - 1
-                self.notify.warning('zero mgr says to go to phase %d, but we only have %d ivals.  forcing curPhase to %d' % (curPhase, len(self.phaseIvals), curPhase))
+                self.notify.warning(
+                    'zero mgr says to go to phase %d, but we only have %d ivals.  forcing curPhase to %d' % (
+                    curPhase, len(self.phaseIvals), curPhase))
             result = curPhase
         return result
 

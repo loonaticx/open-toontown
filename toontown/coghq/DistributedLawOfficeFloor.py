@@ -12,8 +12,10 @@ from otp.level import LevelSpec
 from otp.level import LevelConstants
 from toontown.toonbase import TTLocalizer
 from toontown.coghq import FactoryCameraViews
+
 if __dev__:
     from otp.level import EditorGlobals
+
 
 class DistributedLawOfficeFloor(DistributedLevel.DistributedLevel, LawOfficeBase.LawOfficeBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawOffice')
@@ -29,7 +31,7 @@ class DistributedLawOfficeFloor(DistributedLevel.DistributedLevel, LawOfficeBase
         self.goonClipPlanes = {}
 
     def createEntityCreator(self):
-        return FactoryEntityCreator.FactoryEntityCreator(level=self)
+        return FactoryEntityCreator.FactoryEntityCreator(level = self)
 
     def generate(self):
         self.notify.debug('generate')
@@ -88,7 +90,8 @@ class DistributedLawOfficeFloor(DistributedLevel.DistributedLevel, LawOfficeBase
 
         self.acceptOnce(firstSetZoneDoneEvent, handleFirstSetZoneDone)
         modelCount = len(levelSpec.getAllEntIds())
-        loader.beginBulkLoad('factory', TTLocalizer.HeadingToFactoryTitle % TTLocalizer.FactoryNames[self.lawOfficeId], modelCount, 1, TTLocalizer.TIP_COGHQ)
+        loader.beginBulkLoad('factory', TTLocalizer.HeadingToFactoryTitle % TTLocalizer.FactoryNames[self.lawOfficeId],
+                             modelCount, 1, TTLocalizer.TIP_COGHQ)
         DistributedLevel.DistributedLevel.privGotSpec(self, levelSpec)
         loader.endBulkLoad('factory')
         messenger.send('LawOffice_Spec_Loaded')
@@ -97,7 +100,8 @@ class DistributedLawOfficeFloor(DistributedLevel.DistributedLevel, LawOfficeBase
             pos = base.localAvatar.getPos(self.getZoneNode(self.lastToonZone))
             h = base.localAvatar.getH(self.getZoneNode(self.lastToonZone))
             print('factory pos: %s, h: %s, zone %s' % (repr(pos), h, self.lastToonZone))
-            posStr = 'X: %.3f' % pos[0] + '\nY: %.3f' % pos[1] + '\nZ: %.3f' % pos[2] + '\nH: %.3f' % h + '\nZone: %s' % str(self.lastToonZone)
+            posStr = 'X: %.3f' % pos[0] + '\nY: %.3f' % pos[1] + '\nZ: %.3f' % pos[
+                2] + '\nH: %.3f' % h + '\nZone: %s' % str(self.lastToonZone)
             base.localAvatar.setChat(posStr, CFThought, 0)
 
         self.accept('f2', printPos)

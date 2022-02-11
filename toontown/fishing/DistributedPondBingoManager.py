@@ -19,13 +19,16 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 import time
 
+
 class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPondBingoManager')
-    cardTypeDict = {BingoGlobals.NORMAL_CARD: NormalBingo.NormalBingo,
-     BingoGlobals.FOURCORNER_CARD: FourCornerBingo.FourCornerBingo,
-     BingoGlobals.DIAGONAL_CARD: DiagonalBingo.DiagonalBingo,
-     BingoGlobals.THREEWAY_CARD: ThreewayBingo.ThreewayBingo,
-     BingoGlobals.BLOCKOUT_CARD: BlockoutBingo.BlockoutBingo}
+    cardTypeDict = {
+        BingoGlobals.NORMAL_CARD: NormalBingo.NormalBingo,
+        BingoGlobals.FOURCORNER_CARD: FourCornerBingo.FourCornerBingo,
+        BingoGlobals.DIAGONAL_CARD: DiagonalBingo.DiagonalBingo,
+        BingoGlobals.THREEWAY_CARD: ThreewayBingo.ThreewayBingo,
+        BingoGlobals.BLOCKOUT_CARD: BlockoutBingo.BlockoutBingo
+    }
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
@@ -62,9 +65,9 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
 
     def d_cardUpdate(self, cellId, genus, species):
         self.sendUpdate('cardUpdate', [self.cardId,
-         cellId,
-         genus,
-         species])
+                                       cellId,
+                                       genus,
+                                       species])
 
     def d_bingoCall(self):
         self.sendUpdate('handleBingoCall', [self.cardId])

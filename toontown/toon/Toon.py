@@ -28,6 +28,7 @@ from . import AccessoryGlobals
 import importlib
 import functools
 
+
 def teleportDebug(requestStatus, msg, onlyIfToAv = True):
     if teleportNotify.getDebug():
         teleport = 'teleport'
@@ -52,144 +53,153 @@ HeadAnimDict = {}
 Preloaded = []
 Phase3AnimList = (('neutral', 'neutral'), ('run', 'run'))
 Phase3_5AnimList = (('walk', 'walk'),
- ('teleport', 'teleport'),
- ('book', 'book'),
- ('jump', 'jump'),
- ('running-jump', 'running-jump'),
- ('jump-squat', 'jump-zstart'),
- ('jump-idle', 'jump-zhang'),
- ('jump-land', 'jump-zend'),
- ('running-jump-squat', 'leap_zstart'),
- ('running-jump-idle', 'leap_zhang'),
- ('running-jump-land', 'leap_zend'),
- ('pushbutton', 'press-button'),
- ('throw', 'pie-throw'),
- ('victory', 'victory-dance'),
- ('sidestep-left', 'sidestep-left'),
- ('conked', 'conked'),
- ('cringe', 'cringe'),
- ('wave', 'wave'),
- ('shrug', 'shrug'),
- ('angry', 'angry'),
- ('tutorial-neutral', 'tutorial-neutral'),
- ('left-point', 'left-point'),
- ('right-point', 'right-point'),
- ('right-point-start', 'right-point-start'),
- ('give-props', 'give-props'),
- ('give-props-start', 'give-props-start'),
- ('right-hand', 'right-hand'),
- ('right-hand-start', 'right-hand-start'),
- ('duck', 'duck'),
- ('sidestep-right', 'jump-back-right'),
- ('periscope', 'periscope'))
+                    ('teleport', 'teleport'),
+                    ('book', 'book'),
+                    ('jump', 'jump'),
+                    ('running-jump', 'running-jump'),
+                    ('jump-squat', 'jump-zstart'),
+                    ('jump-idle', 'jump-zhang'),
+                    ('jump-land', 'jump-zend'),
+                    ('running-jump-squat', 'leap_zstart'),
+                    ('running-jump-idle', 'leap_zhang'),
+                    ('running-jump-land', 'leap_zend'),
+                    ('pushbutton', 'press-button'),
+                    ('throw', 'pie-throw'),
+                    ('victory', 'victory-dance'),
+                    ('sidestep-left', 'sidestep-left'),
+                    ('conked', 'conked'),
+                    ('cringe', 'cringe'),
+                    ('wave', 'wave'),
+                    ('shrug', 'shrug'),
+                    ('angry', 'angry'),
+                    ('tutorial-neutral', 'tutorial-neutral'),
+                    ('left-point', 'left-point'),
+                    ('right-point', 'right-point'),
+                    ('right-point-start', 'right-point-start'),
+                    ('give-props', 'give-props'),
+                    ('give-props-start', 'give-props-start'),
+                    ('right-hand', 'right-hand'),
+                    ('right-hand-start', 'right-hand-start'),
+                    ('duck', 'duck'),
+                    ('sidestep-right', 'jump-back-right'),
+                    ('periscope', 'periscope'))
 Phase4AnimList = (('sit', 'sit'),
- ('sit-start', 'intoSit'),
- ('swim', 'swim'),
- ('tug-o-war', 'tug-o-war'),
- ('sad-walk', 'losewalk'),
- ('sad-neutral', 'sad-neutral'),
- ('up', 'up'),
- ('down', 'down'),
- ('left', 'left'),
- ('right', 'right'),
- ('applause', 'applause'),
- ('confused', 'confused'),
- ('bow', 'bow'),
- ('curtsy', 'curtsy'),
- ('bored', 'bored'),
- ('think', 'think'),
- ('battlecast', 'fish'),
- ('cast', 'cast'),
- ('castlong', 'castlong'),
- ('fish-end', 'fishEND'),
- ('fish-neutral', 'fishneutral'),
- ('fish-again', 'fishAGAIN'),
- ('reel', 'reel'),
- ('reel-H', 'reelH'),
- ('reel-neutral', 'reelneutral'),
- ('pole', 'pole'),
- ('pole-neutral', 'poleneutral'),
- ('slip-forward', 'slip-forward'),
- ('slip-backward', 'slip-backward'),
- ('catch-neutral', 'gameneutral'),
- ('catch-run', 'gamerun'),
- ('catch-eatneutral', 'eat_neutral'),
- ('catch-eatnrun', 'eatnrun'),
- ('catch-intro-throw', 'gameThrow'),
- ('swing', 'swing'),
- ('pet-start', 'petin'),
- ('pet-loop', 'petloop'),
- ('pet-end', 'petend'),
- ('scientistJealous', 'scientistJealous'),
- ('scientistEmcee', 'scientistEmcee'),
- ('scientistWork', 'scientistWork'),
- ('scientistGame', 'scientistGame'))
+                  ('sit-start', 'intoSit'),
+                  ('swim', 'swim'),
+                  ('tug-o-war', 'tug-o-war'),
+                  ('sad-walk', 'losewalk'),
+                  ('sad-neutral', 'sad-neutral'),
+                  ('up', 'up'),
+                  ('down', 'down'),
+                  ('left', 'left'),
+                  ('right', 'right'),
+                  ('applause', 'applause'),
+                  ('confused', 'confused'),
+                  ('bow', 'bow'),
+                  ('curtsy', 'curtsy'),
+                  ('bored', 'bored'),
+                  ('think', 'think'),
+                  ('battlecast', 'fish'),
+                  ('cast', 'cast'),
+                  ('castlong', 'castlong'),
+                  ('fish-end', 'fishEND'),
+                  ('fish-neutral', 'fishneutral'),
+                  ('fish-again', 'fishAGAIN'),
+                  ('reel', 'reel'),
+                  ('reel-H', 'reelH'),
+                  ('reel-neutral', 'reelneutral'),
+                  ('pole', 'pole'),
+                  ('pole-neutral', 'poleneutral'),
+                  ('slip-forward', 'slip-forward'),
+                  ('slip-backward', 'slip-backward'),
+                  ('catch-neutral', 'gameneutral'),
+                  ('catch-run', 'gamerun'),
+                  ('catch-eatneutral', 'eat_neutral'),
+                  ('catch-eatnrun', 'eatnrun'),
+                  ('catch-intro-throw', 'gameThrow'),
+                  ('swing', 'swing'),
+                  ('pet-start', 'petin'),
+                  ('pet-loop', 'petloop'),
+                  ('pet-end', 'petend'),
+                  ('scientistJealous', 'scientistJealous'),
+                  ('scientistEmcee', 'scientistEmcee'),
+                  ('scientistWork', 'scientistWork'),
+                  ('scientistGame', 'scientistGame'))
 Phase5AnimList = (('water-gun', 'water-gun'),
- ('hold-bottle', 'hold-bottle'),
- ('firehose', 'firehose'),
- ('spit', 'spit'),
- ('tickle', 'tickle'),
- ('smooch', 'smooch'),
- ('happy-dance', 'happy-dance'),
- ('sprinkle-dust', 'sprinkle-dust'),
- ('juggle', 'juggle'),
- ('climb', 'climb'),
- ('sound', 'shout'),
- ('toss', 'toss'),
- ('hold-magnet', 'hold-magnet'),
- ('hypnotize', 'hypnotize'),
- ('struggle', 'struggle'),
- ('lose', 'lose'),
- ('melt', 'melt'))
+                  ('hold-bottle', 'hold-bottle'),
+                  ('firehose', 'firehose'),
+                  ('spit', 'spit'),
+                  ('tickle', 'tickle'),
+                  ('smooch', 'smooch'),
+                  ('happy-dance', 'happy-dance'),
+                  ('sprinkle-dust', 'sprinkle-dust'),
+                  ('juggle', 'juggle'),
+                  ('climb', 'climb'),
+                  ('sound', 'shout'),
+                  ('toss', 'toss'),
+                  ('hold-magnet', 'hold-magnet'),
+                  ('hypnotize', 'hypnotize'),
+                  ('struggle', 'struggle'),
+                  ('lose', 'lose'),
+                  ('melt', 'melt'))
 Phase5_5AnimList = (('takePhone', 'takePhone'),
- ('phoneNeutral', 'phoneNeutral'),
- ('phoneBack', 'phoneBack'),
- ('bank', 'jellybeanJar'),
- ('callPet', 'callPet'),
- ('feedPet', 'feedPet'),
- ('start-dig', 'into_dig'),
- ('loop-dig', 'loop_dig'),
- ('water', 'water'))
+                    ('phoneNeutral', 'phoneNeutral'),
+                    ('phoneBack', 'phoneBack'),
+                    ('bank', 'jellybeanJar'),
+                    ('callPet', 'callPet'),
+                    ('feedPet', 'feedPet'),
+                    ('start-dig', 'into_dig'),
+                    ('loop-dig', 'loop_dig'),
+                    ('water', 'water'))
 Phase6AnimList = (('headdown-putt', 'headdown-putt'),
- ('into-putt', 'into-putt'),
- ('loop-putt', 'loop-putt'),
- ('rotateL-putt', 'rotateL-putt'),
- ('rotateR-putt', 'rotateR-putt'),
- ('swing-putt', 'swing-putt'),
- ('look-putt', 'look-putt'),
- ('lookloop-putt', 'lookloop-putt'),
- ('bad-putt', 'bad-putt'),
- ('badloop-putt', 'badloop-putt'),
- ('good-putt', 'good-putt'))
+                  ('into-putt', 'into-putt'),
+                  ('loop-putt', 'loop-putt'),
+                  ('rotateL-putt', 'rotateL-putt'),
+                  ('rotateR-putt', 'rotateR-putt'),
+                  ('swing-putt', 'swing-putt'),
+                  ('look-putt', 'look-putt'),
+                  ('lookloop-putt', 'lookloop-putt'),
+                  ('bad-putt', 'bad-putt'),
+                  ('badloop-putt', 'badloop-putt'),
+                  ('good-putt', 'good-putt'))
 Phase9AnimList = (('push', 'push'),)
 Phase10AnimList = (('leverReach', 'leverReach'), ('leverPull', 'leverPull'), ('leverNeutral', 'leverNeutral'))
 Phase12AnimList = ()
 if not base.config.GetBool('want-new-anims', 1):
-    LegDict = {'s': '/models/char/dogSS_Shorts-legs-',
-     'm': '/models/char/dogMM_Shorts-legs-',
-     'l': '/models/char/dogLL_Shorts-legs-'}
-    TorsoDict = {'s': '/models/char/dogSS_Naked-torso-',
-     'm': '/models/char/dogMM_Naked-torso-',
-     'l': '/models/char/dogLL_Naked-torso-',
-     'ss': '/models/char/dogSS_Shorts-torso-',
-     'ms': '/models/char/dogMM_Shorts-torso-',
-     'ls': '/models/char/dogLL_Shorts-torso-',
-     'sd': '/models/char/dogSS_Skirt-torso-',
-     'md': '/models/char/dogMM_Skirt-torso-',
-     'ld': '/models/char/dogLL_Skirt-torso-'}
+    LegDict = {
+        's': '/models/char/dogSS_Shorts-legs-',
+        'm': '/models/char/dogMM_Shorts-legs-',
+        'l': '/models/char/dogLL_Shorts-legs-'
+    }
+    TorsoDict = {
+        's': '/models/char/dogSS_Naked-torso-',
+        'm': '/models/char/dogMM_Naked-torso-',
+        'l': '/models/char/dogLL_Naked-torso-',
+        'ss': '/models/char/dogSS_Shorts-torso-',
+        'ms': '/models/char/dogMM_Shorts-torso-',
+        'ls': '/models/char/dogLL_Shorts-torso-',
+        'sd': '/models/char/dogSS_Skirt-torso-',
+        'md': '/models/char/dogMM_Skirt-torso-',
+        'ld': '/models/char/dogLL_Skirt-torso-'
+    }
 else:
-    LegDict = {'s': '/models/char/tt_a_chr_dgs_shorts_legs_',
-     'm': '/models/char/tt_a_chr_dgm_shorts_legs_',
-     'l': '/models/char/tt_a_chr_dgl_shorts_legs_'}
-    TorsoDict = {'s': '/models/char/dogSS_Naked-torso-',
-     'm': '/models/char/dogMM_Naked-torso-',
-     'l': '/models/char/dogLL_Naked-torso-',
-     'ss': '/models/char/tt_a_chr_dgs_shorts_torso_',
-     'ms': '/models/char/tt_a_chr_dgm_shorts_torso_',
-     'ls': '/models/char/tt_a_chr_dgl_shorts_torso_',
-     'sd': '/models/char/tt_a_chr_dgs_skirt_torso_',
-     'md': '/models/char/tt_a_chr_dgm_skirt_torso_',
-     'ld': '/models/char/tt_a_chr_dgl_skirt_torso_'}
+    LegDict = {
+        's': '/models/char/tt_a_chr_dgs_shorts_legs_',
+        'm': '/models/char/tt_a_chr_dgm_shorts_legs_',
+        'l': '/models/char/tt_a_chr_dgl_shorts_legs_'
+    }
+    TorsoDict = {
+        's': '/models/char/dogSS_Naked-torso-',
+        'm': '/models/char/dogMM_Naked-torso-',
+        'l': '/models/char/dogLL_Naked-torso-',
+        'ss': '/models/char/tt_a_chr_dgs_shorts_torso_',
+        'ms': '/models/char/tt_a_chr_dgm_shorts_torso_',
+        'ls': '/models/char/tt_a_chr_dgl_shorts_torso_',
+        'sd': '/models/char/tt_a_chr_dgs_skirt_torso_',
+        'md': '/models/char/tt_a_chr_dgm_skirt_torso_',
+        'ld': '/models/char/tt_a_chr_dgl_skirt_torso_'
+    }
+
 
 def loadModels():
     global Preloaded
@@ -350,23 +360,23 @@ def loadPhaseAnims(phaseStr = 'phase_3', loadFlag = 1):
 
 def compileGlobalAnimList():
     phaseList = [Phase3AnimList,
-     Phase3_5AnimList,
-     Phase4AnimList,
-     Phase5AnimList,
-     Phase5_5AnimList,
-     Phase6AnimList,
-     Phase9AnimList,
-     Phase10AnimList,
-     Phase12AnimList]
+                 Phase3_5AnimList,
+                 Phase4AnimList,
+                 Phase5AnimList,
+                 Phase5_5AnimList,
+                 Phase6AnimList,
+                 Phase9AnimList,
+                 Phase10AnimList,
+                 Phase12AnimList]
     phaseStrList = ['phase_3',
-     'phase_3.5',
-     'phase_4',
-     'phase_5',
-     'phase_5.5',
-     'phase_6',
-     'phase_9',
-     'phase_10',
-     'phase_12']
+                    'phase_3.5',
+                    'phase_4',
+                    'phase_5',
+                    'phase_5.5',
+                    'phase_6',
+                    'phase_9',
+                    'phase_10',
+                    'phase_12']
     for animList in phaseList:
         phaseStr = phaseStrList[phaseList.index(animList)]
         for key in list(LegDict.keys()):
@@ -402,32 +412,38 @@ def loadDialog():
     for file in catDialogueFiles:
         CatDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
-    horseDialogueFiles = ('AV_horse_short', 'AV_horse_med', 'AV_horse_long', 'AV_horse_question', 'AV_horse_exclaim', 'AV_horse_howl')
+    horseDialogueFiles = (
+    'AV_horse_short', 'AV_horse_med', 'AV_horse_long', 'AV_horse_question', 'AV_horse_exclaim', 'AV_horse_howl')
     global HorseDialogueArray
     for file in horseDialogueFiles:
         HorseDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
-    rabbitDialogueFiles = ('AV_rabbit_short', 'AV_rabbit_med', 'AV_rabbit_long', 'AV_rabbit_question', 'AV_rabbit_exclaim', 'AV_rabbit_howl')
+    rabbitDialogueFiles = (
+    'AV_rabbit_short', 'AV_rabbit_med', 'AV_rabbit_long', 'AV_rabbit_question', 'AV_rabbit_exclaim', 'AV_rabbit_howl')
     global RabbitDialogueArray
     for file in rabbitDialogueFiles:
         RabbitDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
-    mouseDialogueFiles = ('AV_mouse_short', 'AV_mouse_med', 'AV_mouse_long', 'AV_mouse_question', 'AV_mouse_exclaim', 'AV_mouse_howl')
+    mouseDialogueFiles = (
+    'AV_mouse_short', 'AV_mouse_med', 'AV_mouse_long', 'AV_mouse_question', 'AV_mouse_exclaim', 'AV_mouse_howl')
     global MouseDialogueArray
     for file in mouseDialogueFiles:
         MouseDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
-    duckDialogueFiles = ('AV_duck_short', 'AV_duck_med', 'AV_duck_long', 'AV_duck_question', 'AV_duck_exclaim', 'AV_duck_howl')
+    duckDialogueFiles = (
+    'AV_duck_short', 'AV_duck_med', 'AV_duck_long', 'AV_duck_question', 'AV_duck_exclaim', 'AV_duck_howl')
     global DuckDialogueArray
     for file in duckDialogueFiles:
         DuckDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
-    monkeyDialogueFiles = ('AV_monkey_short', 'AV_monkey_med', 'AV_monkey_long', 'AV_monkey_question', 'AV_monkey_exclaim', 'AV_monkey_howl')
+    monkeyDialogueFiles = (
+    'AV_monkey_short', 'AV_monkey_med', 'AV_monkey_long', 'AV_monkey_question', 'AV_monkey_exclaim', 'AV_monkey_howl')
     global MonkeyDialogueArray
     for file in monkeyDialogueFiles:
         MonkeyDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
-    bearDialogueFiles = ('AV_bear_short', 'AV_bear_med', 'AV_bear_long', 'AV_bear_question', 'AV_bear_exclaim', 'AV_bear_howl')
+    bearDialogueFiles = (
+    'AV_bear_short', 'AV_bear_med', 'AV_bear_long', 'AV_bear_question', 'AV_bear_exclaim', 'AV_bear_howl')
     global BearDialogueArray
     for file in bearDialogueFiles:
         BearDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
@@ -511,49 +527,55 @@ class Toon(Avatar.Avatar, ToonHead):
         self.soundChatBubble = base.loader.loadSfx('phase_3/audio/sfx/GUI_balloon_popup.ogg')
         self.swimBobSeq = None
         self.animFSM = ClassicFSM('Toon', [State('off', self.enterOff, self.exitOff),
-         State('neutral', self.enterNeutral, self.exitNeutral),
-         State('victory', self.enterVictory, self.exitVictory),
-         State('Happy', self.enterHappy, self.exitHappy),
-         State('Sad', self.enterSad, self.exitSad),
-         State('Catching', self.enterCatching, self.exitCatching),
-         State('CatchEating', self.enterCatchEating, self.exitCatchEating),
-         State('Sleep', self.enterSleep, self.exitSleep),
-         State('walk', self.enterWalk, self.exitWalk),
-         State('jumpSquat', self.enterJumpSquat, self.exitJumpSquat),
-         State('jump', self.enterJump, self.exitJump),
-         State('jumpAirborne', self.enterJumpAirborne, self.exitJumpAirborne),
-         State('jumpLand', self.enterJumpLand, self.exitJumpLand),
-         State('run', self.enterRun, self.exitRun),
-         State('swim', self.enterSwim, self.exitSwim),
-         State('swimhold', self.enterSwimHold, self.exitSwimHold),
-         State('dive', self.enterDive, self.exitDive),
-         State('cringe', self.enterCringe, self.exitCringe),
-         State('OpenBook', self.enterOpenBook, self.exitOpenBook, ['ReadBook', 'CloseBook']),
-         State('ReadBook', self.enterReadBook, self.exitReadBook),
-         State('CloseBook', self.enterCloseBook, self.exitCloseBook),
-         State('TeleportOut', self.enterTeleportOut, self.exitTeleportOut),
-         State('Died', self.enterDied, self.exitDied),
-         State('TeleportedOut', self.enterTeleportedOut, self.exitTeleportedOut),
-         State('TeleportIn', self.enterTeleportIn, self.exitTeleportIn),
-         State('Emote', self.enterEmote, self.exitEmote),
-         State('SitStart', self.enterSitStart, self.exitSitStart),
-         State('Sit', self.enterSit, self.exitSit),
-         State('Push', self.enterPush, self.exitPush),
-         State('Squish', self.enterSquish, self.exitSquish),
-         State('FallDown', self.enterFallDown, self.exitFallDown),
-         State('GolfPuttLoop', self.enterGolfPuttLoop, self.exitGolfPuttLoop),
-         State('GolfRotateLeft', self.enterGolfRotateLeft, self.exitGolfRotateLeft),
-         State('GolfRotateRight', self.enterGolfRotateRight, self.exitGolfRotateRight),
-         State('GolfPuttSwing', self.enterGolfPuttSwing, self.exitGolfPuttSwing),
-         State('GolfGoodPutt', self.enterGolfGoodPutt, self.exitGolfGoodPutt),
-         State('GolfBadPutt', self.enterGolfBadPutt, self.exitGolfBadPutt),
-         State('Flattened', self.enterFlattened, self.exitFlattened),
-         State('CogThiefRunning', self.enterCogThiefRunning, self.exitCogThiefRunning),
-         State('ScientistJealous', self.enterScientistJealous, self.exitScientistJealous),
-         State('ScientistEmcee', self.enterScientistEmcee, self.exitScientistEmcee),
-         State('ScientistWork', self.enterScientistWork, self.exitScientistWork),
-         State('ScientistLessWork', self.enterScientistLessWork, self.exitScientistLessWork),
-         State('ScientistPlay', self.enterScientistPlay, self.enterScientistPlay)], 'off', 'off')
+                                           State('neutral', self.enterNeutral, self.exitNeutral),
+                                           State('victory', self.enterVictory, self.exitVictory),
+                                           State('Happy', self.enterHappy, self.exitHappy),
+                                           State('Sad', self.enterSad, self.exitSad),
+                                           State('Catching', self.enterCatching, self.exitCatching),
+                                           State('CatchEating', self.enterCatchEating, self.exitCatchEating),
+                                           State('Sleep', self.enterSleep, self.exitSleep),
+                                           State('walk', self.enterWalk, self.exitWalk),
+                                           State('jumpSquat', self.enterJumpSquat, self.exitJumpSquat),
+                                           State('jump', self.enterJump, self.exitJump),
+                                           State('jumpAirborne', self.enterJumpAirborne, self.exitJumpAirborne),
+                                           State('jumpLand', self.enterJumpLand, self.exitJumpLand),
+                                           State('run', self.enterRun, self.exitRun),
+                                           State('swim', self.enterSwim, self.exitSwim),
+                                           State('swimhold', self.enterSwimHold, self.exitSwimHold),
+                                           State('dive', self.enterDive, self.exitDive),
+                                           State('cringe', self.enterCringe, self.exitCringe),
+                                           State('OpenBook', self.enterOpenBook, self.exitOpenBook,
+                                                 ['ReadBook', 'CloseBook']),
+                                           State('ReadBook', self.enterReadBook, self.exitReadBook),
+                                           State('CloseBook', self.enterCloseBook, self.exitCloseBook),
+                                           State('TeleportOut', self.enterTeleportOut, self.exitTeleportOut),
+                                           State('Died', self.enterDied, self.exitDied),
+                                           State('TeleportedOut', self.enterTeleportedOut, self.exitTeleportedOut),
+                                           State('TeleportIn', self.enterTeleportIn, self.exitTeleportIn),
+                                           State('Emote', self.enterEmote, self.exitEmote),
+                                           State('SitStart', self.enterSitStart, self.exitSitStart),
+                                           State('Sit', self.enterSit, self.exitSit),
+                                           State('Push', self.enterPush, self.exitPush),
+                                           State('Squish', self.enterSquish, self.exitSquish),
+                                           State('FallDown', self.enterFallDown, self.exitFallDown),
+                                           State('GolfPuttLoop', self.enterGolfPuttLoop, self.exitGolfPuttLoop),
+                                           State('GolfRotateLeft', self.enterGolfRotateLeft, self.exitGolfRotateLeft),
+                                           State('GolfRotateRight', self.enterGolfRotateRight,
+                                                 self.exitGolfRotateRight),
+                                           State('GolfPuttSwing', self.enterGolfPuttSwing, self.exitGolfPuttSwing),
+                                           State('GolfGoodPutt', self.enterGolfGoodPutt, self.exitGolfGoodPutt),
+                                           State('GolfBadPutt', self.enterGolfBadPutt, self.exitGolfBadPutt),
+                                           State('Flattened', self.enterFlattened, self.exitFlattened),
+                                           State('CogThiefRunning', self.enterCogThiefRunning,
+                                                 self.exitCogThiefRunning),
+                                           State('ScientistJealous', self.enterScientistJealous,
+                                                 self.exitScientistJealous),
+                                           State('ScientistEmcee', self.enterScientistEmcee, self.exitScientistEmcee),
+                                           State('ScientistWork', self.enterScientistWork, self.exitScientistWork),
+                                           State('ScientistLessWork', self.enterScientistLessWork,
+                                                 self.exitScientistLessWork),
+                                           State('ScientistPlay', self.enterScientistPlay, self.enterScientistPlay)],
+                                  'off', 'off')
         animStateList = self.animFSM.getStates()
         self.animFSM.enterInitialState()
 
@@ -562,7 +584,8 @@ class Toon(Avatar.Avatar, ToonHead):
             if not self.animFSM.isInternalStateInFlux():
                 self.animFSM.request('off')
             else:
-                self.notify.warning('animFSM in flux, state=%s, not requesting off' % self.animFSM.getCurrentState().getName())
+                self.notify.warning(
+                    'animFSM in flux, state=%s, not requesting off' % self.animFSM.getCurrentState().getName())
         else:
             self.notify.warning('animFSM has been deleted')
         if self.effectTrack != None:
@@ -618,7 +641,7 @@ class Toon(Avatar.Avatar, ToonHead):
         if fForce or newDNA.head != oldDNA.head:
             self.swapToonHead(newDNA.head)
         if fForce or newDNA.torso != oldDNA.torso:
-            self.swapToonTorso(newDNA.torso, genClothes=0)
+            self.swapToonTorso(newDNA.torso, genClothes = 0)
             self.loop('neutral')
         if fForce or newDNA.legs != oldDNA.legs:
             self.swapToonLegs(newDNA.legs)
@@ -738,9 +761,11 @@ class Toon(Avatar.Avatar, ToonHead):
     def getBookActors(self):
         if self.__bookActors:
             return self.__bookActors
-        bookActor = Actor.Actor('phase_3.5/models/props/book-mod', {'book': 'phase_3.5/models/props/book-chan'})
-        bookActor2 = Actor.Actor(other=bookActor)
-        bookActor3 = Actor.Actor(other=bookActor)
+        bookActor = Actor.Actor('phase_3.5/models/props/book-mod', {
+            'book': 'phase_3.5/models/props/book-chan'
+        })
+        bookActor2 = Actor.Actor(other = bookActor)
+        bookActor3 = Actor.Actor(other = bookActor)
         self.__bookActors = [bookActor, bookActor2, bookActor3]
         hands = self.getRightHands()
         for bookActor, hand in zip(self.__bookActors, hands):
@@ -752,9 +777,11 @@ class Toon(Avatar.Avatar, ToonHead):
     def getHoleActors(self):
         if self.__holeActors:
             return self.__holeActors
-        holeActor = Actor.Actor('phase_3.5/models/props/portal-mod', {'hole': 'phase_3.5/models/props/portal-chan'})
-        holeActor2 = Actor.Actor(other=holeActor)
-        holeActor3 = Actor.Actor(other=holeActor)
+        holeActor = Actor.Actor('phase_3.5/models/props/portal-mod', {
+            'hole': 'phase_3.5/models/props/portal-chan'
+        })
+        holeActor2 = Actor.Actor(other = holeActor)
+        holeActor3 = Actor.Actor(other = holeActor)
         self.__holeActors = [holeActor, holeActor2, holeActor3]
         for ha in self.__holeActors:
             if hasattr(self, 'uniqueName'):
@@ -783,7 +810,8 @@ class Toon(Avatar.Avatar, ToonHead):
             animal = self.style.getAnimal()
             bodyScale = ToontownGlobals.toonBodyScales[animal]
             headScale = ToontownGlobals.toonHeadScales[animal][2]
-            shoulderHeight = ToontownGlobals.legHeightDict[self.style.legs] * bodyScale + ToontownGlobals.torsoHeightDict[self.style.torso] * bodyScale
+            shoulderHeight = ToontownGlobals.legHeightDict[self.style.legs] * bodyScale + \
+                             ToontownGlobals.torsoHeightDict[self.style.torso] * bodyScale
             height = shoulderHeight + ToontownGlobals.headHeightDict[self.style.head] * headScale
             self.shoulderHeight = shoulderHeight
             if self.cheesyEffect == ToontownGlobals.CEBigToon or self.cheesyEffect == ToontownGlobals.CEBigWhite:
@@ -917,7 +945,7 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def __swapToonClothes(self, dna):
         self.setStyle(dna)
-        self.generateToonClothes(fromNet=1)
+        self.generateToonClothes(fromNet = 1)
 
     def sendLogSuspiciousEvent(self, msg):
         pass
@@ -935,17 +963,17 @@ class Toon(Avatar.Avatar, ToonHead):
                     self.sendLogSuspiciousEvent('nakedToonDNA %s was requested' % self.style.torso)
                     return 0
                 elif self.style.torso[1] == 's' and bottomPair[1] == ToonDNA.SKIRT:
-                    self.swapToonTorso(self.style.torso[0] + 'd', genClothes=0)
+                    self.swapToonTorso(self.style.torso[0] + 'd', genClothes = 0)
                     swappedTorso = 1
                 elif self.style.torso[1] == 'd' and bottomPair[1] == ToonDNA.SHORTS:
-                    self.swapToonTorso(self.style.torso[0] + 's', genClothes=0)
+                    self.swapToonTorso(self.style.torso[0] + 's', genClothes = 0)
                     swappedTorso = 1
             try:
                 texName = ToonDNA.Shirts[self.style.topTex]
             except:
                 texName = ToonDNA.Shirts[0]
 
-            shirtTex = loader.loadTexture(texName, okMissing=True)
+            shirtTex = loader.loadTexture(texName, okMissing = True)
             if shirtTex is None:
                 self.sendLogSuspiciousEvent('failed to load texture %s' % texName)
                 shirtTex = loader.loadTexture(ToonDNA.Shirts[0])
@@ -961,7 +989,7 @@ class Toon(Avatar.Avatar, ToonHead):
             except:
                 texName = ToonDNA.Sleeves[0]
 
-            sleeveTex = loader.loadTexture(texName, okMissing=True)
+            sleeveTex = loader.loadTexture(texName, okMissing = True)
             if sleeveTex is None:
                 self.sendLogSuspiciousEvent('failed to load texture %s' % texName)
                 sleeveTex = loader.loadTexture(ToonDNA.Sleeves[0])
@@ -984,7 +1012,7 @@ class Toon(Avatar.Avatar, ToonHead):
                 except:
                     texName = ToonDNA.GirlBottoms[0][0]
 
-            bottomTex = loader.loadTexture(texName, okMissing=True)
+            bottomTex = loader.loadTexture(texName, okMissing = True)
             if bottomTex is None:
                 self.sendLogSuspiciousEvent('failed to load texture %s' % texName)
                 if self.style.getGender() == 'm':
@@ -1031,13 +1059,13 @@ class Toon(Avatar.Avatar, ToonHead):
             self.hatNodes = []
         self.showEars()
         if hat[0] != 0:
-            hatGeom = loader.loadModel(ToonDNA.HatModels[hat[0]], okMissing=True)
+            hatGeom = loader.loadModel(ToonDNA.HatModels[hat[0]], okMissing = True)
             if hatGeom:
                 if hat[0] == 54:
                     self.hideEars()
                 if hat[1] != 0:
                     texName = ToonDNA.HatTextures[hat[1]]
-                    tex = loader.loadTexture(texName, okMissing=True)
+                    tex = loader.loadTexture(texName, okMissing = True)
                     if tex is None:
                         self.sendLogSuspiciousEvent('failed to load texture %s' % texName)
                     else:
@@ -1076,13 +1104,13 @@ class Toon(Avatar.Avatar, ToonHead):
             self.glassesNodes = []
         self.showEyelashes()
         if glasses[0] != 0:
-            glassesGeom = loader.loadModel(ToonDNA.GlassesModels[glasses[0]], okMissing=True)
+            glassesGeom = loader.loadModel(ToonDNA.GlassesModels[glasses[0]], okMissing = True)
             if glassesGeom:
                 if glasses[0] in [15, 16]:
                     self.hideEyelashes()
                 if glasses[1] != 0:
                     texName = ToonDNA.GlassesTextures[glasses[1]]
-                    tex = loader.loadTexture(texName, okMissing=True)
+                    tex = loader.loadTexture(texName, okMissing = True)
                     if tex is None:
                         self.sendLogSuspiciousEvent('failed to load texture %s' % texName)
                     else:
@@ -1120,11 +1148,11 @@ class Toon(Avatar.Avatar, ToonHead):
 
             self.backpackNodes = []
         if backpack[0] != 0:
-            geom = loader.loadModel(ToonDNA.BackpackModels[backpack[0]], okMissing=True)
+            geom = loader.loadModel(ToonDNA.BackpackModels[backpack[0]], okMissing = True)
             if geom:
                 if backpack[1] != 0:
                     texName = ToonDNA.BackpackTextures[backpack[1]]
-                    tex = loader.loadTexture(texName, okMissing=True)
+                    tex = loader.loadTexture(texName, okMissing = True)
                     if tex is None:
                         self.sendLogSuspiciousEvent('failed to load texture %s' % texName)
                     else:
@@ -1169,7 +1197,7 @@ class Toon(Avatar.Avatar, ToonHead):
                 texName = ToonDNA.ShoesTextures[shoes[1]]
                 if self.style.legs == 'l' and shoes[0] == 3:
                     texName = texName[:-4] + 'LL.png'
-                tex = loader.loadTexture(texName, okMissing=True)
+                tex = loader.loadTexture(texName, okMissing = True)
                 if tex is None:
                     self.sendLogSuspiciousEvent('failed to load texture %s' % texName)
                 else:
@@ -1187,21 +1215,21 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def setHat(self, hatIdx, textureIdx, colorIdx, fromRTM = False):
         self.hat = (hatIdx, textureIdx, colorIdx)
-        self.generateHat(fromRTM=fromRTM)
+        self.generateHat(fromRTM = fromRTM)
 
     def getHat(self):
         return self.hat
 
     def setGlasses(self, glassesIdx, textureIdx, colorIdx, fromRTM = False):
         self.glasses = (glassesIdx, textureIdx, colorIdx)
-        self.generateGlasses(fromRTM=fromRTM)
+        self.generateGlasses(fromRTM = fromRTM)
 
     def getGlasses(self):
         return self.glasses
 
     def setBackpack(self, backpackIdx, textureIdx, colorIdx, fromRTM = False):
         self.backpack = (backpackIdx, textureIdx, colorIdx)
-        self.generateBackpack(fromRTM=fromRTM)
+        self.generateBackpack(fromRTM = fromRTM)
 
     def getBackpack(self):
         return self.backpack
@@ -1279,15 +1307,15 @@ class Toon(Avatar.Avatar, ToonHead):
     def findSomethingToLookAt(self):
         if self.randGen.random() < 0.1 or not hasattr(self, 'cr'):
             x = self.randGen.choice((-0.8,
-             -0.5,
-             0,
-             0.5,
-             0.8))
+                                     -0.5,
+                                     0,
+                                     0.5,
+                                     0.8))
             y = self.randGen.choice((-0.5,
-             0,
-             0.5,
-             0.8))
-            self.lerpLookAt(Point3(x, 1.5, y), blink=1)
+                                     0,
+                                     0.5,
+                                     0.8))
+            self.lerpLookAt(Point3(x, 1.5, y), blink = 1)
             return
         nodePathList = []
         for id, obj in list(self.cr.doId2do.items()):
@@ -1297,7 +1325,8 @@ class Toon(Avatar.Avatar, ToonHead):
                     nodePathList.append((node, offset))
 
         if nodePathList:
-            nodePathList.sort(key=functools.cmp_to_key(lambda x, y: cmp(x[0].getDistance(self), y[0].getDistance(self))))
+            nodePathList.sort(
+                key = functools.cmp_to_key(lambda x, y: cmp(x[0].getDistance(self), y[0].getDistance(self))))
             if len(nodePathList) >= 2:
                 if self.randGen.random() < 0.9:
                     chosenNodePath = nodePathList[0]
@@ -1305,7 +1334,7 @@ class Toon(Avatar.Avatar, ToonHead):
                     chosenNodePath = nodePathList[1]
             else:
                 chosenNodePath = nodePathList[0]
-            self.lerpLookAt(chosenNodePath[0].getPos(self), blink=1)
+            self.lerpLookAt(chosenNodePath[0].getPos(self), blink = 1)
         else:
             ToonHead.findSomethingToLookAt(self)
 
@@ -1399,8 +1428,9 @@ class Toon(Avatar.Avatar, ToonHead):
             if showWake and self.getZ(render) < wakeWaterHeight and abs(forwardSpeed) > ToontownGlobals.WalkCutOff:
                 currT = globalClock.getFrameTime()
                 deltaT = currT - self.lastWakeTime
-                if action == OTPGlobals.RUN_INDEX and deltaT > ToontownGlobals.WakeRunDelta or deltaT > ToontownGlobals.WakeWalkDelta:
-                    self.getWake().createRipple(wakeWaterHeight, rate=1, startFrame=4)
+                if action == OTPGlobals.RUN_INDEX and deltaT > ToontownGlobals.WakeRunDelta or deltaT > \
+                        ToontownGlobals.WakeWalkDelta:
+                    self.getWake().createRipple(wakeWaterHeight, rate = 1, startFrame = 4)
                     self.lastWakeTime = currT
         return action
 
@@ -1415,7 +1445,7 @@ class Toon(Avatar.Avatar, ToonHead):
     def enterNeutral(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
         anim = 'neutral'
         self.pose(anim, int(self.getNumFrames(anim) * self.randGen.random()))
-        self.loop(anim, restart=0)
+        self.loop(anim, restart = 0)
         self.setPlayRate(animMultiplier, anim)
         self.playingAnim = anim
         self.setActiveShadow(0)
@@ -1427,7 +1457,7 @@ class Toon(Avatar.Avatar, ToonHead):
         anim = 'victory'
         frame = int(ts * self.getFrameRate(anim) * animMultiplier)
         self.pose(anim, frame)
-        self.loop('victory', restart=0)
+        self.loop('victory', restart = 0)
         self.setPlayRate(animMultiplier, 'victory')
         self.playingAnim = anim
         self.setActiveShadow(0)
@@ -1439,9 +1469,9 @@ class Toon(Avatar.Avatar, ToonHead):
         self.playingAnim = None
         self.playingRate = None
         self.standWalkRunReverse = (('neutral', 1.0),
-         ('walk', 1.0),
-         ('run', 1.0),
-         ('walk', -1.0))
+                                    ('walk', 1.0),
+                                    ('run', 1.0),
+                                    ('walk', -1.0))
         self.setSpeed(self.forwardSpeed, self.rotateSpeed)
         self.setActiveShadow(1)
         return
@@ -1456,9 +1486,9 @@ class Toon(Avatar.Avatar, ToonHead):
         self.playingAnim = 'sad'
         self.playingRate = None
         self.standWalkRunReverse = (('sad-neutral', 1.0),
-         ('sad-walk', 1.2),
-         ('sad-walk', 1.2),
-         ('sad-walk', -1.0))
+                                    ('sad-walk', 1.2),
+                                    ('sad-walk', 1.2),
+                                    ('sad-walk', -1.0))
         self.setSpeed(0, 0)
         Emote.globalEmote.disableBody(self, 'toon, enterSad')
         self.setActiveShadow(1)
@@ -1479,9 +1509,9 @@ class Toon(Avatar.Avatar, ToonHead):
         self.playingAnim = None
         self.playingRate = None
         self.standWalkRunReverse = (('catch-neutral', 1.0),
-         ('catch-run', 1.0),
-         ('catch-run', 1.0),
-         ('catch-run', -1.0))
+                                    ('catch-run', 1.0),
+                                    ('catch-run', 1.0),
+                                    ('catch-run', -1.0))
         self.setSpeed(self.forwardSpeed, self.rotateSpeed)
         self.setActiveShadow(1)
         return
@@ -1496,9 +1526,9 @@ class Toon(Avatar.Avatar, ToonHead):
         self.playingAnim = None
         self.playingRate = None
         self.standWalkRunReverse = (('catch-eatneutral', 1.0),
-         ('catch-eatnrun', 1.0),
-         ('catch-eatnrun', 1.0),
-         ('catch-eatnrun', -1.0))
+                                    ('catch-eatnrun', 1.0),
+                                    ('catch-eatnrun', 1.0),
+                                    ('catch-eatnrun', -1.0))
         self.setSpeed(self.forwardSpeed, self.rotateSpeed)
         self.setActiveShadow(0)
         return
@@ -1665,7 +1695,9 @@ class Toon(Avatar.Avatar, ToonHead):
             self.swimBobSeq = None
         self.getGeomNode().setZ(4.0)
         self.nametag3d.setZ(5.0)
-        self.swimBobSeq = Sequence(self.getGeomNode().posInterval(1, Point3(0, -3, 3), startPos=Point3(0, -3, 4), blendType='easeInOut'), self.getGeomNode().posInterval(1, Point3(0, -3, 4), startPos=Point3(0, -3, 3), blendType='easeInOut'))
+        self.swimBobSeq = Sequence(
+            self.getGeomNode().posInterval(1, Point3(0, -3, 3), startPos = Point3(0, -3, 4), blendType = 'easeInOut'),
+            self.getGeomNode().posInterval(1, Point3(0, -3, 4), startPos = Point3(0, -3, 3), blendType = 'easeInOut'))
         self.swimBobSeq.loop()
 
     def stopBobSwimTask(self):
@@ -1682,14 +1714,14 @@ class Toon(Avatar.Avatar, ToonHead):
         self.lerpLookAt(Point3(0, 1, -2))
         bookTracks = Parallel()
         for bookActor in self.getBookActors():
-            bookTracks.append(ActorInterval(bookActor, 'book', startTime=1.2, endTime=1.5))
+            bookTracks.append(ActorInterval(bookActor, 'book', startTime = 1.2, endTime = 1.5))
 
-        bookTracks.append(ActorInterval(self, 'book', startTime=1.2, endTime=1.5))
+        bookTracks.append(ActorInterval(self, 'book', startTime = 1.2, endTime = 1.5))
         if hasattr(self, 'uniqueName'):
             trackName = self.uniqueName('openBook')
         else:
             trackName = 'openBook'
-        self.track = Sequence(Func(self.showBooks), bookTracks, Wait(0.1), name=trackName)
+        self.track = Sequence(Func(self.showBooks), bookTracks, Wait(0.1), name = trackName)
         if callback:
             self.track.setDoneEvent(self.track.getName())
             self.acceptOnce(self.track.getName(), callback, extraArgs)
@@ -1715,9 +1747,9 @@ class Toon(Avatar.Avatar, ToonHead):
         self.lerpLookAt(Point3(0, 1, -2))
         self.showBooks()
         for bookActor in self.getBookActors():
-            bookActor.pingpong('book', fromFrame=38, toFrame=118)
+            bookActor.pingpong('book', fromFrame = 38, toFrame = 118)
 
-        self.pingpong('book', fromFrame=38, toFrame=118)
+        self.pingpong('book', fromFrame = 38, toFrame = 118)
         self.setActiveShadow(0)
 
     def exitReadBook(self):
@@ -1734,14 +1766,14 @@ class Toon(Avatar.Avatar, ToonHead):
         self.playingAnim = 'closeBook'
         bookTracks = Parallel()
         for bookActor in self.getBookActors():
-            bookTracks.append(ActorInterval(bookActor, 'book', startTime=4.96, endTime=6.5))
+            bookTracks.append(ActorInterval(bookActor, 'book', startTime = 4.96, endTime = 6.5))
 
-        bookTracks.append(ActorInterval(self, 'book', startTime=4.96, endTime=6.5))
+        bookTracks.append(ActorInterval(self, 'book', startTime = 4.96, endTime = 6.5))
         if hasattr(self, 'uniqueName'):
             trackName = self.uniqueName('closeBook')
         else:
             trackName = 'closeBook'
-        self.track = Sequence(Func(self.showBooks), bookTracks, Func(self.hideBooks), name=trackName)
+        self.track = Sequence(Func(self.showBooks), bookTracks, Func(self.hideBooks), name = trackName)
         if callback:
             self.track.setDoneEvent(self.track.getName())
             self.acceptOnce(self.track.getName(), callback, extraArgs)
@@ -1785,16 +1817,18 @@ class Toon(Avatar.Avatar, ToonHead):
 
         holes = self.getHoleActors()
         hands = self.getRightHands()
-        holeTrack = Track((0.0, Func(showHoles, holes, hands)), (0.5, SoundInterval(self.getSoundTeleport(), node=self)), (1.708, Func(reparentHoles, holes, self)), (3.4, Func(cleanupHoles, holes)))
+        holeTrack = Track((0.0, Func(showHoles, holes, hands)),
+                          (0.5, SoundInterval(self.getSoundTeleport(), node = self)),
+                          (1.708, Func(reparentHoles, holes, self)), (3.4, Func(cleanupHoles, holes)))
         if hasattr(self, 'uniqueName'):
             trackName = self.uniqueName('teleportOut')
         else:
             trackName = 'teleportOut'
-        track = Parallel(holeTrack, name=trackName, autoFinish=autoFinishTrack)
+        track = Parallel(holeTrack, name = trackName, autoFinish = autoFinishTrack)
         for hole in holes:
-            track.append(ActorInterval(hole, 'hole', duration=3.4))
+            track.append(ActorInterval(hole, 'hole', duration = 3.4))
 
-        track.append(ActorInterval(self, 'teleport', duration=3.4))
+        track.append(ActorInterval(self, 'teleport', duration = 3.4))
         return track
 
     def startQuestMap(self):
@@ -1878,7 +1912,12 @@ class Toon(Avatar.Avatar, ToonHead):
             trackName = self.uniqueName('died')
         else:
             trackName = 'died'
-        ival = Sequence(Func(Emote.globalEmote.disableBody, self), Func(self.sadEyes), Func(self.blinkEyes), Track((0, ActorInterval(self, 'lose')), (2, SoundInterval(sound, node=self)), (5.333, self.scaleInterval(1.5, VBase3(0.01, 0.01, 0.01), blendType='easeInOut'))), Func(self.detachNode), Func(self.setScale, 1, 1, 1), Func(self.normalEyes), Func(self.blinkEyes), Func(Emote.globalEmote.releaseBody, self), name=trackName, autoFinish=autoFinishTrack)
+        ival = Sequence(Func(Emote.globalEmote.disableBody, self), Func(self.sadEyes), Func(self.blinkEyes),
+                        Track((0, ActorInterval(self, 'lose')), (2, SoundInterval(sound, node = self)),
+                              (5.333, self.scaleInterval(1.5, VBase3(0.01, 0.01, 0.01), blendType = 'easeInOut'))),
+                        Func(self.detachNode), Func(self.setScale, 1, 1, 1), Func(self.normalEyes),
+                        Func(self.blinkEyes), Func(Emote.globalEmote.releaseBody, self), name = trackName,
+                        autoFinish = autoFinishTrack)
         return ival
 
     def enterDied(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
@@ -1899,7 +1938,7 @@ class Toon(Avatar.Avatar, ToonHead):
             self.jumpLandAnimFixTask = None
         self.track = self.getDiedInterval(autoFinishTrack)
         if callback:
-            self.track = Sequence(self.track, Func(callback, *extraArgs), autoFinish=autoFinishTrack)
+            self.track = Sequence(self.track, Func(callback, *extraArgs), autoFinish = autoFinishTrack)
         self.track.start(ts)
         self.setActiveShadow(0)
         return
@@ -1935,9 +1974,9 @@ class Toon(Avatar.Avatar, ToonHead):
         holeTrack.append(Func(hole.reparentTo, self))
         pos = Point3(0, -2.4, 0)
         holeTrack.append(Func(hole.setPos, self, pos))
-        holeTrack.append(ActorInterval(hole, 'hole', startTime=3.4, endTime=3.1))
+        holeTrack.append(ActorInterval(hole, 'hole', startTime = 3.4, endTime = 3.1))
         holeTrack.append(Wait(0.6))
-        holeTrack.append(ActorInterval(hole, 'hole', startTime=3.1, endTime=3.4))
+        holeTrack.append(ActorInterval(hole, 'hole', startTime = 3.1, endTime = 3.4))
 
         def restoreHole(hole):
             hole.setPos(0, 0, 0)
@@ -1947,12 +1986,13 @@ class Toon(Avatar.Avatar, ToonHead):
             hole.clearDepthWrite()
 
         holeTrack.append(Func(restoreHole, hole))
-        toonTrack = Sequence(Wait(0.3), Func(self.getGeomNode().show), Func(self.nametag3d.show), ActorInterval(self, 'jump', startTime=0.45))
+        toonTrack = Sequence(Wait(0.3), Func(self.getGeomNode().show), Func(self.nametag3d.show),
+                             ActorInterval(self, 'jump', startTime = 0.45))
         if hasattr(self, 'uniqueName'):
             trackName = self.uniqueName('teleportIn')
         else:
             trackName = 'teleportIn'
-        return Parallel(holeTrack, toonTrack, name=trackName)
+        return Parallel(holeTrack, toonTrack, name = trackName)
 
     def enterTeleportIn(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
         if self.ghostMode or self.isDisguised:
@@ -2050,7 +2090,7 @@ class Toon(Avatar.Avatar, ToonHead):
             doClear = self.nametag.getChat() == SLEEP_STRING
         if doClear:
             self.clearChat()
-        self.lerpLookAt(Point3(0, 1, 0), time=0.25)
+        self.lerpLookAt(Point3(0, 1, 0), time = 0.25)
         self.stop()
 
     def enterPush(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
@@ -2077,9 +2117,9 @@ class Toon(Avatar.Avatar, ToonHead):
         self.playingAnim = None
         self.playingRate = None
         self.standWalkRunReverse = (('neutral', 1.0),
-         ('walk', 1.0),
-         ('run', 1.0),
-         ('walk', -1.0))
+                                    ('walk', 1.0),
+                                    ('run', 1.0),
+                                    ('walk', -1.0))
         self.setSpeed(self.forwardSpeed, self.rotateSpeed)
         if self.isLocal() and emoteIndex != Emote.globalEmote.EmoteSleepIndex:
             if self.sleepFlag:
@@ -2133,7 +2173,12 @@ class Toon(Avatar.Avatar, ToonHead):
         lerpTime = 0.1
         node = self.getGeomNode().getChild(0)
         origScale = node.getScale()
-        self.track = Sequence(LerpScaleInterval(node, lerpTime, VBase3(2, 2, 0.025), blendType='easeInOut'), Wait(1.0), Parallel(Sequence(Wait(0.4), LerpScaleInterval(node, lerpTime, VBase3(1.4, 1.4, 1.4), blendType='easeInOut'), LerpScaleInterval(node, lerpTime / 2.0, VBase3(0.8, 0.8, 0.8), blendType='easeInOut'), LerpScaleInterval(node, lerpTime / 3.0, origScale, blendType='easeInOut')), ActorInterval(self, 'jump', startTime=0.2), SoundInterval(sound)))
+        self.track = Sequence(LerpScaleInterval(node, lerpTime, VBase3(2, 2, 0.025), blendType = 'easeInOut'),
+                              Wait(1.0), Parallel(
+                Sequence(Wait(0.4), LerpScaleInterval(node, lerpTime, VBase3(1.4, 1.4, 1.4), blendType = 'easeInOut'),
+                         LerpScaleInterval(node, lerpTime / 2.0, VBase3(0.8, 0.8, 0.8), blendType = 'easeInOut'),
+                         LerpScaleInterval(node, lerpTime / 3.0, origScale, blendType = 'easeInOut')),
+                ActorInterval(self, 'jump', startTime = 0.2), SoundInterval(sound)))
         self.track.start(ts)
         self.setActiveShadow(1)
 
@@ -2149,7 +2194,7 @@ class Toon(Avatar.Avatar, ToonHead):
     def enterFallDown(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
         self.playingAnim = 'fallDown'
         Emote.globalEmote.disableAll(self)
-        self.track = Sequence(ActorInterval(self, 'slip-backward'), name='fallTrack')
+        self.track = Sequence(ActorInterval(self, 'slip-backward'), name = 'fallTrack')
         if callback:
             self.track.setDoneEvent(self.track.getName())
             self.acceptOnce(self.track.getName(), callback, extraArgs)
@@ -2181,9 +2226,10 @@ class Toon(Avatar.Avatar, ToonHead):
             down = self.doToonColorScale(VBase4(1, 1, 1, 0.6), lerpTime)
             up = self.doToonColorScale(VBase4(1, 1, 1, 0.9), lerpTime)
             clear = self.doToonColorScale(self.defaultColorScale, lerpTime)
-            track = Sequence(Func(setStunned, 1), down, up, down, up, down, up, down, clear, Func(self.restoreDefaultColorScale), Func(setStunned, 0))
+            track = Sequence(Func(setStunned, 1), down, up, down, up, down, up, down, clear,
+                             Func(self.restoreDefaultColorScale), Func(setStunned, 0))
             if knockdown:
-                self.stunTrack = Parallel(ActorInterval(self, animName='slip-backward'), track)
+                self.stunTrack = Parallel(ActorInterval(self, animName = 'slip-backward'), track)
             else:
                 self.stunTrack = track
             self.stunTrack.start()
@@ -2216,7 +2262,8 @@ class Toon(Avatar.Avatar, ToonHead):
             elif effect == ToontownGlobals.CENormal:
                 self.effectTrack = self.__undoCheesyEffect(oldEffect, lerpTime)
             else:
-                self.effectTrack = Sequence(self.__undoCheesyEffect(oldEffect, lerpTime / 2.0), self.__doCheesyEffect(effect, lerpTime / 2.0))
+                self.effectTrack = Sequence(self.__undoCheesyEffect(oldEffect, lerpTime / 2.0),
+                                            self.__doCheesyEffect(effect, lerpTime / 2.0))
             self.effectTrack.start()
         return
 
@@ -2230,7 +2277,7 @@ class Toon(Avatar.Avatar, ToonHead):
         return
 
     def clearCheesyEffect(self, lerpTime = 0):
-        self.applyCheesyEffect(ToontownGlobals.CENormal, lerpTime=lerpTime)
+        self.applyCheesyEffect(ToontownGlobals.CENormal, lerpTime = lerpTime)
         if self.effectTrack != None:
             self.effectTrack.finish()
             self.effectTrack = None
@@ -2242,7 +2289,7 @@ class Toon(Avatar.Avatar, ToonHead):
         track = Parallel()
         for hi in range(self.headParts.getNumPaths()):
             head = self.headParts[hi]
-            track.append(LerpScaleInterval(head, lerpTime, scale, blendType='easeInOut'))
+            track.append(LerpScaleInterval(head, lerpTime, scale, blendType = 'easeInOut'))
 
         return track
 
@@ -2256,8 +2303,8 @@ class Toon(Avatar.Avatar, ToonHead):
         for li in range(self.legsParts.getNumPaths()):
             legs = self.legsParts[li]
             torso = self.torsoParts[li]
-            track.append(LerpScaleInterval(legs, lerpTime, scale, blendType='easeInOut'))
-            track.append(LerpScaleInterval(torso, lerpTime, invScale, blendType='easeInOut'))
+            track.append(LerpScaleInterval(legs, lerpTime, scale, blendType = 'easeInOut'))
+            track.append(LerpScaleInterval(torso, lerpTime, invScale, blendType = 'easeInOut'))
 
         return track
 
@@ -2265,7 +2312,9 @@ class Toon(Avatar.Avatar, ToonHead):
         if scale == None:
             scale = 1
         node = self.getGeomNode().getChild(0)
-        track = Sequence(Parallel(LerpHprInterval(node, lerpTime, Vec3(0.0, 0.0, 0.0), blendType='easeInOut'), LerpScaleInterval(node, lerpTime, scale, blendType='easeInOut')), Func(self.resetHeight))
+        track = Sequence(Parallel(LerpHprInterval(node, lerpTime, Vec3(0.0, 0.0, 0.0), blendType = 'easeInOut'),
+                                  LerpScaleInterval(node, lerpTime, scale, blendType = 'easeInOut')),
+                         Func(self.resetHeight))
         return track
 
     def doToonColorScale(self, scale, lerpTime, keepDefault = 0):
@@ -2281,7 +2330,7 @@ class Toon(Avatar.Avatar, ToonHead):
             for cap in caps:
                 track.append(HideInterval(cap))
 
-        track.append(LerpColorScaleInterval(node, lerpTime, scale, blendType='easeInOut'))
+        track.append(LerpColorScaleInterval(node, lerpTime, scale, blendType = 'easeInOut'))
         if scale[3] == 1:
             track.append(Func(node.clearTransparency))
             for cap in caps:
@@ -2295,12 +2344,13 @@ class Toon(Avatar.Avatar, ToonHead):
         node = self.getGeomNode()
 
         def getDustCloudIval():
-            dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
+            dustCloud = DustCloud.DustCloud(fBillboard = 0, wantSound = 1)
             dustCloud.setBillboardAxis(2.0)
             dustCloud.setZ(3)
             dustCloud.setScale(0.4)
             dustCloud.createTrack()
-            return Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy), name='dustCloadIval')
+            return Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy),
+                            name = 'dustCloadIval')
 
         dust = getDustCloudIval()
         track = Sequence()
@@ -2347,12 +2397,13 @@ class Toon(Avatar.Avatar, ToonHead):
         node = self.getGeomNode()
 
         def getDustCloudIval():
-            dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=0)
+            dustCloud = DustCloud.DustCloud(fBillboard = 0, wantSound = 0)
             dustCloud.setBillboardAxis(2.0)
             dustCloud.setZ(3)
             dustCloud.setScale(0.4)
             dustCloud.createTrack()
-            return Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy), name='dustCloadIval')
+            return Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy),
+                            name = 'dustCloadIval')
 
         dust = getDustCloudIval()
         track = Sequence()
@@ -2406,12 +2457,13 @@ class Toon(Avatar.Avatar, ToonHead):
         greenTrack = Parallel()
 
         def getDustCloudIval():
-            dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
+            dustCloud = DustCloud.DustCloud(fBillboard = 0, wantSound = 1)
             dustCloud.setBillboardAxis(2.0)
             dustCloud.setZ(3)
             dustCloud.setScale(0.4)
             dustCloud.createTrack()
-            return Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy), name='dustCloadIval')
+            return Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy),
+                            name = 'dustCloadIval')
 
         if lerpTime > 0.0:
             dust = getDustCloudIval()
@@ -2569,7 +2621,7 @@ class Toon(Avatar.Avatar, ToonHead):
             for cap in caps:
                 track.append(HideInterval(cap))
 
-        track.append(LerpColorScaleInterval(node, lerpTime, scale, blendType='easeInOut'))
+        track.append(LerpColorScaleInterval(node, lerpTime, scale, blendType = 'easeInOut'))
         if scale[3] == 1:
             track.append(Func(node.clearTransparency))
             for cap in caps:
@@ -2617,7 +2669,7 @@ class Toon(Avatar.Avatar, ToonHead):
         for piece in pieces:
             if piece.getName()[:7] == 'muzzle-' and piece.getName()[-8:] != '-neutral':
                 continue
-            p1.append(LerpColorScaleInterval(piece, lerpTime, scale, blendType='easeInOut'))
+            p1.append(LerpColorScaleInterval(piece, lerpTime, scale, blendType = 'easeInOut'))
 
         track.append(p1)
         if scale[3] == 1:
@@ -2651,26 +2703,27 @@ class Toon(Avatar.Avatar, ToonHead):
         elif effect == ToontownGlobals.CEFlatProfile:
             return self.__doToonScale(VBase3(0.05, 1, 1), lerpTime)
         elif effect == ToontownGlobals.CETransparent:
-            return self.doToonColorScale(VBase4(1, 1, 1, 0.6), lerpTime, keepDefault=1)
+            return self.doToonColorScale(VBase4(1, 1, 1, 0.6), lerpTime, keepDefault = 1)
         elif effect == ToontownGlobals.CENoColor:
             return self.__doToonColor(VBase4(1, 1, 1, 1), lerpTime)
         elif effect == ToontownGlobals.CEInvisible:
             return self.__doPartsColorScale(VBase4(1, 1, 1, 0), lerpTime)
         elif effect == ToontownGlobals.CEPumpkin:
-            return self.__doPumpkinHeadSwitch(lerpTime, toPumpkin=True)
+            return self.__doPumpkinHeadSwitch(lerpTime, toPumpkin = True)
         elif effect == ToontownGlobals.CEBigWhite:
             return self.__doBigAndWhite(VBase4(1, 1, 1, 1), ToontownGlobals.BigToonScale, lerpTime)
         elif effect == ToontownGlobals.CESnowMan:
-            return self.__doSnowManHeadSwitch(lerpTime, toSnowMan=True)
+            return self.__doSnowManHeadSwitch(lerpTime, toSnowMan = True)
         elif effect == ToontownGlobals.CEGreenToon:
-            return self.__doGreenToon(lerpTime, toGreen=True)
+            return self.__doGreenToon(lerpTime, toGreen = True)
         elif effect == ToontownGlobals.CEVirtual:
             return self.__doVirtual()
         elif effect == ToontownGlobals.CEGhost:
             alpha = 0
             if localAvatar.seeGhosts:
                 alpha = 0.2
-            return Sequence(self.__doToonGhostColorScale(VBase4(1, 1, 1, alpha), lerpTime, keepDefault=1), Func(self.nametag3d.hide))
+            return Sequence(self.__doToonGhostColorScale(VBase4(1, 1, 1, alpha), lerpTime, keepDefault = 1),
+                            Func(self.nametag3d.hide))
         return Sequence()
 
     def __undoCheesyEffect(self, effect, lerpTime):
@@ -2691,23 +2744,23 @@ class Toon(Avatar.Avatar, ToonHead):
         elif effect == ToontownGlobals.CEFlatProfile:
             return self.__doToonScale(None, lerpTime)
         elif effect == ToontownGlobals.CETransparent:
-            return self.doToonColorScale(None, lerpTime, keepDefault=1)
+            return self.doToonColorScale(None, lerpTime, keepDefault = 1)
         elif effect == ToontownGlobals.CENoColor:
             return self.__doToonColor(None, lerpTime)
         elif effect == ToontownGlobals.CEInvisible:
             return self.__doPartsColorScale(None, lerpTime)
         elif effect == ToontownGlobals.CEPumpkin:
-            return self.__doPumpkinHeadSwitch(lerpTime, toPumpkin=False)
+            return self.__doPumpkinHeadSwitch(lerpTime, toPumpkin = False)
         elif effect == ToontownGlobals.CEBigWhite:
             return self.__doBigAndWhite(None, None, lerpTime)
         elif effect == ToontownGlobals.CESnowMan:
-            return self.__doSnowManHeadSwitch(lerpTime, toSnowMan=False)
+            return self.__doSnowManHeadSwitch(lerpTime, toSnowMan = False)
         elif effect == ToontownGlobals.CEGreenToon:
-            return self.__doGreenToon(lerpTime, toGreen=False)
+            return self.__doGreenToon(lerpTime, toGreen = False)
         elif effect == ToontownGlobals.CEVirtual:
             return self.__doUnVirtual()
         elif effect == ToontownGlobals.CEGhost:
-            return Sequence(Func(self.nametag3d.show), self.__doToonGhostColorScale(None, lerpTime, keepDefault=1))
+            return Sequence(Func(self.nametag3d.show), self.__doToonGhostColorScale(None, lerpTime, keepDefault = 1))
         return Sequence()
 
     def putOnSuit(self, suitType, setDisplayName = True, rental = False):
@@ -2788,9 +2841,11 @@ class Toon(Avatar.Avatar, ToonHead):
                 name = self.getName()
             suitDept = SuitDNA.suitDepts.index(SuitDNA.getSuitDept(suitType))
             suitName = SuitBattleGlobals.SuitAttributes[suitType]['name']
-            self.nametag.setDisplayName(TTLocalizer.SuitBaseNameWithLevel % {'name': name,
-             'dept': suitName,
-             'level': self.cogLevels[suitDept] + 1})
+            self.nametag.setDisplayName(TTLocalizer.SuitBaseNameWithLevel % {
+                'name': name,
+                'dept': suitName,
+                'level': self.cogLevels[suitDept] + 1
+            })
             self.nametag.setNameWordwrap(9.0)
 
     def takeOffSuit(self):
@@ -2866,9 +2921,13 @@ class Toon(Avatar.Avatar, ToonHead):
         animPie = Sequence()
         pingpongPie = Sequence()
         if pieType == 'actor':
-            animPie = ActorInterval(pie, pieName, startFrame=0, endFrame=31)
-            pingpongPie = Func(pie.pingpong, pieName, fromFrame=32, toFrame=47)
-        track = Sequence(Func(self.setPosHpr, x, y, z, h, p, r), Func(pie.reparentTo, self.rightHand), Func(pie.setPosHpr, 0, 0, 0, 0, 0, 0), Parallel(pie.scaleInterval(1, self.pieScale, startScale=MovieUtil.PNT3_NEARZERO), ActorInterval(self, 'throw', startFrame=0, endFrame=31), animPie), Func(self.pingpong, 'throw', fromFrame=32, toFrame=47), pingpongPie)
+            animPie = ActorInterval(pie, pieName, startFrame = 0, endFrame = 31)
+            pingpongPie = Func(pie.pingpong, pieName, fromFrame = 32, toFrame = 47)
+        track = Sequence(Func(self.setPosHpr, x, y, z, h, p, r), Func(pie.reparentTo, self.rightHand),
+                         Func(pie.setPosHpr, 0, 0, 0, 0, 0, 0),
+                         Parallel(pie.scaleInterval(1, self.pieScale, startScale = MovieUtil.PNT3_NEARZERO),
+                                  ActorInterval(self, 'throw', startFrame = 0, endFrame = 31), animPie),
+                         Func(self.pingpong, 'throw', fromFrame = 32, toFrame = 47), pingpongPie)
         return track
 
     def getTossPieInterval(self, x, y, z, h, p, r, power, beginFlyIval = Sequence()):
@@ -2880,19 +2939,30 @@ class Toon(Avatar.Avatar, ToonHead):
         pieType = BattleProps.globalPropPool.getPropType(pieName)
         animPie = Sequence()
         if pieType == 'actor':
-            animPie = ActorInterval(pie, pieName, startFrame=48)
+            animPie = ActorInterval(pie, pieName, startFrame = 48)
         sound = loader.loadSfx('phase_3.5/audio/sfx/AA_pie_throw_only.ogg')
         t = power / 100.0
         dist = 100 - 70 * t
         time = 1 + 0.5 * t
-        proj = ProjectileInterval(None, startPos=Point3(0, 0, 0), endPos=Point3(0, dist, 0), duration=time)
+        proj = ProjectileInterval(None, startPos = Point3(0, 0, 0), endPos = Point3(0, dist, 0), duration = time)
         relVel = proj.startVel
 
         def getVelocity(toon = self, relVel = relVel):
             return render.getRelativeVector(toon, relVel)
 
-        toss = Track((0, Sequence(Func(self.setPosHpr, x, y, z, h, p, r), Func(pie.reparentTo, self.rightHand), Func(pie.setPosHpr, 0, 0, 0, 0, 0, 0), Parallel(ActorInterval(self, 'throw', startFrame=48), animPie), Func(self.loop, 'neutral'))), (16.0 / 24.0, Func(pie.detachNode)))
-        fly = Track((14.0 / 24.0, SoundInterval(sound, node=self)), (16.0 / 24.0, Sequence(Func(flyPie.reparentTo, render), Func(flyPie.setScale, self.pieScale), Func(flyPie.setPosHpr, self, 0.52, 0.97, 2.24, 89.42, -10.56, 87.94), beginFlyIval, ProjectileInterval(flyPie, startVel=getVelocity, duration=3), Func(flyPie.detachNode))))
+        toss = Track((0, Sequence(Func(self.setPosHpr, x, y, z, h, p, r), Func(pie.reparentTo, self.rightHand),
+                                  Func(pie.setPosHpr, 0, 0, 0, 0, 0, 0),
+                                  Parallel(ActorInterval(self, 'throw', startFrame = 48), animPie),
+                                  Func(self.loop, 'neutral'))), (16.0 / 24.0, Func(pie.detachNode)))
+        fly = Track((14.0 / 24.0, SoundInterval(sound, node = self)), (16.0 / 24.0,
+                                                                       Sequence(Func(flyPie.reparentTo, render),
+                                                                                Func(flyPie.setScale, self.pieScale),
+                                                                                Func(flyPie.setPosHpr, self, 0.52, 0.97,
+                                                                                     2.24, 89.42, -10.56, 87.94),
+                                                                                beginFlyIval, ProjectileInterval(flyPie,
+                                                                                                                 startVel = getVelocity,
+                                                                                                                 duration = 3),
+                                                                                Func(flyPie.detachNode))))
         return (toss, fly, flyPie)
 
     def getPieSplatInterval(self, x, y, z, pieCode):
@@ -2913,7 +2983,9 @@ class Toon(Avatar.Avatar, ToonHead):
             vol = 0.25
         else:
             sound = loader.loadSfx('phase_4/audio/sfx/AA_wholepie_only.ogg')
-        ival = Parallel(Func(splat.reparentTo, render), Func(splat.setPos, x, y, z), SoundInterval(sound, node=splat, volume=vol), Sequence(ActorInterval(splat, splatName), Func(splat.detachNode)))
+        ival = Parallel(Func(splat.reparentTo, render), Func(splat.setPos, x, y, z),
+                        SoundInterval(sound, node = splat, volume = vol),
+                        Sequence(ActorInterval(splat, splatName), Func(splat.detachNode)))
         return ival
 
     def cleanupPieModel(self):
@@ -2926,7 +2998,8 @@ class Toon(Avatar.Avatar, ToonHead):
         return Sequence(ActorInterval(self, 'feedPet'), Func(self.animFSM.request, 'neutral'))
 
     def getScratchPetIval(self):
-        return Sequence(ActorInterval(self, 'pet-start'), ActorInterval(self, 'pet-loop'), ActorInterval(self, 'pet-end'))
+        return Sequence(ActorInterval(self, 'pet-start'), ActorInterval(self, 'pet-loop'),
+                        ActorInterval(self, 'pet-end'))
 
     def getCallPetIval(self):
         return ActorInterval(self, 'callPet')
@@ -2956,13 +3029,13 @@ class Toon(Avatar.Avatar, ToonHead):
         self.stop()
 
     def enterGolfGoodPutt(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
-        self.loop('good-putt', restart=0)
+        self.loop('good-putt', restart = 0)
 
     def exitGolfGoodPutt(self):
         self.stop()
 
     def enterGolfBadPutt(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
-        self.loop('badloop-putt', restart=0)
+        self.loop('badloop-putt', restart = 0)
 
     def exitGolfBadPutt(self):
         self.stop()
@@ -2973,7 +3046,7 @@ class Toon(Avatar.Avatar, ToonHead):
         lerpTime = 0.1
         node = self.getGeomNode().getChild(0)
         self.origScale = node.getScale()
-        self.track = Sequence(LerpScaleInterval(node, lerpTime, VBase3(2, 2, 0.025), blendType='easeInOut'))
+        self.track = Sequence(LerpScaleInterval(node, lerpTime, VBase3(2, 2, 0.025), blendType = 'easeInOut'))
         self.track.start(ts)
         self.setActiveShadow(1)
 
@@ -2992,9 +3065,9 @@ class Toon(Avatar.Avatar, ToonHead):
         self.playingAnim = None
         self.playingRate = None
         self.standWalkRunReverse = (('neutral', 1.0),
-         ('run', 1.0),
-         ('run', 1.0),
-         ('run', -1.0))
+                                    ('run', 1.0),
+                                    ('run', 1.0),
+                                    ('run', -1.0))
         self.setSpeed(self.forwardSpeed, self.rotateSpeed)
         self.setActiveShadow(1)
         return
@@ -3026,7 +3099,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.stop()
 
     def enterScientistLessWork(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
-        self.loop('scientistWork', fromFrame=319, toFrame=619)
+        self.loop('scientistWork', fromFrame = 319, toFrame = 619)
 
     def exitScientistLessWork(self):
         self.stop()

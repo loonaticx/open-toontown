@@ -30,6 +30,7 @@ from . import GardenProgressMeter
 from toontown.estate import FlowerSellGUI
 from toontown.toontowngui import TTDialog
 
+
 class DistributedEstate(DistributedObject.DistributedObject):
     notify = directNotify.newCategory('DistributedEstate')
 
@@ -145,7 +146,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
             self.bn.setPos(20.0, -.1, 0)
             self.bn.setScale(2.35)
 
-        replacement = Sequence(LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 0)), Func(__replaceAirplane__), LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 1)))
+        replacement = Sequence(LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 0)), Func(__replaceAirplane__),
+                               LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 1)))
         replacement.start()
 
     def unloadWitch(self):
@@ -169,7 +171,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
             self.bn.setScale(0.35)
             self.banner.hide()
 
-        replacement = Sequence(LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 0)), Func(__replaceWitch__), LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 1)))
+        replacement = Sequence(LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 0)), Func(__replaceWitch__),
+                               LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 1)))
         replacement.start()
 
     def initCamera(self):
@@ -254,10 +257,10 @@ class DistributedEstate(DistributedObject.DistributedObject):
         dawnTime = self.dawnTime
         dT = (curTime - dawnTime - self.deltaTime) % HouseGlobals.DAY_NIGHT_PERIOD
         print('getDeltaTime = %s. curTime=%s. dawnTime=%s. serverTime=%s.  deltaTime=%s' % (dT,
-         curTime,
-         dawnTime,
-         self.serverTime,
-         self.deltaTime))
+                                                                                            curTime,
+                                                                                            dawnTime,
+                                                                                            self.serverTime,
+                                                                                            self.deltaTime))
         return dT
 
     def __initDaytimeTask(self):
@@ -272,7 +275,24 @@ class DistributedEstate(DistributedObject.DistributedObject):
 
     def __dayTimeTask(self, task):
         taskName = self.taskName('daytime')
-        track = Sequence(Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 0.6, 0.6, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 0.8, 0.8, 1))), Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.2, 0.2, 0.5, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.4, 0.4, 0.6, 1))), Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.6, 0.6, 0.8, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.7, 0.7, 0.8, 1))), Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 1, 1, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 1, 1, 1))), Func(base.cr.playGame.hood.loader.geom.clearColorScale), Func(base.cr.playGame.hood.sky.clearColorScale))
+        track = Sequence(Parallel(
+            LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_DAY_PERIOD,
+                                   Vec4(1, 0.6, 0.6, 1)),
+            LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 0.8, 0.8, 1))),
+                         Parallel(
+                             LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_NIGHT_PERIOD,
+                                                    Vec4(0.2, 0.2, 0.5, 1)),
+                             LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_NIGHT_PERIOD,
+                                                    Vec4(0.4, 0.4, 0.6, 1))), Parallel(
+                LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_NIGHT_PERIOD,
+                                       Vec4(0.6, 0.6, 0.8, 1)),
+                LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_NIGHT_PERIOD,
+                                       Vec4(0.7, 0.7, 0.8, 1))), Parallel(
+                LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_DAY_PERIOD,
+                                       Vec4(1, 1, 1, 1)),
+                LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 1, 1, 1))),
+                         Func(base.cr.playGame.hood.loader.geom.clearColorScale),
+                         Func(base.cr.playGame.hood.sky.clearColorScale))
         if self.dayTrack:
             self.dayTrack.finish()
         self.dayTrack = track
@@ -299,7 +319,20 @@ class DistributedEstate(DistributedObject.DistributedObject):
         sun = base.cr.playGame.hood.loader.sun
         h = 30
         halfPeriod = HouseGlobals.DAY_NIGHT_PERIOD / 2.0
-        track = Sequence(Parallel(LerpHprInterval(sunMoonNode, HouseGlobals.HALF_DAY_PERIOD, Vec3(0, 0, 0)), LerpColorScaleInterval(sun, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 1, 0.5, 1))), Func(sun.clearColorScale), Func(self.__stopBirds), LerpHprInterval(sunMoonNode, 0.2, Vec3(0, -h - 3, 0)), LerpHprInterval(sunMoonNode, 0.1, Vec3(0, -h + 2, 0)), LerpHprInterval(sunMoonNode, 0.1, Vec3(0, -h - 1.5, 0)), LerpHprInterval(sunMoonNode, 0.1, Vec3(0, -h, 0)), Func(self.notify.debug, 'night'), Wait(HouseGlobals.HALF_NIGHT_PERIOD - 0.5), LerpHprInterval(sunMoonNode, HouseGlobals.HALF_NIGHT_PERIOD, Vec3(0, 0, 0)), Func(self.__startBirds), LerpHprInterval(sunMoonNode, 0.2, Vec3(0, h + 3, 0)), LerpHprInterval(sunMoonNode, 0.1, Vec3(0, h - 2, 0)), LerpHprInterval(sunMoonNode, 0.1, Vec3(0, h + 1.5, 0)), LerpHprInterval(sunMoonNode, 0.1, Vec3(0, h, 0)), Func(self.notify.debug, 'day'), Func(sunMoonNode.setHpr, 0, h, 0), Wait(HouseGlobals.HALF_DAY_PERIOD - 0.5))
+        track = Sequence(Parallel(LerpHprInterval(sunMoonNode, HouseGlobals.HALF_DAY_PERIOD, Vec3(0, 0, 0)),
+                                  LerpColorScaleInterval(sun, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 1, 0.5, 1))),
+                         Func(sun.clearColorScale), Func(self.__stopBirds),
+                         LerpHprInterval(sunMoonNode, 0.2, Vec3(0, -h - 3, 0)),
+                         LerpHprInterval(sunMoonNode, 0.1, Vec3(0, -h + 2, 0)),
+                         LerpHprInterval(sunMoonNode, 0.1, Vec3(0, -h - 1.5, 0)),
+                         LerpHprInterval(sunMoonNode, 0.1, Vec3(0, -h, 0)), Func(self.notify.debug, 'night'),
+                         Wait(HouseGlobals.HALF_NIGHT_PERIOD - 0.5),
+                         LerpHprInterval(sunMoonNode, HouseGlobals.HALF_NIGHT_PERIOD, Vec3(0, 0, 0)),
+                         Func(self.__startBirds), LerpHprInterval(sunMoonNode, 0.2, Vec3(0, h + 3, 0)),
+                         LerpHprInterval(sunMoonNode, 0.1, Vec3(0, h - 2, 0)),
+                         LerpHprInterval(sunMoonNode, 0.1, Vec3(0, h + 1.5, 0)),
+                         LerpHprInterval(sunMoonNode, 0.1, Vec3(0, h, 0)), Func(self.notify.debug, 'day'),
+                         Func(sunMoonNode.setHpr, 0, h, 0), Wait(HouseGlobals.HALF_DAY_PERIOD - 0.5))
         if self.sunTrack:
             self.sunTrack.finish()
         self.sunTrack = track
@@ -390,8 +423,10 @@ class DistributedEstate(DistributedObject.DistributedObject):
     def awardedTrophy(self, avId):
         if base.localAvatar.doId == avId:
             base.cr.playGame.getPlace().detectedGardenPlotUse()
-            msg = TTLocalizer.GardenTrophyAwarded % (len(base.localAvatar.getFlowerCollection()), GardenGlobals.getNumberOfFlowerVarieties())
-            self.awardDialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=msg, command=self.closedAwardDialog)
+            msg = TTLocalizer.GardenTrophyAwarded % (
+            len(base.localAvatar.getFlowerCollection()), GardenGlobals.getNumberOfFlowerVarieties())
+            self.awardDialog = TTDialog.TTDialog(style = TTDialog.Acknowledge, text = msg,
+                                                 command = self.closedAwardDialog)
 
     def setClouds(self, clouds):
         self.clouds = clouds

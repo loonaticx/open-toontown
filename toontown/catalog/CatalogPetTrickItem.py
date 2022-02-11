@@ -5,6 +5,7 @@ from toontown.toonbase import TTLocalizer
 from otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
 
+
 class CatalogPetTrickItem(CatalogItem.CatalogItem):
     sequenceNumber = 0
     petPicture = None
@@ -17,7 +18,8 @@ class CatalogPetTrickItem(CatalogItem.CatalogItem):
         return 1
 
     def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
+        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in \
+                avatar.awardMailboxContents or self in avatar.onAwardOrder:
             return 1
         return self.trickId in avatar.petTrickPhrases
 
@@ -43,7 +45,7 @@ class CatalogPetTrickItem(CatalogItem.CatalogItem):
 
     def getPicture(self, avatar):
         from toontown.pets import PetDNA, Pet
-        pet = Pet.Pet(forGui=1)
+        pet = Pet.Pet(forGui = 1)
         dna = avatar.petDNA
         if dna == None:
             dna = PetDNA.getRandomPetDNA()
@@ -56,10 +58,10 @@ class CatalogPetTrickItem(CatalogItem.CatalogItem):
         name = 'petTrick-item-%s' % self.sequenceNumber
         CatalogPetTrickItem.sequenceNumber += 1
         if track != None:
-            track = Sequence(Sequence(track), ActorInterval(pet, 'neutral', duration=2), name=name)
+            track = Sequence(Sequence(track), ActorInterval(pet, 'neutral', duration = 2), name = name)
         else:
             pet.animFSM.request('neutral')
-            track = Sequence(Wait(4), name=name)
+            track = Sequence(Wait(4), name = name)
         self.petPicture = pet
         self.hasPicture = True
         return (model, track)

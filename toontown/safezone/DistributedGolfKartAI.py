@@ -14,41 +14,45 @@ from toontown.golf import GolfManagerAI
 from toontown.golf import GolfGlobals
 import random
 
+
 class DistributedGolfKartAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGolfKartAI')
 
     def __init__(self, air, golfCourse, x, y, z, h, p, r):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.seats = [
-         None, None, None, None]
+            None, None, None, None]
         self.golfCourse = golfCourse
         self.posHpr = (x, y, z, h, p, r)
         self.color = (
-         random.randint(GolfGlobals.KartColors[self.golfCourse][0][0], GolfGlobals.KartColors[self.golfCourse][0][1]),
-         random.randint(GolfGlobals.KartColors[self.golfCourse][1][0], GolfGlobals.KartColors[self.golfCourse][1][1]),
-         random.randint(GolfGlobals.KartColors[self.golfCourse][2][0], GolfGlobals.KartColors[self.golfCourse][2][1]))
+            random.randint(GolfGlobals.KartColors[self.golfCourse][0][0],
+                           GolfGlobals.KartColors[self.golfCourse][0][1]),
+            random.randint(GolfGlobals.KartColors[self.golfCourse][1][0],
+                           GolfGlobals.KartColors[self.golfCourse][1][1]),
+            random.randint(GolfGlobals.KartColors[self.golfCourse][2][0],
+                           GolfGlobals.KartColors[self.golfCourse][2][1]))
         if self.golfCourse == 1:
             if self.color[0] + self.color[1] <= 255:
                 self.color = (
-                 self.color[0], self.color[0] + self.color[1], self.color[2])
+                    self.color[0], self.color[0] + self.color[1], self.color[2])
             else:
                 self.color = (
-                 self.color[0], 255, self.color[2])
+                    self.color[0], 255, self.color[2])
         self.accepting = 0
         self.trolleyCountdownTime = simbase.config.GetFloat('trolley-countdown-time', TROLLEY_COUNTDOWN_TIME)
         self.fsm = ClassicFSM.ClassicFSM('DistributedGolfKartAI', [
-         State.State('off', self.enterOff, self.exitOff, [
-          'entering']),
-         State.State('entering', self.enterEntering, self.exitEntering, [
-          'waitEmpty']),
-         State.State('waitEmpty', self.enterWaitEmpty, self.exitWaitEmpty, [
-          'waitCountdown']),
-         State.State('waitCountdown', self.enterWaitCountdown, self.exitWaitCountdown, [
-          'waitEmpty', 'allAboard']),
-         State.State('allAboard', self.enterAllAboard, self.exitAllAboard, [
-          'leaving', 'waitEmpty']),
-         State.State('leaving', self.enterLeaving, self.exitLeaving, [
-          'entering'])], 'off', 'off')
+            State.State('off', self.enterOff, self.exitOff, [
+                'entering']),
+            State.State('entering', self.enterEntering, self.exitEntering, [
+                'waitEmpty']),
+            State.State('waitEmpty', self.enterWaitEmpty, self.exitWaitEmpty, [
+                'waitCountdown']),
+            State.State('waitCountdown', self.enterWaitCountdown, self.exitWaitCountdown, [
+                'waitEmpty', 'allAboard']),
+            State.State('allAboard', self.enterAllAboard, self.exitAllAboard, [
+                'leaving', 'waitEmpty']),
+            State.State('leaving', self.enterLeaving, self.exitLeaving, [
+                'entering'])], 'off', 'off')
         self.fsm.enterInitialState()
         return
 
@@ -99,10 +103,10 @@ class DistributedGolfKartAI(DistributedObjectAI.DistributedObjectAI):
         if self.findAvatar(avId) != None:
             return
         self.seats[seatIndex] = avId
-        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
+        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs = [avId])
         self.timeOfBoarding = globalClock.getRealTime()
         self.sendUpdate('fillSlot' + str(seatIndex), [
-         avId])
+            avId])
         self.waitCountdown()
         return
 
@@ -134,15 +138,16 @@ class DistributedGolfKartAI(DistributedObjectAI.DistributedObjectAI):
         else:
             self.clearFullNow(seatIndex)
             self.sendUpdate('emptySlot' + str(seatIndex), [
-             avId, globalClockDelta.getRealNetworkTime()])
+                avId, globalClockDelta.getRealNetworkTime()])
             if self.countFullSeats() == 0:
                 self.waitEmpty()
-            taskMgr.doMethodLater(TOON_EXIT_TIME, self.clearEmptyNow, self.uniqueName('clearEmpty-%s' % seatIndex), extraArgs=(seatIndex,))
+            taskMgr.doMethodLater(TOON_EXIT_TIME, self.clearEmptyNow, self.uniqueName('clearEmpty-%s' % seatIndex),
+                                  extraArgs = (seatIndex,))
         return
 
     def clearEmptyNow(self, seatIndex):
         self.sendUpdate('emptySlot' + str(seatIndex), [
-         0, globalClockDelta.getRealNetworkTime()])
+            0, globalClockDelta.getRealNetworkTime()])
 
     def clearFullNow(self, seatIndex):
         avId = self.seats[seatIndex]
@@ -151,7 +156,7 @@ class DistributedGolfKartAI(DistributedObjectAI.DistributedObjectAI):
         else:
             self.seats[seatIndex] = None
             self.sendUpdate('fillSlot' + str(seatIndex), [
-             0])
+                0])
             self.ignore(self.air.getAvatarExitEvent(avId))
         return
 
@@ -184,7 +189,7 @@ class DistributedGolfKartAI(DistributedObjectAI.DistributedObjectAI):
         av = self.air.doId2do.get(avId)
         if av:
             newArgs = (
-             avId,) + args
+                          avId,) + args
             if self.accepting:
                 self.acceptingExitersHandler(*newArgs)
             else:
@@ -307,18 +312,21 @@ class DistributedGolfKartAI(DistributedObjectAI.DistributedObjectAI):
     def exitLeaving(self):
         self.accepting = 0
         self.color = (
-         random.randint(GolfGlobals.KartColors[self.golfCourse][0][0], GolfGlobals.KartColors[self.golfCourse][0][1]),
-         random.randint(GolfGlobals.KartColors[self.golfCourse][1][0], GolfGlobals.KartColors[self.golfCourse][1][1]),
-         random.randint(GolfGlobals.KartColors[self.golfCourse][2][0], GolfGlobals.KartColors[self.golfCourse][2][1]))
+            random.randint(GolfGlobals.KartColors[self.golfCourse][0][0],
+                           GolfGlobals.KartColors[self.golfCourse][0][1]),
+            random.randint(GolfGlobals.KartColors[self.golfCourse][1][0],
+                           GolfGlobals.KartColors[self.golfCourse][1][1]),
+            random.randint(GolfGlobals.KartColors[self.golfCourse][2][0],
+                           GolfGlobals.KartColors[self.golfCourse][2][1]))
         if self.golfCourse == 1:
             if self.color[0] + self.color[1] <= 255:
                 self.color = (
-                 self.color[0], self.color[0] + self.color[1], self.color[2])
+                    self.color[0], self.color[0] + self.color[1], self.color[2])
             else:
                 self.color = (
-                 self.color[0], 255, self.color[2])
+                    self.color[0], 255, self.color[2])
         self.sendUpdate('setColor', [
-         self.color[0], self.color[1], self.color[2]])
+            self.color[0], self.color[1], self.color[2]])
         taskMgr.remove(self.uniqueName('leaving-timer'))
 
     def getGolfCourse(self):

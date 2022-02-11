@@ -5,6 +5,7 @@ from direct.interval.IntervalGlobal import *
 from direct.showbase import AppRunnerGlobal
 import os
 
+
 class RocketExplosion(NodePath):
 
     def __init__(self, parent, smokeParent):
@@ -55,8 +56,8 @@ class RocketExplosion(NodePath):
         return
 
     def start(self):
-        self.effect.start(parent=self.effectNode)
-        self.smokeEffect.start(parent=self.smokeEffectNode)
+        self.effect.start(parent = self.effectNode)
+        self.smokeEffect.start(parent = self.smokeEffectNode)
 
     def stop(self):
         try:

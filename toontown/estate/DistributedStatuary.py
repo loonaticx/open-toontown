@@ -9,6 +9,7 @@ from toontown.toonbase import TTLocalizer
 from pandac.PandaModules import NodePath
 from pandac.PandaModules import Point3
 
+
 class DistributedStatuary(DistributedLawnDecor.DistributedLawnDecor):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStatuary')
 
@@ -95,7 +96,9 @@ class DistributedStatuary(DistributedLawnDecor.DistributedLawnDecor):
     def handlePicking(self):
         fullName = self.name
         messenger.send('wakeup')
-        self.confirmDialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.ConfirmRemoveStatuary % {'item': fullName}, command=self.confirmCallback)
+        self.confirmDialog = TTDialog.TTDialog(style = TTDialog.YesNo, text = TTLocalizer.ConfirmRemoveStatuary % {
+            'item': fullName
+        }, command = self.confirmCallback)
         self.confirmDialog.show()
         base.cr.playGame.getPlace().detectedGardenPlotUse()
 
@@ -124,7 +127,8 @@ class DistributedStatuary(DistributedLawnDecor.DistributedLawnDecor):
         self.startInteraction()
         itemName = GardenGlobals.PlantAttributes[self.typeIndex]['name']
         stringToShow = TTLocalizer.getResultPlantedSomethingSentence(itemName)
-        self.resultDialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=stringToShow, command=self.resultsCallback)
+        self.resultDialog = TTDialog.TTDialog(style = TTDialog.Acknowledge, text = stringToShow,
+                                              command = self.resultsCallback)
 
     def resultsCallback(self, value):
         self.notify.debug('value=%d' % value)

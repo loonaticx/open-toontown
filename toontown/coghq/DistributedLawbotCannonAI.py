@@ -5,6 +5,7 @@ from toontown.estate import DistributedCannonAI
 from toontown.estate import CannonGlobals
 from toontown.minigame import CannonGameGlobals
 
+
 class DistributedLawbotCannonAI(DistributedObjectAI.DistributedObjectAI):
     notify = directNotify.newCategory('DistributedLawbotCannonAI')
 
@@ -48,9 +49,10 @@ class DistributedLawbotCannonAI(DistributedObjectAI.DistributedObjectAI):
             self.boss.toonEnteredCannon(self.avId, self.index)
             cannonBallsLeft = self.boss.getCannonBallsLeft(avId)
             self.setMovie(CannonGlobals.CANNON_MOVIE_LOAD, self.avId, cannonBallsLeft)
-            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
+            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs = [avId])
         else:
-            self.air.writeServerEvent('suspicious', avId, 'DistributedLawbotCannonAI.requestEnter cannon already occupied')
+            self.air.writeServerEvent('suspicious', avId,
+                                      'DistributedLawbotCannonAI.requestEnter cannon already occupied')
             self.notify.warning('requestEnter() - cannon already occupied')
 
     def setMovie(self, mode, avId, extraInfo):

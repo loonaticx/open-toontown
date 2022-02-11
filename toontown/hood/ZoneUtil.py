@@ -1,7 +1,9 @@
 from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
+
 zoneUtilNotify = DirectNotifyGlobal.directNotify.newCategory('ZoneUtil')
 tutorialDict = None
+
 
 def isGoofySpeedwayZone(zoneId):
     return zoneId == 8000
@@ -201,9 +203,11 @@ def overrideOn(branch, exteriorList, interiorList):
     global tutorialDict
     if tutorialDict:
         zoneUtilNotify.warning('setTutorialDict: tutorialDict is already set!')
-    tutorialDict = {'branch': branch,
-     'exteriors': exteriorList,
-     'interiors': interiorList}
+    tutorialDict = {
+        'branch': branch,
+        'exteriors': exteriorList,
+        'interiors': interiorList
+    }
 
 
 def overrideOff():

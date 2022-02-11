@@ -7,6 +7,7 @@ import random
 from direct.task.Task import Task
 from . import RaceGameGlobals
 
+
 class DistributedRaceGameAI(DistributedMinigameAI):
 
     def __init__(self, air, minigameId):
@@ -15,10 +16,13 @@ class DistributedRaceGameAI(DistributedMinigameAI):
         except:
             self.DistributedRaceGameAI_initialized = 1
             DistributedMinigameAI.__init__(self, air, minigameId)
-            self.gameFSM = ClassicFSM.ClassicFSM('DistributedRaceGameAI', [State.State('inactive', self.enterInactive, self.exitInactive, ['waitClientsChoices']),
-             State.State('waitClientsChoices', self.enterWaitClientsChoices, self.exitWaitClientsChoices, ['processChoices', 'cleanup']),
-             State.State('processChoices', self.enterProcessChoices, self.exitProcessChoices, ['waitClientsChoices', 'cleanup']),
-             State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
+            self.gameFSM = ClassicFSM.ClassicFSM('DistributedRaceGameAI', [
+                State.State('inactive', self.enterInactive, self.exitInactive, ['waitClientsChoices']),
+                State.State('waitClientsChoices', self.enterWaitClientsChoices, self.exitWaitClientsChoices,
+                            ['processChoices', 'cleanup']),
+                State.State('processChoices', self.enterProcessChoices, self.exitProcessChoices,
+                            ['waitClientsChoices', 'cleanup']),
+                State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
             self.addChildGameFSM(self.gameFSM)
             self.avatarChoices = {}
             self.avatarPositions = {}
@@ -113,7 +117,8 @@ class DistributedRaceGameAI(DistributedMinigameAI):
     def enterWaitClientsChoices(self):
         self.notify.debug('enterWaitClientsChoices')
         self.resetChoices()
-        taskMgr.doMethodLater(RaceGameGlobals.InputTimeout, self.waitClientsChoicesTimeout, self.taskName('input-timeout'))
+        taskMgr.doMethodLater(RaceGameGlobals.InputTimeout, self.waitClientsChoicesTimeout,
+                              self.taskName('input-timeout'))
         self.sendUpdate('setTimerStartTime', [globalClockDelta.getFrameNetworkTime()])
 
     def exitWaitClientsChoices(self):

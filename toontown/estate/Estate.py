@@ -18,6 +18,7 @@ from direct.controls.GravityWalker import GravityWalker
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
 from . import HouseGlobals
 
+
 class Estate(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('Estate')
 
@@ -30,51 +31,66 @@ class Estate(Place.Place):
         self.cameraSubmerged = -1
         self.toonSubmerged = -1
         self.fsm = ClassicFSM.ClassicFSM('Estate', [State.State('init', self.enterInit, self.exitInit, ['final',
-          'teleportIn',
-          'doorIn',
-          'walk']),
-         State.State('petTutorial', self.enterPetTutorial, self.exitPetTutorial, ['walk']),
-         State.State('walk', self.enterWalk, self.exitWalk, ['final',
-          'sit',
-          'stickerBook',
-          'options',
-          'quest',
-          'fishing',
-          'mailbox',
-          'stopped',
-          'DFA',
-          'trialerFA',
-          'doorOut',
-          'push',
-          'pet']),
-         State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'teleportOut']),
-         State.State('sit', self.enterSit, self.exitSit, ['walk']),
-         State.State('push', self.enterPush, self.exitPush, ['walk']),
-         State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
-          'sit',
-          'quest',
-          'fishing',
-          'mailbox',
-          'stopped',
-          'doorOut',
-          'push',
-          'pet',
-          'DFA',
-          'trialerFA']),
-         State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk', 'petTutorial']),
-         State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'walk', 'final']),
-         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['final', 'walk']),
-         State.State('final', self.enterFinal, self.exitFinal, ['teleportIn']),
-         State.State('quest', self.enterQuest, self.exitQuest, ['walk']),
-         State.State('fishing', self.enterFishing, self.exitFishing, ['walk', 'stopped']),
-         State.State('mailbox', self.enterMailbox, self.exitMailbox, ['walk', 'stopped']),
-         State.State('stopped', self.enterStopped, self.exitStopped, ['walk']),
-         State.State('pet', self.enterPet, self.exitPet, ['walk', 'trialerFA']),
-         State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
-         State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk'])], 'init', 'final')
+                                                                                                        'teleportIn',
+                                                                                                        'doorIn',
+                                                                                                        'walk']),
+                                                    State.State('petTutorial', self.enterPetTutorial,
+                                                                self.exitPetTutorial, ['walk']),
+                                                    State.State('walk', self.enterWalk, self.exitWalk, ['final',
+                                                                                                        'sit',
+                                                                                                        'stickerBook',
+                                                                                                        'options',
+                                                                                                        'quest',
+                                                                                                        'fishing',
+                                                                                                        'mailbox',
+                                                                                                        'stopped',
+                                                                                                        'DFA',
+                                                                                                        'trialerFA',
+                                                                                                        'doorOut',
+                                                                                                        'push',
+                                                                                                        'pet']),
+                                                    State.State('stopped', self.enterStopped, self.exitStopped,
+                                                                ['walk', 'teleportOut']),
+                                                    State.State('sit', self.enterSit, self.exitSit, ['walk']),
+                                                    State.State('push', self.enterPush, self.exitPush, ['walk']),
+                                                    State.State('stickerBook', self.enterStickerBook,
+                                                                self.exitStickerBook, ['walk',
+                                                                                       'sit',
+                                                                                       'quest',
+                                                                                       'fishing',
+                                                                                       'mailbox',
+                                                                                       'stopped',
+                                                                                       'doorOut',
+                                                                                       'push',
+                                                                                       'pet',
+                                                                                       'DFA',
+                                                                                       'trialerFA']),
+                                                    State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn,
+                                                                ['walk', 'petTutorial']),
+                                                    State.State('teleportOut', self.enterTeleportOut,
+                                                                self.exitTeleportOut, ['teleportIn', 'walk', 'final']),
+                                                    State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
+                                                    State.State('doorOut', self.enterDoorOut, self.exitDoorOut,
+                                                                ['final', 'walk']),
+                                                    State.State('final', self.enterFinal, self.exitFinal,
+                                                                ['teleportIn']),
+                                                    State.State('quest', self.enterQuest, self.exitQuest, ['walk']),
+                                                    State.State('fishing', self.enterFishing, self.exitFishing,
+                                                                ['walk', 'stopped']),
+                                                    State.State('mailbox', self.enterMailbox, self.exitMailbox,
+                                                                ['walk', 'stopped']),
+                                                    State.State('stopped', self.enterStopped, self.exitStopped,
+                                                                ['walk']),
+                                                    State.State('pet', self.enterPet, self.exitPet,
+                                                                ['walk', 'trialerFA']),
+                                                    State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA,
+                                                                ['trialerFAReject', 'DFA']),
+                                                    State.State('trialerFAReject', self.enterTrialerFAReject,
+                                                                self.exitTrialerFAReject, ['walk']),
+                                                    State.State('DFA', self.enterDFA, self.exitDFA,
+                                                                ['DFAReject', 'teleportOut']),
+                                                    State.State('DFAReject', self.enterDFAReject, self.exitDFAReject,
+                                                                ['walk'])], 'init', 'final')
         self.fsm.enterInitialState()
         self.doneEvent = doneEvent
         self.parentFSMState = parentFSMState
@@ -113,8 +129,12 @@ class Estate(Place.Place):
         self._telemLimiter = limiter
         if newsManager:
             holidayIds = base.cr.newsManager.getDecorationHolidayId()
-            if (ToontownGlobals.HALLOWEEN_COSTUMES in holidayIds or ToontownGlobals.SPOOKY_COSTUMES in holidayIds) and self.loader.hood.spookySkyFile:
-                lightsOff = Sequence(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(0.55, 0.55, 0.65, 1)), Func(self.loader.hood.startSpookySky))
+            if (
+                    ToontownGlobals.HALLOWEEN_COSTUMES in holidayIds or ToontownGlobals.SPOOKY_COSTUMES in
+                    holidayIds) and self.loader.hood.spookySkyFile:
+                lightsOff = Sequence(
+                    LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(0.55, 0.55, 0.65, 1)),
+                    Func(self.loader.hood.startSpookySky))
                 lightsOff.start()
             else:
                 self.loader.hood.startSky()
@@ -132,7 +152,8 @@ class Estate(Place.Place):
         self.loader.geom.reparentTo(render)
         if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
             holidayIds = base.cr.newsManager.getHolidayIdList()
-            if ToontownGlobals.APRIL_FOOLS_COSTUMES in holidayIds or ToontownGlobals.SILLYMETER_EXT_HOLIDAY in holidayIds:
+            if ToontownGlobals.APRIL_FOOLS_COSTUMES in holidayIds or ToontownGlobals.SILLYMETER_EXT_HOLIDAY in \
+                    holidayIds:
                 self.startAprilFoolsControls()
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
@@ -150,7 +171,8 @@ class Estate(Place.Place):
         base.localAvatar.stopChat()
         if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
             holidayIds = base.cr.newsManager.getHolidayIdList()
-            if ToontownGlobals.APRIL_FOOLS_COSTUMES in holidayIds or ToontownGlobals.SILLYMETER_EXT_HOLIDAY in holidayIds:
+            if ToontownGlobals.APRIL_FOOLS_COSTUMES in holidayIds or ToontownGlobals.SILLYMETER_EXT_HOLIDAY in \
+                    holidayIds:
                 self.stopAprilFoolsControls()
         self._telemLimiter.destroy()
         del self._telemLimiter
@@ -332,7 +354,7 @@ class Estate(Place.Place):
         if self.cameraSubmerged == 1:
             return
         self.__setUnderwaterFog()
-        base.playSfx(self.loader.underwaterSound, looping=1, volume=0.8)
+        base.playSfx(self.loader.underwaterSound, looping = 1, volume = 0.8)
         self.cameraSubmerged = 1
         self.walkStateData.setSwimSoundAudible(1)
 

@@ -3,6 +3,7 @@ from . import DistributedBarrelBaseAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
 
+
 class DistributedGagBarrelAI(DistributedBarrelBaseAI.DistributedBarrelBaseAI):
 
     def __init__(self, level, entId):

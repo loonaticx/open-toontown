@@ -6,6 +6,7 @@ from toontown.battle import DistributedBattleFinal
 from toontown.suit import SuitTimings
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedBattleWaiters(DistributedBattleFinal.DistributedBattleFinal):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleWaiters')
 
@@ -37,7 +38,7 @@ class DistributedBattleWaiters(DistributedBattleFinal.DistributedBattleFinal):
                 camera.setPosHpr(20, -4, 7, 60, 0, 0)
             else:
                 camera.setPosHpr(-20, -4, 7, -60, 0, 0)
-        track = Sequence(Wait(0.5), done, name=name)
+        track = Sequence(Wait(0.5), done, name = name)
         track.start(ts)
         self.storeInterval(track, name)
 
@@ -83,7 +84,7 @@ class DistributedBattleWaiters(DistributedBattleFinal.DistributedBattleFinal):
             else:
                 camera.setPosHpr(-20, -4, 7, -60, 0, 0)
         done = Func(callback)
-        track = Sequence(suitTrack, done, name=name)
+        track = Sequence(suitTrack, done, name = name)
         track.start(ts)
         self.storeInterval(track, name)
         return

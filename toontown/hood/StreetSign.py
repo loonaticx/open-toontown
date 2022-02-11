@@ -7,11 +7,13 @@ from direct.distributed import DistributedObject
 from direct.showbase import AppRunnerGlobal
 from toontown.toonbase import TTLocalizer
 
+
 class StreetSign(DistributedObject.DistributedObject):
     RedownloadTaskName = 'RedownloadStreetSign'
     StreetSignFileName = config.GetString('street-sign-filename', 'texture.png')
     StreetSignBaseDir = config.GetString('street-sign-base-dir', 'sign')
-    StreetSignUrl = base.config.GetString('street-sign-url', 'http://cdn.toontown.disney.go.com/toontown/en/street-signs/img/')
+    StreetSignUrl = base.config.GetString('street-sign-url',
+                                          'http://cdn.toontown.disney.go.com/toontown/en/street-signs/img/')
     notify = DirectNotifyGlobal.directNotify.newCategory('StreetSign')
 
     def __init__(self):

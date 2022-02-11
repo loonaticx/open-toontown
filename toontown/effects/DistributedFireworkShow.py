@@ -1,6 +1,7 @@
 from direct.distributed import DistributedObject
 from toontown.effects.FireworkShowMixin import FireworkShowMixin
 
+
 class DistributedFireworkShow(DistributedObject.DistributedObject, FireworkShowMixin):
     notify = directNotify.newCategory('DistributedFireworkShow')
 
@@ -20,8 +21,8 @@ class DistributedFireworkShow(DistributedObject.DistributedObject, FireworkShowM
 
     def d_requestFirework(self, x, y, z, style, color1, color2):
         self.sendUpdate('requestFirework', (x,
-         y,
-         z,
-         style,
-         color1,
-         color2))
+                                            y,
+                                            z,
+                                            style,
+                                            color1,
+                                            color2))

@@ -15,6 +15,7 @@ from toontown.toonbase import ToontownBattleGlobals
 from toontown.coghq import DistributedStage
 from toontown.building import Elevator
 
+
 class StageInterior(BattlePlace.BattlePlace):
     notify = DirectNotifyGlobal.directNotify.newCategory('StageInterior')
 
@@ -23,48 +24,49 @@ class StageInterior(BattlePlace.BattlePlace):
         self.parentFSM = parentFSM
         self.zoneId = loader.stageId
         self.elevatorDoneEvent = 'elevatorDone'
-        self.fsm = ClassicFSM.ClassicFSM('StageInterior', [State.State('start', self.enterStart, self.exitStart, ['walk', 'teleportIn', 'fallDown']),
-         State.State('walk', self.enterWalk, self.exitWalk, ['push',
-          'sit',
-          'stickerBook',
-          'WaitForBattle',
-          'battle',
-          'died',
-          'teleportOut',
-          'squished',
-          'DFA',
-          'fallDown',
-          'elevator']),
-         State.State('sit', self.enterSit, self.exitSit, ['walk', 'died', 'teleportOut']),
-         State.State('push', self.enterPush, self.exitPush, ['walk', 'died', 'teleportOut']),
-         State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
-          'battle',
-          'DFA',
-          'WaitForBattle',
-          'died',
-          'teleportOut']),
-         State.State('WaitForBattle', self.enterWaitForBattle, self.exitWaitForBattle, ['battle',
-          'walk',
-          'died',
-          'teleportOut']),
-         State.State('battle', self.enterBattle, self.exitBattle, ['walk', 'teleportOut', 'died']),
-         State.State('fallDown', self.enterFallDown, self.exitFallDown, ['walk', 'died', 'teleportOut']),
-         State.State('squished', self.enterSquished, self.exitSquished, ['walk', 'died', 'teleportOut']),
-         State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk',
-          'teleportOut',
-          'quietZone',
-          'died']),
-         State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn',
-          'FLA',
-          'quietZone',
-          'WaitForBattle']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walkteleportOut']),
-         State.State('died', self.enterDied, self.exitDied, ['teleportOut']),
-         State.State('FLA', self.enterFLA, self.exitFLA, ['quietZone']),
-         State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['teleportIn']),
-         State.State('elevator', self.enterElevator, self.exitElevator, ['walk']),
-         State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
+        self.fsm = ClassicFSM.ClassicFSM('StageInterior', [
+            State.State('start', self.enterStart, self.exitStart, ['walk', 'teleportIn', 'fallDown']),
+            State.State('walk', self.enterWalk, self.exitWalk, ['push',
+                                                                'sit',
+                                                                'stickerBook',
+                                                                'WaitForBattle',
+                                                                'battle',
+                                                                'died',
+                                                                'teleportOut',
+                                                                'squished',
+                                                                'DFA',
+                                                                'fallDown',
+                                                                'elevator']),
+            State.State('sit', self.enterSit, self.exitSit, ['walk', 'died', 'teleportOut']),
+            State.State('push', self.enterPush, self.exitPush, ['walk', 'died', 'teleportOut']),
+            State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
+                                                                                     'battle',
+                                                                                     'DFA',
+                                                                                     'WaitForBattle',
+                                                                                     'died',
+                                                                                     'teleportOut']),
+            State.State('WaitForBattle', self.enterWaitForBattle, self.exitWaitForBattle, ['battle',
+                                                                                           'walk',
+                                                                                           'died',
+                                                                                           'teleportOut']),
+            State.State('battle', self.enterBattle, self.exitBattle, ['walk', 'teleportOut', 'died']),
+            State.State('fallDown', self.enterFallDown, self.exitFallDown, ['walk', 'died', 'teleportOut']),
+            State.State('squished', self.enterSquished, self.exitSquished, ['walk', 'died', 'teleportOut']),
+            State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk',
+                                                                                  'teleportOut',
+                                                                                  'quietZone',
+                                                                                  'died']),
+            State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn',
+                                                                                     'FLA',
+                                                                                     'quietZone',
+                                                                                     'WaitForBattle']),
+            State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
+            State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walkteleportOut']),
+            State.State('died', self.enterDied, self.exitDied, ['teleportOut']),
+            State.State('FLA', self.enterFLA, self.exitFLA, ['quietZone']),
+            State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['teleportIn']),
+            State.State('elevator', self.enterElevator, self.exitElevator, ['walk']),
+            State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
 
     def load(self):
         self.parentFSM.getStateNamed('stageInterior').addChild(self.fsm)
@@ -80,7 +82,7 @@ class StageInterior(BattlePlace.BattlePlace):
 
     def enter(self, requestStatus):
         self.fsm.enterInitialState()
-        base.transitions.fadeOut(t=0)
+        base.transitions.fadeOut(t = 0)
         self._telemLimiter = TLGatherAllAvs('StageInterior', RotationLimitToH)
         base.localAvatar.inventory.setRespectInvasions(0)
         base.cr.forbidCheesyEffects(1)
@@ -88,16 +90,18 @@ class StageInterior(BattlePlace.BattlePlace):
         def commence(self = self):
             NametagGlobals.setMasterArrowsOn(1)
             self.fsm.request(requestStatus['how'], [requestStatus])
-            base.playMusic(self.music, looping=1, volume=0.8)
+            base.playMusic(self.music, looping = 1, volume = 0.8)
             base.transitions.irisIn()
             stage = bboard.get(DistributedStage.DistributedStage.ReadyPost)
             self.loader.hood.spawnTitleText(stage.stageId)
 
-        self.stageReadyWatcher = BulletinBoardWatcher.BulletinBoardWatcher('StageReady', DistributedStage.DistributedStage.ReadyPost, commence)
+        self.stageReadyWatcher = BulletinBoardWatcher.BulletinBoardWatcher('StageReady',
+                                                                           DistributedStage.DistributedStage.ReadyPost,
+                                                                           commence)
         self.stageDefeated = 0
         self.acceptOnce(DistributedStage.DistributedStage.WinEvent, self.handleStageWinEvent)
         if __debug__ and 0:
-            self.accept('f10', lambda : messenger.send(DistributedStage.DistributedStage.WinEvent))
+            self.accept('f10', lambda: messenger.send(DistributedStage.DistributedStage.WinEvent))
         self.confrontedBoss = 0
 
         def handleConfrontedBoss(self = self):
@@ -149,13 +153,13 @@ class StageInterior(BattlePlace.BattlePlace):
     def enterTownBattle(self, event):
         mult = ToontownBattleGlobals.getStageCreditMultiplier(bboard.get(DistributedStage.DistributedStage.FloorNum))
         base.localAvatar.inventory.setBattleCreditMultiplier(mult)
-        self.loader.townBattle.enter(event, self.fsm.getStateNamed('battle'), bldg=1, creditMultiplier=mult)
+        self.loader.townBattle.enter(event, self.fsm.getStateNamed('battle'), bldg = 1, creditMultiplier = mult)
 
     def exitBattle(self):
         StageInterior.notify.debug('exitBattle')
         BattlePlace.BattlePlace.exitBattle(self)
         self.loader.music.stop()
-        base.playMusic(self.music, looping=1, volume=0.8)
+        base.playMusic(self.music, looping = 1, volume = 0.8)
 
     def enterStickerBook(self, page = None):
         BattlePlace.BattlePlace.enterStickerBook(self, page)
@@ -216,7 +220,7 @@ class StageInterior(BattlePlace.BattlePlace):
             'zoneId': zoneId,
             'shardId': None,
             'avId': -1,
-            }])
+        }])
 
     def enterDied(self, requestStatus, callback = None):
         StageInterior.notify.debug('enterDied')
@@ -233,7 +237,8 @@ class StageInterior(BattlePlace.BattlePlace):
 
     def enterFLA(self, requestStatus):
         StageInterior.notify.debug('enterFLA')
-        self.flaDialog = TTDialog.TTGlobalDialog(message=TTLocalizer.ForcedLeaveStageAckMsg, doneEvent='FLADone', style=TTDialog.Acknowledge, fadeScreen=1)
+        self.flaDialog = TTDialog.TTGlobalDialog(message = TTLocalizer.ForcedLeaveStageAckMsg, doneEvent = 'FLADone',
+                                                 style = TTDialog.Acknowledge, fadeScreen = 1)
 
         def continueExit(self = self, requestStatus = requestStatus):
             self.__processLeaveRequest(requestStatus)

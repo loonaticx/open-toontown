@@ -41,7 +41,7 @@ class DistributedViewPadAI(DistributedKartPadAI):
             self.b_setLastEntered(globalClockDelta.getRealNetworkTime())
             taskMgr.doMethodLater(KartGlobals.COUNTDOWN_TIME, self.kickAvatar,
                                   startingBlock.uniqueName('viewTimer'),
-                                  extraArgs=[avId, startingBlock])
+                                  extraArgs = [avId, startingBlock])
             return KartGlobals.ERROR_CODE.success
         else:
             return KartGlobals.ERROR_CODE.eOccupied

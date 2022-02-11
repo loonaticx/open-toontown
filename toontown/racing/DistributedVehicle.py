@@ -22,8 +22,10 @@ import random
 from direct.showbase.PythonUtil import randFloat
 from direct.task.Task import Task
 import math
+
 iceTurnFactor = 0.25
 iceAccelFactor = 0.4
+
 
 class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedVehicle')
@@ -40,35 +42,49 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
     if proRacer:
         accelerationMult = 35
         accelerationBase = 30
-    surfaceModifiers = {'asphalt': {'shake': 0.1,
-                 'driftMin': 65,
-                 'windResistance': 0.2,
-                 'particleColor': Vec4(0.7, 0.7, 0.7, 1.0)},
-     'gravel': {'shake': 0.2,
-                'driftMin': 65,
-                'windResistance': 0.2,
-                'particleColor': Vec4(0.53, 0.53, 0.53, 1.0)},
-     'dirt': {'shake': 0.4,
-              'driftMin': 35,
-              'windResistance': 0.3,
-              'particleColor': Vec4(1.0, 1.0, 1.0, 1.0)},
-     'grass': {'shake': 0.8,
-               'driftMin': 15,
-               'windResistance': 0.4,
-               'particleColor': Vec4(0.8, 0.42, 0.8, 1.0)},
-     'ice': {'shake': 0.0,
-             'driftMin': 0,
-             'windResistance': 0.01,
-             'particleColor': Vec4(1.0, 1.0, 1.0, 1.0)},
-     '': {'shake': 0,
-          'driftMin': 1,
-          'windResistance': 0.2,
-          'particleColor': Vec4(1.0, 1.0, 1.0, 1.0)}}
+    surfaceModifiers = {
+        'asphalt': {
+            'shake': 0.1,
+            'driftMin': 65,
+            'windResistance': 0.2,
+            'particleColor': Vec4(0.7, 0.7, 0.7, 1.0)
+        },
+        'gravel': {
+            'shake': 0.2,
+            'driftMin': 65,
+            'windResistance': 0.2,
+            'particleColor': Vec4(0.53, 0.53, 0.53, 1.0)
+        },
+        'dirt': {
+            'shake': 0.4,
+            'driftMin': 35,
+            'windResistance': 0.3,
+            'particleColor': Vec4(1.0, 1.0, 1.0, 1.0)
+        },
+        'grass': {
+            'shake': 0.8,
+            'driftMin': 15,
+            'windResistance': 0.4,
+            'particleColor': Vec4(0.8, 0.42, 0.8, 1.0)
+        },
+        'ice': {
+            'shake': 0.0,
+            'driftMin': 0,
+            'windResistance': 0.01,
+            'particleColor': Vec4(1.0, 1.0, 1.0, 1.0)
+        },
+        '': {
+            'shake': 0,
+            'driftMin': 1,
+            'windResistance': 0.2,
+            'particleColor': Vec4(1.0, 1.0, 1.0, 1.0)
+        }
+    }
     SFX_BaseDir = 'phase_6/audio/sfx/'
     SFX_WallHits = [SFX_BaseDir + 'KART_Hitting_Wood_Fence.ogg',
-     SFX_BaseDir + 'KART_Hitting_Wood_Fence_1.ogg',
-     SFX_BaseDir + 'KART_Hitting_Metal_Fence.ogg',
-     SFX_BaseDir + 'KART_Hitting_Wall.ogg']
+                    SFX_BaseDir + 'KART_Hitting_Wood_Fence_1.ogg',
+                    SFX_BaseDir + 'KART_Hitting_Metal_Fence.ogg',
+                    SFX_BaseDir + 'KART_Hitting_Wall.ogg']
     SFX_SkidLoop_Grass = SFX_BaseDir + 'KART_Skidding_On_Grass.ogg'
     SFX_SkidLoop_Asphalt = SFX_BaseDir + 'KART_Skidding_On_Asphalt.ogg'
     SFX_TurboStart = SFX_BaseDir + 'KART_turboStart.ogg'
@@ -360,17 +376,23 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
     def setupDriftParticles(self):
         smokeMount = self.geom[0].attachNewNode('Smoke Effect')
         backLeft = smokeMount.attachNewNode('Back Left Smokemount')
-        backLeft.setPos(self.geom[0].find('**/' + self.wheelData[self.LRWHEEL]['node']).getPos() + Vec3(-0.25, -1.0, -0.5))
+        backLeft.setPos(
+            self.geom[0].find('**/' + self.wheelData[self.LRWHEEL]['node']).getPos() + Vec3(-0.25, -1.0, -0.5))
         backRight = smokeMount.attachNewNode('Back Right Smokemount')
-        backRight.setPos(self.geom[0].find('**/' + self.wheelData[self.RRWHEEL]['node']).getPos() + Vec3(0.25, -1.0, -0.5))
+        backRight.setPos(
+            self.geom[0].find('**/' + self.wheelData[self.RRWHEEL]['node']).getPos() + Vec3(0.25, -1.0, -0.5))
         driftEffects = (Drift(backLeft, backLeft), Drift(backRight, backRight))
         for x in driftEffects:
             x.start()
 
         self.drifts = driftEffects
-        self.driftSeq = Sequence(Func(backLeft.show), Func(backRight.show), Wait(1000000), Func(self.drifts[0].effect.getParticlesNamed('particles-1').getRenderer().setColor, Vec4(1.0, 1.0, 1.0, 1.0)), Func(self.drifts[1].effect.getParticlesNamed('particles-1').getRenderer().setColor, Vec4(1.0, 1.0, 1.0, 1.0)), Func(backLeft.hide), Func(backRight.hide))
+        self.driftSeq = Sequence(Func(backLeft.show), Func(backRight.show), Wait(1000000),
+                                 Func(self.drifts[0].effect.getParticlesNamed('particles-1').getRenderer().setColor,
+                                      Vec4(1.0, 1.0, 1.0, 1.0)),
+                                 Func(self.drifts[1].effect.getParticlesNamed('particles-1').getRenderer().setColor,
+                                      Vec4(1.0, 1.0, 1.0, 1.0)), Func(backLeft.hide), Func(backRight.hide))
         self.driftSeqStarted = False
-        self.driftParticleForces = [ x.effect.getParticlesNamed('particles-1').getLinearForce(0) for x in self.drifts ]
+        self.driftParticleForces = [x.effect.getParticlesNamed('particles-1').getLinearForce(0) for x in self.drifts]
         self.smokeMount = smokeMount
         backLeft.hide()
         backRight.hide()
@@ -402,40 +424,50 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         endPts = KartDict[bodyType][7]
         self.sparkMount = self.geom[0].attachNewNode('Spark Effect')
         left = self.sparkMount.attachNewNode('Left Sparkmount')
-        left.setPos((self.geom[0].find('**/' + self.wheelData[self.LFWHEEL]['node']).getPos() + self.geom[0].find('**/' + self.wheelData[self.LRWHEEL]['node']).getPos()) / 2.0 + Vec3(0.0, -1.0, 1.0))
+        left.setPos((self.geom[0].find('**/' + self.wheelData[self.LFWHEEL]['node']).getPos() + self.geom[0].find(
+            '**/' + self.wheelData[self.LRWHEEL]['node']).getPos()) / 2.0 + Vec3(0.0, -1.0, 1.0))
         left.setScale(0.5)
         right = self.sparkMount.attachNewNode('Right Sparkmount')
-        right.setPos((self.geom[0].find('**/' + self.wheelData[self.RFWHEEL]['node']).getPos() + self.geom[0].find('**/' + self.wheelData[self.RRWHEEL]['node']).getPos()) / 2.0 + Vec3(0.0, -1.0, 1.0))
+        right.setPos((self.geom[0].find('**/' + self.wheelData[self.RFWHEEL]['node']).getPos() + self.geom[0].find(
+            '**/' + self.wheelData[self.RRWHEEL]['node']).getPos()) / 2.0 + Vec3(0.0, -1.0, 1.0))
         right.setScale(0.5)
         self.sparks = (Sparks(right, self.sparkMount), Sparks(left, self.sparkMount))
         self.sparks[0].effect.getParticlesNamed('particles-1').getEmitter().setEndpoint1(endPts[0])
         self.sparks[0].effect.getParticlesNamed('particles-1').getEmitter().setEndpoint2(endPts[1])
         self.sparks[0].effect.getParticlesNamed('particles-1').getLinearForce(0).setAmplitude(-50)
-        self.sparks[1].effect.getParticlesNamed('particles-1').getEmitter().setEndpoint1(Point3(-endPts[0][0], endPts[0][1], endPts[0][2]))
-        self.sparks[1].effect.getParticlesNamed('particles-1').getEmitter().setEndpoint2(Point3(-endPts[1][0], endPts[1][1], endPts[1][2]))
+        self.sparks[1].effect.getParticlesNamed('particles-1').getEmitter().setEndpoint1(
+            Point3(-endPts[0][0], endPts[0][1], endPts[0][2]))
+        self.sparks[1].effect.getParticlesNamed('particles-1').getEmitter().setEndpoint2(
+            Point3(-endPts[1][0], endPts[1][1], endPts[1][2]))
         self.sparks[1].effect.getParticlesNamed('particles-1').getLinearForce(0).setAmplitude(50)
 
     def fireSparkParticles(self, side):
-        spark = self.sparks[{'right': 0,
-         'left': 1}[side]]
+        spark = self.sparks[{
+            'right': 0,
+            'left': 1
+        }[side]]
         if not spark.effect.isEnabled():
             spark.effect.getParticlesNamed('particles-1').setBirthRate(0.02)
             spark.start()
-            taskMgr.doMethodLater(0.25, self.stopSparkParticles, 'sparkTimer-' + side, extraArgs=[side])
+            taskMgr.doMethodLater(0.25, self.stopSparkParticles, 'sparkTimer-' + side, extraArgs = [side])
 
     def stopSparkParticles(self, side = None):
-        sides = {0: 'right',
-         1: 'left'}
+        sides = {
+            0: 'right',
+            1: 'left'
+        }
         if side == None:
             for x in list(sides.keys()):
                 self.sparks[x].effect.getParticlesNamed('particles-1').setBirthRate(1000)
-                taskMgr.doMethodLater(0.75, self.sparks[x].stop, 'stopSparks-' + sides[x], extraArgs=[])
+                taskMgr.doMethodLater(0.75, self.sparks[x].stop, 'stopSparks-' + sides[x], extraArgs = [])
 
         else:
-            spark = self.sparks[{'right': 0,
-             'left': 1}[side]]
+            spark = self.sparks[{
+                'right': 0,
+                'left': 1
+            }[side]]
             spark.effect.getParticlesNamed('particles-1').setBirthRate(1000)
-            taskMgr.doMethodLater(0.75, spark.stop, 'stopSparks-' + side, extraArgs=[])
+            taskMgr.doMethodLater(0.75, spark.stop, 'stopSparks-' + side, extraArgs = [])
         return
 
     def cleanupSparkParticles(self):
@@ -552,7 +584,10 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
     def __createPieWindshield(self):
         self.piePieces = []
         for piece in range(self.numPieChunks):
-            self.piePieces.append(DirectLabel(relief=None, pos=(0.0, 0.0, 0.0), image=self.pieSplatter, image_scale=(0.5, 0.5, 0.5), text=' ', text_scale=0.18, text_fg=(1, 0, 1, 1), text_pos=(-0.0, 0.0, 0), text_font=ToontownGlobals.getSignFont(), textMayChange=1))
+            self.piePieces.append(DirectLabel(relief = None, pos = (0.0, 0.0, 0.0), image = self.pieSplatter,
+                                              image_scale = (0.5, 0.5, 0.5), text = ' ', text_scale = 0.18,
+                                              text_fg = (1, 0, 1, 1), text_pos = (-0.0, 0.0, 0),
+                                              text_font = ToontownGlobals.getSignFont(), textMayChange = 1))
             self.piePieces[piece].hide()
 
         return
@@ -572,14 +607,14 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.showPieces()
         if self.pieCount == 0:
             self.pieCount = 15
-            taskMgr.doMethodLater(1, self.__countPies, ' ', extraArgs=[])
-            taskMgr.add(self.__slidePies, 'slidePies', priority=25)
+            taskMgr.doMethodLater(1, self.__countPies, ' ', extraArgs = [])
+            taskMgr.add(self.__slidePies, 'slidePies', priority = 25)
         else:
             self.pieCount = 15
 
     def __countPies(self):
         if self.pieCount > 0:
-            taskMgr.doMethodLater(1, self.__countPies, ' ', extraArgs=[])
+            taskMgr.doMethodLater(1, self.__countPies, ' ', extraArgs = [])
             self.pieCount -= 1
         else:
             for piece in self.piePieces:
@@ -590,7 +625,9 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         for piece in range(self.numPieChunks):
             self.pieSlideSpeed[piece] += randFloat(0.0, 0.25 * dt)
             pieSpeed = self.pieSlideSpeed[piece] * dt
-            self.piePieces[piece].setPos(self.piePieces[piece].getPos()[0], self.piePieces[piece].getPos()[1] - pieSpeed, self.piePieces[piece].getPos()[2] - pieSpeed)
+            self.piePieces[piece].setPos(self.piePieces[piece].getPos()[0],
+                                         self.piePieces[piece].getPos()[1] - pieSpeed,
+                                         self.piePieces[piece].getPos()[2] - pieSpeed)
 
         if self.pieCount == 0:
             return Task.done
@@ -601,7 +638,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         if self.canRace:
             self.enableControls()
         taskMgr.remove('watchVehicleControls')
-        taskMgr.add(self.__watchControls, 'watchVehicleControls', priority=25)
+        taskMgr.add(self.__watchControls, 'watchVehicleControls', priority = 25)
         if not self.speedometer:
             cm = CardMaker('speed')
             cm.setFrame(-0.5, 0.5, -0.5, 0.5)
@@ -631,7 +668,9 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
             c = (bodyColor + Vec4(1, 1, 1, 1)) / 2.0
             c.setW(1.0)
             self.speedometerImages.attachNewNode(m.find('**/*ring').node()).setColorScale(c)
-            self.speedometer = DirectLabel(relief=None, pos=(1.24, 0.0, -0.98), text=str(0), text_scale=0.18, text_fg=bodyColor, text_pos=(-0.04, 0.02, 0), text_font=ToontownGlobals.getSignFont())
+            self.speedometer = DirectLabel(relief = None, pos = (1.24, 0.0, -0.98), text = str(0), text_scale = 0.18,
+                                           text_fg = bodyColor, text_pos = (-0.04, 0.02, 0),
+                                           text_font = ToontownGlobals.getSignFont())
         else:
             self.showSpeedometer()
         self.arrowVert = 0
@@ -684,9 +723,13 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         startFov = base.camLens.getFov().getX()
         if self.cameraTrack:
             self.cameraTrack.pause()
-        cameraZoomIn = Parallel(LerpPosInterval(camera, 2, newCameraPos), LerpFunc(base.camLens.setFov, fromData=startFov, toData=newCameraFov, duration=2))
-        cameraToNormal = Parallel(LerpPosInterval(camera, 1, Point3(0, -33, 16), newCameraPos), LerpFunc(base.camLens.setFov, fromData=newCameraFov, toData=ToontownGlobals.DefaultCameraFov, duration=1))
-        self.cameraTrack = Sequence(Func(self.turboStartSfx.play), cameraZoomIn, Func(lambda : self.setTurbo(True)), Wait(turboDuration), Func(self.__stopTurbo), cameraToNormal)
+        cameraZoomIn = Parallel(LerpPosInterval(camera, 2, newCameraPos),
+                                LerpFunc(base.camLens.setFov, fromData = startFov, toData = newCameraFov, duration = 2))
+        cameraToNormal = Parallel(LerpPosInterval(camera, 1, Point3(0, -33, 16), newCameraPos),
+                                  LerpFunc(base.camLens.setFov, fromData = newCameraFov,
+                                           toData = ToontownGlobals.DefaultCameraFov, duration = 1))
+        self.cameraTrack = Sequence(Func(self.turboStartSfx.play), cameraZoomIn, Func(lambda: self.setTurbo(True)),
+                                    Wait(turboDuration), Func(self.__stopTurbo), cameraToNormal)
         self.cameraTrack.start()
 
     def __stopTurbo(self, task = None):
@@ -795,7 +838,8 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         return retVal
 
     def amIClampingPosition(self):
-        return self.getX() == -3276 or self.getX() == 3276 or self.getY() == -3276 or self.getY() == 3276 or self.getZ() == -3276 or self.getZ() == 3276
+        return self.getX() == -3276 or self.getX() == 3276 or self.getY() == -3276 or self.getY() == 3276 or \
+               self.getZ() == -3276 or self.getZ() == 3276
 
     def __computeTurnRatio(self, speed):
         effectiveSpeed = speed
@@ -854,7 +898,9 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
                 effectiveSpeed = curSpeed
                 if effectiveSpeed > self.speedMinTurn:
                     effectiveSpeed = self.speedMinTurn
-                rotation = -goingBack * (self.wheelPosition * dt * self.turnRatio * -1.8 * curSpeed / 100 + turnHelp * dt * self.turnRatio * -1.2)
+                rotation = -goingBack * (
+                            self.wheelPosition * dt * self.turnRatio * -1.8 * curSpeed / 100 + turnHelp * dt *
+                            self.turnRatio * -1.2)
                 self.outPutCounter += 1
                 if self.outPutCounter > 5:
                     self.outPutCounter = 0
@@ -1097,7 +1143,9 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.imHitMult = level
         if hasattr(self, 'cameraTrack') and self.cameraTrack:
             self.cameraTrack.pause()
-            cameraToNormal = Parallel(LerpPosInterval(camera, 0.05, Point3(0, -33, 16), startPos=camera.getPos()), LerpFunc(base.camLens.setFov, fromData=base.camLens.getFov()[0], toData=ToontownGlobals.DefaultCameraFov, duration=0.05))
+            cameraToNormal = Parallel(LerpPosInterval(camera, 0.05, Point3(0, -33, 16), startPos = camera.getPos()),
+                                      LerpFunc(base.camLens.setFov, fromData = base.camLens.getFov()[0],
+                                               toData = ToontownGlobals.DefaultCameraFov, duration = 0.05))
             cameraToNormal.start()
         self.__stopTurbo()
         self.stopped = True
@@ -1115,8 +1163,9 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.geom[0].setH(2 * spin)
 
     def playSpin(self, timeStamp):
-        delta = -globalClockDelta.networkToLocalTime(timeStamp, globalClock.getFrameTime(), 16, 100) + globalClock.getFrameTime()
-        self.spinAnim = LerpFunc(self.spinCar, fromData=0, toData=360, duration=min(1 - delta, 0))
+        delta = -globalClockDelta.networkToLocalTime(timeStamp, globalClock.getFrameTime(), 16,
+                                                     100) + globalClock.getFrameTime()
+        self.spinAnim = LerpFunc(self.spinCar, fromData = 0, toData = 360, duration = min(1 - delta, 0))
         self.spinAnim.start()
 
     def __throwGag(self):
@@ -1126,14 +1175,15 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.anvil.setScale(7, 9, 7)
         self.anvil.setPos(0, 0, 75)
         self.anvil.reparentTo(self)
-        anvilDrop = ProjectileInterval(self.anvil, startPos=Point3(0, 0, 100), endPos=Point3(0, 0, 0), duration=1)
+        anvilDrop = ProjectileInterval(self.anvil, startPos = Point3(0, 0, 100), endPos = Point3(0, 0, 0), duration = 1)
         shadowScale = self.dropShadow.scaleInterval(1, self.ShadowScale * 2)
-        fadeOut = LerpFunc(self.anvil.setAlphaScale, fromData=1, toData=0, duration=0.5)
+        fadeOut = LerpFunc(self.anvil.setAlphaScale, fromData = 1, toData = 0, duration = 0.5)
         flattenMe = self.geom[0].scaleInterval(0.08, Vec3(1, 1, 0.1))
         unFlatten = Sequence(self.geom[0].scaleInterval(0.2, Vec3(1, 1, 2)), self.geom[0].scaleInterval(0.1, 1))
         anvilSquish = Parallel(Parallel(anvilDrop, shadowScale), Sequence(Wait(0.92), flattenMe))
         anvilStretchFade = Sequence(Parallel(self.anvil.scaleInterval(0.2, Vec3(7, 9, 5)), Func(self.lookUp)), fadeOut)
-        self.gagMovie = Sequence(anvilSquish, Func(self.stopCar, 0.9), anvilStretchFade, Wait(0.5), Parallel(unFlatten, Func(self.lookNormal)), Func(self.startCar), Func(self.hideAnvil))
+        self.gagMovie = Sequence(anvilSquish, Func(self.stopCar, 0.9), anvilStretchFade, Wait(0.5),
+                                 Parallel(unFlatten, Func(self.lookNormal)), Func(self.startCar), Func(self.hideAnvil))
         self.gagMovie.start()
 
     def lookUp(self):
@@ -1180,22 +1230,24 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.anvil.setScale(10, 13, 10)
         self.anvil.setPos(0, 0, 75)
         self.anvil.reparentTo(self)
-        anvilDrop = ProjectileInterval(self.anvil, startPos=Point3(0, 0, 100), endPos=Point3(0, 0, 0), duration=1)
+        anvilDrop = ProjectileInterval(self.anvil, startPos = Point3(0, 0, 100), endPos = Point3(0, 0, 0), duration = 1)
         shadowScale = self.dropShadow.scaleInterval(1, self.ShadowScale * 4)
-        fadeOut = LerpFunc(self.anvil.setAlphaScale, fromData=1, toData=0, duration=0.5)
+        fadeOut = LerpFunc(self.anvil.setAlphaScale, fromData = 1, toData = 0, duration = 0.5)
         flattenMe = self.geom[0].scaleInterval(0.08, Vec3(1, 1, 0.1))
         unFlatten = Sequence(self.geom[0].scaleInterval(0.2, Vec3(1, 1, 2)), self.geom[0].scaleInterval(0.1, 1))
         anvilSquish = Parallel(Parallel(anvilDrop, shadowScale), Sequence(Wait(0.92), flattenMe))
-        anvilStretchFade = Sequence(Parallel(self.anvil.scaleInterval(0.2, Vec3(10, 13, 4)), Func(self.lookUp)), fadeOut)
-        self.gagMovie = Sequence(anvilSquish, anvilStretchFade, Wait(0.5), Parallel(unFlatten, Func(self.lookNormal)), Func(self.hideAnvil))
+        anvilStretchFade = Sequence(Parallel(self.anvil.scaleInterval(0.2, Vec3(10, 13, 4)), Func(self.lookUp)),
+                                    fadeOut)
+        self.gagMovie = Sequence(anvilSquish, anvilStretchFade, Wait(0.5), Parallel(unFlatten, Func(self.lookNormal)),
+                                 Func(self.hideAnvil))
         self.gagMovie.start()
 
     def hitBanana(self):
         if self.wipeOut:
             self.wipeOut.pause()
-            spinAnim = LerpFunc(self.spinCar, fromData=self.geom[0].getH(), toData=360, duration=1)
+            spinAnim = LerpFunc(self.spinCar, fromData = self.geom[0].getH(), toData = 360, duration = 1)
         else:
-            spinAnim = LerpFunc(self.spinCar, fromData=0, toData=360, duration=1)
+            spinAnim = LerpFunc(self.spinCar, fromData = 0, toData = 360, duration = 1)
         self.wipeOut = Sequence(Func(self.stopCar, 0.99), spinAnim, Func(self.startCar))
         self.wipeOut.start()
 
@@ -1204,9 +1256,9 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.splatPie()
         if self.wipeOut:
             self.wipeOut.pause()
-            spinAnim = LerpFunc(self.spinCar, fromData=self.geom[0].getH(), toData=1080, duration=0.5)
+            spinAnim = LerpFunc(self.spinCar, fromData = self.geom[0].getH(), toData = 1080, duration = 0.5)
         else:
-            spinAnim = LerpFunc(self.spinCar, fromData=0, toData=1080, duration=0.5)
+            spinAnim = LerpFunc(self.spinCar, fromData = 0, toData = 1080, duration = 0.5)
         self.wipeOut = Sequence(Func(self.stopCar, 0.99), spinAnim, Func(self.startCar))
         self.wipeOut.start()
 

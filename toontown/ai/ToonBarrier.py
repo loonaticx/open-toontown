@@ -3,6 +3,7 @@ from direct.task import Task
 from direct.showbase import DirectObject
 import random
 
+
 class ToonBarrier(DirectObject.DirectObject):
     notify = directNotify.newCategory('ToonBarrier')
 
@@ -31,9 +32,10 @@ class ToonBarrier(DirectObject.DirectObject):
         taskMgr.doMethodLater(self.timeout, self.__timerExpired, self.taskName)
         for avId in self.avIdList:
             event = simbase.air.getAvatarExitEvent(avId)
-            self.acceptOnce(event, self.__handleUnexpectedExit, extraArgs=[avId])
+            self.acceptOnce(event, self.__handleUnexpectedExit, extraArgs = [avId])
 
-        self.notify.debug('%s: expecting responses from %s within %s seconds' % (self.uniqueName, self.avIdList, self.timeout))
+        self.notify.debug(
+            '%s: expecting responses from %s within %s seconds' % (self.uniqueName, self.avIdList, self.timeout))
         self.active = 1
 
     def cleanup(self):
@@ -63,7 +65,8 @@ class ToonBarrier(DirectObject.DirectObject):
         return self.pendingToons[:]
 
     def __timerExpired(self, task):
-        self.notify.warning('%s: timeout expired; responses not received from %s' % (self.uniqueName, self.pendingToons))
+        self.notify.warning(
+            '%s: timeout expired; responses not received from %s' % (self.uniqueName, self.pendingToons))
         self.cleanup()
         if self.timeoutFunc:
             self.timeoutFunc(self.pendingToons[:])

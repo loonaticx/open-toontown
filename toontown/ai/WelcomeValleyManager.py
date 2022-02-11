@@ -4,6 +4,7 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from direct.showbase import PythonUtil
 
+
 class WelcomeValleyManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('WelcomeValleyManager')
     neverDisable = 1

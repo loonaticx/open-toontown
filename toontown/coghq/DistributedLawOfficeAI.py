@@ -17,6 +17,7 @@ from toontown.ai.ToonBarrier import *
 from direct.distributed.DistributedObjectAI import *
 from direct.showbase import PythonUtil
 
+
 class DistributedLawOfficeAI(DistributedObjectAI, LawOfficeBase.LawOfficeBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawOfficeAI')
 
@@ -35,14 +36,15 @@ class DistributedLawOfficeAI(DistributedObjectAI, LawOfficeBase.LawOfficeBase):
         return
 
     def createEntityCreator(self):
-        return FactoryEntityCreatorAI.FactoryEntityCreatorAI(level=self)
+        return FactoryEntityCreatorAI.FactoryEntityCreatorAI(level = self)
 
     def getBattleCreditMultiplier(self):
         return ToontownBattleGlobals.getFactoryCreditMultiplier(self.lawOfficeId)
 
     def generate(self):
         self.notify.info('generate')
-        self.notify.info('start factory %s %s creation, frame=%s' % (self.lawOfficeId, self.doId, globalClock.getFrameCount()))
+        self.notify.info(
+            'start factory %s %s creation, frame=%s' % (self.lawOfficeId, self.doId, globalClock.getFrameCount()))
         DistributedObjectAI.generate(self)
         self.layout = LawOfficeLayout.LawOfficeLayout(self.lawOfficeId)
         self.exitEvents = {}
@@ -64,7 +66,8 @@ class DistributedLawOfficeAI(DistributedObjectAI, LawOfficeBase.LawOfficeBase):
     def startOffice(self):
         self.notify.info('loading spec')
         specModule = self.layout.getFloorSpec(self.currentFloor)
-        self.level = DistributedLawOfficeFloorAI.DistributedLawOfficeFloorAI(self.air, self.lawOfficeId, self.zoneId, self.entranceId, self.avIds, specModule)
+        self.level = DistributedLawOfficeFloorAI.DistributedLawOfficeFloorAI(self.air, self.lawOfficeId, self.zoneId,
+                                                                             self.entranceId, self.avIds, specModule)
         self.level.setLevelSpec(LevelSpec.LevelSpec(specModule))
         self.notify.info('creating entities')
         self.level.generateWithRequired(self.zoneId)
@@ -102,7 +105,9 @@ class DistributedLawOfficeAI(DistributedObjectAI, LawOfficeBase.LawOfficeBase):
             self.currentFloor += 1
             specModule = self.layout.getFloorSpec(self.currentFloor)
             self.level.requestDelete()
-            self.level = DistributedLawOfficeFloorAI.DistributedLawOfficeFloorAI(self.air, self.lawOfficeId, self.zoneId, self.entranceId, self.avIds, specModule)
+            self.level = DistributedLawOfficeFloorAI.DistributedLawOfficeFloorAI(self.air, self.lawOfficeId,
+                                                                                 self.zoneId, self.entranceId,
+                                                                                 self.avIds, specModule)
             self.level.setLevelSpec(LevelSpec.LevelSpec(specModule))
             self.level.generateWithRequired(self.zoneId)
             print('exchanging elevators')
@@ -112,7 +117,7 @@ class DistributedLawOfficeAI(DistributedObjectAI, LawOfficeBase.LawOfficeBase):
     def startSignal(self):
         self.sendUpdate('startSignal')
 
-    def dumpEveryone(self, optArg=None):
+    def dumpEveryone(self, optArg = None):
         pass
 
     def getTaskZoneId(self):

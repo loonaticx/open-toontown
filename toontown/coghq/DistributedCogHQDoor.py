@@ -11,6 +11,7 @@ from toontown.building import DoorTypes
 from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TeaserPanel
 
+
 class DistributedCogHQDoor(DistributedDoor.DistributedDoor):
 
     def __init__(self, cr):
@@ -23,15 +24,17 @@ class DistributedCogHQDoor(DistributedDoor.DistributedDoor):
 
     def getRequestStatus(self):
         zoneId = self.otherZoneId
-        request = {'loader': ZoneUtil.getBranchLoaderName(zoneId),
-         'where': ZoneUtil.getToonWhereName(zoneId),
-         'how': 'doorIn',
-         'hoodId': ZoneUtil.getHoodId(zoneId),
-         'zoneId': zoneId,
-         'shardId': None,
-         'avId': -1,
-         'allowRedirect': 0,
-         'doorDoId': self.otherDoId}
+        request = {
+            'loader': ZoneUtil.getBranchLoaderName(zoneId),
+            'where': ZoneUtil.getToonWhereName(zoneId),
+            'how': 'doorIn',
+            'hoodId': ZoneUtil.getHoodId(zoneId),
+            'zoneId': zoneId,
+            'shardId': None,
+            'avId': -1,
+            'allowRedirect': 0,
+            'doorDoId': self.otherDoId
+        }
         return request
 
     def enterClosing(self, ts):
@@ -50,7 +53,11 @@ class DistributedCogHQDoor(DistributedDoor.DistributedDoor):
         else:
             h = -100
         self.finishDoorTrack()
-        self.doorTrack = Parallel(Sequence(LerpHprInterval(nodePath=rightDoor, duration=1.0, hpr=VBase3(0, 0, 0), startHpr=VBase3(h, 0, 0), other=otherNP, blendType='easeInOut'), Func(doorFrameHoleRight.hide), Func(self.hideIfHasFlat, rightDoor)), Sequence(Wait(0.5), SoundInterval(self.closeSfx, node=rightDoor)), name=trackName)
+        self.doorTrack = Parallel(Sequence(
+            LerpHprInterval(nodePath = rightDoor, duration = 1.0, hpr = VBase3(0, 0, 0), startHpr = VBase3(h, 0, 0),
+                            other = otherNP, blendType = 'easeInOut'), Func(doorFrameHoleRight.hide),
+            Func(self.hideIfHasFlat, rightDoor)), Sequence(Wait(0.5), SoundInterval(self.closeSfx, node = rightDoor)),
+                                  name = trackName)
         self.doorTrack.start(ts)
         if hasattr(self, 'done'):
             request = self.getRequestStatus()
@@ -71,7 +78,11 @@ class DistributedCogHQDoor(DistributedDoor.DistributedDoor):
         if not leftDoor.isEmpty():
             otherNP = self.getDoorNodePath()
             trackName = 'doorExitTrack-%d' % self.doId
-            self.doorExitTrack = Parallel(Sequence(LerpHprInterval(nodePath=leftDoor, duration=1.0, hpr=VBase3(0, 0, 0), startHpr=VBase3(h, 0, 0), other=otherNP, blendType='easeInOut'), Func(doorFrameHoleLeft.hide), Func(self.hideIfHasFlat, leftDoor)), Sequence(Wait(0.5), SoundInterval(self.closeSfx, node=leftDoor)), name=trackName)
+            self.doorExitTrack = Parallel(Sequence(
+                LerpHprInterval(nodePath = leftDoor, duration = 1.0, hpr = VBase3(0, 0, 0), startHpr = VBase3(h, 0, 0),
+                                other = otherNP, blendType = 'easeInOut'), Func(doorFrameHoleLeft.hide),
+                Func(self.hideIfHasFlat, leftDoor)), Sequence(Wait(0.5), SoundInterval(self.closeSfx, node = leftDoor)),
+                                          name = trackName)
             self.doorExitTrack.start(ts)
 
     def setZoneIdAndBlock(self, zoneId, block):
@@ -89,7 +100,7 @@ class DistributedCogHQDoor(DistributedDoor.DistributedDoor):
             place = base.cr.playGame.getPlace()
             if place:
                 place.fsm.request('stopped')
-            self.dialog = TeaserPanel.TeaserPanel(pageName='cogHQ', doneFunc=self.handleOkTeaser)
+            self.dialog = TeaserPanel.TeaserPanel(pageName = 'cogHQ', doneFunc = self.handleOkTeaser)
 
     def doorTrigger(self, args = None):
         if localAvatar.hasActiveBoardingGroup():

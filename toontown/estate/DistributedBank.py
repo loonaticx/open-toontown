@@ -14,6 +14,7 @@ from toontown.toontowngui import TTDialog
 from toontown.catalog.CatalogFurnitureItem import FurnitureTypes
 from toontown.catalog.CatalogFurnitureItem import FTScale
 
+
 class DistributedBank(DistributedFurnitureItem.DistributedFurnitureItem):
     notify = directNotify.newCategory('DistributedBank')
 
@@ -125,9 +126,9 @@ class DistributedBank(DistributedFurnitureItem.DistributedFurnitureItem):
         timeStamp = globalClockDelta.localElapsedTime(timestamp)
         isLocalToon = avId == base.localAvatar.doId
         self.notify.info('setMovie: mode=%s, avId=%s, timeStamp=%s, isLocalToon=%s' % (mode,
-         avId,
-         timeStamp,
-         isLocalToon))
+                                                                                       avId,
+                                                                                       timeStamp,
+                                                                                       isLocalToon))
         if mode == BANK_MOVIE_CLEAR:
             self.notify.debug('setMovie: clear')
         elif mode == BANK_MOVIE_GUI:
@@ -151,11 +152,15 @@ class DistributedBank(DistributedFurnitureItem.DistributedFurnitureItem):
         elif mode == BANK_MOVIE_NOT_OWNER:
             self.notify.debug('setMovie: not owner')
             if isLocalToon:
-                self.bankDialog = TTDialog.TTDialog(dialogName='BankNotOwner', style=TTDialog.Acknowledge, text=TTLocalizer.DistributedBankNotOwner, text_wordwrap=15, fadeScreen=1, command=self.__clearDialog)
+                self.bankDialog = TTDialog.TTDialog(dialogName = 'BankNotOwner', style = TTDialog.Acknowledge,
+                                                    text = TTLocalizer.DistributedBankNotOwner, text_wordwrap = 15,
+                                                    fadeScreen = 1, command = self.__clearDialog)
         elif mode == BANK_MOVIE_NO_OWNER:
             self.notify.debug('setMovie: no owner')
             if isLocalToon:
-                self.bankDialog = TTDialog.TTDialog(dialogName='BankNoOwner', style=TTDialog.Acknowledge, text=TTLocalizer.DistributedBankNoOwner, text_wordwrap=15, fadeScreen=1, command=self.__clearDialog)
+                self.bankDialog = TTDialog.TTDialog(dialogName = 'BankNoOwner', style = TTDialog.Acknowledge,
+                                                    text = TTLocalizer.DistributedBankNoOwner, text_wordwrap = 15,
+                                                    fadeScreen = 1, command = self.__clearDialog)
         else:
             self.notify.warning('unknown mode in setMovie: %s' % mode)
 
@@ -186,14 +191,18 @@ class DistributedBank(DistributedFurnitureItem.DistributedFurnitureItem):
         track = Sequence()
         index = self.item.furnitureType
         scale = FurnitureTypes[index][FTScale]
-        walkToBank = Sequence(Func(toon.stopSmooth), Func(toon.loop, 'walk'), toon.posHprInterval(0.5, Point3(0, -3.125 * (scale + 0.2), 0), Point3(0, 0, 0), other=self, blendType='easeInOut'), Func(toon.loop, 'neutral'), Func(toon.startSmooth))
+        walkToBank = Sequence(Func(toon.stopSmooth), Func(toon.loop, 'walk'),
+                              toon.posHprInterval(0.5, Point3(0, -3.125 * (scale + 0.2), 0), Point3(0, 0, 0),
+                                                  other = self, blendType = 'easeInOut'), Func(toon.loop, 'neutral'),
+                              Func(toon.startSmooth))
         track.append(walkToBank)
         if not toon.jar:
             toon.getJar()
         self.__attachToonJar(toon)
-        jarAndBank = Parallel(LerpScaleInterval(toon.jar, 1.5, 1.0, blendType='easeOut'), ActorInterval(base.cr.doId2do[avId], 'bank', endTime=3.8))
+        jarAndBank = Parallel(LerpScaleInterval(toon.jar, 1.5, 1.0, blendType = 'easeOut'),
+                              ActorInterval(base.cr.doId2do[avId], 'bank', endTime = 3.8))
         track.append(jarAndBank)
-        track.append(Func(base.cr.doId2do[avId].pingpong, 'bank', fromFrame=48, toFrame=92))
+        track.append(Func(base.cr.doId2do[avId].pingpong, 'bank', fromFrame = 48, toFrame = 92))
         track.start()
         self.hasJarOut = 1
         return
@@ -209,7 +218,8 @@ class DistributedBank(DistributedFurnitureItem.DistributedFurnitureItem):
         if not toon.jar:
             toon.getJar()
         track = Sequence()
-        jarAndBank = Parallel(ActorInterval(base.cr.doId2do[avId], 'bank', startTime=2.0, endTime=0.0), LerpScaleInterval(toon.jar, 2.0, 0.0, blendType='easeIn'))
+        jarAndBank = Parallel(ActorInterval(base.cr.doId2do[avId], 'bank', startTime = 2.0, endTime = 0.0),
+                              LerpScaleInterval(toon.jar, 2.0, 0.0, blendType = 'easeIn'))
         track.append(jarAndBank)
         track.append(Func(self.__removeToonJar))
         track.append(Func(toon.removeJar))

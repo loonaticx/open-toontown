@@ -10,8 +10,10 @@ from . import FactoryEntityCreator
 from . import MintRoomSpecs
 from otp.level import LevelSpec, LevelConstants
 from toontown.toonbase import TTLocalizer
+
 if __dev__:
     from otp.level import EditorGlobals
+
 
 def getMintRoomReadyPostName(doId):
     return 'mintRoomReady-%s' % doId
@@ -35,7 +37,7 @@ class DistributedMintRoom(DistributedLevel.DistributedLevel, MintRoomBase.MintRo
         return
 
     def createEntityCreator(self):
-        return FactoryEntityCreator.FactoryEntityCreator(level=self)
+        return FactoryEntityCreator.FactoryEntityCreator(level = self)
 
     def generate(self):
         self.notify.debug('generate')
@@ -155,7 +157,9 @@ class DistributedMintRoom(DistributedLevel.DistributedLevel, MintRoomBase.MintRo
                 floorNum = self.mint.floorNum
             else:
                 floorNum = '???'
-            posStr = 'X: %.3f' % pos[0] + '\nY: %.3f' % pos[1] + '\nZ: %.3f' % pos[2] + '\nH: %.3f' % h + '\nmintId: %s' % self.mintId + '\nfloor: %s' % floorNum + '\nroomId: %s' % self.roomId + '\nroomName: %s' % roomName
+            posStr = 'X: %.3f' % pos[0] + '\nY: %.3f' % pos[1] + '\nZ: %.3f' % pos[
+                2] + '\nH: %.3f' % h + '\nmintId: %s' % self.mintId + '\nfloor: %s' % floorNum + '\nroomId: %s' % \
+                     self.roomId + '\nroomName: %s' % roomName
             base.localAvatar.setChatAbsolute(posStr, CFThought | CFTimeout)
             return
 
@@ -215,7 +219,8 @@ class DistributedMintRoom(DistributedLevel.DistributedLevel, MintRoomBase.MintRo
 
     def __str__(self):
         if hasattr(self, 'roomId'):
-            return '%s %s: %s' % (self.__class__.__name__, self.roomId, MintRoomSpecs.CashbotMintRoomId2RoomName[self.roomId])
+            return '%s %s: %s' % (
+            self.__class__.__name__, self.roomId, MintRoomSpecs.CashbotMintRoomId2RoomName[self.roomId])
         else:
             return 'DistributedMintRoom'
 

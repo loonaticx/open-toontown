@@ -10,6 +10,7 @@ from toontown.parties import PartyGlobals
 from toontown.parties.PartyInfo import PartyInfo
 from toontown.parties import PartyUtils
 
+
 class PartyEditorGridElement(DirectButton):
     notify = directNotify.newCategory('PartyEditorGridElement')
 
@@ -21,24 +22,26 @@ class PartyEditorGridElement(DirectButton):
         if self.isDecoration:
             self.name = TTLocalizer.PartyDecorationNameDict[self.id]['editor']
             colorList = ((1.0, 1.0, 1.0, 1.0),
-             (0.0, 0.0, 1.0, 1.0),
-             (0.0, 1.0, 1.0, 1.0),
-             (0.5, 0.5, 0.5, 1.0))
-            self.geom = self.partyEditor.partyPlanner.gui.find('**/%s' % PartyGlobals.DecorationInformationDict[self.id]['gridAsset'])
+                         (0.0, 0.0, 1.0, 1.0),
+                         (0.0, 1.0, 1.0, 1.0),
+                         (0.5, 0.5, 0.5, 1.0))
+            self.geom = self.partyEditor.partyPlanner.gui.find(
+                '**/%s' % PartyGlobals.DecorationInformationDict[self.id]['gridAsset'])
         else:
             self.name = TTLocalizer.PartyActivityNameDict[self.id]['editor']
             colorList = ((1.0, 1.0, 1.0, 1.0),
-             (0.0, 1.0, 0.0, 1.0),
-             (1.0, 1.0, 0.0, 1.0),
-             (0.5, 0.5, 0.5, 1.0))
-            self.geom = self.partyEditor.partyPlanner.gui.find('**/%s' % PartyGlobals.ActivityInformationDict[self.id]['gridAsset'])
+                         (0.0, 1.0, 0.0, 1.0),
+                         (1.0, 1.0, 0.0, 1.0),
+                         (0.5, 0.5, 0.5, 1.0))
+            self.geom = self.partyEditor.partyPlanner.gui.find(
+                '**/%s' % PartyGlobals.ActivityInformationDict[self.id]['gridAsset'])
         optiondefs = (('geom', self.geom, None),
-         ('geom_scale', 1.0, None),
-         ('geom_color', colorList[0], None),
-         ('geom1_color', colorList[0], None),
-         ('geom2_color', colorList[0], None),
-         ('geom3_color', colorList[0], None),
-         ('relief', None, None))
+                      ('geom_scale', 1.0, None),
+                      ('geom_color', colorList[0], None),
+                      ('geom1_color', colorList[0], None),
+                      ('geom2_color', colorList[0], None),
+                      ('geom3_color', colorList[0], None),
+                      ('relief', None, None))
         self.defineoptions(kw, optiondefs)
         DirectButton.__init__(self, self.partyEditor.parent)
         self.initialiseoptions(PartyEditorGridElement)
@@ -50,7 +53,10 @@ class PartyEditorGridElement(DirectButton):
         self.uprightNodePath = NodePath('%sUpright' % self.name)
         self.uprightNodePath.reparentTo(self)
         rollOverZOffset = self.getGridSize()[1] / 30.0
-        self.rolloverTitle = DirectLabel(relief=None, parent=self.uprightNodePath, pos=Point3(0.0, 0.0, rollOverZOffset), text=self.name, text_fg=(1.0, 1.0, 1.0, 1.0), text_shadow=(0.0, 0.0, 0.0, 1.0), text_scale=0.075)
+        self.rolloverTitle = DirectLabel(relief = None, parent = self.uprightNodePath,
+                                         pos = Point3(0.0, 0.0, rollOverZOffset), text = self.name,
+                                         text_fg = (1.0, 1.0, 1.0, 1.0), text_shadow = (0.0, 0.0, 0.0, 1.0),
+                                         text_scale = 0.075)
         self.rolloverTitle.stash()
         self.stash()
         self.overValidSquare = False
@@ -73,15 +79,15 @@ class PartyEditorGridElement(DirectButton):
 
     def getDecorationTuple(self, x, y):
         return (self.id,
-         self.centerGridSquare.x,
-         PartyGlobals.PartyEditorGridSize[1] - 1 - self.centerGridSquare.y,
-         self.getCorrectRotation())
+                self.centerGridSquare.x,
+                PartyGlobals.PartyEditorGridSize[1] - 1 - self.centerGridSquare.y,
+                self.getCorrectRotation())
 
     def getActivityTuple(self, x, y):
         return (self.id,
-         self.centerGridSquare.x,
-         PartyGlobals.PartyEditorGridSize[1] - 1 - self.centerGridSquare.y,
-         self.getCorrectRotation())
+                self.centerGridSquare.x,
+                PartyGlobals.PartyEditorGridSize[1] - 1 - self.centerGridSquare.y,
+                self.getCorrectRotation())
 
     def attach(self, mouseEvent):
         PartyEditorGridElement.notify.debug('attached grid element %s' % self.name)
@@ -99,7 +105,9 @@ class PartyEditorGridElement(DirectButton):
         if mwn.hasMouse():
             vMouse2render2d = Point3(mwn.getMouse()[0], 0, mwn.getMouse()[1])
             newPos = vMouse2render2d
-            if newPos[0] > PartyGlobals.PartyEditorGridBounds[0][0] and newPos[0] < PartyGlobals.PartyEditorGridBounds[1][0] and newPos[2] < PartyGlobals.PartyEditorGridBounds[0][1] and newPos[2] > PartyGlobals.PartyEditorGridBounds[1][1]:
+            if newPos[0] > PartyGlobals.PartyEditorGridBounds[0][0] and newPos[0] < \
+                    PartyGlobals.PartyEditorGridBounds[1][0] and newPos[2] < PartyGlobals.PartyEditorGridBounds[0][
+                1] and newPos[2] > PartyGlobals.PartyEditorGridBounds[1][1]:
                 centerGridSquare = self.snapToGrid(newPos)
                 if centerGridSquare is not None:
                     self.centerGridSquare = centerGridSquare
@@ -108,7 +116,9 @@ class PartyEditorGridElement(DirectButton):
                     if self.mouseOverTrash:
                         self.setOverTrash(False)
                     return Task.cont
-            if self.id != PartyGlobals.ActivityIds.PartyClock and newPos[0] > PartyGlobals.PartyEditorTrashBounds[0][0] and newPos[0] < PartyGlobals.PartyEditorTrashBounds[1][0] and newPos[2] < PartyGlobals.PartyEditorTrashBounds[0][1] and newPos[2] > PartyGlobals.PartyEditorTrashBounds[1][1]:
+            if self.id != PartyGlobals.ActivityIds.PartyClock and newPos[0] > PartyGlobals.PartyEditorTrashBounds[0][
+                0] and newPos[0] < PartyGlobals.PartyEditorTrashBounds[1][0] and newPos[2] < \
+                    PartyGlobals.PartyEditorTrashBounds[0][1] and newPos[2] > PartyGlobals.PartyEditorTrashBounds[1][1]:
                 if not self.mouseOverTrash:
                     self.setOverTrash(True)
             elif self.mouseOverTrash:
@@ -229,7 +239,8 @@ class PartyEditorGridElement(DirectButton):
             self.setPosHprBasedOnGridSquare(self.centerGridSquare)
             self.partyEditor.partyEditorGrid.registerNewElement(self, self.centerGridSquare, self.getGridSize())
             self.partyEditor.updateCostsAndBank()
-            self.partyEditor.partyPlanner.instructionLabel['text'] = TTLocalizer.PartyPlannerEditorInstructionsPartyGrounds
+            self.partyEditor.partyPlanner.instructionLabel[
+                'text'] = TTLocalizer.PartyPlannerEditorInstructionsPartyGrounds
             self.checkSoldOutAndPaidStatusAndAffordability()
             return True
         else:

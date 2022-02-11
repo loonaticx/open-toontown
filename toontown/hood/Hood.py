@@ -14,6 +14,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toon.Toon import teleportDebug
 from direct.interval.IntervalGlobal import *
 
+
 class Hood(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('Hood')
 
@@ -37,7 +38,9 @@ class Hood(StateData.StateData):
         hoodId = requestStatus['hoodId']
         zoneId = requestStatus['zoneId']
         hoodText = self.getHoodText(zoneId)
-        self.titleText = OnscreenText.OnscreenText(hoodText, fg=self.titleColor, font=getSignFont(), pos=(0, -0.5), scale=TTLocalizer.HtitleText, drawOrder=0, mayChange=1)
+        self.titleText = OnscreenText.OnscreenText(hoodText, fg = self.titleColor, font = getSignFont(),
+                                                   pos = (0, -0.5), scale = TTLocalizer.HtitleText, drawOrder = 0,
+                                                   mayChange = 1)
         self.fsm.request(requestStatus['loader'], [requestStatus])
 
     def getHoodText(self, zoneId):
@@ -58,7 +61,9 @@ class Hood(StateData.StateData):
         self.titleText.setColor(Vec4(*self.titleColor))
         self.titleText.clearColorScale()
         self.titleText.setFg(self.titleColor)
-        self.titleTextSeq = Sequence(Wait(0.1), Wait(6.0), self.titleText.colorScaleInterval(0.5, Vec4(1.0, 1.0, 1.0, 0.0)), Func(self.hideTitleText))
+        self.titleTextSeq = Sequence(Wait(0.1), Wait(6.0),
+                                     self.titleText.colorScaleInterval(0.5, Vec4(1.0, 1.0, 1.0, 0.0)),
+                                     Func(self.hideTitleText))
         self.titleTextSeq.start()
 
     def hideTitleText(self):
@@ -85,7 +90,8 @@ class Hood(StateData.StateData):
                 for storageFile in self.holidayStorageDNADict.get(holiday, []):
                     loader.loadDNAFile(self.dnaStore, storageFile)
 
-            if ToontownGlobals.HALLOWEEN_COSTUMES not in holidayIds and ToontownGlobals.SPOOKY_COSTUMES not in holidayIds or not self.spookySkyFile:
+            if ToontownGlobals.HALLOWEEN_COSTUMES not in holidayIds and ToontownGlobals.SPOOKY_COSTUMES not in \
+                    holidayIds or not self.spookySkyFile:
                 self.sky = loader.loadModel(self.skyFile)
                 self.sky.setTag('sky', 'Regular')
                 self.sky.setScale(1.0)
@@ -160,7 +166,8 @@ class Hood(StateData.StateData):
         loaderName = requestStatus['loader']
         if loaderName == 'safeZoneLoader':
             if not loader.inBulkBlock:
-                loader.beginBulkLoad('hood', TTLocalizer.HeadingToPlayground, safeZoneCountMap[self.id], 1, TTLocalizer.TIP_GENERAL)
+                loader.beginBulkLoad('hood', TTLocalizer.HeadingToPlayground, safeZoneCountMap[self.id], 1,
+                                     TTLocalizer.TIP_GENERAL)
             self.loadLoader(requestStatus)
             loader.endBulkLoad('hood')
         elif loaderName == 'townLoader':
@@ -168,8 +175,10 @@ class Hood(StateData.StateData):
                 zoneId = requestStatus['zoneId']
                 toPhrase = StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][0]
                 streetName = StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][-1]
-                loader.beginBulkLoad('hood', TTLocalizer.HeadingToStreet % {'to': toPhrase,
-                 'street': streetName}, townCountMap[self.id], 1, TTLocalizer.TIP_STREET)
+                loader.beginBulkLoad('hood', TTLocalizer.HeadingToStreet % {
+                    'to': toPhrase,
+                    'street': streetName
+                }, townCountMap[self.id], 1, TTLocalizer.TIP_STREET)
             self.loadLoader(requestStatus)
             loader.endBulkLoad('hood')
         elif loaderName == 'minigame':
@@ -235,7 +244,8 @@ class Hood(StateData.StateData):
         self.sky.setColor(0.5, 0.5, 0.5, 1)
         self.sky.reparentTo(camera)
         self.sky.setTransparency(TransparencyAttrib.MDual, 1)
-        fadeIn = self.sky.colorScaleInterval(1.5, Vec4(1, 1, 1, 1), startColorScale=Vec4(1, 1, 1, 0.25), blendType='easeInOut')
+        fadeIn = self.sky.colorScaleInterval(1.5, Vec4(1, 1, 1, 1), startColorScale = Vec4(1, 1, 1, 0.25),
+                                             blendType = 'easeInOut')
         fadeIn.start()
         self.sky.setZ(0.0)
         self.sky.setHpr(0.0, 0.0, 0.0)

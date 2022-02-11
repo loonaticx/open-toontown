@@ -8,17 +8,18 @@ from direct.distributed import DistributedObjectAI
 from toontown.minigame import Trajectory
 from . import CannonGlobals
 
+
 class DistributedCannonAI(DistributedObjectAI.DistributedObjectAI):
     notify = directNotify.newCategory('DistributedCannonAI')
 
     def __init__(self, air, estateId, targetId, x, y, z, h, p, r):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.posHpr = [x,
-         y,
-         z,
-         h,
-         p,
-         r]
+                       y,
+                       z,
+                       h,
+                       p,
+                       r]
         self.avId = 0
         self.estateId = estateId
         self.timeoutTask = None
@@ -37,8 +38,8 @@ class DistributedCannonAI(DistributedObjectAI.DistributedObjectAI):
             self.avId = avId
             self.__stopTimeout()
             self.setMovie(CannonGlobals.CANNON_MOVIE_LOAD, self.avId)
-            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
-            self.acceptOnce('bootAvFromEstate-' + str(avId), self.__handleBootMessage, extraArgs=[avId])
+            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs = [avId])
+            self.acceptOnce('bootAvFromEstate-' + str(avId), self.__handleBootMessage, extraArgs = [avId])
             self.__startTimeout(CannonGlobals.CANNON_TIMEOUT)
         else:
             self.air.writeServerEvent('suspicious', avId, 'DistributedCannonAI.requestEnter cannon already occupied')
@@ -77,10 +78,10 @@ class DistributedCannonAI(DistributedObjectAI.DistributedObjectAI):
         self.notify.debug('setCannonLit: ' + str(avId) + ': zRot=' + str(zRot) + ', angle=' + str(angle))
         fireTime = CannonGameGlobals.FUSE_TIME
         self.sendUpdate('setCannonWillFire', [avId,
-         fireTime,
-         zRot,
-         angle,
-         globalClockDelta.getRealNetworkTime()])
+                                              fireTime,
+                                              zRot,
+                                              angle,
+                                              globalClockDelta.getRealNetworkTime()])
 
     def setLanded(self):
         self.ignore(self.air.getAvatarExitEvent(self.avId))

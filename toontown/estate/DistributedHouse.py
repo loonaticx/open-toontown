@@ -20,6 +20,7 @@ from . import HouseGlobals
 from toontown.building import ToonInteriorColors
 from direct.showbase.MessengerGlobal import messenger
 
+
 class DistributedHouse(DistributedObject.DistributedObject):
     notify = directNotify.newCategory('DistributedHouse')
 
@@ -139,7 +140,7 @@ class DistributedHouse(DistributedObject.DistributedObject):
         doorTrigger = doorNP.find('**/door_*_trigger')
         doorTrigger.wrtReparentTo(door_origin)
         doorTrigger.node().setName('door_trigger_' + str(self.doId))
-        self.__setupFloorMat(changeColor=False)
+        self.__setupFloorMat(changeColor = False)
         self.__setupNametag()
         self.__setupNamePlateCustom()
 

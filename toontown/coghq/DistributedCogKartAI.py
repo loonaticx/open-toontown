@@ -4,13 +4,14 @@ from toontown.building import DistributedElevatorExtAI
 from toontown.building import ElevatorConstants
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedCogKartAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogKartAI')
 
     def __init__(self, air, index, x, y, z, h, p, r, bldg, minLaff):
         self.posHpr = (
-         x, y, z, h, p, r)
-        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, minLaff=minLaff)
+            x, y, z, h, p, r)
+        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, minLaff = minLaff)
         self.type = ElevatorConstants.ELEVATOR_COUNTRY_CLUB
         self.courseIndex = index
         if self.courseIndex == 0:
@@ -40,7 +41,7 @@ class DistributedCogKartAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
                 avId = self.seats[seatIndex]
                 if avId:
                     self.sendUpdateToAvatarId(avId, 'setCountryClubInteriorZone', [
-                     countryClubZone])
+                        countryClubZone])
                     self.clearFullNow(seatIndex)
 
         else:
@@ -54,7 +55,7 @@ class DistributedCogKartAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
             for avId in avIdList:
                 if avId:
                     self.sendUpdateToAvatarId(avId, 'setCountryClubInteriorZoneForce', [
-                     countryClubZone])
+                        countryClubZone])
 
     def getCountryClubId(self):
         return self.countryClubId

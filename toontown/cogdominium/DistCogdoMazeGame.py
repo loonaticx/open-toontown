@@ -7,6 +7,7 @@ from .CogdoMaze import CogdoMazeFactory
 from . import CogdoMazeGameGlobals
 from . import CogdoMazeGameGlobals as Globals
 
+
 class DistCogdoMazeGame(DistCogdoGame, DistCogdoMazeGameBase):
     notify = directNotify.newCategory('DistCogdoMazeGame')
 
@@ -109,9 +110,9 @@ class DistCogdoMazeGame(DistCogdoGame, DistCogdoMazeGameBase):
     def d_requestUseGag(self, x, y, h):
         networkTime = globalClockDelta.localToNetworkTime(globalClock.getFrameTime())
         self.sendUpdate('requestUseGag', [x,
-         y,
-         h,
-         networkTime])
+                                          y,
+                                          h,
+                                          networkTime])
 
     def b_toonUsedGag(self, x, y, h):
         self.d_requestUseGag(x, y, h)

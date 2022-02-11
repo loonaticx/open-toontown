@@ -16,8 +16,10 @@ from .PartyCogActivityInput import PartyCogActivityInput
 from .PartyCogActivityGui import PartyCogActivityGui
 from .PartyCogUtils import CameraManager
 from .PartyCogUtils import StrafingControl
+
 UPDATE_TASK_NAME = 'PartyCogActivityLocalPlayer_UpdateTask'
 THROW_PIE_LIMIT_TIME = 0.2
+
 
 class PartyCogActivityPlayer:
     toon = None
@@ -118,7 +120,8 @@ class PartyCogActivityPlayer:
             if self.netTimeSentToStartByHit < timestamp:
                 self.netTimeSentToStartByHit = timestamp
         else:
-            self.activity.notify.debug('PartyCogPlayer respondToPieHit self.netTimeSentToStartByHit = %s' % self.netTimeSentToStartByHit)
+            self.activity.notify.debug(
+                'PartyCogPlayer respondToPieHit self.netTimeSentToStartByHit = %s' % self.netTimeSentToStartByHit)
 
     def __showSplat(self, position):
         if self.kaboomTrack is not None and self.kaboomTrack.isPlaying():
@@ -138,7 +141,15 @@ class PartyCogActivityPlayer:
         def setSplatAlpha(amount):
             self.splat.setAlphaScale(amount)
 
-        self.kaboomTrack = Parallel(SoundInterval(self.pieHitSound, node=self.toon, volume=1.0, cutOff=PartyGlobals.PARTY_COG_CUTOFF), Sequence(Func(self.splat.showThrough), Parallel(Sequence(LerpScaleInterval(self.splat, duration=0.175, scale=targetscale, startScale=Point3(0.1, 0.1, 0.1), blendType='easeOut'), Wait(0.175)), Sequence(Wait(0.1), LerpFunc(setSplatAlpha, duration=1.0, fromData=1.0, toData=0.0, blendType='easeOut'))), Func(self.splat.cleanup), Func(self.splat.removeNode)))
+        self.kaboomTrack = Parallel(
+            SoundInterval(self.pieHitSound, node = self.toon, volume = 1.0, cutOff = PartyGlobals.PARTY_COG_CUTOFF),
+            Sequence(Func(self.splat.showThrough), Parallel(Sequence(
+                LerpScaleInterval(self.splat, duration = 0.175, scale = targetscale, startScale = Point3(0.1, 0.1, 0.1),
+                                  blendType = 'easeOut'), Wait(0.175)), Sequence(Wait(0.1),
+                                                                                 LerpFunc(setSplatAlpha, duration = 1.0,
+                                                                                          fromData = 1.0, toData = 0.0,
+                                                                                          blendType = 'easeOut'))),
+                     Func(self.splat.cleanup), Func(self.splat.removeNode)))
         self.kaboomTrack.start()
         return
 
@@ -174,8 +185,8 @@ class PartyCogActivityLocalPlayer(PartyCogActivityPlayer):
         return
 
     def _initOrthoWalk(self):
-        orthoDrive = OrthoDrive(9.778, customCollisionCallback=self.activity.view.checkOrthoDriveCollision)
-        self.orthoWalk = OrthoWalk(orthoDrive, broadcast=True)
+        orthoDrive = OrthoDrive(9.778, customCollisionCallback = self.activity.view.checkOrthoDriveCollision)
+        self.orthoWalk = OrthoWalk(orthoDrive, broadcast = True)
 
     def _destroyOrthoWalk(self):
         self.orthoWalk.stop()
@@ -215,7 +226,8 @@ class PartyCogActivityLocalPlayer(PartyCogActivityPlayer):
             self.lastMoved = self.activity.getCurrentActivityTime()
         if max(self.activity.getCurrentActivityTime() - self.lastMoved, 0) > PartyGlobals.ToonMoveIdleThreshold:
             self.gui.showMoveControls()
-        if max(self.activity.getCurrentActivityTime() - self.throwPiePrevTime, 0) > PartyGlobals.ToonAttackIdleThreshold:
+        if max(self.activity.getCurrentActivityTime() - self.throwPiePrevTime,
+               0) > PartyGlobals.ToonAttackIdleThreshold:
             self.gui.showAttackControls()
         if self.input.throwPieWasReleased:
             if self.checkForThrowSpam(globalClock.getFrameTime()):
@@ -273,7 +285,12 @@ class PartyCogActivityLocalPlayer(PartyCogActivityPlayer):
         startH = 0.0
         if travelVec.getY() < 0.0:
             startH = 180.0
-        return Sequence(Func(self.toon.startPosHprBroadcast, 0.1), Func(self.toon.b_setAnimState, 'run'), Parallel(self.toon.hprInterval(0.5, VBase3(startH, 0.0, 0.0), other=self.activity.root), self.toon.posInterval(duration, self.position, other=self.activity.root)), Func(self.toon.b_setAnimState, 'neutral'), self.toon.hprInterval(0.25, VBase3(targetH, 0.0, 0.0), other=self.activity.root), Func(self.toon.stopPosHprBroadcast))
+        return Sequence(Func(self.toon.startPosHprBroadcast, 0.1), Func(self.toon.b_setAnimState, 'run'),
+                        Parallel(self.toon.hprInterval(0.5, VBase3(startH, 0.0, 0.0), other = self.activity.root),
+                                 self.toon.posInterval(duration, self.position, other = self.activity.root)),
+                        Func(self.toon.b_setAnimState, 'neutral'),
+                        self.toon.hprInterval(0.25, VBase3(targetH, 0.0, 0.0), other = self.activity.root),
+                        Func(self.toon.stopPosHprBroadcast))
 
     def enable(self):
         if self.enabled:
@@ -323,7 +340,8 @@ class PartyCogActivityLocalPlayer(PartyCogActivityPlayer):
     def lookAtArena(self):
         self.cameraManager.setEnabled(True)
         self.cameraManager.setTargetPos(self.activity.view.arena.find('**/conclusionCamPos_locator').getPos(render))
-        self.cameraManager.setTargetLookAtPos(self.activity.view.arena.find('**/conclusionCamAim_locator').getPos(render))
+        self.cameraManager.setTargetLookAtPos(
+            self.activity.view.arena.find('**/conclusionCamAim_locator').getPos(render))
 
     def lookAtMyTeam(self):
         activityView = self.activity.view

@@ -13,6 +13,7 @@ from . import DistributedSuitBaseAI
 from toontown.hood import ZoneUtil
 import random
 
+
 class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
     SUIT_BUILDINGS = simbase.config.GetBool('want-suit-buildings', 1)
     DEBUG_SUIT_POSITIONS = simbase.config.GetBool('debug-suit-positions', 0)
@@ -55,7 +56,8 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         elapsed = then - self.pathStartTime
         if not self.sp:
             pass
-        return self.legList.isPointInRange(point, elapsed - self.sp.PATH_COLLISION_BUFFER, elapsed + self.sp.PATH_COLLISION_BUFFER)
+        return self.legList.isPointInRange(point, elapsed - self.sp.PATH_COLLISION_BUFFER,
+                                           elapsed + self.sp.PATH_COLLISION_BUFFER)
 
     def requestBattle(self, x, y, z, h, p, r):
         toonId = self.air.getAvatarIdFromSender()
@@ -92,7 +94,7 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
 
     def getConfrontPosHpr(self):
         return (
-         self.confrontPos, self.confrontHpr)
+            self.confrontPos, self.confrontHpr)
 
     def flyAwayNow(self):
         self.b_setPathState(2)
@@ -140,7 +142,7 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
 
     def getPathEndpoints(self):
         return (
-         self.pathEndpointStart, self.pathEndpointEnd, self.minPathLen, self.maxPathLen)
+            self.pathEndpointStart, self.pathEndpointEnd, self.minPathLen, self.maxPathLen)
 
     def b_setPathPosition(self, index, timestamp):
         self.setPathPosition(index, timestamp)
@@ -156,7 +158,7 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
 
     def getPathPosition(self):
         return (
-         self.pathPositionIndex, globalClockDelta.localToNetworkTime(self.pathPositionTimestamp))
+            self.pathPositionIndex, globalClockDelta.localToNetworkTime(self.pathPositionTimestamp))
 
     def b_setPathState(self, state):
         self.setPathState(state)
@@ -188,7 +190,7 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
     def d_debugSuitPosition(self, elapsed, currentLeg, x, y, timestamp):
         timestamp = globalClockDelta.localToNetworkTime(timestamp)
         self.sendUpdate('debugSuitPosition', [
-         elapsed, currentLeg, x, y, timestamp])
+            elapsed, currentLeg, x, y, timestamp])
 
     def initializePath(self):
         self.makeLegList()
@@ -221,7 +223,8 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
             zoneId = self.legList.getZoneId(nextLeg)
             zoneId = ZoneUtil.getTrueZoneId(zoneId, self.branchId)
             self.__enterZone(zoneId)
-            self.notify.debug('Suit %d reached leg %d of %d in zone %d.' % (self.getDoId(), nextLeg, numLegs - 1, self.zoneId))
+            self.notify.debug(
+                'Suit %d reached leg %d of %d in zone %d.' % (self.getDoId(), nextLeg, numLegs - 1, self.zoneId))
             if self.DEBUG_SUIT_POSITIONS:
                 leg = self.legList.getLeg(nextLeg)
                 pos = leg.getPosAtTime(elapsed - leg.getStartTime())
@@ -231,7 +234,8 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         if self.pathState != 1:
             return Task.done
         nextLeg += 1
-        while nextLeg + 1 < numLegs and self.legList.getZoneId(nextLeg) == ZoneUtil.getCanonicalZoneId(self.zoneId) and self.legList.getType(nextLeg) == self.legType:
+        while nextLeg + 1 < numLegs and self.legList.getZoneId(nextLeg) == ZoneUtil.getCanonicalZoneId(
+                self.zoneId) and self.legList.getType(nextLeg) == self.legType:
             nextLeg += 1
 
         if nextLeg < numLegs:

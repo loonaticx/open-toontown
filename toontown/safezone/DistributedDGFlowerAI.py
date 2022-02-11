@@ -3,9 +3,11 @@ from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObjectAI
 from direct.task import Task
+
 HEIGHT_DELTA = 0.5
 MAX_HEIGHT = 10.0
 MIN_HEIGHT = 2.0
+
 
 class DistributedDGFlowerAI(DistributedObjectAI.DistributedObjectAI):
 

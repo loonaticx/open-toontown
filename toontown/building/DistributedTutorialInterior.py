@@ -14,6 +14,7 @@ from toontown.suit import SuitDNA
 from toontown.suit import Suit
 from toontown.quest import QuestParser
 
+
 class DistributedTutorialInterior(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
@@ -151,7 +152,11 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
         self.suit.loop('neutral')
         self.suit.setPosHpr(-20, 8, 0, 0, 0, 0)
         self.suit.reparentTo(self.interior)
-        self.suitWalkTrack = Sequence(self.suit.hprInterval(0.1, Vec3(0, 0, 0)), Func(self.suit.loop, 'walk'), self.suit.posInterval(2, Point3(-20, 20, 0)), Func(self.suit.loop, 'neutral'), Wait(1.0), self.suit.hprInterval(0.1, Vec3(180, 0, 0)), Func(self.suit.loop, 'walk'), self.suit.posInterval(2, Point3(-20, 10, 0)), Func(self.suit.loop, 'neutral'), Wait(1.0))
+        self.suitWalkTrack = Sequence(self.suit.hprInterval(0.1, Vec3(0, 0, 0)), Func(self.suit.loop, 'walk'),
+                                      self.suit.posInterval(2, Point3(-20, 20, 0)), Func(self.suit.loop, 'neutral'),
+                                      Wait(1.0), self.suit.hprInterval(0.1, Vec3(180, 0, 0)),
+                                      Func(self.suit.loop, 'walk'), self.suit.posInterval(2, Point3(-20, 10, 0)),
+                                      Func(self.suit.loop, 'neutral'), Wait(1.0))
         self.suitWalkTrack.loop()
 
     def setZoneIdAndBlock(self, zoneId, block):

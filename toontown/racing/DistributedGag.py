@@ -6,6 +6,7 @@ from direct.distributed.ClockDelta import *
 from toontown.racing.DistributedVehicle import DistributedVehicle
 from .DroppedGag import *
 
+
 class DistributedGag(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
@@ -27,7 +28,8 @@ class DistributedGag(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.announceGenerate(self)
         if not self.nodePath:
             self.makeNodePath()
-        self.delta = -globalClockDelta.networkToLocalTime(self.initTime, globalClock.getFrameTime(), 16, 100) + globalClock.getFrameTime()
+        self.delta = -globalClockDelta.networkToLocalTime(self.initTime, globalClock.getFrameTime(), 16,
+                                                          100) + globalClock.getFrameTime()
         if self.type == 0:
             self.name = self.uniqueName('banana')
         elif self.type == 1:
@@ -40,7 +42,7 @@ class DistributedGag(DistributedObject.DistributedObject):
         else:
             startPos = base.cr.doId2do[self.ownerId].getPos(render)
             endPos = Vec3(self.pos[0], self.pos[1], self.pos[2])
-            throwIt = ProjectileInterval(self.nodePath, startPos=startPos, endPos=endPos, duration=1)
+            throwIt = ProjectileInterval(self.nodePath, startPos = startPos, endPos = endPos, duration = 1)
             throwIt.start()
         taskMgr.doMethodLater(0.8 - self.delta, self.addCollider, self.uniqueName('addCollider'))
 

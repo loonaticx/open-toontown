@@ -9,10 +9,12 @@ from toontown.minigame.CannonGameGlobals import *
 from toontown.toonbase import ToontownGlobals
 from toontown.parties.PartyUtils import toRadians, calcVelocity
 from direct.showbase.PythonUtil import StackTrace
+
 CANNON_ROTATION_MIN = -70
 CANNON_ROTATION_MAX = 70
 INITIAL_VELOCITY = 80.0
 CANNON_BARREL_TOONHEAD_Y = 6.0
+
 
 class Cannon:
     notify = directNotify.newCategory('DistributedPartyCannon')
@@ -92,12 +94,14 @@ class Cannon:
         self.smokeNode.setPos(0, 6, -3)
         self.smokeNode.setScale(0.5)
         self.smokeNode.wrtReparentTo(render)
-        track = Sequence(Parallel(LerpScaleInterval(self.smokeNode, 0.5, 3), LerpColorScaleInterval(self.smokeNode, 0.5, Vec4(2, 2, 2, 0))), Func(self.smokeNode.reparentTo, hidden), Func(self.smokeNode.clearColorScale))
+        track = Sequence(Parallel(LerpScaleInterval(self.smokeNode, 0.5, 3),
+                                  LerpColorScaleInterval(self.smokeNode, 0.5, Vec4(2, 2, 2, 0))),
+                         Func(self.smokeNode.reparentTo, hidden), Func(self.smokeNode.clearColorScale))
         base.playSfx(self.sndCannonFire)
         track.start()
 
     def loopMovingSound(self):
-        base.playSfx(self.sndCannonMove, looping=1)
+        base.playSfx(self.sndCannonMove, looping = 1)
 
     def stopMovingSound(self):
         self.sndCannonMove.stop()
@@ -245,4 +249,4 @@ class Cannon:
         hpr = self.barrelNode.getHpr(render)
         rotation = toRadians(hpr[0])
         angle = toRadians(hpr[1])
-        return calcVelocity(rotation, angle, initialVelocity=INITIAL_VELOCITY)
+        return calcVelocity(rotation, angle, initialVelocity = INITIAL_VELOCITY)

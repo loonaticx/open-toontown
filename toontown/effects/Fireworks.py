@@ -5,22 +5,28 @@ from direct.particles import ForceGroup
 from pandac.PandaModules import *
 import random
 from .FireworkGlobals import *
-colors = {WHITE: Vec4(1, 1, 1, 1),
- RED: Vec4(1, 0.2, 0.2, 1),
- BLUE: Vec4(0.2, 0.2, 1, 1),
- YELLOW: Vec4(1, 1, 0.2, 1),
- GREEN: Vec4(0.2, 1, 0.2, 1),
- PINK: Vec4(1, 0.5, 0.5, 1),
- PEACH: Vec4(0.9, 0.6, 0.4, 1),
- PURPLE: Vec4(1, 0.1, 1, 1),
- CYAN: Vec4(0.2, 1, 1, 1)}
-textures = {SNOWFLAKE: 'phase_8/models/props/snowflake_treasure',
- MUSICNOTE: 'phase_6/models/props/music_treasure',
- FLOWER: 'phase_8/models/props/flower_treasure',
- ICECREAM: 'phase_4/models/props/icecream',
- STARFISH: 'phase_6/models/props/starfish_treasure',
- ZZZ: 'phase_8/models/props/zzz_treasure'}
+
+colors = {
+    WHITE: Vec4(1, 1, 1, 1),
+    RED: Vec4(1, 0.2, 0.2, 1),
+    BLUE: Vec4(0.2, 0.2, 1, 1),
+    YELLOW: Vec4(1, 1, 0.2, 1),
+    GREEN: Vec4(0.2, 1, 0.2, 1),
+    PINK: Vec4(1, 0.5, 0.5, 1),
+    PEACH: Vec4(0.9, 0.6, 0.4, 1),
+    PURPLE: Vec4(1, 0.1, 1, 1),
+    CYAN: Vec4(0.2, 1, 1, 1)
+}
+textures = {
+    SNOWFLAKE: 'phase_8/models/props/snowflake_treasure',
+    MUSICNOTE: 'phase_6/models/props/music_treasure',
+    FLOWER: 'phase_8/models/props/flower_treasure',
+    ICECREAM: 'phase_4/models/props/icecream',
+    STARFISH: 'phase_6/models/props/starfish_treasure',
+    ZZZ: 'phase_8/models/props/zzz_treasure'
+}
 fireworkId = 0
+
 
 def getNextSequenceName(name):
     global fireworkId
@@ -86,7 +92,8 @@ def shootFireworkRing(x, y, z, color1, color2, amp):
     f.setPos(x, y, z)
     f.setHpr(0, random.random() * 180, random.random() * 180)
     sfx = loader.loadSfx('phase_4/audio/sfx/firework_distance_03.ogg')
-    t = Sequence(Func(f.start, render, render), Func(sfx.play), Wait(0.5), Func(p0.setBirthRate, 3), Wait(1.5), Func(f.cleanup), name=getNextSequenceName('shootFireworkRing'))
+    t = Sequence(Func(f.start, render, render), Func(sfx.play), Wait(0.5), Func(p0.setBirthRate, 3), Wait(1.5),
+                 Func(f.cleanup), name = getNextSequenceName('shootFireworkRing'))
     t.start()
 
 
@@ -126,14 +133,17 @@ def shootFireworkRocket(x, y, z, color1, color2, amp):
     f.setPos(x, y, z)
     sfxName = random.choice(('phase_4/audio/sfx/firework_whistle_01.ogg', 'phase_4/audio/sfx/firework_whistle_02.ogg'))
     sfx = loader.loadSfx(sfxName)
-    t = Sequence(Func(f.start, render, render), Func(sfx.play), LerpPosInterval(f, 2.0, Vec3(x, y, z + 20 * amp), blendType='easeInOut'), Func(p0.setBirthRate, 3), Wait(0.5), Func(f.cleanup), name=getNextSequenceName('shootFirework'))
+    t = Sequence(Func(f.start, render, render), Func(sfx.play),
+                 LerpPosInterval(f, 2.0, Vec3(x, y, z + 20 * amp), blendType = 'easeInOut'), Func(p0.setBirthRate, 3),
+                 Wait(0.5), Func(f.cleanup), name = getNextSequenceName('shootFirework'))
     t.start()
 
 
 def shootPop(x, y, z, color1, color2, amp):
-    sfxName = random.choice(('phase_4/audio/sfx/firework_distance_01.ogg', 'phase_4/audio/sfx/firework_distance_02.ogg', 'phase_4/audio/sfx/firework_distance_03.ogg'))
+    sfxName = random.choice(('phase_4/audio/sfx/firework_distance_01.ogg', 'phase_4/audio/sfx/firework_distance_02.ogg',
+                             'phase_4/audio/sfx/firework_distance_03.ogg'))
     sfx = loader.loadSfx(sfxName)
-    t = Sequence(Func(sfx.play), Wait(3), name=getNextSequenceName('shootFireworkRocket'))
+    t = Sequence(Func(sfx.play), Wait(3), name = getNextSequenceName('shootFireworkRocket'))
     t.start()
 
 
@@ -180,9 +190,13 @@ def shootFireworkCircleGeneric(x, y, z, color1, color2, amp, poolSize):
     circleForceGroup.addForce(force1)
     f.addForceGroup(circleForceGroup)
     f.setPos(x, y, z)
-    sfxName = random.choice(('phase_4/audio/sfx/firework_explosion_01.ogg', 'phase_4/audio/sfx/firework_explosion_02.ogg', 'phase_4/audio/sfx/firework_explosion_03.ogg'))
+    sfxName = random.choice(('phase_4/audio/sfx/firework_explosion_01.ogg',
+                             'phase_4/audio/sfx/firework_explosion_02.ogg',
+                             'phase_4/audio/sfx/firework_explosion_03.ogg'))
     sfx = loader.loadSfx(sfxName)
-    t = Sequence(Func(f.start, render, render), Func(sfx.play), Wait(0.5), Func(p0.setBirthRate, 3), Wait(0.5), Func(p0.renderer.setCenterColor, color2), Func(p0.renderer.setEdgeColor, color2), Wait(1.5), Func(f.cleanup), name=getNextSequenceName('shootFireworkCircle'))
+    t = Sequence(Func(f.start, render, render), Func(sfx.play), Wait(0.5), Func(p0.setBirthRate, 3), Wait(0.5),
+                 Func(p0.renderer.setCenterColor, color2), Func(p0.renderer.setEdgeColor, color2), Wait(1.5),
+                 Func(f.cleanup), name = getNextSequenceName('shootFireworkCircle'))
     t.start()
 
 
@@ -220,16 +234,21 @@ def shootFireworkCircleSprite(x, y, z, color, texture, amp):
     circleForceGroup.addForce(force1)
     f.addForceGroup(circleForceGroup)
     f.setPos(x, y, z)
-    sfxName = random.choice(('phase_4/audio/sfx/firework_explosion_01.ogg', 'phase_4/audio/sfx/firework_explosion_02.ogg', 'phase_4/audio/sfx/firework_explosion_03.ogg'))
+    sfxName = random.choice(('phase_4/audio/sfx/firework_explosion_01.ogg',
+                             'phase_4/audio/sfx/firework_explosion_02.ogg',
+                             'phase_4/audio/sfx/firework_explosion_03.ogg'))
     sfx = loader.loadSfx(sfxName)
-    t = Sequence(Func(f.start, render, render), Func(sfx.play), Wait(0.5), Func(p0.setBirthRate, 3), Wait(2.0), Func(f.cleanup), name=getNextSequenceName('shootFireworkSprite'))
+    t = Sequence(Func(f.start, render, render), Func(sfx.play), Wait(0.5), Func(p0.setBirthRate, 3), Wait(2.0),
+                 Func(f.cleanup), name = getNextSequenceName('shootFireworkSprite'))
     t.start()
 
 
-style2shootFunc = {CIRCLE: shootFireworkCircle,
- CIRCLELARGE: shootFireworkCircleLarge,
- CIRCLESMALL: shootFireworkCircleSmall,
- CIRCLESPRITE: shootFireworkCircleSprite,
- ROCKET: shootFireworkRocket,
- RING: shootFireworkRing,
- POP: shootPop}
+style2shootFunc = {
+    CIRCLE: shootFireworkCircle,
+    CIRCLELARGE: shootFireworkCircleLarge,
+    CIRCLESMALL: shootFireworkCircleSmall,
+    CIRCLESPRITE: shootFireworkCircleSprite,
+    ROCKET: shootFireworkRocket,
+    RING: shootFireworkRing,
+    POP: shootPop
+}

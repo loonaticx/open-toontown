@@ -11,6 +11,7 @@ from toontown.safezone import PicnicBasket
 from toontown.safezone import GolfKart
 from direct.task.Task import Task
 
+
 class OZPlayground(Playground.Playground):
     waterLevel = -0.53
 
@@ -20,7 +21,8 @@ class OZPlayground(Playground.Playground):
         self.picnicBasketBlockDoneEvent = 'picnicBasketBlockDone'
         self.cameraSubmerged = -1
         self.toonSubmerged = -1
-        self.fsm.addState(State.State('picnicBasketBlock', self.enterPicnicBasketBlock, self.exitPicnicBasketBlock, ['walk']))
+        self.fsm.addState(
+            State.State('picnicBasketBlock', self.enterPicnicBasketBlock, self.exitPicnicBasketBlock, ['walk']))
         state = self.fsm.getStateNamed('walk')
         state.addTransition('picnicBasketBlock')
         self.picnicBasketDoneEvent = 'picnicBasketDone'
@@ -76,7 +78,7 @@ class OZPlayground(Playground.Playground):
         if self.cameraSubmerged == 1:
             return
         self.loader.hood.setUnderwaterFog()
-        base.playSfx(self.loader.underwaterSound, looping=1, volume=0.8)
+        base.playSfx(self.loader.underwaterSound, looping = 1, volume = 0.8)
         self.cameraSubmerged = 1
         self.walkStateData.setSwimSoundAudible(1)
 
@@ -109,13 +111,16 @@ class OZPlayground(Playground.Playground):
         reason = requestStatus.get('reason')
         if reason == RaceGlobals.Exit_Barrier:
             requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RaceTimeout, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
+            self.dialog = TTDialog.TTDialog(text = TTLocalizer.KartRace_RaceTimeout, command = self.__cleanupDialog,
+                                            style = TTDialog.Acknowledge)
         elif reason == RaceGlobals.Exit_Slow:
             requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RacerTooSlow, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
+            self.dialog = TTDialog.TTDialog(text = TTLocalizer.KartRace_RacerTooSlow, command = self.__cleanupDialog,
+                                            style = TTDialog.Acknowledge)
         elif reason == RaceGlobals.Exit_BarrierNoRefund:
             requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RaceTimeoutNoRefund, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
+            self.dialog = TTDialog.TTDialog(text = TTLocalizer.KartRace_RaceTimeoutNoRefund,
+                                            command = self.__cleanupDialog, style = TTDialog.Acknowledge)
         self.toonSubmerged = -1
         taskMgr.remove('oz-check-toon-underwater')
         Playground.Playground.enterTeleportIn(self, requestStatus)
@@ -138,7 +143,8 @@ class OZPlayground(Playground.Playground):
         base.localAvatar.b_setAnimState('off', 1)
         base.localAvatar.cantLeaveGame = 1
         self.accept(self.picnicBasketDoneEvent, self.handlePicnicBasketDone)
-        self.trolley = PicnicBasket.PicnicBasket(self, self.fsm, self.picnicBasketDoneEvent, picnicBasket.getDoId(), picnicBasket.seatNumber)
+        self.trolley = PicnicBasket.PicnicBasket(self, self.fsm, self.picnicBasketDoneEvent, picnicBasket.getDoId(),
+                                                 picnicBasket.seatNumber)
         self.trolley.load()
         self.trolley.enter()
 

@@ -9,6 +9,7 @@ from toontown.suit import DistributedFactorySuitAI
 from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
 from toontown.coghq import DistributedBattleFactoryAI
 
+
 class DistributedFactoryAI(DistributedLevelAI.DistributedLevelAI, FactoryBase.FactoryBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactoryAI')
 
@@ -18,14 +19,15 @@ class DistributedFactoryAI(DistributedLevelAI.DistributedLevelAI, FactoryBase.Fa
         self.setFactoryId(factoryId)
 
     def createEntityCreator(self):
-        return FactoryEntityCreatorAI.FactoryEntityCreatorAI(level=self)
+        return FactoryEntityCreatorAI.FactoryEntityCreatorAI(level = self)
 
     def getBattleCreditMultiplier(self):
         return ToontownBattleGlobals.getFactoryCreditMultiplier(self.factoryId)
 
     def generate(self):
         self.notify.info('generate')
-        self.notify.info('start factory %s %s creation, frame=%s' % (self.factoryId, self.doId, globalClock.getFrameCount()))
+        self.notify.info(
+            'start factory %s %s creation, frame=%s' % (self.factoryId, self.doId, globalClock.getFrameCount()))
         if __dev__:
             simbase.factory = self
         self.notify.info('loading spec')
@@ -39,7 +41,11 @@ class DistributedFactoryAI(DistributedLevelAI.DistributedLevelAI, FactoryBase.Fa
         DistributedLevelAI.DistributedLevelAI.generate(self, factorySpec)
         self.notify.info('creating cogs')
         cogSpecModule = FactorySpecs.getCogSpecModule(self.factoryId)
-        self.planner = LevelSuitPlannerAI.LevelSuitPlannerAI(self.air, self, DistributedFactorySuitAI.DistributedFactorySuitAI, DistributedBattleFactoryAI.DistributedBattleFactoryAI, cogSpecModule.CogData, cogSpecModule.ReserveCogData, cogSpecModule.BattleCells)
+        self.planner = LevelSuitPlannerAI.LevelSuitPlannerAI(self.air, self,
+                                                             DistributedFactorySuitAI.DistributedFactorySuitAI,
+                                                             DistributedBattleFactoryAI.DistributedBattleFactoryAI,
+                                                             cogSpecModule.CogData, cogSpecModule.ReserveCogData,
+                                                             cogSpecModule.BattleCells)
         suitHandles = self.planner.genSuits()
         messenger.send('plannerCreated-' + str(self.doId))
         self.suits = suitHandles['activeSuits']
@@ -80,7 +86,8 @@ class DistributedFactoryAI(DistributedLevelAI.DistributedLevelAI, FactoryBase.Fa
         if avId in self.avIdList:
             self.sendUpdate('setForemanConfronted', [avId])
         else:
-            self.notify.warning('%s: d_setForemanConfronted: av %s not in av list %s' % (self.doId, avId, self.avIdList))
+            self.notify.warning(
+                '%s: d_setForemanConfronted: av %s not in av list %s' % (self.doId, avId, self.avIdList))
 
     def setVictors(self, victorIds):
         activeVictors = []

@@ -6,12 +6,15 @@ from toontown.toonbase import ToontownAccessAI
 from . import CogDisguiseGlobals
 from otp.otpbase import OTPGlobals
 
+
 class DistributedSellbotHQDoorAI(DistributedCogHQDoorAI.DistributedCogHQDoorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSellbotHQDoorAI')
 
-    def __init__(self, air, blockNumber, doorType, destinationZone, doorIndex = 0, lockValue = FADoorCodes.SB_DISGUISE_INCOMPLETE, swing = 3):
+    def __init__(self, air, blockNumber, doorType, destinationZone, doorIndex = 0,
+                 lockValue = FADoorCodes.SB_DISGUISE_INCOMPLETE, swing = 3):
         self.notify.debugStateCall(self)
-        DistributedCogHQDoorAI.DistributedCogHQDoorAI.__init__(self, air, blockNumber, doorType, destinationZone, doorIndex, lockValue, swing)
+        DistributedCogHQDoorAI.DistributedCogHQDoorAI.__init__(self, air, blockNumber, doorType, destinationZone,
+                                                               doorIndex, lockValue, swing)
 
     def requestEnter(self):
         avatarID = self.air.getAvatarIdFromSender()

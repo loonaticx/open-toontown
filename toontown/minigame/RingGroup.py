@@ -6,6 +6,7 @@ from . import RingTrack
 from . import RingTrackGroup
 from . import RingGameGlobals
 
+
 class RingGroup(NodePath):
 
     def __init__(self, trackGroup, ringModel, posScale, colorIndices):

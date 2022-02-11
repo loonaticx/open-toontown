@@ -6,6 +6,7 @@ from direct.task import Task
 import random
 from . import TagGameGlobals
 
+
 class DistributedTagGameAI(DistributedMinigameAI):
     DURATION = TagGameGlobals.DURATION
 
@@ -15,7 +16,10 @@ class DistributedTagGameAI(DistributedMinigameAI):
         except:
             self.DistributedTagGameAI_initialized = 1
             DistributedMinigameAI.__init__(self, air, minigameId)
-            self.gameFSM = ClassicFSM.ClassicFSM('DistributedTagGameAI', [State.State('inactive', self.enterInactive, self.exitInactive, ['play']), State.State('play', self.enterPlay, self.exitPlay, ['cleanup']), State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
+            self.gameFSM = ClassicFSM.ClassicFSM('DistributedTagGameAI', [
+                State.State('inactive', self.enterInactive, self.exitInactive, ['play']),
+                State.State('play', self.enterPlay, self.exitPlay, ['cleanup']),
+                State.State('cleanup', self.enterCleanup, self.exitCleanup, ['inactive'])], 'inactive', 'inactive')
             self.addChildGameFSM(self.gameFSM)
             self.treasureScores = {}
             self.itAvId = None
@@ -92,7 +96,8 @@ class DistributedTagGameAI(DistributedMinigameAI):
             self.air.writeServerEvent('suspicious', avId, 'TagGameAI.treasureGrabCallback non-player avId')
             return
         self.treasureScores[avId] += 2
-        self.notify.debug('treasureGrabCallback: ' + str(avId) + ' grabbed a treasure, new score: ' + str(self.treasureScores[avId]))
+        self.notify.debug(
+            'treasureGrabCallback: ' + str(avId) + ' grabbed a treasure, new score: ' + str(self.treasureScores[avId]))
         self.scoreDict[avId] = self.treasureScores[avId]
         treasureScoreParams = []
         for avId in self.avIdList:

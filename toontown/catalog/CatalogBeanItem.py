@@ -4,6 +4,7 @@ from toontown.toonbase import TTLocalizer
 from otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
 
+
 class CatalogBeanItem(CatalogItem.CatalogItem):
     sequenceNumber = 0
 
@@ -16,7 +17,8 @@ class CatalogBeanItem(CatalogItem.CatalogItem):
         return 0
 
     def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
+        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in \
+                avatar.awardMailboxContents or self in avatar.onAwardOrder:
             return 1
         return 0
 

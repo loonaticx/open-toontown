@@ -1,6 +1,7 @@
 from .MazeBase import MazeBase
 from . import MazeData
 
+
 class Maze(MazeBase):
 
     def __init__(self, mapName, mazeData = MazeData.mazeData, cellWidth = MazeData.CELL_WIDTH):

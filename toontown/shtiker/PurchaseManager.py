@@ -5,6 +5,7 @@ from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from toontown.minigame import TravelGameGlobals
 
+
 class PurchaseManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('PurchaseManager')
 
@@ -56,12 +57,12 @@ class PurchaseManager(DistributedObject.DistributedObject):
             self.acceptOnce('purchaseTimeout', self.setPurchaseExit)
             self.accept('boughtGag', self.__handleBoughtGag)
             base.cr.playGame.hood.fsm.request('purchase', [self.mpArray,
-             self.moneyArray,
-             self.playerIds,
-             self.playerStates,
-             remain,
-             self.metagameRound,
-             self.votesArray])
+                                                           self.moneyArray,
+                                                           self.playerIds,
+                                                           self.playerStates,
+                                                           remain,
+                                                           self.metagameRound,
+                                                           self.votesArray])
 
     def calcHasLocalToon(self):
         retval = base.localAvatar.doId not in self.newbieIds and base.localAvatar.doId in self.playerIds

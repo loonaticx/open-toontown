@@ -15,17 +15,23 @@ from . import ToonInteriorColors
 from toontown.hood import ZoneUtil
 from toontown.toon import ToonDNA
 from toontown.toon import ToonHead
+
 SIGN_LEFT = -4
 SIGN_RIGHT = 4
 SIGN_BOTTOM = -3.5
 SIGN_TOP = 1.5
 FrameScale = 1.4
 
+
 class DistributedToonInterior(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
-        self.fsm = ClassicFSM.ClassicFSM('DistributedToonInterior', [State.State('toon', self.enterToon, self.exitToon, ['beingTakenOver']), State.State('beingTakenOver', self.enterBeingTakenOver, self.exitBeingTakenOver, []), State.State('off', self.enterOff, self.exitOff, [])], 'toon', 'off')
+        self.fsm = ClassicFSM.ClassicFSM('DistributedToonInterior',
+                                         [State.State('toon', self.enterToon, self.exitToon, ['beingTakenOver']),
+                                          State.State('beingTakenOver', self.enterBeingTakenOver,
+                                                      self.exitBeingTakenOver, []),
+                                          State.State('off', self.enterOff, self.exitOff, [])], 'toon', 'off')
         self.fsm.enterInitialState()
 
     def generate(self):
@@ -123,7 +129,9 @@ class DistributedToonInterior(DistributedObject.DistributedObject):
                 scale = min(xScale, zScale)
                 xCenter = (ur[0] + ll[0]) / 2.0
                 zCenter = (ur[2] + ll[2]) / 2.0
-                newSignNP.setPosHprScale((SIGN_RIGHT + SIGN_LEFT) / 2.0 - xCenter * scale, -0.1, (SIGN_TOP + SIGN_BOTTOM) / 2.0 - zCenter * scale, 0.0, 0.0, 0.0, scale, scale, scale)
+                newSignNP.setPosHprScale((SIGN_RIGHT + SIGN_LEFT) / 2.0 - xCenter * scale, -0.1,
+                                         (SIGN_TOP + SIGN_BOTTOM) / 2.0 - zCenter * scale, 0.0, 0.0, 0.0, scale, scale,
+                                         scale)
         trophyOrigin = self.interior.find('**/trophy_origin')
         trophy = self.buildTrophy()
         if trophy:

@@ -6,6 +6,7 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from toontown.shtiker import ShtikerPage
 from toontown.toonbase import TTLocalizer
+
 UseDirectNewsFrame = config.GetBool('use-direct-news-frame', True)
 HaveNewsFrame = True
 if UseDirectNewsFrame:
@@ -16,6 +17,7 @@ else:
     except:
         HaveNewsFrame = False
 
+
 class NewsPage(ShtikerPage.ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('NewsPage')
 
@@ -23,16 +25,17 @@ class NewsPage(ShtikerPage.ShtikerPage):
         ShtikerPage.ShtikerPage.__init__(self)
 
     def load(self):
-        self.noNewsLabel = DirectLabel(parent=self, relief=None, text=TTLocalizer.NewsPageImportError, text_scale=0.12)
+        self.noNewsLabel = DirectLabel(parent = self, relief = None, text = TTLocalizer.NewsPageImportError,
+                                       text_scale = 0.12)
         if HaveNewsFrame:
             if UseDirectNewsFrame:
                 import datetime
                 start = datetime.datetime.now()
-                self.newsFrame = DirectNewsFrame.DirectNewsFrame(parent=self)
+                self.newsFrame = DirectNewsFrame.DirectNewsFrame(parent = self)
                 ending = datetime.datetime.now()
                 self.notify.info('time to load news = %s' % str(ending - start))
             else:
-                self.newsFrame = InGameNewsFrame.InGameNewsFrame(parent=self)
+                self.newsFrame = InGameNewsFrame.InGameNewsFrame(parent = self)
                 self.newsFrame.activate()
         return
 

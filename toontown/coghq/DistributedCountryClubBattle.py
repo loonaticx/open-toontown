@@ -13,12 +13,14 @@ from direct.fsm import State
 from direct.fsm import ClassicFSM, State
 from toontown.toonbase import ToontownGlobals
 
+
 class DistributedCountryClubBattle(DistributedLevelBattle.DistributedLevelBattle):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCountryClubBattle')
 
     def __init__(self, cr):
         DistributedLevelBattle.DistributedLevelBattle.__init__(self, cr)
-        self.fsm.addState(State.State('CountryClubReward', self.enterCountryClubReward, self.exitCountryClubReward, ['Resume']))
+        self.fsm.addState(
+            State.State('CountryClubReward', self.enterCountryClubReward, self.exitCountryClubReward, ['Resume']))
         offState = self.fsm.getStateNamed('Off')
         offState.addTransition('CountryClubReward')
         playMovieState = self.fsm.getStateNamed('PlayMovie')
@@ -43,6 +45,6 @@ class DistributedCountryClubBattle(DistributedLevelBattle.DistributedLevelBattle
 
     def exitCountryClubReward(self):
         self.notify.debug('exitCountryClubReward()')
-        self.movie.resetReward(finish=1)
+        self.movie.resetReward(finish = 1)
         self._removeMembersKeep()
         NametagGlobals.setMasterArrowsOn(1)

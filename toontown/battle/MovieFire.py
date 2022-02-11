@@ -11,14 +11,17 @@ import functools
 from . import MovieCamera
 from . import MovieUtil
 from .MovieUtil import calcAvgSuitPos
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieThrow')
-hitSoundFiles = ('AA_tart_only.ogg', 'AA_slice_only.ogg', 'AA_slice_only.ogg', 'AA_slice_only.ogg', 'AA_slice_only.ogg', 'AA_wholepie_only.ogg', 'AA_wholepie_only.ogg')
+hitSoundFiles = ('AA_tart_only.ogg', 'AA_slice_only.ogg', 'AA_slice_only.ogg', 'AA_slice_only.ogg', 'AA_slice_only.ogg',
+                 'AA_wholepie_only.ogg', 'AA_wholepie_only.ogg')
 tPieLeavesHand = 2.7
 tPieHitsSuit = 3.0
 tSuitDodges = 2.45
 ratioMissToHit = 1.5
 tPieShrink = 0.7
 pieFlyTaskName = 'MovieThrow-pieFly'
+
 
 def addHit(dict, suitId, hitCount):
     if suitId in dict:
@@ -40,13 +43,15 @@ def doFires(fires):
             suitFiresDict[suitId] = [fire]
 
     suitFires = list(suitFiresDict.values())
+
     def compFunc(a, b):
         if len(a) > len(b):
             return 1
         elif len(a) < len(b):
             return -1
         return 0
-    suitFires.sort(key=functools.cmp_to_key(compFunc))
+
+    suitFires.sort(key = functools.cmp_to_key(compFunc))
 
     totalHitDict = {}
     singleHitDict = {}
@@ -81,6 +86,7 @@ def doFires(fires):
     camDuration = retTrack.getDuration()
     camTrack = MovieCamera.chooseFireShot(fires, suitFiresDict, camDuration)
     return (retTrack, camTrack)
+
 
 def __doSuitFires(fires):
     toonTracks = Parallel()
@@ -149,7 +155,7 @@ def __propPreflight(props, suit, toon, battle):
     for ci in range(prop.getNumChildren()):
         prop.getChild(ci).setHpr(0, -90, 0)
 
-    targetPnt = MovieUtil.avatarFacePoint(suit, other=battle)
+    targetPnt = MovieUtil.avatarFacePoint(suit, other = battle)
     prop.lookAt(targetPnt)
 
 
@@ -163,7 +169,7 @@ def __propPreflightGroup(props, suits, toon, battle):
 
     avgTargetPt = Point3(0, 0, 0)
     for suit in suits:
-        avgTargetPt += MovieUtil.avatarFacePoint(suit, other=battle)
+        avgTargetPt += MovieUtil.avatarFacePoint(suit, other = battle)
 
     avgTargetPt /= len(suits)
     prop.lookAt(avgTargetPt)
@@ -217,7 +223,7 @@ def __pieMissGroupLerpCallback(t, missDict):
 
 def __getSoundTrack(level, hitSuit, node = None):
     throwSound = globalBattleSoundCache.getSound('AA_drop_trigger_box.ogg')
-    throwTrack = Sequence(Wait(2.15), SoundInterval(throwSound, node=node))
+    throwTrack = Sequence(Wait(2.15), SoundInterval(throwSound, node = node))
     return throwTrack
 
 
@@ -238,9 +244,9 @@ def __throwPie(throw, delay, hitCount, showCannon = 1):
     suitPos = suit.getPos(battle)
     origHpr = toon.getHpr(battle)
     notify.debug('toon: %s throws tart at suit: %d for hp: %d died: %d' % (toon.getName(),
-     suit.doId,
-     hp,
-     died))
+                                                                           suit.doId,
+                                                                           hp,
+                                                                           died))
     pieName = pieNames[0]
     hitSuit = hp > 0
     button = globalPropPool.getProp('button')
@@ -253,14 +259,14 @@ def __throwPie(throw, delay, hitCount, showCannon = 1):
     toonTrack.append(Wait(delay))
     toonTrack.append(toonFace)
     toonTrack.append(ActorInterval(toon, 'pushbutton'))
-    toonTrack.append(ActorInterval(toon, 'wave', duration=2.0))
+    toonTrack.append(ActorInterval(toon, 'wave', duration = 2.0))
     toonTrack.append(ActorInterval(toon, 'duck'))
     toonTrack.append(Func(toon.loop, 'neutral'))
     toonTrack.append(Func(toon.setHpr, battle, origHpr))
     buttonTrack = Sequence()
     buttonShow = Func(MovieUtil.showProps, buttons, hands)
-    buttonScaleUp = LerpScaleInterval(button, 1.0, button.getScale(), startScale=Point3(0.01, 0.01, 0.01))
-    buttonScaleDown = LerpScaleInterval(button, 1.0, Point3(0.01, 0.01, 0.01), startScale=button.getScale())
+    buttonScaleUp = LerpScaleInterval(button, 1.0, button.getScale(), startScale = Point3(0.01, 0.01, 0.01))
+    buttonScaleDown = LerpScaleInterval(button, 1.0, Point3(0.01, 0.01, 0.01), startScale = button.getScale())
     buttonHide = Func(MovieUtil.removeProps, buttons)
     buttonTrack.append(Wait(delay))
     buttonTrack.append(buttonShow)
@@ -272,7 +278,7 @@ def __throwPie(throw, delay, hitCount, showCannon = 1):
     suitResponseTrack = Sequence()
     reactIval = Sequence()
     if showCannon:
-        showDamage = Func(suit.showHpText, -hp, openEnded=0)
+        showDamage = Func(suit.showHpText, -hp, openEnded = 0)
         updateHealthBar = Func(suit.updateHealthBar, hp)
         cannon = loader.loadModel('phase_4/models/minigames/toon_cannon')
         barrel = cannon.find('**/cannon')
@@ -312,17 +318,75 @@ def __throwPie(throw, delay, hitCount, showCannon = 1):
         smoke.hide()
         smoke.setBillboardPointEye()
         soundBomb = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.ogg')
-        playSoundBomb = SoundInterval(soundBomb, node=cannonHolder)
+        playSoundBomb = SoundInterval(soundBomb, node = cannonHolder)
         soundFly = base.loader.loadSfx('phase_4/audio/sfx/firework_whistle_01.ogg')
-        playSoundFly = SoundInterval(soundFly, node=cannonHolder)
+        playSoundFly = SoundInterval(soundFly, node = cannonHolder)
         soundCannonAdjust = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
-        playSoundCannonAdjust = SoundInterval(soundCannonAdjust, duration=0.6, node=cannonHolder)
+        playSoundCannonAdjust = SoundInterval(soundCannonAdjust, duration = 0.6, node = cannonHolder)
         soundCogPanic = base.loader.loadSfx('phase_5/audio/sfx/ENC_cogafssm.ogg')
-        playSoundCogPanic = SoundInterval(soundCogPanic, node=cannonHolder)
-        reactIval = Parallel(ActorInterval(suit, 'pie-small-react'), Sequence(Wait(0.0), LerpPosInterval(cannonHolder, 2.0, posFinal, startPos=posInit, blendType='easeInOut'), Parallel(LerpHprInterval(barrel, 0.6, Point3(0, 45, 0), startHpr=Point3(0, 90, 0), blendType='easeIn'), playSoundCannonAdjust), Wait(2.0), Parallel(LerpHprInterval(barrel, 0.6, Point3(0, 90, 0), startHpr=Point3(0, 45, 0), blendType='easeIn'), playSoundCannonAdjust), LerpPosInterval(cannonHolder, 1.0, posInit, startPos=posFinal, blendType='easeInOut')), Sequence(Wait(0.0), Parallel(ActorInterval(suit, 'flail'), suit.scaleInterval(1.0, suitScale), LerpPosInterval(suit, 0.25, Point3(0, -1.0, 0.0)), Sequence(Wait(0.25), Parallel(playSoundCogPanic, LerpPosInterval(suit, 1.5, Point3(0, -deep, 0.0), blendType='easeIn')))), Wait(2.5), Parallel(playSoundBomb, playSoundFly, Sequence(Func(smoke.show), Parallel(LerpScaleInterval(smoke, 0.5, 3), LerpColorScaleInterval(smoke, 0.5, Vec4(2, 2, 2, 0))), Func(smoke.hide)), Sequence(Func(kapow.show), 
-ActorInterval(kapow, 'kapow'), Func(kapow.hide)), LerpPosInterval(suit, 3.0, Point3(0, 150.0, 0.0)), suit.scaleInterval(3.0, 0.01)), Func(suit.hide)))
+        playSoundCogPanic = SoundInterval(soundCogPanic, node = cannonHolder)
+        reactIval = Parallel(ActorInterval(suit, 'pie-small-react'), Sequence(Wait(0.0),
+                                                                              LerpPosInterval(cannonHolder, 2.0,
+                                                                                              posFinal,
+                                                                                              startPos = posInit,
+                                                                                              blendType = 'easeInOut'),
+                                                                              Parallel(LerpHprInterval(barrel, 0.6,
+                                                                                                       Point3(0, 45, 0),
+                                                                                                       startHpr =
+                                                                                                       Point3(
+                                                                                                           0, 90, 0),
+                                                                                                       blendType =
+                                                                                                       'easeIn'),
+                                                                                       playSoundCannonAdjust),
+                                                                              Wait(2.0), Parallel(
+                LerpHprInterval(barrel, 0.6, Point3(0, 90, 0), startHpr = Point3(0, 45, 0), blendType = 'easeIn'),
+                playSoundCannonAdjust), LerpPosInterval(cannonHolder, 1.0, posInit, startPos = posFinal,
+                                                        blendType = 'easeInOut')), Sequence(Wait(0.0), Parallel(
+            ActorInterval(suit, 'flail'), suit.scaleInterval(1.0, suitScale),
+            LerpPosInterval(suit, 0.25, Point3(0, -1.0, 0.0)), Sequence(Wait(0.25), Parallel(playSoundCogPanic,
+                                                                                             LerpPosInterval(suit, 1.5,
+                                                                                                             Point3(0,
+                                                                                                                    -deep,
+                                                                                                                    0.0),
+                                                                                                             blendType = 'easeIn')))),
+                                                                                            Wait(2.5),
+                                                                                            Parallel(playSoundBomb,
+                                                                                                     playSoundFly,
+                                                                                                     Sequence(Func(
+                                                                                                         smoke.show),
+                                                                                                              Parallel(
+                                                                                                                  LerpScaleInterval(
+                                                                                                                      smoke,
+                                                                                                                      0.5,
+                                                                                                                      3),
+                                                                                                                  LerpColorScaleInterval(
+                                                                                                                      smoke,
+                                                                                                                      0.5,
+                                                                                                                      Vec4(
+                                                                                                                          2,
+                                                                                                                          2,
+                                                                                                                          2,
+                                                                                                                          0))),
+                                                                                                              Func(
+                                                                                                                  smoke.hide)),
+                                                                                                     Sequence(Func(
+                                                                                                         kapow.show),
+                                                                                                              ActorInterval(
+                                                                                                                  kapow,
+                                                                                                                  'kapow'),
+                                                                                                              Func(
+                                                                                                                  kapow.hide)),
+                                                                                                     LerpPosInterval(
+                                                                                                         suit, 3.0,
+                                                                                                         Point3(0,
+                                                                                                                150.0,
+                                                                                                                0.0)),
+                                                                                                     suit.scaleInterval(
+                                                                                                         3.0, 0.01)),
+                                                                                            Func(suit.hide)))
         if hitCount == 1:
-            sival = Sequence(Parallel(reactIval, MovieUtil.createSuitStunInterval(suit, 0.3, 1.3)), Wait(0.0), Func(cannonHolder.remove))
+            sival = Sequence(Parallel(reactIval, MovieUtil.createSuitStunInterval(suit, 0.3, 1.3)), Wait(0.0),
+                             Func(cannonHolder.remove))
         else:
             sival = reactIval
         suitResponseTrack.append(Wait(delay + tPieHitsSuit))
@@ -332,12 +396,12 @@ ActorInterval(kapow, 'kapow'), Func(kapow.hide)), LerpPosInterval(suit, 3.0, Poi
         bonusTrack = Sequence(Wait(delay + tPieHitsSuit))
         if kbbonus > 0:
             bonusTrack.append(Wait(0.75))
-            bonusTrack.append(Func(suit.showHpText, -kbbonus, 2, openEnded=0))
+            bonusTrack.append(Func(suit.showHpText, -kbbonus, 2, openEnded = 0))
         if hpbonus > 0:
             bonusTrack.append(Wait(0.75))
-            bonusTrack.append(Func(suit.showHpText, -hpbonus, 1, openEnded=0))
+            bonusTrack.append(Func(suit.showHpText, -hpbonus, 1, openEnded = 0))
         suitResponseTrack = Parallel(suitResponseTrack, bonusTrack)
     return [toonTrack,
-     soundTrack,
-     buttonTrack,
-     suitResponseTrack]
+            soundTrack,
+            buttonTrack,
+            suitResponseTrack]

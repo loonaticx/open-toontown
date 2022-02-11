@@ -5,6 +5,7 @@ from direct.showbase.DirectObject import DirectObject
 from toontown.toonbase import ToontownGlobals
 from toontown.battle import BattleParticles
 
+
 class IceTreasure(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('IceTreasure')
     RADIUS = 1.0
@@ -33,7 +34,7 @@ class IceTreasure(DirectObject):
         self.track = None
         if self.penalty:
             self.tip = self.nodePath.find('**/fusetip')
-            sparks = BattleParticles.createParticleEffect(file='icetnt')
+            sparks = BattleParticles.createParticleEffect(file = 'icetnt')
             self.sparksEffect = sparks
             sparks.start(self.tip)
             self.penaltyGrabSound = loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.ogg')
@@ -64,5 +65,12 @@ class IceTreasure(DirectObject):
         self.collNodePath.hide()
         self.collNode.setIntoCollideMask(BitMask32(0))
         if self.penalty:
-            self.track = Parallel(SoundInterval(self.penaltyGrabSound), Sequence(Func(self.kaboom.showThrough), LerpScaleInterval(self.kaboom, duration=0.5, scale=Point3(10, 10, 10), blendType='easeOut'), Func(self.kaboom.hide)))
+            self.track = Parallel(SoundInterval(self.penaltyGrabSound), Sequence(Func(self.kaboom.showThrough),
+                                                                                 LerpScaleInterval(self.kaboom,
+                                                                                                   duration = 0.5,
+                                                                                                   scale = Point3(10,
+                                                                                                                  10,
+                                                                                                                  10),
+                                                                                                   blendType = 'easeOut'),
+                                                                                 Func(self.kaboom.hide)))
             self.track.start()

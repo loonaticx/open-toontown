@@ -6,6 +6,7 @@ from . import DistributedAnimatedPropAI
 from direct.task.Task import Task
 from direct.fsm import State
 
+
 class DistributedKnockKnockDoorAI(DistributedAnimatedPropAI.DistributedAnimatedPropAI):
 
     def __init__(self, air, propId):

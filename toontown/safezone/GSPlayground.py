@@ -8,6 +8,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.racing import RaceGlobals
 from direct.fsm import State
 
+
 class GSPlayground(Playground.Playground):
 
     def __init__(self, loader, parentFSM, doneEvent):
@@ -59,13 +60,16 @@ class GSPlayground(Playground.Playground):
         reason = requestStatus.get('reason')
         if reason == RaceGlobals.Exit_Barrier:
             requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RaceTimeout, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
+            self.dialog = TTDialog.TTDialog(text = TTLocalizer.KartRace_RaceTimeout, command = self.__cleanupDialog,
+                                            style = TTDialog.Acknowledge)
         elif reason == RaceGlobals.Exit_Slow:
             requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RacerTooSlow, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
+            self.dialog = TTDialog.TTDialog(text = TTLocalizer.KartRace_RacerTooSlow, command = self.__cleanupDialog,
+                                            style = TTDialog.Acknowledge)
         elif reason == RaceGlobals.Exit_BarrierNoRefund:
             requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RaceTimeoutNoRefund, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
+            self.dialog = TTDialog.TTDialog(text = TTLocalizer.KartRace_RaceTimeoutNoRefund,
+                                            command = self.__cleanupDialog, style = TTDialog.Acknowledge)
         Playground.Playground.enterTeleportIn(self, requestStatus)
 
     def __cleanupDialog(self, value):
@@ -80,7 +84,8 @@ class GSPlayground(Playground.Playground):
         import pdb
         pdb.set_trace()
         self.accept(self.startingBlockDoneEvent, self.handleStartingBlockDone)
-        self.startingBlock = Elevator.Elevator(self.fsm.getStateNamed('startingBlock'), self.startingBlockDoneEvent, distStartingBlock)
+        self.startingBlock = Elevator.Elevator(self.fsm.getStateNamed('startingBlock'), self.startingBlockDoneEvent,
+                                               distStartingBlock)
         distStartingBlock.elevatorFSM = self.startingBlock
         self.startingBlock.load()
         self.startingBlock.enter()

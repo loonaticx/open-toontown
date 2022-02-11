@@ -24,6 +24,7 @@ import operator
 from direct.gui.DirectGui import DirectFrame
 import random
 
+
 class RaceGUI:
     GagPie = 0
     gagRoot = 'phase_3.5/maps/inventory_'
@@ -41,7 +42,8 @@ class RaceGUI:
             self.gag = None
             return
 
-        def update(self, curvetime = None, maxlaphit = None, faceX = None, mapspotPt = None, place = None, finished = None):
+        def update(self, curvetime = None, maxlaphit = None, faceX = None, mapspotPt = None, place = None,
+                   finished = None):
             if self.enabled:
                 if not curvetime == None:
                     self.curvetime = curvetime
@@ -77,10 +79,10 @@ class RaceGUI:
         invTextures = loader.loadModel('phase_3.5/models/gui/inventory_icons')
         racingTextures = loader.loadModel('phase_6/models/karting/racing_textures')
         self.gagTextures = [toonInteriorTextures.find('**/couch'),
-         invTextures.find('**/inventory_bannana_peel'),
-         racingTextures.find('**/boost_arrow'),
-         invTextures.find('**/inventory_anvil'),
-         invTextures.find('**/inventory_creampie')]
+                            invTextures.find('**/inventory_bannana_peel'),
+                            racingTextures.find('**/boost_arrow'),
+                            invTextures.find('**/inventory_anvil'),
+                            invTextures.find('**/inventory_creampie')]
         self.gagTextures[1].setScale(7.5)
         self.gagTextures[3].setScale(7.5)
         self.gagTextures[4].setScale(7.5)
@@ -93,10 +95,13 @@ class RaceGUI:
         self.aspect2dRoot.setDepthWrite(1)
         self.raceModeRoot = self.aspect2dRoot.attachNewNode('RaceModeRoot')
         gui = loader.loadModel('phase_3.5/models/gui/avatar_panel_gui')
-        self.closeButton = DirectButton(image=(gui.find('**/CloseBtn_UP'),
-         gui.find('**/CloseBtn_DN'),
-         gui.find('**/CloseBtn_Rllvr'),
-         gui.find('**/CloseBtn_UP')), relief=None, scale=1.05, text=TTLocalizer.KartRace_Leave, text_scale=0.04, text_pos=(0, -0.07), text_fg=VBase4(1, 1, 1, 1), pos=(-0.99, 0, 0.925), command=self.race.leaveRace)
+        self.closeButton = DirectButton(image = (gui.find('**/CloseBtn_UP'),
+                                                 gui.find('**/CloseBtn_DN'),
+                                                 gui.find('**/CloseBtn_Rllvr'),
+                                                 gui.find('**/CloseBtn_UP')), relief = None, scale = 1.05,
+                                        text = TTLocalizer.KartRace_Leave, text_scale = 0.04, text_pos = (0, -0.07),
+                                        text_fg = VBase4(1, 1, 1, 1), pos = (-0.99, 0, 0.925),
+                                        command = self.race.leaveRace)
         self.closeButton.reparentTo(self.aspect2dRoot)
         self.directObjList.append(self.closeButton)
         self.raceTimeDelta = 0
@@ -131,33 +136,55 @@ class RaceGUI:
         self.mapLines.setP(90)
         self.faceStartPos = Vec3(-0.8, 0, 0.93)
         self.faceEndPos = Vec3(0.8, 0, 0.93)
-        self.placeLabelNum = DirectLabel(relief=None, pos=TTLocalizer.RGUIplaceLabelNumPos, text='1', text_scale=0.35, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
+        self.placeLabelNum = DirectLabel(relief = None, pos = TTLocalizer.RGUIplaceLabelNumPos, text = '1',
+                                         text_scale = 0.35, text_fg = (0.95, 0.95, 0, 1),
+                                         text_font = ToontownGlobals.getSignFont())
         self.placeLabelNum.reparentTo(self.raceModeRoot)
         self.directObjList.append(self.placeLabelNum)
-        self.placeLabelStr = DirectLabel(relief=None, pos=TTLocalizer.RGUIplaceLabelStrPos, text=TTLocalizer.KartRace_FirstSuffix, text_scale=0.1, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
+        self.placeLabelStr = DirectLabel(relief = None, pos = TTLocalizer.RGUIplaceLabelStrPos,
+                                         text = TTLocalizer.KartRace_FirstSuffix, text_scale = 0.1,
+                                         text_fg = (0.95, 0.95, 0, 1), text_font = ToontownGlobals.getSignFont())
         self.placeLabelStr.reparentTo(self.raceModeRoot)
         self.directObjList.append(self.placeLabelStr)
-        self.lapLabel = DirectLabel(relief=None, pos=(1.1, 0, 0.45), text='1/' + str(self.race.lapCount), text_scale=0.1, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
+        self.lapLabel = DirectLabel(relief = None, pos = (1.1, 0, 0.45), text = '1/' + str(self.race.lapCount),
+                                    text_scale = 0.1, text_fg = (0.95, 0.95, 0, 1),
+                                    text_font = ToontownGlobals.getSignFont())
         self.lapLabel.reparentTo(self.raceModeRoot)
         self.directObjList.append(self.lapLabel)
-        self.photoFinishLabel = DirectLabel(relief=None, pos=(0, 0, -0.1), text=TTLocalizer.KartRace_PhotoFinish, text_scale=TTLocalizer.RGUIphotoFinish, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
+        self.photoFinishLabel = DirectLabel(relief = None, pos = (0, 0, -0.1), text = TTLocalizer.KartRace_PhotoFinish,
+                                            text_scale = TTLocalizer.RGUIphotoFinish, text_fg = (0.95, 0.95, 0, 1),
+                                            text_font = ToontownGlobals.getSignFont())
         self.photoFinishLabel.hide()
         self.directObjList.append(self.photoFinishLabel)
-        self.wrongWayLabel = DirectLabel(relief=None, pos=(1.1, 0, 0.85), text=TTLocalizer.KartRace_WrongWay, text_scale=0.1, text_fg=(0.95, 0, 0, 1), text_font=ToontownGlobals.getSignFont())
+        self.wrongWayLabel = DirectLabel(relief = None, pos = (1.1, 0, 0.85), text = TTLocalizer.KartRace_WrongWay,
+                                         text_scale = 0.1, text_fg = (0.95, 0, 0, 1),
+                                         text_font = ToontownGlobals.getSignFont())
         self.wrongWayLabel.reparentTo(self.raceModeRoot)
         self.directObjList.append(self.wrongWayLabel)
         self.wrongWayLabel.setColorScale(Vec4(1, 1, 1, 0))
-        self.wrongWaySeq = Sequence(self.wrongWayLabel.colorScaleInterval(0.25, colorScale=Vec4(1, 1, 1, 1), startColorScale=Vec4(1, 1, 1, 0)), self.wrongWayLabel.colorScaleInterval(0.25, colorScale=Vec4(1, 1, 1, 0), startColorScale=Vec4(1, 1, 1, 1)))
+        self.wrongWaySeq = Sequence(self.wrongWayLabel.colorScaleInterval(0.25, colorScale = Vec4(1, 1, 1, 1),
+                                                                          startColorScale = Vec4(1, 1, 1, 0)),
+                                    self.wrongWayLabel.colorScaleInterval(0.25, colorScale = Vec4(1, 1, 1, 0),
+                                                                          startColorScale = Vec4(1, 1, 1, 1)))
         interpolateFacePos = lambda x: self.faceStartPos * (1.0 - x) + self.faceEndPos * x
         self.timeLabels = []
         for x in range(self.race.lapCount):
-            minLabel = DirectLabel(relief=None, pos=(interpolateFacePos((2.0 * x + 1) / (self.race.lapCount * 2))[0] - 0.06, 0, 0.84), text="0'", text_scale=0.06, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont(), text_align=TextNode.ARight)
+            minLabel = DirectLabel(relief = None, pos = (
+            interpolateFacePos((2.0 * x + 1) / (self.race.lapCount * 2))[0] - 0.06, 0, 0.84), text = "0'",
+                                   text_scale = 0.06, text_fg = (0.95, 0.95, 0, 1),
+                                   text_font = ToontownGlobals.getSignFont(), text_align = TextNode.ARight)
             minLabel.reparentTo(self.raceModeRoot)
             self.directObjList.append(minLabel)
-            secLabel = DirectLabel(relief=None, pos=(interpolateFacePos((2.0 * x + 1) / (self.race.lapCount * 2))[0] + 0.06, 0, 0.84), text="00''", text_scale=0.06, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont(), text_align=TextNode.ARight)
+            secLabel = DirectLabel(relief = None, pos = (
+            interpolateFacePos((2.0 * x + 1) / (self.race.lapCount * 2))[0] + 0.06, 0, 0.84), text = "00''",
+                                   text_scale = 0.06, text_fg = (0.95, 0.95, 0, 1),
+                                   text_font = ToontownGlobals.getSignFont(), text_align = TextNode.ARight)
             secLabel.reparentTo(self.raceModeRoot)
             self.directObjList.append(secLabel)
-            fractionLabel = DirectLabel(relief=None, pos=(interpolateFacePos((2.0 * x + 1) / (self.race.lapCount * 2))[0] + 0.14, 0, 0.84), text='00', text_scale=0.06, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont(), text_align=TextNode.ARight)
+            fractionLabel = DirectLabel(relief = None, pos = (
+            interpolateFacePos((2.0 * x + 1) / (self.race.lapCount * 2))[0] + 0.14, 0, 0.84), text = '00',
+                                        text_scale = 0.06, text_fg = (0.95, 0.95, 0, 1),
+                                        text_font = ToontownGlobals.getSignFont(), text_align = TextNode.ARight)
             fractionLabel.reparentTo(self.raceModeRoot)
             self.directObjList.append(fractionLabel)
             self.timeLabels.append((minLabel, secLabel, fractionLabel))
@@ -166,7 +193,9 @@ class RaceGUI:
         self.cardMaker.setName('GagIndicator')
         self.cardMaker.setFrame(-0.5, 0.5, -0.5, 0.5)
         self.cardMaker.setColor(1, 1, 1, 1)
-        self.gagPanel = DirectFrame(parent=self.raceModeRoot, relief=None, image=loader.loadModel('phase_6/models/karting/gag_panel'), image_scale=0.25, pos=(-1.13, 0, -0.5))
+        self.gagPanel = DirectFrame(parent = self.raceModeRoot, relief = None,
+                                    image = loader.loadModel('phase_6/models/karting/gag_panel'), image_scale = 0.25,
+                                    pos = (-1.13, 0, -0.5))
         self.directObjList.append(self.gagPanel)
         self.gag = self.gagPanel.attachNewNode('gag')
         self.gag.setScale(0.2)
@@ -185,7 +214,8 @@ class RaceGUI:
             hash = self.raceModeRoot.attachNewNode(self.cardMaker.generate())
             hash.setScale(line.getScale()[2], 1, line.getScale()[2] * 5)
             t = float(n) / self.race.lapCount
-            hash.setPos(self.faceStartPos[0] * (1 - t) + self.faceEndPos[0] * t, self.faceStartPos[1], self.faceStartPos[2])
+            hash.setPos(self.faceStartPos[0] * (1 - t) + self.faceEndPos[0] * t, self.faceStartPos[1],
+                        self.faceStartPos[2])
 
         self.raceModeReady = True
         self.disable()
@@ -217,7 +247,8 @@ class RaceGUI:
             else:
                 self.gag.show()
                 self.gagAcquireSound.play()
-                self.gagAcquireInterval = LerpHprInterval(self.gag, duration=0.5, blendType='easeOut', startHpr=Point3(0, -90, 0), hpr=Point3(0, 0, 0))
+                self.gagAcquireInterval = LerpHprInterval(self.gag, duration = 0.5, blendType = 'easeOut',
+                                                          startHpr = Point3(0, -90, 0), hpr = Point3(0, 0, 0))
                 self.gagAcquireInterval.start()
 
     def waitingOnGag(self, cycleTime):
@@ -225,7 +256,18 @@ class RaceGUI:
             numTextures = len(self.gagTextures)
             startOffset = random.choice(list(range(0, numTextures)))
             self.gag.show()
-            self.gagCycleInterval = Parallel(LerpFunc(self.showNextGag, fromData=startOffset, toData=numTextures * 2 * cycleTime + startOffset, blendType='easeOut', duration=cycleTime), LerpHprInterval(self.gag, duration=cycleTime, hpr=Point3(0, 180 * numTextures * 2 * cycleTime - 90, 0), blendType='easeOut', startHpr=Point3(0, 0, 0)), SoundInterval(self.gagCycleSound, loop=1, duration=cycleTime, startTime=0), name='gagCycleInterval')
+            self.gagCycleInterval = Parallel(
+                LerpFunc(self.showNextGag, fromData = startOffset, toData = numTextures * 2 * cycleTime + startOffset,
+                         blendType = 'easeOut', duration = cycleTime), LerpHprInterval(self.gag, duration = cycleTime,
+                                                                                       hpr = Point3(0,
+                                                                                                    180 * numTextures
+                                                                                                    * 2 * cycleTime -
+                                                                                                    90,
+                                                                                                    0),
+                                                                                       blendType = 'easeOut',
+                                                                                       startHpr = Point3(0, 0, 0)),
+                SoundInterval(self.gagCycleSound, loop = 1, duration = cycleTime, startTime = 0),
+                name = 'gagCycleInterval')
             self.gagCycleInterval.start()
 
     def showNextGag(self, t):
@@ -267,16 +309,16 @@ class RaceGUI:
         self.maxLapHit = min(self.maxLapHit, self.race.lapCount - 1)
         for x in range(self.maxLapHit + 1):
             for y in self.timeLabels[x]:
-                y.configure(text_font=ToontownGlobals.getSignFont())
+                y.configure(text_font = ToontownGlobals.getSignFont())
                 y.show()
 
         for y in self.timeLabels[self.maxLapHit]:
-            y.configure(text_font=ToontownGlobals.getSignFont())
+            y.configure(text_font = ToontownGlobals.getSignFont())
 
     def enableResultMode(self):
         self.endPanel.enable()
         if not self.race.circuitLoop:
-            taskMgr.doMethodLater(180, self.endPanel.closeButtonPressed, 'clearRaceEndPanel', extraArgs=[])
+            taskMgr.doMethodLater(180, self.endPanel.closeButtonPressed, 'clearRaceEndPanel', extraArgs = [])
 
     def destroy(self):
         self.disable()
@@ -338,21 +380,21 @@ class RaceGUI:
             self.race.curve.getPoint(mapT % self.race.curve.getMaxT(), pt)
             lapT = clampScalar(curvetime / self.race.lapCount, 0.0, 1.0)
             faceX = self.faceStartPos[0] * (1 - lapT) + self.faceEndPos[0] * lapT
-            racer.update(faceX=faceX, mapspotPt=pt)
+            racer.update(faceX = faceX, mapspotPt = pt)
             t = time - self.race.baseTime - self.raceTimeDelta
             if key == localAvatar.doId:
                 if self.race.laps > maxlaphit:
-                    racer.update(maxlaphit=self.race.laps)
+                    racer.update(maxlaphit = self.race.laps)
                     self.maxLapHit = racer.maxlaphit
                     if self.maxLapHit < self.race.lapCount:
                         for y in self.timeLabels[self.maxLapHit - 1]:
-                            y.configure(text_font=ToontownGlobals.getSignFont())
+                            y.configure(text_font = ToontownGlobals.getSignFont())
 
                         for y in self.timeLabels[self.maxLapHit]:
                             y.show()
 
                         for y in self.timeLabels[self.maxLapHit]:
-                            y.configure(text_font=ToontownGlobals.getSignFont())
+                            y.configure(text_font = ToontownGlobals.getSignFont())
 
                         self.raceTimeDelta = globalClock.getFrameTime() - self.race.baseTime
                         lapNotice = DirectLabel()
@@ -361,16 +403,19 @@ class RaceGUI:
                             lapNotice['text'] = TTLocalizer.KartRace_FinalLapText
                         else:
                             lapNotice['text'] = TTLocalizer.KartRace_LapText % str(self.maxLapHit + 1)
-                        taskMgr.doMethodLater(2, lapNotice.remove, 'removeIt', extraArgs=[])
-                self.lapLabel['text'] = str(clampScalar(self.maxLapHit + 1, 1, self.race.lapCount)) + '/' + str(self.race.lapCount)
+                        taskMgr.doMethodLater(2, lapNotice.remove, 'removeIt', extraArgs = [])
+                self.lapLabel['text'] = str(clampScalar(self.maxLapHit + 1, 1, self.race.lapCount)) + '/' + str(
+                    self.race.lapCount)
 
-        suffix = {1: TTLocalizer.KartRace_FirstSuffix,
-         2: TTLocalizer.KartRace_SecondSuffix,
-         3: TTLocalizer.KartRace_ThirdSuffix,
-         4: TTLocalizer.KartRace_FourthSuffix}
+        suffix = {
+            1: TTLocalizer.KartRace_FirstSuffix,
+            2: TTLocalizer.KartRace_SecondSuffix,
+            3: TTLocalizer.KartRace_ThirdSuffix,
+            4: TTLocalizer.KartRace_FourthSuffix
+        }
         placeSorter.sort()
         for x, p in zip(placeSorter, range(len(placeSorter), 0, -1)):
-            self.racerDict[x[1]].update(place=p + placeCount - len(placeSorter))
+            self.racerDict[x[1]].update(place = p + placeCount - len(placeSorter))
 
         localRacer = self.racerDict[localAvatar.doId]
         nearDiff, farDiff = RaceGlobals.TrackDict[self.race.trackId][8]
@@ -408,7 +453,7 @@ class RaceGUI:
 
     def updateRacerInfo(self, avId, curvetime = None, maxlaphit = None):
         if avId in list(self.racerDict.keys()):
-            self.racerDict[avId].update(curvetime=curvetime, maxlaphit=maxlaphit)
+            self.racerDict[avId].update(curvetime = curvetime, maxlaphit = maxlaphit)
 
     def racerEntered(self, avId):
         toon = base.cr.doId2do.get(avId, None)
@@ -419,11 +464,11 @@ class RaceGUI:
             bodyColor = getDefaultColor()
         else:
             bodyColor = getAccessory(kart.getBodyColor())
-        headframe = RaceHeadFrame(av=toon, color=bodyColor)
+        headframe = RaceHeadFrame(av = toon, color = bodyColor)
         eyes = headframe.head.find('**/eyes*')
         eyes.setDepthTest(1)
         eyes.setDepthWrite(1)
-        headframe.configure(geom_scale=(0.5, 0.5, 0.5))
+        headframe.configure(geom_scale = (0.5, 0.5, 0.5))
         headframe.setZ(self.faceStartPos[2])
         headframe.setDepthWrite(True)
         headframe.setDepthTest(True)
@@ -459,12 +504,14 @@ class RaceGUI:
             racer.disable()
         return
 
-    def racerFinished(self, avId, trackId, place, totalTime, entryFee, qualify, winnings, bonus, trophies, circuitPoints, circuitTime):
+    def racerFinished(self, avId, trackId, place, totalTime, entryFee, qualify, winnings, bonus, trophies,
+                      circuitPoints, circuitTime):
         racer = self.racerDict.get(avId, None)
         if racer:
-            racer.update(finished=True)
+            racer.update(finished = True)
             racer.disable()
-            self.endPanel.displayRacer(place, entryFee, qualify, winnings, trackId, bonus, trophies, racer.face, base.cr.doId2do[avId].getName(), totalTime, circuitPoints, circuitTime)
+            self.endPanel.displayRacer(place, entryFee, qualify, winnings, trackId, bonus, trophies, racer.face,
+                                       base.cr.doId2do[avId].getName(), totalTime, circuitPoints, circuitTime)
             self.directObjList.remove(racer.face)
             if avId == localAvatar.doId:
                 self.disableRaceMode()

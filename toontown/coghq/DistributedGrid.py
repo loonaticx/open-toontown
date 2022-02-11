@@ -5,6 +5,7 @@ from .CrateGlobals import *
 from otp.level import BasicEntities
 from direct.directnotify import DirectNotifyGlobal
 
+
 class DistributedGrid(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGrid')
 

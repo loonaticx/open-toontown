@@ -6,6 +6,7 @@ from otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
 from toontown.toontowngui import TTDialog
 
+
 class CatalogRentalItem(CatalogItem.CatalogItem):
 
     def makeNewItem(self, typeIndex, duration, cost):
@@ -24,7 +25,8 @@ class CatalogRentalItem(CatalogItem.CatalogItem):
         return 0
 
     def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
+        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in \
+                avatar.awardMailboxContents or self in avatar.onAwardOrder:
             return 1
         return 0
 
@@ -38,9 +40,9 @@ class CatalogRentalItem(CatalogItem.CatalogItem):
         hours = int(self.duration / 60)
         if self.typeIndex == ToontownGlobals.RentalCannon:
             return '%s %s %s %s' % (hours,
-             TTLocalizer.RentalHours,
-             TTLocalizer.RentalOf,
-             TTLocalizer.RentalCannon)
+                                    TTLocalizer.RentalHours,
+                                    TTLocalizer.RentalOf,
+                                    TTLocalizer.RentalCannon)
         elif self.typeIndex == ToontownGlobals.RentalGameTable:
             return '%s %s %s' % (hours, TTLocalizer.RentalHours, TTLocalizer.RentalGameTable)
         else:
@@ -113,7 +115,9 @@ class CatalogRentalItem(CatalogItem.CatalogItem):
         return 1
 
     def acceptItem(self, mailbox, index, callback):
-        self.confirmRent = TTDialog.TTGlobalDialog(doneEvent='confirmRent', message=TTLocalizer.MessageConfirmRent, command=Functor(self.handleRentConfirm, mailbox, index, callback), style=TTDialog.TwoChoice)
+        self.confirmRent = TTDialog.TTGlobalDialog(doneEvent = 'confirmRent', message = TTLocalizer.MessageConfirmRent,
+                                                   command = Functor(self.handleRentConfirm, mailbox, index, callback),
+                                                   style = TTDialog.TwoChoice)
         self.confirmRent.show()
 
     def handleRentConfirm(self, mailbox, index, callback, choice):

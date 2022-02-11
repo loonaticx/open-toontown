@@ -16,6 +16,7 @@ import random
 from toontown.battle import BattleProps
 from toontown.toon import NPCToons
 
+
 class DistributedLawbotChair(DistributedObject.DistributedObject, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotChair')
     chairCushionSurface = Point3(0, -0.75, 2.25)
@@ -117,7 +118,7 @@ class DistributedLawbotChair(DistributedObject.DistributedObject, FSM.FSM):
         self.cogJuror = Suit.Suit()
         level = self.randomGenerator.randrange(len(SuitDNA.suitsPerLevel))
         self.cogJuror.dna = SuitDNA.SuitDNA()
-        self.cogJuror.dna.newSuitRandom(level=level, dept='l')
+        self.cogJuror.dna.newSuitRandom(level = level, dept = 'l')
         self.cogJuror.setDNA(self.cogJuror.dna)
         self.cogJuror.pose('landing', 0)
         self.cogJuror.reparentTo(self.nodePath)
@@ -126,7 +127,7 @@ class DistributedLawbotChair(DistributedObject.DistributedObject, FSM.FSM):
             self.cogJuror.prop = BattleProps.globalPropPool.getProp('propeller')
         head = self.cogJuror.find('**/joint_head')
         self.cogJuror.prop.reparentTo(head)
-        self.propTrack = Sequence(ActorInterval(self.cogJuror.prop, 'propeller', startFrame=8, endFrame=25))
+        self.propTrack = Sequence(ActorInterval(self.cogJuror.prop, 'propeller', startFrame = 8, endFrame = 25))
         return
 
     def attachColSphere(self):
@@ -209,8 +210,10 @@ class DistributedLawbotChair(DistributedObject.DistributedObject, FSM.FSM):
         curPos = self.nodePath.getPos(render)
         z = self.courtroomCeiling - curPos[2]
         self.notify.debug('curPos =%s\nz=%f' % (curPos, z))
-        cogTrack = Sequence(Func(self.cogJuror.setPos, x, y, z), Func(self.cogJuror.unstash), Func(self.propTrack.loop), self.cogJuror.posInterval(duration, self.landingPt, Point3(x, y, z)), Func(self.propTrack.finish), Func(self.stashCogJuror))
-        audioTrack = SoundInterval(self.propInSound, duration=duration, node=self.cogJuror, loop=1)
+        cogTrack = Sequence(Func(self.cogJuror.setPos, x, y, z), Func(self.cogJuror.unstash), Func(self.propTrack.loop),
+                            self.cogJuror.posInterval(duration, self.landingPt, Point3(x, y, z)),
+                            Func(self.propTrack.finish), Func(self.stashCogJuror))
+        audioTrack = SoundInterval(self.propInSound, duration = duration, node = self.cogJuror, loop = 1)
         self.cogJurorTrack = Parallel(audioTrack, cogTrack)
         self.cogJurorTrack.start()
 
@@ -221,7 +224,7 @@ class DistributedLawbotChair(DistributedObject.DistributedObject, FSM.FSM):
     def putCogJurorOnSeat(self):
         self.stopCogsFlying()
         if self.cogJuror and not self.cogJuror.isEmpty():
-            base.playSfx(self.cogJurorSound, node=self.chair)
+            base.playSfx(self.cogJurorSound, node = self.chair)
             self.cogJuror.unstash()
             self.cogJuror.prop.stash()
             self.cogJuror.pose('landing', 47)
@@ -308,16 +311,22 @@ class DistributedLawbotChair(DistributedObject.DistributedObject, FSM.FSM):
         self.notify.debug('enterOn for chair %d' % self.index)
         myHeadings = ToontownGlobals.LawbotBossChairHeadings[self.index]
         seqName = 'LawbotBossChair-%s' % self.doId
-        self.ival = Sequence(name=seqName)
+        self.ival = Sequence(name = seqName)
         downAngle = -80
         for index in range(len(myHeadings)):
             nextIndex = index + 1
             if nextIndex == len(myHeadings):
                 nextIndex = 0
-            goingDown = self.nodePath.hprInterval(self.downTime, Point3(myHeadings[index] + self.origHpr[0], downAngle, self.origHpr[2]), startHpr=Point3(myHeadings[index] + self.origHpr[0], 0, self.origHpr[2]))
+            goingDown = self.nodePath.hprInterval(self.downTime, Point3(myHeadings[index] + self.origHpr[0], downAngle,
+                                                                        self.origHpr[2]),
+                                                  startHpr = Point3(myHeadings[index] + self.origHpr[0], 0,
+                                                                    self.origHpr[2]))
             self.ival.append(goingDown)
             self.ival.append(Wait(self.stayDownTime))
-            goingUp = self.nodePath.hprInterval(self.upTime, Point3(myHeadings[nextIndex] + self.origHpr[0], 0, self.origHpr[2]), startHpr=Point3(myHeadings[index] + self.origHpr[0], downAngle, self.origHpr[2]))
+            goingUp = self.nodePath.hprInterval(self.upTime,
+                                                Point3(myHeadings[nextIndex] + self.origHpr[0], 0, self.origHpr[2]),
+                                                startHpr = Point3(myHeadings[index] + self.origHpr[0], downAngle,
+                                                                  self.origHpr[2]))
             self.ival.append(goingUp)
 
         self.ival.loop()

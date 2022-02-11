@@ -1,5 +1,3 @@
-
-
 class BattleExperienceAggregatorAI:
 
     def __init__(self):

@@ -2,6 +2,7 @@ from . import DistributedBarrelBaseAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
 
+
 class DistributedBeanBarrelAI(DistributedBarrelBaseAI.DistributedBarrelBaseAI):
 
     def __init__(self, level, entityId):

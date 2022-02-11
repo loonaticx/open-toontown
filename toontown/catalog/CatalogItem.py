@@ -6,6 +6,7 @@ from direct.interval.IntervalGlobal import *
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 import sys
+
 CatalogReverseType = None
 CatalogItemVersion = 8
 CatalogBackorderMarkup = 1.2
@@ -20,6 +21,7 @@ CatalogTypeWeekly = 1
 CatalogTypeBackorder = 2
 CatalogTypeMonthly = 3
 CatalogTypeLoyalty = 4
+
 
 class CatalogItem:
     notify = DirectNotifyGlobal.directNotify.newCategory('CatalogItem')
@@ -201,8 +203,10 @@ class CatalogItem:
         elif retcode == ToontownGlobals.P_NotEnoughMoney:
             return TTLocalizer.CatalogPurchaseGiftNotEnoughMoney
         else:
-            return TTLocalizer.CatalogPurchaseGiftGeneralError % {'friend': '%s',
-             'error': retcode}
+            return TTLocalizer.CatalogPurchaseGiftGeneralError % {
+                'friend': '%s',
+                'error': retcode
+            }
 
     def acceptItem(self, mailbox, index, callback):
         mailbox.acceptItem(self, index, callback)
@@ -295,11 +299,11 @@ class CatalogItem:
                 p = di.getArg(STInt8, 256.0 / 360.0)
                 r = di.getArg(STInt8, 256.0 / 360.0)
             self.posHpr = (x,
-             y,
-             z,
-             h,
-             p,
-             r)
+                           y,
+                           z,
+                           h,
+                           p,
+                           r)
         if store & GiftTag:
             self.giftTag = di.getString()
         if versionNumber >= 8:
@@ -351,7 +355,7 @@ class CatalogItem:
 
     def makeFrame(self):
         from direct.gui.DirectGui import DirectFrame
-        frame = DirectFrame(parent=hidden, frameSize=(-1.0, 1.0, -1.0, 1.0), relief=None)
+        frame = DirectFrame(parent = hidden, frameSize = (-1.0, 1.0, -1.0, 1.0), relief = None)
         return frame
 
     def makeFrameModel(self, model, spin = 1):
@@ -374,7 +378,7 @@ class CatalogItem:
                 corner = Vec3(bMax - center)
                 scale.setScale(1.0 / max(corner[0], corner[1], corner[2]))
                 pitch.setY(2)
-                ival = LerpHprInterval(rotate, 10, VBase3(-270, 0, 0), startHpr=VBase3(90, 0, 0))
+                ival = LerpHprInterval(rotate, 10, VBase3(-270, 0, 0), startHpr = VBase3(90, 0, 0))
             else:
                 scale = frame.attachNewNode('scale')
                 model.reparentTo(scale)
@@ -437,7 +441,7 @@ def decodeCatalogItem(di, versionNumber, store):
             gift = di.getUint32()
             code = di.getUint8()
         itemClass = CatalogReverseType[typeIndex]
-        item = itemClass(di, versionNumber, store=store)
+        item = itemClass(di, versionNumber, store = store)
     except Exception as e:
         CatalogItem.notify.warning('Invalid catalog item in stream: %s, %s' % (sys.exc_info()[0], e))
         d = Datagram(di.getDatagram().getMessage()[startIndex:])

@@ -13,6 +13,7 @@ from toontown.toon import Toon, ToonHead, ToonDNA
 from .CogdoUtil import CogdoGameMovie
 from . import CogdoUtil
 
+
 class CogdoExecutiveSuiteIntro(CogdoGameMovie):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogdoExecutiveSuiteIntro')
     introDuration = 7
@@ -62,9 +63,12 @@ class CogdoExecutiveSuiteIntro(CogdoGameMovie):
         self.bg.setPos(0.14, 0, -0.6667)
         self.bg.reparentTo(aspect2d)
         self.chatBubble.reparentTo(aspect2d)
-        self.frame = DirectFrame(geom=self.bg, relief=None, pos=(0.2, 0, -0.6667))
+        self.frame = DirectFrame(geom = self.bg, relief = None, pos = (0.2, 0, -0.6667))
         self.bg.wrtReparentTo(self.frame)
-        self.gameTitleText = DirectLabel(parent=self.frame, text=TTLocalizer.CogdoExecutiveSuiteTitle, scale=TTLocalizer.MRPgameTitleText * 0.8, text_align=TextNode.ACenter, text_font=getSignFont(), text_fg=(1.0, 0.33, 0.33, 1.0), pos=TTLocalizer.MRgameTitleTextPos, relief=None)
+        self.gameTitleText = DirectLabel(parent = self.frame, text = TTLocalizer.CogdoExecutiveSuiteTitle,
+                                         scale = TTLocalizer.MRPgameTitleText * 0.8, text_align = TextNode.ACenter,
+                                         text_font = getSignFont(), text_fg = (1.0, 0.33, 0.33, 1.0),
+                                         pos = TTLocalizer.MRgameTitleTextPos, relief = None)
         self.chatBubble.wrtReparentTo(self.frame)
         self.frame.hide()
         backgroundGui.removeNode()
@@ -92,7 +96,7 @@ class CogdoExecutiveSuiteIntro(CogdoGameMovie):
             base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 0)
 
         def showShopOwner():
-            self._setCamTarget(self._shopOwner, -10, offset=Point3(0, 0, 5))
+            self._setCamTarget(self._shopOwner, -10, offset = Point3(0, 0, 5))
 
         def end():
             self._dialogueLabel.reparentTo(hidden)
@@ -101,7 +105,10 @@ class CogdoExecutiveSuiteIntro(CogdoGameMovie):
             base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 1)
             self._stopUpdateTask()
 
-        self._ival = Sequence(Func(start), Func(self.displayLine, dialogue), Func(showShopOwner), ParallelEndTogether(camera.posInterval(self.cameraMoveDuration, Point3(8, 0, 13), blendType='easeInOut'), camera.hprInterval(0.5, self._camHelperNode.getHpr(), blendType='easeInOut')), Wait(self.introDuration), Func(end))
+        self._ival = Sequence(Func(start), Func(self.displayLine, dialogue), Func(showShopOwner), ParallelEndTogether(
+            camera.posInterval(self.cameraMoveDuration, Point3(8, 0, 13), blendType = 'easeInOut'),
+            camera.hprInterval(0.5, self._camHelperNode.getHpr(), blendType = 'easeInOut')), Wait(self.introDuration),
+                              Func(end))
         self._startUpdateTask()
         return
 

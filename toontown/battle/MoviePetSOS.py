@@ -10,9 +10,13 @@ from . import HealJokes
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.pets import Pet, PetTricks
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MoviePetSOS')
-soundFiles = ('AA_heal_tickle.ogg', 'AA_heal_telljoke.ogg', 'AA_heal_smooch.ogg', 'AA_heal_happydance.ogg', 'AA_heal_pixiedust.ogg', 'AA_heal_juggle.ogg')
+soundFiles = (
+'AA_heal_tickle.ogg', 'AA_heal_telljoke.ogg', 'AA_heal_smooch.ogg', 'AA_heal_happydance.ogg', 'AA_heal_pixiedust.ogg',
+'AA_heal_juggle.ogg')
 offset = Point3(0, 4.0, 0)
+
 
 def doPetSOSs(PetSOSs):
     if len(PetSOSs) == 0:
@@ -98,14 +102,14 @@ def __healJuggle(heal):
         gender = petProxy.gender
     else:
         pet.setDNA([-1,
-         0,
-         0,
-         -1,
-         2,
-         0,
-         4,
-         0,
-         1])
+                    0,
+                    0,
+                    -1,
+                    2,
+                    0,
+                    4,
+                    0,
+                    1])
         pet.setName('Smiley')
     targets = heal['target']
     ineffective = heal['sidestep']

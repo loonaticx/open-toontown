@@ -8,8 +8,10 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.showbase.DirectObject import DirectObject
 from toontown.racing.KartShopGlobals import KartGlobals
+
 if __debug__:
     import pdb
+
 
 class DistributedStartingBlockAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStartingBlockAI')

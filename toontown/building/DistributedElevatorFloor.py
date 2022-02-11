@@ -13,24 +13,27 @@ from toontown.toonbase import TTLocalizer
 from direct.fsm.FSM import FSM
 from direct.task import Task
 
+
 class DistributedElevatorFloor(DistributedElevatorFSM.DistributedElevatorFSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevatorFloor')
-    defaultTransitions = {'Off': ['Opening', 'Closed'],
-     'Opening': ['WaitEmpty',
-                 'WaitCountdown',
-                 'Opening',
-                 'Closing'],
-     'WaitEmpty': ['WaitCountdown', 'Closing'],
-     'WaitCountdown': ['WaitEmpty',
-                       'AllAboard',
-                       'Closing',
-                       'WaitCountdown'],
-     'AllAboard': ['WaitEmpty', 'Closing'],
-     'Closing': ['Closed',
-                 'WaitEmpty',
-                 'Closing',
-                 'Opening'],
-     'Closed': ['Opening']}
+    defaultTransitions = {
+        'Off': ['Opening', 'Closed'],
+        'Opening': ['WaitEmpty',
+                    'WaitCountdown',
+                    'Opening',
+                    'Closing'],
+        'WaitEmpty': ['WaitCountdown', 'Closing'],
+        'WaitCountdown': ['WaitEmpty',
+                          'AllAboard',
+                          'Closing',
+                          'WaitCountdown'],
+        'AllAboard': ['WaitEmpty', 'Closing'],
+        'Closing': ['Closed',
+                    'WaitEmpty',
+                    'Closing',
+                    'Opening'],
+        'Closed': ['Opening']
+    }
     id = 0
 
     def __init__(self, cr):
@@ -103,7 +106,8 @@ class DistributedElevatorFloor(DistributedElevatorFSM.DistributedElevatorFSM):
     def setLatch(self, markerId):
         self.notify.info('Setting latch')
         marker = self.cr.doId2do.get(markerId)
-        self.latchRequest = self.cr.relatedObjectMgr.requestObjects([markerId], allCallback=self.set2Latch, timeout=5)
+        self.latchRequest = self.cr.relatedObjectMgr.requestObjects([markerId], allCallback = self.set2Latch,
+                                                                    timeout = 5)
         self.latch = markerId
 
     def set2Latch(self, taskMgrFooler = None):
@@ -210,13 +214,15 @@ class DistributedElevatorFloor(DistributedElevatorFSM.DistributedElevatorFSM):
     def kickToonsOut(self):
         if not self.localToonOnBoard:
             zoneId = self.cr.playGame.hood.hoodId
-            self.cr.playGame.getPlace().fsm.request('teleportOut', [{'loader': ZoneUtil.getLoaderName(zoneId),
-              'where': ZoneUtil.getToonWhereName(zoneId),
-              'how': 'teleportIn',
-              'hoodId': zoneId,
-              'zoneId': zoneId,
-              'shardId': None,
-              'avId': -1}])
+            self.cr.playGame.getPlace().fsm.request('teleportOut', [{
+                                                                        'loader': ZoneUtil.getLoaderName(zoneId),
+                                                                        'where': ZoneUtil.getToonWhereName(zoneId),
+                                                                        'how': 'teleportIn',
+                                                                        'hoodId': zoneId,
+                                                                        'zoneId': zoneId,
+                                                                        'shardId': None,
+                                                                        'avId': -1
+                                                                    }])
         return
 
     def exitClosing(self):
@@ -318,9 +324,11 @@ class DistributedElevatorFloor(DistributedElevatorFSM.DistributedElevatorFSM):
     def setLawOfficeInteriorZone(self, zoneId):
         if self.localToonOnBoard:
             hoodId = self.cr.playGame.hood.hoodId
-            doneStatus = {'loader': 'cogHQLoader',
-             'where': 'factoryInterior',
-             'how': 'teleportIn',
-             'zoneId': zoneId,
-             'hoodId': hoodId}
+            doneStatus = {
+                'loader': 'cogHQLoader',
+                'where': 'factoryInterior',
+                'how': 'teleportIn',
+                'zoneId': zoneId,
+                'hoodId': hoodId
+            }
             self.cr.playGame.getPlace().elevator.signalDone(doneStatus)

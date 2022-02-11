@@ -5,10 +5,12 @@ from toontown.cogdominium.CogdoMaze import CogdoMazeFactory
 from toontown.cogdominium.DistCogdoMazeGameBase import DistCogdoMazeGameBase
 from .DistCogdoGameAI import DistCogdoGameAI
 from . import CogdoMazeGameGlobals as Globals
+
 cogdoMazeTimeScoreRatio = 0.5
 cogdoMazePerfectTime = 90
 cogdoMazeMaxTime = 210
 cogdoMazePickupScoreRatio = 0.7
+
 
 class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
     notify = directNotify.newCategory('DistCogdoMazeGameAI')
@@ -124,7 +126,8 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
             else:
                 secondsPerGrab = elapsed / self.requestCount
                 if self.requestCount >= 3 and secondsPerGrab <= 0.4:
-                    simbase.air.writeServerEvent('suspicious', avId, 'suitHit %s suits in %s seconds' % (self.requestCount, elapsed))
+                    simbase.air.writeServerEvent('suspicious', avId,
+                                                 'suitHit %s suits in %s seconds' % (self.requestCount, elapsed))
                     if simbase.config.GetBool('want-ban-cogdo-maze-suit-hit', False):
                         toon.ban('suitHit %s suits in %s seconds' % (self.requestCount, elapsed))
 
@@ -159,7 +162,8 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
     def _removeToonFromGame(self, toonId):
         if self.fsm.getCurrentState().getName() == 'Game':
             if toonId not in self._toonId2speedToken:
-                simbase.air.writeServerEvent('avoid_crash', toonId, 'CogdoMazeGame._removeToonFromGame: toon not in _toonId2speedToken')
+                simbase.air.writeServerEvent('avoid_crash', toonId,
+                                             'CogdoMazeGame._removeToonFromGame: toon not in _toonId2speedToken')
             else:
                 token = self._toonId2speedToken.pop(toonId)
                 self._speedMonitor.removeNodepath(token)
@@ -371,7 +375,8 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
             else:
                 secondsPerGrab = elapsed / self.jokeRequestCount
                 if self.jokeRequestCount >= 4 and secondsPerGrab <= 0.03:
-                    simbase.air.writeServerEvent('suspicious', senderId, 'requestPickup %s jokes in %s seconds' % (self.jokeRequestCount, elapsed))
+                    simbase.air.writeServerEvent('suspicious', senderId, 'requestPickup %s jokes in %s seconds' % (
+                    self.jokeRequestCount, elapsed))
                     if simbase.config.GetBool('want-ban-cogdo-maze-request-pickup', False):
                         toon.ban('requestPickup %s jokes in %s seconds' % (self.jokeRequestCount, elapsed))
 
@@ -389,9 +394,12 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
     def enterGame(self):
         DistCogdoGameAI.enterGame(self)
         endTime = Globals.SecondsUntilTimeout - (globalClock.getRealTime() - self.getStartTime())
-        self._countdownTimerTask = taskMgr.doMethodLater(endTime - Globals.SecondsForTimeAlert, self.handleCountdownTimer, self.taskName(DistCogdoMazeGameAI.CountdownTimerTaskName), [])
+        self._countdownTimerTask = taskMgr.doMethodLater(endTime - Globals.SecondsForTimeAlert,
+                                                         self.handleCountdownTimer,
+                                                         self.taskName(DistCogdoMazeGameAI.CountdownTimerTaskName), [])
         self._startGameTimer()
-        self._timeoutTimerTask = taskMgr.doMethodLater(endTime, self.handleEndGameTimerExpired, self.taskName(DistCogdoMazeGameAI.TimeoutTimerTaskName), [])
+        self._timeoutTimerTask = taskMgr.doMethodLater(endTime, self.handleEndGameTimerExpired,
+                                                       self.taskName(DistCogdoMazeGameAI.TimeoutTimerTaskName), [])
         if self.SkipCogdoGames:
             self.fsm.request('Finish')
 
@@ -400,19 +408,24 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
             if toon:
                 token = self._speedMonitor.addNodepath(toon)
                 self._toonId2speedToken[toonId] = token
-                self._speedMonitor.setSpeedLimit(token, config.GetFloat('cogdo-maze-speed-limit', Globals.ToonRunSpeed * 1.1), Functor(self._toonOverSpeedLimit, toonId))
+                self._speedMonitor.setSpeedLimit(token,
+                                                 config.GetFloat('cogdo-maze-speed-limit', Globals.ToonRunSpeed * 1.1),
+                                                 Functor(self._toonOverSpeedLimit, toonId))
 
     def _toonOverSpeedLimit(self, toonId, speed):
-        self._bootPlayerForHacking(toonId, 'speeding in cogdo maze game (%.2f feet/sec)' % speed, config.GetBool('want-ban-cogdo-maze-speeding', 0))
+        self._bootPlayerForHacking(toonId, 'speeding in cogdo maze game (%.2f feet/sec)' % speed,
+                                   config.GetBool('want-ban-cogdo-maze-speeding', 0))
 
     def _toonHackingRequestGag(self, toonId):
         simbase.air.writeServerEvent('suspicious', toonId, 'CogdoMazeGame: toon caught hacking requestGag')
-        self._bootPlayerForHacking(toonId, 'hacking cogdo maze game requestGag', config.GetBool('want-ban-cogdo-maze-requestgag-hacking', 0))
+        self._bootPlayerForHacking(toonId, 'hacking cogdo maze game requestGag',
+                                   config.GetBool('want-ban-cogdo-maze-requestgag-hacking', 0))
 
     def _bootPlayerForHacking(self, toonId, reason, wantBan):
         toon = simbase.air.doId2do.get(toonId)
         if not toon:
-            simbase.air.writeServerEvent('suspicious', toonId, 'CogdoMazeGame._bootPlayerForHacking(%s): toon not present' % (reason,))
+            simbase.air.writeServerEvent('suspicious', toonId,
+                                         'CogdoMazeGame._bootPlayerForHacking(%s): toon not present' % (reason,))
             return
 
         if wantBan:
@@ -441,7 +454,8 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
         self._removeCountdownTimerTask()
         self.doorIsOpen = True
         self.d_broadcastDoAction(Globals.GameActions.OpenDoor, networkTime = self.getCurrentNetworkTime())
-        self._gameTimerExpiredTask = taskMgr.doMethodLater(Globals.SecondsUntilGameEnds, self.handleEndGameTimerExpired, self.taskName(DistCogdoMazeGameAI.TimerExpiredTaskName), [])
+        self._gameTimerExpiredTask = taskMgr.doMethodLater(Globals.SecondsUntilGameEnds, self.handleEndGameTimerExpired,
+                                                           self.taskName(DistCogdoMazeGameAI.TimerExpiredTaskName), [])
 
     def handleCountdownTimer(self):
         self.d_broadcastDoAction(Globals.GameActions.TimeAlert, networkTime = self.getCurrentNetworkTime())
@@ -461,7 +475,8 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
     def enterFinish(self):
         DistCogdoGameAI.enterFinish(self)
         if self.numPickedUp > self.maxPickups:
-            self.logSuspiciousEvent(0, 'CogdoMazeGameAI: collected more memos than possible: %s, players: %s' % (self.numPickedUp, self.getToonIds()))
+            self.logSuspiciousEvent(0, 'CogdoMazeGameAI: collected more memos than possible: %s, players: %s' % (
+            self.numPickedUp, self.getToonIds()))
 
         time = globalClock.getRealTime() - self.getStartTime()
         adjustedTime = min(max(time - cogdoMazePerfectTime, 0), cogdoMazeMaxTime)
@@ -473,9 +488,13 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
         weightedPickup = pickupScore * cogdoMazePickupScoreRatio
         weightedTime = timeScore * cogdoMazeTimeScoreRatio
         score = min(weightedPickup + weightedTime, 1.0)
-        self.air.writeServerEvent('CogdoMazeGame', self._interior.toons, 'Memos: %s/%s Weighted Memos: %s Time: %s Weighted Time: %s Score: %s' % (self.numPickedUp, self.maxPickups, weightedPickup, time, weightedTime, score))
+        self.air.writeServerEvent('CogdoMazeGame', self._interior.toons,
+                                  'Memos: %s/%s Weighted Memos: %s Time: %s Weighted Time: %s Score: %s' % (
+                                  self.numPickedUp, self.maxPickups, weightedPickup, time, weightedTime, score))
         self.setScore(score)
-        self._announceGameDoneTask = taskMgr.doMethodLater(Globals.FinishDurationSeconds, self.announceGameDone, self.taskName(DistCogdoMazeGameAI.AnnounceGameDoneTimerTaskName), [])
+        self._announceGameDoneTask = taskMgr.doMethodLater(Globals.FinishDurationSeconds, self.announceGameDone,
+                                                           self.taskName(
+                                                               DistCogdoMazeGameAI.AnnounceGameDoneTimerTaskName), [])
 
     def exitFinish(self):
         DistCogdoGameAI.exitFinish(self)

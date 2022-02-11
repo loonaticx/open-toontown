@@ -24,13 +24,18 @@ import string
 import copy
 from direct.showbase.PythonUtil import StackTrace
 
+
 class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLookerAI.PetLookerAI, PetBase.PetBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPetAI')
-    movieTimeSwitch = {PetConstants.PET_MOVIE_FEED: PetConstants.FEED_TIME,
-     PetConstants.PET_MOVIE_SCRATCH: PetConstants.SCRATCH_TIME,
-     PetConstants.PET_MOVIE_CALL: PetConstants.CALL_TIME}
-    movieDistSwitch = {PetConstants.PET_MOVIE_FEED: PetConstants.FEED_DIST.get,
-     PetConstants.PET_MOVIE_SCRATCH: PetConstants.SCRATCH_DIST.get}
+    movieTimeSwitch = {
+        PetConstants.PET_MOVIE_FEED: PetConstants.FEED_TIME,
+        PetConstants.PET_MOVIE_SCRATCH: PetConstants.SCRATCH_TIME,
+        PetConstants.PET_MOVIE_CALL: PetConstants.CALL_TIME
+    }
+    movieDistSwitch = {
+        PetConstants.PET_MOVIE_FEED: PetConstants.FEED_DIST.get,
+        PetConstants.PET_MOVIE_SCRATCH: PetConstants.SCRATCH_DIST.get
+    }
 
     def __init__(self, air, dna = None):
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.__init__(self, air)
@@ -66,11 +71,17 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.__generateDistMoodFuncs()
         self.busy = 0
         self.gaitFSM = ClassicFSM.ClassicFSM('petGaitFSM', [State.State('off', self.gaitEnterOff, self.gaitExitOff),
-         State.State('neutral', self.gaitEnterNeutral, self.gaitExitNeutral),
-         State.State('happy', self.gaitEnterHappy, self.gaitExitHappy),
-         State.State('sad', self.gaitEnterSad, self.gaitExitSad)], 'off', 'off')
+                                                            State.State('neutral', self.gaitEnterNeutral,
+                                                                        self.gaitExitNeutral),
+                                                            State.State('happy', self.gaitEnterHappy,
+                                                                        self.gaitExitHappy),
+                                                            State.State('sad', self.gaitEnterSad, self.gaitExitSad)],
+                                             'off', 'off')
         self.gaitFSM.enterInitialState()
-        self.unstickFSM = ClassicFSM.ClassicFSM('unstickFSM', [State.State('off', self.unstickEnterOff, self.unstickExitOff), State.State('on', self.unstickEnterOn, self.unstickExitOn)], 'off', 'off')
+        self.unstickFSM = ClassicFSM.ClassicFSM('unstickFSM',
+                                                [State.State('off', self.unstickEnterOff, self.unstickExitOff),
+                                                 State.State('on', self.unstickEnterOn, self.unstickExitOn)], 'off',
+                                                'off')
         self.unstickFSM.enterInitialState()
         if __dev__:
             self.pscMoveResc = PStatCollector('App:Show code:petMove:Reschedule')
@@ -141,7 +152,8 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         else:
             self.inEstate = 0
             self.estateZones = []
-        PetObserve.send(list(broadcastZones.keys()), PetObserve.PetActionObserve(PetObserve.Actions.CHANGE_ZONE, self.doId, (oldZoneId, newZoneId)))
+        PetObserve.send(list(broadcastZones.keys()),
+                        PetObserve.PetActionObserve(PetObserve.Actions.CHANGE_ZONE, self.doId, (oldZoneId, newZoneId)))
 
     def getOwnerId(self):
         return self.ownerId
@@ -436,7 +448,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         return self.trickAptitudes
 
     def b_setTrickAptitudes(self, aptitudes):
-        self.setTrickAptitudes(aptitudes, local=1)
+        self.setTrickAptitudes(aptitudes, local = 1)
         self.d_setTrickAptitudes(aptitudes)
 
     def d_setTrickAptitudes(self, aptitudes):
@@ -473,7 +485,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
             if send:
                 self.b_setTrickAptitudes(aptitudes)
             else:
-                self.setTrickAptitudes(aptitudes, local=1)
+                self.setTrickAptitudes(aptitudes, local = 1)
 
     def generate(self):
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.generate(self)
@@ -496,9 +508,9 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
                     traitName = PetTraits.getTraitNames()[i]
                     traitValue = self.traits.getTraitValue(traitName)
                     DistributedPetAI.notify.info("%s: initializing new trait '%s' to %s, seed=%s" % (self.doId,
-                     traitName,
-                     traitValue,
-                     self.traitSeed))
+                                                                                                     traitName,
+                                                                                                     traitValue,
+                                                                                                     self.traitSeed))
                     setterName = self.getSetterName(traitName, 'b_set')
                     self.__dict__[setterName](traitValue)
 
@@ -513,7 +525,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         if self.initialDNA:
             self.setDNA(self.initialDNA)
         for mood, value in list(self.requiredMoodComponents.items()):
-            self.mood.setComponent(mood, value, announce=0)
+            self.mood.setComponent(mood, value, announce = 0)
 
         self.requiredMoodComponents = {}
         self.brain = PetBrain.PetBrain(self)
@@ -523,7 +535,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.enterPetLook()
         self.actionFSM = PetActionFSM.PetActionFSM(self)
         self.teleportIn()
-        self.handleMoodChange(distribute=0)
+        self.handleMoodChange(distribute = 0)
         taskMgr.doMethodLater(simbase.petMovePeriod * random.random(), self.move, self.getMoveTaskName())
         self.startPosHprBroadcast()
         self.accept(PetObserve.getEventName(self.zoneId), self.brain.observe)
@@ -544,7 +556,8 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def requestDelete(self, task = None):
         DistributedPetAI.notify.info('PetAI.requestDelete: %s, owner=%s' % (self.doId, self.ownerId))
         if self.hasRequestedDelete():
-            DistributedPetAI.notify.info('PetAI.requestDelete: %s, owner=%s returning immediately' % (self.doId, self.ownerId))
+            DistributedPetAI.notify.info(
+                'PetAI.requestDelete: %s, owner=%s returning immediately' % (self.doId, self.ownerId))
             return
         self.setHasRequestedDelete(True)
         self.b_setLastSeenTimestamp(self.getCurEpochTimestamp())
@@ -715,7 +728,10 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def startPosHprBroadcast(self):
         if self._outOfBounds:
             return
-        DistributedSmoothNodeAI.DistributedSmoothNodeAI.startPosHprBroadcast(self, period=simbase.petPosBroadcastPeriod, type=DistributedSmoothNodeBase.DistributedSmoothNodeBase.BroadcastTypes.XYH)
+        DistributedSmoothNodeAI.DistributedSmoothNodeAI.startPosHprBroadcast(self,
+                                                                             period = simbase.petPosBroadcastPeriod,
+                                                                             type =
+                                                                             DistributedSmoothNodeBase.DistributedSmoothNodeBase.BroadcastTypes.XYH)
 
     def setMoodComponent(self, component, value):
         setter = self.getSetterName(component, 'b_set')
@@ -867,7 +883,9 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def _getOwnerDict(self):
         if self.owner is not None:
             if self.ownerIsInSameZone():
-                return {self.ownerId: self.owner}
+                return {
+                    self.ownerId: self.owner
+                }
         return {}
 
     def _getFullNearbyToonDict(self):
@@ -936,7 +954,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.busy = avId
         self.notify.debug('sending update')
         self.sendUpdateToAvatarId(avId, 'avatarInteract', [avId])
-        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
+        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs = [avId])
         return 1
 
     def rejectAvatar(self, avId):
@@ -966,9 +984,11 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         if self.avatarInteract(avId):
             self.notify.debug('handleAvPetInteraction() avatarInteract calling callback')
             self.movieMode = mode
-            callback = {PetConstants.PET_MOVIE_SCRATCH: self.scratch,
-             PetConstants.PET_MOVIE_FEED: self.feed,
-             PetConstants.PET_MOVIE_CALL: self.call}.get(mode)
+            callback = {
+                PetConstants.PET_MOVIE_SCRATCH: self.scratch,
+                PetConstants.PET_MOVIE_FEED: self.feed,
+                PetConstants.PET_MOVIE_CALL: self.call
+            }.get(mode)
             callback(self.air.doId2do.get(avId))
         else:
             self.notify.debug('handleAvPetInteraction() avatarInteract was busy or unhappy')
@@ -1075,7 +1095,8 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def _handleGotPositiveTrickFeedback(self, trickId, magnitude):
         if trickId == PetTricks.Tricks.BALK:
             return
-        self.setTrickAptitude(trickId, self.getTrickAptitude(trickId) + PetTricks.MaxAptitudeIncrementGotPraise * magnitude)
+        self.setTrickAptitude(trickId,
+                              self.getTrickAptitude(trickId) + PetTricks.MaxAptitudeIncrementGotPraise * magnitude)
 
     def toggleLeash(self, avId):
         if self.leashMode:

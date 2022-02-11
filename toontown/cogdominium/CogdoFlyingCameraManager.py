@@ -7,7 +7,9 @@ from direct.showbase.PythonUtil import bound as clamp
 from otp.otpbase import OTPGlobals
 from toontown.toonbase import ToontownGlobals
 from . import CogdoFlyingGameGlobals as Globals
+
 INVERSE_E = 1.0 / math.e
+
 
 def smooth(old, new):
     return old * 0.7 + new * 0.3
@@ -30,7 +32,9 @@ class CogdoFlyingCameraManager:
         self._prevToonY = 0.0
         levelBounds = self._level.getBounds()
         l = Globals.Camera.LevelBoundsFactor
-        self._bounds = ((levelBounds[0][0] * l[0], levelBounds[0][1] * l[0]), (levelBounds[1][0] * l[1], levelBounds[1][1] * l[1]), (levelBounds[2][0] * l[2], levelBounds[2][1] * l[2]))
+        self._bounds = (
+        (levelBounds[0][0] * l[0], levelBounds[0][1] * l[0]), (levelBounds[1][0] * l[1], levelBounds[1][1] * l[1]),
+        (levelBounds[2][0] * l[2], levelBounds[2][1] * l[2]))
         self._lookAtZ = self._toon.getHeight() + Globals.Camera.LookAtToonHeightOffset
         self._camParent = NodePath('CamParent')
         self._camParent.reparentTo(self._parent)
@@ -51,7 +55,9 @@ class CogdoFlyingCameraManager:
         self._camCollRay = CollisionRay()
         camCollNode = CollisionNode('CameraToonRay')
         camCollNode.addSolid(self._camCollRay)
-        camCollNode.setFromCollideMask(OTPGlobals.WallBitmask | OTPGlobals.CameraBitmask | ToontownGlobals.FloorEventBitmask | ToontownGlobals.CeilingBitmask)
+        camCollNode.setFromCollideMask(
+            OTPGlobals.WallBitmask | OTPGlobals.CameraBitmask | ToontownGlobals.FloorEventBitmask |
+            ToontownGlobals.CeilingBitmask)
         camCollNode.setIntoCollideMask(0)
         self._camCollNP = self._camera.attachNewNode(camCollNode)
         self._camCollNP.show()

@@ -6,6 +6,7 @@ from . import DistributedGoon
 from toontown.toonbase import ToontownGlobals
 from toontown.coghq import MovingPlatform
 
+
 class DistributedGridGoon(DistributedGoon.DistributedGoon):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGoon')
 
@@ -41,7 +42,9 @@ class DistributedGridGoon(DistributedGoon.DistributedGoon):
         nextPos = Point3(xf, yf, zf)
         distance = Vec3(curPos - nextPos).length()
         duration = distance / self.velocity
-        self.mazeWalkTrack = Sequence(Func(self.headsUp, nextPos[0], nextPos[1], nextPos[2]), LerpPosInterval(self, duration=duration, pos=nextPos, startPos=curPos), name=self.uniqueName('mazeWalkTrack'))
+        self.mazeWalkTrack = Sequence(Func(self.headsUp, nextPos[0], nextPos[1], nextPos[2]),
+                                      LerpPosInterval(self, duration = duration, pos = nextPos, startPos = curPos),
+                                      name = self.uniqueName('mazeWalkTrack'))
         self.mazeWalkTrack.start()
         return
 

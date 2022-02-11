@@ -1,5 +1,3 @@
-
-
 class DelayDelete:
 
     def __init__(self, distObj, name):
