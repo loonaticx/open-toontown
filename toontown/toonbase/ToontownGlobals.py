@@ -1,5 +1,5 @@
 from . import TTLocalizer
-from enum import Enum
+from enum import IntEnum
 from otp.otpbase.OTPGlobals import *
 from direct.showbase.PythonUtil import invertDict
 from pandac.PandaModules import BitMask32, Vec4
@@ -1610,11 +1610,11 @@ gmMagicWordList = ['restock',
  'who',
  'who all']
 NewsPageScaleAdjust = 0.85
-AnimPropTypes = Enum(('Unknown',
+AnimPropTypes = IntEnum(('Unknown',
  'Hydrant',
  'Mailbox',
  'Trashcan'), start=-1)
-EmblemTypes = Enum(('Silver', 'Gold'))
+EmblemTypes = IntEnum(('Silver', 'Gold'))
 NumEmblemTypes = 2
 DefaultMaxBankMoney = 12000
 DefaultBankItemId = 1350
