@@ -53,11 +53,11 @@ class ToonBase(OTPBase.OTPBase):
         self.endlessQuietZone = False
         self.wantDynamicShadows = 0
         self.exitErrorCode = 0
-        if camera:
+        if not self.headless:
             camera.setPosHpr(0, 0, 0, 0, 0, 0)
-        self.camLens.setFov(ToontownGlobals.DefaultCameraFov)
-        self.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
-        self.musicManager.setVolume(0.65)
+            self.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+            self.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
+            self.musicManager.setVolume(0.65)
         self.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
         tpm = TextPropertiesManager.getGlobalPtr()
         candidateActive = TextProperties()
