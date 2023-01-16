@@ -1,7 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from direct.showbase import PythonUtil
+from panda3d.core import *
 from direct.task import Task
 from toontown.fishing.FishPhoto import DirectRegion
 from toontown.racing.KartDNA import *
@@ -10,10 +9,10 @@ from toontown.racing import RaceGlobals
 from toontown.shtiker.ShtikerPage import ShtikerPage
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from .FishPage import FishingTrophy
+from enum import IntEnum
 if (__debug__):
     import pdb
-PageMode = IntEnum('PageMode',('Customize', 'Records', 'Trophy'))
-
+PageMode = IntEnum('PageMode', ('Customize', 'Records', 'Trophy'), start=0)
 
 class KartPage(ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('KartPage')
@@ -367,7 +366,7 @@ class ItemSelector(DirectFrame):
             self.locator2 = self.attachNewNode('locator2')
             self.locator1.setPos(0, 0, 0.035)
             self.locator2.setPos(0.0, 0.0, 0.0)
-            tex = loader.loadTexture('phase_6/maps/NoAccessoryIcon3.png')
+            tex = loader.loadTexture('phase_6/maps/NoAccessoryIcon3.jpg', 'phase_6/maps/NoAccessoryIcon3_a.rgb')
             self.uiImagePlane.component('geom0').setTexture(tex, self.texCount)
             self.texCount += 1
             self.uiTextBox = DirectFrame(parent=self, relief=None, scale=1.0, text='', text_font=ToontownGlobals.getInterfaceFont(), text_fg=(0.5, 0, 0, 1), text_shadow=(0, 0, 0, 1), text_scale=0.0715, text_pos=(0.0, -0.23, 0.0))
@@ -527,15 +526,15 @@ class ItemSelector(DirectFrame):
              KartDNA.fwwType,
              KartDNA.bwwType]:
                 texNodePath = getTexCardNode(self.currItem)
-                tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath)
+                tex = loader.loadTexture('phase_6/maps/%s.jpg' % texNodePath, 'phase_6/maps/%s_a.rgb' % texNodePath)
             elif self.currAccessoryType == KartDNA.rimsType:
                 if self.currItem == InvalidEntry:
                     texNodePath = getTexCardNode(getDefaultRim())
                 else:
                     texNodePath = getTexCardNode(self.currItem)
-                tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath)
+                tex = loader.loadTexture('phase_6/maps/%s.jpg' % texNodePath, 'phase_6/maps/%s_a.rgb' % texNodePath)
             elif self.currAccessoryType in [KartDNA.bodyColor, KartDNA.accColor]:
-                tex = loader.loadTexture('phase_6/maps/Kartmenu_paintbucket.png')
+                tex = loader.loadTexture('phase_6/maps/Kartmenu_paintbucket.jpg', 'phase_6/maps/Kartmenu_paintbucket_a.rgb')
                 if self.currItem == InvalidEntry:
                     self.uiImagePlane.component('geom0').setColorScale(getDefaultColor())
                 else:
@@ -544,9 +543,9 @@ class ItemSelector(DirectFrame):
                 kart = self._parent._parent.getKartViewer().getKart()
                 kartDecal = getDecalId(kart.kartDNA[KartDNA.bodyType])
                 texNodePath = getTexCardNode(self.currItem)
-                tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath % kartDecal)
+                tex = loader.loadTexture('phase_6/maps/%s.jpg' % texNodePath % kartDecal, 'phase_6/maps/%s_a.rgb' % texNodePath % kartDecal)
             else:
-                tex = loader.loadTexture('phase_6/maps/NoAccessoryIcon3.png')
+                tex = loader.loadTexture('phase_6/maps/NoAccessoryIcon3.jpg', 'phase_6/maps/NoAccessoryIcon3_a.rgb')
             colorTypeList = [KartDNA.bodyColor, KartDNA.accColor]
             if self.currItem == InvalidEntry:
                 if self.currAccessoryType == KartDNA.rimsType:
@@ -562,7 +561,7 @@ class ItemSelector(DirectFrame):
 
         def __handleHideItem(self):
             self.uiImagePlane.component('geom0').setColorScale(1.0, 1.0, 1.0, 1.0)
-            self.uiImagePlane.component('geom0').setTexture(loader.loadTexture('phase_6/maps/NoAccessoryIcon3.png'), self.texCount)
+            self.uiImagePlane.component('geom0').setTexture(loader.loadTexture('phase_6/maps/NoAccessoryIcon3.jpg', 'phase_6/maps/NoAccessoryIcon3_a.rgb'), self.texCount)
             self.texCount += 1
 
         def __handleItemDeleteConfirm(self):

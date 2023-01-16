@@ -1,8 +1,8 @@
 from . import TTLocalizer
-from enum import IntEnum
 from otp.otpbase.OTPGlobals import *
 from direct.showbase.PythonUtil import invertDict
-from pandac.PandaModules import BitMask32, Vec4
+from panda3d.core import BitMask32, Vec4
+from enum import IntEnum
 MapHotkeyOn = 'alt'
 MapHotkeyOff = 'alt-up'
 MapHotkey = 'alt'
@@ -1592,7 +1592,7 @@ DG = 5
 BR = 6
 OZ = 7
 DL = 8
-DefaultWantNewsPageSetting = 1
+DefaultWantNewsPageSetting = 0
 gmMagicWordList = ['restock',
  'restockUber',
  'autoRestock',
@@ -1610,13 +1610,11 @@ gmMagicWordList = ['restock',
  'who',
  'who all']
 NewsPageScaleAdjust = 0.85
-AnimPropTypes = IntEnum('AnimPropTypes', (
-    'Unknown',
-    'Hydrant',
-    'Mailbox',
-    'Trashcan'
-), start = -1)
-EmblemTypes = IntEnum('EmblemTypes', ('Silver', 'Gold'))
+AnimPropTypes = IntEnum('AnimPropTypes', ('Unknown',
+ 'Hydrant',
+ 'Mailbox',
+ 'Trashcan'), start=-1)
+EmblemTypes = IntEnum('EmblemTypes', ('Silver', 'Gold'), start=0)
 NumEmblemTypes = 2
 DefaultMaxBankMoney = 12000
 DefaultBankItemId = 1350
