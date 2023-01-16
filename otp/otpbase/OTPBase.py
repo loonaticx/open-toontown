@@ -40,7 +40,6 @@ class OTPBase(ShowBase):
             else:
                 base.cam.node().setCameraMask(OTPRender.MainCameraBitmask | OTPRender.EnviroCameraBitmask)
         taskMgr.setupTaskChain('net')
-        return
 
     def setTaskChainNetThreaded(self):
         if base.config.GetBool('want-threaded-network', 0):
