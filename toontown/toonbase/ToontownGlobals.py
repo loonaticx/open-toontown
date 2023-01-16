@@ -1,6 +1,7 @@
 from . import TTLocalizer
+from enum import Enum
 from otp.otpbase.OTPGlobals import *
-from direct.showbase.PythonUtil import Enum, invertDict
+from direct.showbase.PythonUtil import invertDict
 from pandac.PandaModules import BitMask32, Vec4
 MapHotkeyOn = 'alt'
 MapHotkeyOff = 'alt-up'
