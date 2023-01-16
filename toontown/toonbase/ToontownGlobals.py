@@ -1610,11 +1610,13 @@ gmMagicWordList = ['restock',
  'who',
  'who all']
 NewsPageScaleAdjust = 0.85
-AnimPropTypes = IntEnum(('Unknown',
- 'Hydrant',
- 'Mailbox',
- 'Trashcan'), start=-1)
-EmblemTypes = IntEnum(('Silver', 'Gold'))
+AnimPropTypes = IntEnum('AnimPropTypes', (
+    'Unknown',
+    'Hydrant',
+    'Mailbox',
+    'Trashcan'
+), start = -1)
+EmblemTypes = IntEnum('EmblemTypes', ('Silver', 'Gold'))
 NumEmblemTypes = 2
 DefaultMaxBankMoney = 12000
 DefaultBankItemId = 1350
