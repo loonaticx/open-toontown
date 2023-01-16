@@ -244,6 +244,9 @@ class ToonBase(OTPBase.OTPBase):
             self.screenshotStr += '\n'
         self.screenshotStr += str
 
+    def setCamNode(self, cam):
+        self.cam = cam
+
     def initNametagGlobals(self):
         arrow = loader.loadModel('phase_3/models/props/arrow')
         card = loader.loadModel('phase_3/models/props/panel')
