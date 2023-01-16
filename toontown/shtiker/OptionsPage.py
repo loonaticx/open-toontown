@@ -1,3 +1,4 @@
+from enum import IntEnum
 from pandac.PandaModules import *
 from . import ShtikerPage
 from toontown.toontowngui import TTDialog
@@ -50,7 +51,7 @@ speedChatStyles = ((2000,
   (170 / 255.0, 120 / 255.0, 20 / 255.0),
   (165 / 255.0, 120 / 255.0, 50 / 255.0),
   (210 / 255.0, 200 / 255.0, 180 / 255.0)))
-PageMode = PythonUtil.Enum('Options, Codes')
+PageMode = IntEnum('PageMode',('Options', 'Codes'))
 
 class OptionsPage(ShtikerPage.ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('OptionsPage')

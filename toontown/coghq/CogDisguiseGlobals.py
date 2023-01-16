@@ -1,3 +1,5 @@
+from enum import IntEnum
+
 from toontown.suit import SuitDNA
 from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
@@ -428,7 +430,7 @@ PartsQueryNames = ({1: PartNameStrings[0],
   16384: PartNameStrings[14],
   32768: PartNameStrings[15],
   65536: PartNameStrings[15]})
-suitTypes = PythonUtil.Enum(('NoSuit', 'NoMerits', 'FullSuit'))
+suitTypes = IntEnum('suitTypes',('NoSuit', 'NoMerits', 'FullSuit'))
 
 def getNextPart(parts, partIndex, dept):
     dept = dept2deptIndex(dept)
