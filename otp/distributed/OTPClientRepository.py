@@ -5,6 +5,7 @@ import types
 import random
 import gc
 import os
+from enum import IntEnum
 from pandac.PandaModules import *
 from pandac.PandaModules import *
 from direct.gui.DirectGui import *
@@ -49,10 +50,12 @@ from .PotentialAvatar import PotentialAvatar
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')
     avatarLimit = 6
-    WishNameResult = Enum(['Failure',
-     'PendingApproval',
-     'Approved',
-     'Rejected'])
+    WishNameResult = IntEnum('WishNameResult', (
+        'Failure',
+        'PendingApproval',
+        'Approved',
+        'Rejected'
+    ))
 
     def __init__(self, serverVersion, launcher = None, playGame = None):
         ClientRepositoryBase.__init__(self)
