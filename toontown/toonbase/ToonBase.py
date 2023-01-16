@@ -254,7 +254,8 @@ class ToonBase(OTPBase.OTPBase):
         thought3d = ChatBalloon(loader.loadModel('phase_3/models/props/chatbox_thought_cutout').node())
         speech2d = ChatBalloon(loader.loadModel('phase_3/models/props/chatbox_noarrow').node())
         chatButtonGui = loader.loadModel('phase_3/models/gui/chat_button_gui')
-        NametagGlobals.setCamera(self.cam)
+        if self.cam:
+            NametagGlobals.setCamera(self.cam)
         NametagGlobals.setArrowModel(arrow)
         NametagGlobals.setNametagCard(card, VBase4(-0.5, 0.5, -0.5, 0.5))
         if self.mouseWatcherNode:
@@ -275,7 +276,8 @@ class ToonBase(OTPBase.OTPBase):
         clickSound = DirectGuiGlobals.getDefaultClickSound()
         if clickSound:
             NametagGlobals.setClickSound(clickSound)
-        NametagGlobals.setToon(self.cam)
+        if self.cam:
+            NametagGlobals.setToon(self.cam)
         self.marginManager = MarginManager()
         self.margins = self.aspect2d.attachNewNode(self.marginManager, DirectGuiGlobals.MIDGROUND_SORT_INDEX + 1)
         mm = self.marginManager
