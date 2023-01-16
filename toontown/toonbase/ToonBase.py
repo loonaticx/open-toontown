@@ -21,7 +21,7 @@ from toontown.launcher import ToontownDownloadWatcher
 class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')
 
-    def __init__(self):
+    def __init__(self, pipe='pandagl'):
         self.settings = Settings()
         if not config.GetInt('ignore-user-options', 0):
             self.settings.readSettings()
@@ -39,7 +39,7 @@ class ToonBase(OTPBase.OTPBase):
             loadPrcFileData('toonBase Settings Music Active', 'audio-music-active %s' % music)
             loadPrcFileData('toonBase Settings Sound Active', 'audio-sfx-active %s' % sfx)
             loadPrcFileData('toonBase Settings Toon Chat Sounds', 'toon-chat-sounds %s' % toonChatSounds)
-        OTPBase.OTPBase.__init__(self)
+        OTPBase.OTPBase.__init__(self, pipe)
         if not self.isMainWindowOpen():
             try:
                 launcher.setPandaErrorCode(7)
