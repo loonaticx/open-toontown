@@ -23,6 +23,7 @@ class ToonBase(OTPBase.OTPBase):
 
     def __init__(self, pipe='pandagl'):
         self.settings = Settings()
+        self.headless = pipe == 'none' or pipe == 'offscreen'
         if not config.GetInt('ignore-user-options', 0):
             self.settings.readSettings()
             mode = not self.settings.getSetting('windowed-mode', True)
@@ -40,13 +41,11 @@ class ToonBase(OTPBase.OTPBase):
             loadPrcFileData('toonBase Settings Sound Active', 'audio-sfx-active %s' % sfx)
             loadPrcFileData('toonBase Settings Toon Chat Sounds', 'toon-chat-sounds %s' % toonChatSounds)
         OTPBase.OTPBase.__init__(self, pipe)
-        if not self.isMainWindowOpen():
-            try:
-                launcher.setPandaErrorCode(7)
-            except:
-                pass
 
-            sys.exit(1)
+        if not self.isMainWindowOpen():
+            # its ok if this happens nowadays, at least in the context of headless
+            self.notify.debug(f"MainWindow is not open")
+
         self.disableShowbaseMouse()
         base.debugRunningMultiplier /= OTPGlobals.ToonSpeedFactor
         self.toonChatSounds = self.config.GetBool('toon-chat-sounds', 1)
