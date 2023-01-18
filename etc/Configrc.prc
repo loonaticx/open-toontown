@@ -13,6 +13,7 @@ depth-bits 24
 audio-sfx-active #t
 audio-music-active #t
 aspect-ratio 1.333333
+screenshot-extension png
 
 # Models/Resources
 model-path resources
@@ -88,7 +89,7 @@ require-window 0
 # Limits the size of the buffer used.
 patcher-buffer-size 512000
 # required-login: auto, green, blue, playToken, DISLToken, gameServer.
-required-login playToken
+required-login auto
 # Do we merge or isolate LOD's?
 merge-lod-bundles 0
 early-event-sphere 1
