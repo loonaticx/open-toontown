@@ -21,8 +21,11 @@ class NameGenerator:
     lastPrefixes = []
     lastSuffixes = []
 
-    def __init__(self):
+    def __init__(self, filename=None, sp=None):
+        self.filename = filename
+        self.sp = sp
         self.generateLists()
+
 
     def generateLists(self):
         self.boyTitles = []
@@ -38,10 +41,16 @@ class NameGenerator:
         searchPath = DSearchPath()
         if __debug__:
             searchPath.appendDirectory(Filename('resources/phase_3/etc'))
-        filename = Filename(TTLocalizer.NameShopNameMaster)
+        if self.sp:
+            searchPath.appendDirectory(Filename(self.sp))
+
+        if self.filename:
+            filename = Filename(self.filename)
+        else:
+            filename = Filename(TTLocalizer.NameShopNameMaster)
         found = vfs.resolveFilename(filename, searchPath)
         if not found:
-            self.notify.error("NameGenerator: Error opening name list text file '%s.'" % TTLocalizer.NameShopNameMaster)
+            self.notify.error("NameGenerator: Error opening name list text file '%s.'" % filename)
         input = StreamReader(vfs.openReadFile(filename, 1), 1)
         currentLine = input.readline()
         while currentLine:
