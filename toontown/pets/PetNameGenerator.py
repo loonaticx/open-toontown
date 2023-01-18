@@ -21,6 +21,7 @@ class PetNameGenerator:
         self.neutralFirsts = []
         self.nameDictionary = {}
         searchPath = DSearchPath()
+        searchPath.appendDirectory(Filename('resources/phase_3/etc'))
         if AppRunnerGlobal.appRunner:
             searchPath.appendDirectory(Filename.expandFrom('$TT_3_ROOT/phase_3/etc'))
         else:
@@ -37,10 +38,10 @@ class PetNameGenerator:
         input = StreamReader(vfs.openReadFile(filename, 1), 1)
         currentLine = input.readline()
         while currentLine:
-            if currentLine.lstrip()[0:1] != '#':
-                a1 = currentLine.find('*')
-                a2 = currentLine.find('*', a1 + 1)
-                self.nameDictionary[int(currentLine[0:a1])] = (int(currentLine[a1 + 1:a2]), currentLine[a2 + 1:len(currentLine) - 1].strip())
+            if currentLine.lstrip()[0:1] != b'#':
+                a1 = currentLine.find(b'*')
+                a2 = currentLine.find(b'*', a1 + 1)
+                self.nameDictionary[int(currentLine[0:a1])] = (int(currentLine[a1 + 1:a2]), currentLine[a2 + 1:].rstrip().decode('utf-8'))
             currentLine = input.readline()
 
         masterList = [self.boyFirsts, self.girlFirsts, self.neutralFirsts]
