@@ -150,6 +150,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.inGardenAction = None
             self.guiConflict = 0
             self.lastElevatorLeft = 0
+            self.hp = 0
+            self.sleepFlag = 0
             self.elevatorNotifier = ElevatorNotifier.ElevatorNotifier()
             self.accept(OTPGlobals.AvatarFriendAddEvent, self.sbFriendAdd)
             self.accept(OTPGlobals.AvatarFriendUpdateEvent, self.sbFriendUpdate)
@@ -163,8 +165,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             if not hasattr(base.cr, 'lastLoggedIn'):
                 base.cr.lastLoggedIn = self.cr.toontownTimeManager.convertStrToToontownTime('')
             self.setLastTimeReadNews(base.cr.lastLoggedIn)
-            self.acceptingNewFriends = base.settings.getSetting('accepting-new-friends', True) and base.config.GetBool('accepting-new-friends-default', True)
-            self.acceptingNonFriendWhispers = base.settings.getSetting('accepting-non-friend-whispers', True) and base.config.GetBool('accepting-non-friend-whispers-default', True)
+            self.acceptingNewFriends = False
+            self.acceptingNonFriendWhispers = False
             self.physControls.event.addAgainPattern('again%in')
             self.oldPos = None
             self.questMap = None
