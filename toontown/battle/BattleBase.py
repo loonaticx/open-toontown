@@ -5,6 +5,9 @@ import functools
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
+
+# locations of the various types of data within the toonAttacks list
+# used when calculating attack damage, accuracy bonus, and damage bonus
 TOON_ID_COL = 0
 TOON_TRACK_COL = 1
 TOON_LVL_COL = 2
@@ -15,6 +18,9 @@ TOON_HPBONUS_COL = 6
 TOON_KBBONUS_COL = 7
 SUIT_DIED_COL = 8
 SUIT_REVIVE_COL = 9
+
+# locations of the various types of data within the suitAttacks list
+# used when calculating toon attack type, target, and attack damage
 SUIT_ID_COL = 0
 SUIT_ATK_COL = 1
 SUIT_TGT_COL = 2
@@ -22,10 +28,12 @@ SUIT_HP_COL = 3
 TOON_DIED_COL = 4
 SUIT_BEFORE_TOONS_COL = 5
 SUIT_TAUNT_COL = 6
+
+# Toon actions and attacks
 NO_ID = -1
 NO_ATTACK = -1
 UN_ATTACK = -2
-PASS_ATTACK = -3
+PASS_ATTACK = -3  # used so we can display pass indicator
 NO_TRAP = -1
 LURE_SUCCEEDED = -1
 PASS = 98
@@ -33,6 +41,8 @@ SOS = 99
 NPCSOS = 97
 PETSOS = 96
 FIRE = 100
+
+# Defined in ToontownBattleGlobals.py
 HEAL = HEAL_TRACK
 TRAP = TRAP_TRACK
 LURE = LURE_TRACK
@@ -40,23 +50,39 @@ SOUND = SOUND_TRACK
 THROW = THROW_TRACK
 SQUIRT = SQUIRT_TRACK
 DROP = DROP_TRACK
+# For reference, in ToontownBattleGlobals
+# NPC_RESTOCK_GAGS = 7
+# NPC_TOONS_HIT = 8
+# NPC_COGS_MISS = 9
+
+# Attack times
 TOON_ATTACK_TIME = 12.0
 SUIT_ATTACK_TIME = 12.0
+
 TOON_TRAP_DELAY = 0.8
+
 TOON_SOUND_DELAY = 1.0
+
 TOON_THROW_DELAY = 0.5
 TOON_THROW_SUIT_DELAY = 1.0
+
 TOON_SQUIRT_DELAY = 0.5
 TOON_SQUIRT_SUIT_DELAY = 1.0
+
 TOON_DROP_DELAY = 0.8
 TOON_DROP_SUIT_DELAY = 1.0
+
 TOON_RUN_T = 3.3
 TIMEOUT_PER_USER = 5
+
 TOON_FIRE_DELAY = 0.5
 TOON_FIRE_SUIT_DELAY = 1.0
+
+# Reward times
 REWARD_TIMEOUT = 120
 FLOOR_REWARD_TIMEOUT = 4
 BUILDING_REWARD_TIMEOUT = 300
+
 CLIENT_INPUT_TIMEOUT = ConfigVariableDouble('battle-input-timeout', TTLocalizer.BBbattleInputTimeout).value
 
 def levelAffectsGroup(track, level):
